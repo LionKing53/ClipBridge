@@ -5,13 +5,15 @@ Güncelleme: 2026-10-02. Aşama: A tamamlandı — temiz kaynak ve yalıtılmı�
 ## Sürüm ve sahiplik
 
 - Tek ana kaynak: `%USERPROFILE%/source/PanoKopru`.
-- Kaynak sürümü: ilk yerel geliştirme tabanı; `git log -1` ve
-  `git status --short` güncel commit ve tamamlanmamış değişiklikleri belirler.
+- Test edilen kaynak tabanı: `852c108` (yerel Git). Ardından yalnız bu durum
+  kaydına commit referansı eklendi. `git log -1` ve `git status --short` güncel
+  teslim commit'ini ve tamamlanmamış değişiklikleri belirler.
 - Paket sürümü miras alınan `1.0.0`; launcher bildirimi `1.0.0.0`.
   Bu numaralar yeni bir genel sürüm yayımlandığı anlamına gelmez.
 - Kişisel kurulum: `%LOCALAPPDATA%/Programs/PanoKopru`, mevcut 1.0.0; kaynak
   commit'i geçmiş kurulumda kayıtlı değil. Bu değişiklikler kurulu sürüme uygulanmadı.
 - Kesin yerel yollar/içe alınan dosya SHA-256'ları yalnız `.local/` kaydındadır.
+- Yerel commit yazarı genel geliştirme kimliğidir; kişisel Git e-postası kullanılmadı.
 - Veri geçişi yapılmadı. Kurulu veri hâlâ `app/.clipboard-bridge` altındadır.
 - Geliştirme ana sohbette; yayın incelemesi ayrı sohbette. Uzak depo yok.
 
@@ -40,6 +42,8 @@ Güncelleme: 2026-10-02. Aşama: A tamamlandı — temiz kaynak ve yalıtılmı�
   kayıtları geçti; yerel özel terim taraması temiz. Tam yayın denetimi değildir.
 - PowerShell yardımcıları AST ile ayrıştırıldı; sözdizimi hatası yok, çalıştırılmadı.
 - Örnek bağlantı ekran görüntüsü incelendi: sentetik ağlar ve örnek uzak adres.
+- Kurulu kaynak dosyaları yerel SHA-256 başlangıç kaydıyla aynı; kaynak çalışması
+  kişisel kurulumu güncellemedi. Yedekleme veya veri göçü yapılmış sayılmaz.
 
 Çalıştırılmayanlar: üretim sunucusu/launcher, derleme, kurulum/kaldırma, gerçek
 UAC/firewall/sertifika işlemleri, canlı telefon veya kişisel panoya aktarım.
