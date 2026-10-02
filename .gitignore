@@ -1,0 +1,30 @@
+# Private local coordination and machine-specific provenance
+.local/
+# Personal state: never source or release inputs
+.clipboard-bridge/
+**/.clipboard-bridge/
+.env
+.env.*
+!.env.example
+*.pfx
+*.p12
+*.pem
+*.key
+*.cer
+*.dpapi
+**/desktop-token
+**/pairing*.html
+# Generated dependencies, runtimes, SDKs, outputs and profiles
+node_modules/
+runtime/
+vendor/
+build/
+dist/
+coverage/
+test-results/
+playwright-report/
+*.log
+*.bak
+*.zip
+assets/*.png
+assets/*.ico

@@ -1,0 +1,4 @@
+Development-only source checkout. Do not remove to bypass the runtime guard.
+Production execution is blocked until shared data roots, ports and process locks
+are implemented and verified across Node, launcher and PowerShell helpers.
+This is not an installable release. Isolated tests remain available.
