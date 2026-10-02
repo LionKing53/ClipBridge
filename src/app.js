@@ -6,6 +6,7 @@ import https from 'node:https';
 import { pipeline } from "node:stream/promises";
 import { isRtf, isFlatRtfd, normalizeClipboardItem } from "./rich-text.js";
 import { MAX_FILE_BYTES, MAX_TEXT_BYTES, UploadStorage, readMultipartUpload, readBinaryUpload } from "./uploads.js";
+import { publicError } from './errors.js';
 
 export const MAX_BODY_BYTES = MAX_FILE_BYTES;
 
@@ -209,10 +210,12 @@ export function createServer({
   getClipboardItem,
   onTransferEvent = () => {},
   onClipboardSent = async () => {},
+  instanceId,
   tls,
   transportGuard = () => true,
   handleExtraRequest = async () => false,
   maxUploadBytes = MAX_FILE_BYTES,
+  uploadOptions,
   logger = console
 }) {
   const receiveItem = setClipboardItem || (async (item) => {
@@ -229,7 +232,7 @@ export function createServer({
     const url = new URL(request.url, "http://clipboard-bridge.local");
 
     if (request.method === "GET" && url.pathname === "/health") {
-      json(response, 200, { ok: true, service: "clipboard-bridge", version: 1 });
+      json(response, 200, { ok: true, service: "clipboard-bridge", version: 1, ...(instanceId ? { instanceId } : {}) });
       return;
     }
 
@@ -249,8 +252,9 @@ export function createServer({
         item = await provideItem();
         text(response, 200, clipboardKind(item));
       } catch (error) {
-        logger.error("Windows pano turu okunamadi:", error);
-        json(response, 500, { ok: false, error: "clipboard_read_failed" });
+        logger.error("clipboard_kind_failed");
+        const failure = publicError(error, 'clipboard_read_failed');
+        json(response, failure.status, { ok: false, error: failure.code });
       } finally {
         if (item?.temporary && item.path) await unlink(item.path).catch(() => {});
       }
@@ -269,8 +273,9 @@ export function createServer({
         logger.info(`[clipboard] Windows'tan ${item.type} (${size} bayt) okundu.`);
         await sendClipboardItem(response, item, onClipboardSent);
       } catch (error) {
-        logger.error("Windows panosu okunamadi:", error);
-        if (!response.headersSent) json(response, 500, { ok: false, error: "clipboard_read_failed" });
+        logger.error("clipboard_read_failed");
+        const failure = publicError(error, 'clipboard_read_failed');
+        if (!response.headersSent) json(response, failure.status, { ok: false, error: failure.code });
       }
       return;
     }
@@ -299,7 +304,7 @@ export function createServer({
       return;
     }
 
-    const storage = new UploadStorage(maxUploadBytes);
+    const storage = new UploadStorage(maxUploadBytes, uploadOptions);
     try {
       event.stage = "reading";
       report();
@@ -324,17 +329,18 @@ export function createServer({
       report();
       json(response, 200, { ok: true, ...result });
     } catch (error) {
-      const statusCode = error.statusCode || 500;
+      const failure = publicError(error, 'clipboard_update_failed');
+      const statusCode = error.statusCode || failure.status;
       event.failedStage = event.stage;
       event.stage = "failed";
       event.status = statusCode;
       report();
       if (statusCode === 500) {
-        logger.error("Pano guncellenemedi:", error);
+        logger.error("clipboard_update_failed");
       }
       json(response, statusCode, {
         ok: false,
-        error: statusCode === 500 ? "clipboard_update_failed" : error.message
+        error: statusCode >= 500 ? failure.code : error.message
       });
     } finally {
       await storage.cleanup().catch(() => logger.error("Gecici aktarim dosyasi temizlenemedi."));

@@ -4,7 +4,7 @@ Bu plan 2026-10-02 tarihli salt okunur inceleme ve güncel kaynak karşılaştı
 dayanır. Tamamlanmış özellikleri tekrar yazmak yerine eksik altyapı tamamlanır.
 Bir aşamanın tamamlanması sonraki aşamanın veya kişisel dağıtımın onayı değildir.
 
-## A — Tek kaynak ve güvenli başlangıç (bu çalışma)
+## A — Tek kaynak ve güvenli başlangıç (tamamlandı)
 
 - İncelenmiş kaynak izin listesi; özel veriler/bağımlılıklar/eski yedekler yok.
 - Sentetik test verileri, özel bilgisayar/Tailscale bilgisi okumayan UI testleri.
@@ -12,7 +12,7 @@ Bir aşamanın tamamlanması sonraki aşamanın veya kişisel dağıtımın onay
 - Temiz kilit dosyasından bağımlılık kurulumu ve yalıtılmış test tabanı.
 - Kaynak sürümünden üretim çalıştırmasını geçici olarak kapatan koruma.
 
-## B — Ortak veri kökü ve yalıtım (sıradaki mühendislik işi)
+## B — Ortak veri kökü ve yalıtım (çekirdek test edildi; native geçiş bekliyor)
 
 - Node, C# launcher, WebView2 profili ve PowerShell aynı veri kökü sözleşmesini
   kullanmalı. Kurulum programı ve kullanıcı verisi ayrı olmalı.
@@ -67,3 +67,25 @@ Bir aşamanın tamamlanması sonraki aşamanın veya kişisel dağıtımın onay
   yenileme değerlendirilir; yalnız son dosyayı silmek yeterli değildir.
 - GitHub sohbeti güncel commit, test kayıtları ve çalışma ağacını yeniden
   inceler. Bu sohbet uzak depo oluşturmaz, push/release yapmaz.
+
+## 2026-10-03 uygulama karşılığı ve kalan işler
+
+Bu bölüm yukarıdaki gereksinimlerin yerini almaz; neyin gerçekten yapıldığını
+ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
+
+| Alan | Kaynaktaki karşılığı | Kalan kapı |
+| --- | --- | --- |
+| Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar, instance kilidi | Tam native launcher, crash recovery, yönlendirilmiş profil desteği |
+| Geçiş | data-migration copy-only motoru ve sentetik yedek/göç testleri | Üretim ACL adaptörü, gerçek CA/DPAPI/WebView teması, özel doğrulanmış yedek |
+| İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing | Node/WebView2/başlangıç seçenekli installer; gerçek iPhone; aynı/farklı yönetici UAC |
+| İzinler | Eski/yeni kuralların sahiplikli temizliği; iptalde kapalı kalma | Gerçek firewall, iki arayüz ve aktarım sırasında ağ değişimi |
+| Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload sahipliği | Gerçek disk dolması, yarım kalmış outbox arşivlerini sahiplikli temizleme |
+| Hatalar | Hassas alanları dışlayan tanılama, temel kararlı hata kodları | Tüm eski API/PowerShell yollarında ayrıntılı sınıflandırma |
+| Güncelleme | Üretimi reddeden yalıtılmış release-store çekirdeği; veri koruyan rollback testleri | İmzalı paket/launcher adaptörü, gerçek durdurma/recovery, yeni kaldırıcı |
+| Dağıtım | Kilit dosyası düzeltmesi, envanter/lisans kanıtı/kaynak-kilidi SBOM | Temiz Node/SDK edinimi, allowlist binary paket üretimi, nihai SBOM/lisans uygunluğu |
+| Belgeler | TR/EN README/kestirmeler, mimari, yaşam döngüsü, sorun giderme ve kabul matrisi | Çalışan installer üzerinde eksiksiz son kullanıcı rehberi |
+| Lisans | Kullanıcı GPL-3.0-or-later seçti; LICENSE ve metadata eklendi | Paketlenmiş bileşenlerle dağıtım uygunluğu; logo/ad politikası |
+
+Sonraki mühendislik sırası: native paket/launcher ve güvenli üretim yaşam döngüsü
+adaptörleri → yalıtılmış temiz Windows kabulü → gerçek iPhone ilk kurulum → ayrı
+onaylı kişisel veri geçişi/dağıtım. GitHub yayını bu geliştirme sohbetinin işi değildir.

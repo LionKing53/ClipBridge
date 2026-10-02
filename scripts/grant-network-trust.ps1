@@ -1,11 +1,13 @@
 # Fixed, narrow helper. Never executes network names, paths or commands from the request.
-param([Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9-]{36}$')][string]$RequestId)
+param([Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9-]{36}$')][string]$RequestId, [Parameter(Mandatory=$true)][string]$DataRoot)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
+. (Join-Path $PSScriptRoot 'runtime-context.ps1')
+$binding = Get-PanoKopruProductionBinding -DataRoot $DataRoot
 $appRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $installRoot = [IO.Path]::GetFullPath((Join-Path $appRoot '..'))
 if ((Split-Path $installRoot -Leaf) -ne 'PanoKopru' -or (Split-Path $appRoot -Leaf) -ne 'app') { throw 'Unexpected installation.' }
-$stateRoot = Join-Path $appRoot '.clipboard-bridge\lan'
+$stateRoot = Join-Path $binding.Context.dataRoot 'lan'
 $requestPath = Join-Path $stateRoot ('network-request-' + $RequestId + '.json')
 $resultPath = Join-Path $stateRoot ('network-result-' + $RequestId + '.json')
 $createdRules = @()
@@ -25,13 +27,15 @@ try {
     if ([string]$adapter.InterfaceDescription -cne [string]$entry.interfaceDescription) { throw 'Adapter mismatch.' }
     $originalCategory = [string]$approvedProfile.NetworkCategory
     if ($originalCategory -notin @('Public','Private')) { throw 'Managed network cannot be changed.' }
-    $runtime = Join-Path $installRoot 'runtime\node.exe'
+    $runtime = $binding.Runtime
     if (!(Test-Path -LiteralPath $runtime)) { throw 'Bundled runtime missing.' }
     # One rule pair per exact network record; disconnected USB adapters are not required.
-    foreach ($spec in @(@{ Suffix='HTTPS'; Protocol='TCP'; Port=32147 }, @{ Suffix='mDNS'; Protocol='UDP'; Port=5353 })) {
+    foreach ($spec in @(@{ Suffix='HTTPS'; Protocol='TCP'; Port=$binding.Context.ports.local }, @{ Suffix='mDNS'; Protocol='UDP'; Port=5353 })) {
         $ruleName = 'PanoKopru-Network-' + $request.key + '-' + $spec.Suffix
         $existing = Get-NetFirewallRule -Name $ruleName -ErrorAction SilentlyContinue
         if ($existing) {
+            $programs = @($existing | Get-NetFirewallApplicationFilter)
+            if ($existing.Group -ne 'PanoKopru' -or $programs.Count -ne 1 -or $programs[0].Program -ine $runtime) { throw 'Existing rule ownership mismatch.' }
             Set-NetFirewallRule -Name $ruleName -Enabled True -Direction Inbound -Action Allow -Profile Private -Protocol $spec.Protocol -LocalPort $spec.Port -RemoteAddress LocalSubnet -InterfaceAlias $entry.interfaceAlias -Program $runtime -EdgeTraversalPolicy Block | Out-Null
         } else {
             New-NetFirewallRule -Name $ruleName -DisplayName ('PanoKopru - trusted network ' + $spec.Suffix) -Group PanoKopru -Enabled True -Direction Inbound -Action Allow -Profile Private -Protocol $spec.Protocol -LocalPort $spec.Port -RemoteAddress LocalSubnet -InterfaceAlias $entry.interfaceAlias -Program $runtime -EdgeTraversalPolicy Block | Out-Null

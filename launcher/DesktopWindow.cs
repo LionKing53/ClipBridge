@@ -54,20 +54,20 @@ internal sealed class DesktopWindow : Form
     }
     private void NavigateWithToken()
     {
-        string token = File.ReadAllText(Path.Combine(appRoot, ".clipboard-bridge", "desktop-token")).Trim();
+        string token = File.ReadAllText(Path.Combine(Program.Context.DataRoot, "desktop-token")).Trim();
         if (token == activeToken) return;
         activeToken = token;
-        browser.CoreWebView2.Navigate("http://127.0.0.1:32146/#token=" + Uri.EscapeDataString(token));
+        browser.CoreWebView2.Navigate(Program.Context.DesktopOrigin + "/#token=" + Uri.EscapeDataString(token));
     }
     private async Task InitializeBrowser()
     {
         try
         {
-            string state = Path.Combine(appRoot, ".clipboard-bridge");
+            string state = Program.Context.DataRoot;
             var env = await CoreWebView2Environment.CreateAsync(null, Path.Combine(state, "webview"));
             await browser.EnsureCoreWebView2Async(env);
             browser.CoreWebView2.WebMessageReceived += (s,e) => {
-                if (e.Source != "http://127.0.0.1:32146/") return;
+                if (e.Source != Program.Context.DesktopOrigin + "/") return;
                 try {
                     string message = e.TryGetWebMessageAsString();
                     if (message != "theme:dark" && message != "theme:light") return;
@@ -83,7 +83,7 @@ internal sealed class DesktopWindow : Form
             browser.CoreWebView2.Settings.IsStatusBarEnabled = false;
             browser.CoreWebView2.Settings.IsPasswordAutosaveEnabled = false;
             browser.CoreWebView2.Settings.IsGeneralAutofillEnabled = false;
-            browser.CoreWebView2.NavigationStarting += (s,e) => { Uri uri; if (!Uri.TryCreate(e.Uri, UriKind.Absolute, out uri) || uri.Scheme != "http" || uri.Host != "127.0.0.1" || uri.Port != 32146) e.Cancel = true; };
+            browser.CoreWebView2.NavigationStarting += (s,e) => { Uri uri; if (!Uri.TryCreate(e.Uri, UriKind.Absolute, out uri) || uri.Scheme != "http" || uri.Host != "127.0.0.1" || uri.Port != Program.Context.DesktopPort) e.Cancel = true; };
             browser.CoreWebView2.NewWindowRequested += (s,e) => e.Handled = true;
             browser.CoreWebView2.PermissionRequested += (s,e) => e.State = CoreWebView2PermissionState.Deny;
             string tokenPath = Path.Combine(state, "desktop-token");

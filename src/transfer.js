@@ -37,7 +37,7 @@ async function createZip(paths, outputPath) {
   });
 }
 
-export function createTransferHandlers(config, { onReceived = async () => {} } = {}) {
+export function createTransferHandlers(config, { onReceived = async () => {}, storage } = {}) {
   const stateRoot = path.dirname(config.configPath);
   const inbox = path.join(stateRoot, "inbox");
   const outbox = path.join(stateRoot, "outbox");
@@ -61,6 +61,7 @@ export function createTransferHandlers(config, { onReceived = async () => {} } =
     } else {
       await writeFile(storedPath, item.data);
     }
+    await storage?.register(storedPath);
     return { filename, storedPath };
   }
 

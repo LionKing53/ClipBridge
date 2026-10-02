@@ -27,7 +27,7 @@ the development conversation. No simultaneous conflicting edits.
 
 Canonical default: `%USERPROFILE%/source/PanoKopru`.
 Installed program: `%LOCALAPPDATA%/Programs/PanoKopru`.
-Planned personal data: `%LOCALAPPDATA%/PanoKopru` (NOT migrated yet).
+New-design personal data: `%LOCALAPPDATA%/PanoKopru` (NOT migrated yet).
 Exact machine paths and imported-file checksums are in ignored `.local/`.
 
 Never read or copy personal clipboard/history, tokens, pairing QR/HTML, private
@@ -39,9 +39,11 @@ not a publication security review. Review complete Git history and archives too.
 
 ## Execution and tests
 
-`SOURCE-CHECKOUT` intentionally blocks loadConfig/production startup. Do NOT
-remove it simply to run the application. First implement shared data roots,
-isolated ports and process identity across Node, C# and PowerShell. Never silently
+`SOURCE-CHECKOUT` intentionally blocks production startup and real OS adapters.
+Do NOT remove it simply to run the application. Explicit validated isolated
+contexts may loadConfig/startBridge only with complete injected OS adapters.
+Shared data roots/identity now have tests, but native deployment acceptance is
+still pending. Never silently
 fall back to installed state when development/test configuration is absent.
 
 Use `npm ci --ignore-scripts --no-audit --no-fund`, `npm test`, `npm run test:ui`
@@ -53,6 +55,12 @@ the real clipboard. UI fixtures must mock hostname, Tailscale and OS actions.
 No real network trust/UAC/firewall/certificate/clipboard test without explicit
 scope and separate acceptance arrangements. Never run inherited helper scripts
 merely because they are present. See docs/TESTING.md.
+
+PowerShell may block npm.ps1; use npm.cmd without changing machine execution
+policy. The runtime contract probe compiles only a synthetic C# executable and
+reads synthetic context via PowerShell; it does not build/run the native app.
+`release-store.js` is an isolated prototype, not a production updater. Keep its
+production refusal until launcher, ownership, signing and acceptance are ready.
 
 ## Deployment/release gates
 

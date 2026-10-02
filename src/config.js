@@ -2,21 +2,22 @@ import { randomBytes } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { assertProductionReady } from '../scripts/source-guard.js';
+import { prepareRuntime, resolveRuntime } from './runtime-context.js';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
+import { fileURLToPath } from 'node:url';
 
-const stateDirectory = path.resolve(".clipboard-bridge");
-const configPath = path.join(stateDirectory, "config.json");
-
-function parsePort(value) {
-  const port = Number.parseInt(value, 10);
-  if (!Number.isInteger(port) || port < 1 || port > 65535) {
-    throw new Error(`Gecersiz BRIDGE_PORT degeri: ${value}`);
-  }
-  return port;
-}
-
-export async function loadConfig() {
+export async function loadConfig(context) {
   // No CWD-based fallback into a personal installation during source preparation.
-  assertProductionReady();
+  if (!context) { assertProductionReady(); context = resolveRuntime(); }
+  await prepareRuntime(context);
+  if (context.mode === 'production') {
+    assertProductionReady();
+    // Harden the metadata-only directory BEFORE creating or reading any secret.
+    await promisify(execFile)('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', fileURLToPath(new URL('../scripts/protect-local-state.ps1', import.meta.url)), '-DataRoot', context.dataRoot], { windowsHide: true, timeout: 30000 });
+  }
+  const stateDirectory = context.dataRoot;
+  const configPath = path.join(stateDirectory, 'config.json');
   let stored;
 
   try {
@@ -38,14 +39,15 @@ export async function loadConfig() {
     });
   }
 
-  const token = process.env.BRIDGE_TOKEN || stored.token;
+  const token = stored.token;
   if (typeof token !== "string" || token.length < 32) {
     throw new Error("Kopru anahtari en az 32 karakter olmali.");
   }
 
   return {
-    host: process.env.BRIDGE_HOST || "127.0.0.1",
-    port: parsePort(process.env.BRIDGE_PORT || "32145"),
+    host: "127.0.0.1",
+    port: context.ports.api,
+    context,
     token,
     configPath
   };

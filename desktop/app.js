@@ -20,6 +20,7 @@ const svg = name => `<svg viewBox="0 0 24 24" aria-hidden="true">${icons[name] |
 document.querySelectorAll('[data-icon]').forEach(el => el.innerHTML = svg(el.dataset.icon));
 const $ = selector => document.querySelector(selector);
 $('#connection-page .settings-grid').prepend($('#local-network-panel').content.cloneNode(true));
+$('#settings-page .settings-grid').append($('#storage-panel').content.cloneNode(true));
 const escape = value => String(value ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 const token = new URLSearchParams(location.hash.slice(1)).get('token') || '';
 history.replaceState(null, '', location.pathname);
@@ -96,11 +97,17 @@ async function refresh() {
     $('#local-badge').classList.toggle('ready', local.state === 'ready');
     renderNetworks();
     $('#local-setup').disabled = !local.configured;
+    $('#setup-wizard').disabled = !state.setup?.available || state.setup?.busy;
+    $('#pair-local').disabled = local.state !== 'ready';
     if (local.state === 'ready') {
       $('#network-description').textContent = `${local.activeNetworkName || 'İzinli ağ'} · Aynı Ağ kestirmesiyle aktar. Tailscale uzaktan kullanım için yedek.`;
       $('.connection-line small').textContent = 'Yerel HTTPS';
     } else { $('.connection-line small').textContent = state.network.connected ? 'Tailscale' : 'Yol kapalı'; }
     $('#history-enabled').checked = state.settings.enabled; $('#history-limit').value = state.settings.limit;
+    const disk = state.storage;
+    $('#storage-usage').textContent = disk ? `Toplam: ${bytes(disk.totalBytes)} · Gelen: ${bytes(disk.inbox)} · Geçmiş: ${bytes(disk.history)} · Geçici: ${bytes(disk.temp + disk.outbox)} · Boş alan: ${disk.freeBytes == null ? 'bilinmiyor' : bytes(disk.freeBytes)}` : 'Bu test ortamında depolama yönetimi bağlı değil.';
+    $('#storage-retention').disabled = !disk; $('#storage-retention').value = disk?.retentionDays || 0;
+    $('#storage-cleanup').disabled = !disk?.retentionDays;
     $('#paused-label').hidden = state.settings.enabled; $('#retention').textContent = 'Son ' + state.settings.limit + ' kayıt';
     $('#capture').disabled = !state.settings.enabled; $('#empty-capture').disabled = !state.settings.enabled;
     const event = state.diagnostics.at(-1); const stages = { completed: 'Aktarım tamamlandı', failed: 'Aktarım başarısız', unauthorized: 'Yetkilendirme reddedildi', reading: 'İçerik alınıyor', normalizing: 'İçerik hazırlanıyor', writing_clipboard: 'Panoya yazılıyor', received: 'İstek alındı' };
@@ -124,6 +131,7 @@ function renderNetworks() {
   const local = state.localNetwork || {};
   const locked = networkBusy || !!local.networkOperation;
   $('#scan-networks').disabled = locked || !local.configured;
+  $('#cleanup-permissions').disabled = locked || !local.canCleanupPermissions;
   $('#network-operation').hidden = !locked;
   $('#network-operation').textContent = 'Ağ işlemi sürüyor. Windows onay penceresi varsa yanıtla; bu işlem birkaç saniye sürebilir.';
   const connected = (local.connectedNetworks || []).map(net => `<div class="connected-network"><div><strong>${escape(net.name)}</strong><small>${escape(net.interfaceAlias)} · ${escape(net.address)} · ${net.category === 'Private' ? 'Windows: Özel' : 'Windows: Genel'}</small></div><button class="${net.trusted ? 'secondary' : 'primary'}" data-network-action="trust" data-network-key="${escape(net.key)}" ${locked ? 'disabled' : ''}>${net.trusted ? 'İzni onar' : 'Bu ağı güvenilenlere ekle'}</button></div>`).join('') || '<p>Eklenebilecek bağlı bir yerel ağ bulunamadı. Wi-Fi, Ethernet veya USB bağlantını kontrol et.</p>';
@@ -155,6 +163,7 @@ $('#scan-networks').onclick = () => action(async () => {
   try { const data = await api('networks'); state.localNetwork.connectedNetworks = data.connected; state.localNetwork.networkOperation = data.operation; renderNetworks(); toast('Bağlı ağlar yenilendi.'); }
   finally { $('#scan-networks').disabled = networkBusy; }
 });
+$('#cleanup-permissions').onclick = () => confirm('Windows izinleri temizlensin mi?', 'Yerel aktarım hemen durur. Yönetici onayıyla yalnız PanoKöprü’ye ait doğrulanmış eski/yeni firewall kuralları kaldırılır. Windows ağ profili ve Tailscale değişmez. Onay iptal edilse bile yerel erişim kapalı kalır; tekrar kullanmak için İzni onar gerekir.', () => changeNetwork('cleanup'), 'İzinleri temizle');
 async function capture() { $('#capture').disabled = true; try { await api('capture', { method: 'POST' }); await refresh(); toast('Windows panosu geçmişe eklendi.'); } finally { $('#capture').disabled = !state.settings.enabled; } }
 document.querySelectorAll('.nav').forEach(el => el.onclick = () => switchView(el.dataset.view));
 document.querySelectorAll('.filter').forEach(el => el.onclick = () => { filter = el.dataset.filter; document.querySelectorAll('.filter').forEach(x => x.classList.toggle('active', x === el)); renderItems(); });
@@ -166,8 +175,33 @@ $('#items').onclick = event => { const button = event.target.closest('[data-acti
 $('#history-enabled').onchange = () => action(async () => { await api('settings', { method: 'POST', body: JSON.stringify({ enabled: $('#history-enabled').checked }) }); await refresh(); toast(state.settings.enabled ? 'Geçmiş kaydı açıldı.' : 'Geçmiş duraklatıldı. Aktarım köprüsü çalışmaya devam ediyor.'); });
 $('#history-limit').onchange = () => action(async () => { await api('settings', { method: 'POST', body: JSON.stringify({ limit: Number($('#history-limit').value) }) }); await refresh(); });
 $('#clear').onclick = () => confirm('Aktarım geçmişi temizlensin mi?', 'Favoriler dahil tüm geçmiş kayıtları ve uygulamanın sakladığı kopyalar kaldırılacak. Asıl dosyalar silinmez. Bu işlem geri alınamaz.', async () => { await api('clear', { method: 'POST' }); await refresh(); toast('Geçmiş temizlendi. Asıl dosyalar korundu.'); });
+$('#storage-retention').onchange = () => action(async () => { await api('storage/policy', { method: 'POST', body: JSON.stringify({ retentionDays: Number($('#storage-retention').value) }) }); await refresh(); });
+$('#storage-cleanup').onclick = () => confirm('Eski gelen dosyalar silinsin mi?', 'Seçilen süreden eski, bu uygulamanın yönettiği gelen dosyalar diskten silinir. Favoriler ve yönetilmeyen dosyalar korunur. Bu işlem geri alınamaz; gerekli belgelerini önce başka yere kaydet.', async () => { const result = await api('storage/cleanup', { method: 'POST', body: JSON.stringify({ confirmed: true }) }); await refresh(); toast(`${result.removed} gelen dosya silindi.`); });
 $('#pair').onclick = () => action(async () => { $('#pair').disabled = true; try { const data = await api('pairing'); $('#qr').src = data.qr; $('#endpoint').textContent = data.endpoint; $('#pairing').showModal(); } finally { $('#pair').disabled = false; } });
 $('#pairing').addEventListener('close', () => $('#qr').removeAttribute('src'));
+$('#pair-local').onclick = () => action(async () => { const data = await api('pairing?transport=local'); $('#qr').src = data.qr; $('#endpoint').textContent = data.endpoint; $('#pairing').showModal(); });
+async function renderSetup() {
+  const data = await api('setup');
+  const certificate = data.phase === 'certificate' && data.downloadUrl && data.expiresAt > Date.now();
+  $('#setup-status').textContent = ({ not_started: 'Başlamak için ağı seç.', preparing: 'Windows işlemi sürüyor…', interrupted: 'Kurulum tamamlanmadı. Ağı yeniden seçerek devam edebilirsin.', certificate: 'Sertifikayı indir, kimliğini karşılaştır ve elle güveni aç.', complete: 'Windows tarafı hazır. Şimdi iPhone’dan HTTPS bağlantısını ve iki yönlü aktarımı test et.' })[data.phase] || 'Kurulum durumu bilinmiyor.';
+  $('#setup-select').hidden = !!certificate || data.phase === 'complete';
+  $('#setup-certificate').hidden = !certificate;
+  $('#setup-network').replaceChildren(...data.networks.map(net => { const option = document.createElement('option'); option.value = net.key; option.textContent = `${net.name} · ${net.interfaceAlias} · ${net.category}`; return option; }));
+  $('#setup-begin').disabled = data.busy || !data.networks.length;
+  $('#setup-stop').disabled = data.busy || data.phase === 'complete';
+  if (certificate) { $('#setup-qr').src = data.qr; $('#setup-url').textContent = data.downloadUrl; $('#setup-fingerprint').textContent = data.fingerprint; }
+  else { $('#setup-qr').removeAttribute('src'); $('#setup-url').textContent = ''; $('#setup-fingerprint').textContent = ''; }
+  $('#setup-phone-fingerprint').value = ''; $('#setup-trust').checked = false;
+}
+$('#setup-wizard').onclick = () => action(async () => { await renderSetup(); $('#setup-dialog').showModal(); });
+async function setupAction(route, body) {
+  for (const id of ['setup-begin', 'setup-confirm', 'setup-stop']) $('#' + id).disabled = true;
+  try { await api('setup/' + route, { method: 'POST', body: JSON.stringify(body) }); await renderSetup(); await refresh(); }
+  finally { $('#setup-confirm').disabled = false; await renderSetup(); }
+}
+$('#setup-begin').onclick = () => action(() => setupAction('begin', { key: $('#setup-network').value, confirmed: true }));
+$('#setup-confirm').onclick = () => action(() => setupAction('confirm', { fingerprintFromPhone: $('#setup-phone-fingerprint').value, confirmedTrust: $('#setup-trust').checked }));
+$('#setup-stop').onclick = () => action(() => setupAction('cancel', { confirmed: true }));
 document.querySelectorAll('[data-copy-endpoint]').forEach(button => button.onclick = () => action(async () => {
   const selectors = { clipboard: '#local-address', kind: '#local-kind-address', health: '#local-health-address' };
   const value = $(selectors[button.dataset.copyEndpoint]).textContent;

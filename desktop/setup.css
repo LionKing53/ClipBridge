@@ -1,0 +1,5 @@
+#setup-dialog label{display:block;margin:14px 0 8px;font-size:12px;line-height:1.6}
+#setup-phone-fingerprint,#setup-network{display:block;width:100%;min-width:0;padding:12px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+#setup-phone-fingerprint{font-family:Consolas,monospace;font-size:12px}
+#setup-dialog .local-qr{display:block;max-width:230px;width:100%;margin:18px auto}
+#setup-fingerprint{padding:12px;background:var(--bg);border-radius:8px;overflow-wrap:anywhere}

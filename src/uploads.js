@@ -1,4 +1,4 @@
-import { mkdtemp, open, readFile, rm } from "node:fs/promises";
+import { mkdtemp, mkdir, open, readFile, writeFile, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import Busboy from "busboy";
@@ -14,8 +14,9 @@ function uploadError(message, statusCode = 413) {
 }
 
 export class UploadStorage {
-  constructor(maxBytes = MAX_FILE_BYTES) {
+  constructor(maxBytes = MAX_FILE_BYTES, options = {}) {
     this.maxBytes = maxBytes;
+    this.options = options;
     this.directory = null;
   }
 
@@ -38,7 +39,11 @@ export class UploadStorage {
           prefix = Buffer.concat([prefix, chunk.subarray(0, 128 - prefix.length)]);
         }
         if (!handle && size > MEMORY_THRESHOLD) {
-          this.directory = await mkdtemp(path.join(os.tmpdir(), "PanoKopru-upload-"));
+          if (this.options.stagingRoot) {
+            await mkdir(this.options.stagingRoot, { recursive: true });
+            this.directory = await mkdtemp(path.join(this.options.stagingRoot, 'upload-'));
+            await writeFile(path.join(this.directory, '.owner.json'), JSON.stringify({ application: 'PanoKopru', instanceId: this.options.instanceId, createdAt: Date.now() }), { flag: 'wx' });
+          } else this.directory = await mkdtemp(path.join(os.tmpdir(), "PanoKopru-upload-"));
           filePath = path.join(this.directory, "payload");
           handle = await open(filePath, "wx");
           for (const previous of chunks) await handle.writeFile(previous);

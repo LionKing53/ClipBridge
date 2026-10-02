@@ -9,15 +9,16 @@ import { assertProductionReady } from '../scripts/source-guard.js';
 
 const run = promisify(execFile);
 const fail = (message, statusCode = 409) => Object.assign(new Error(message), { statusCode });
-export async function requestNetworkPermission(root, entry) {
+export async function requestNetworkPermission(root, entry, operation = 'trust') {
   assertProductionReady();
+  if (!['trust','cleanup'].includes(operation)) throw fail('Geçersiz izin işlemi.');
   const requestId = randomUUID();
   const requestPath = path.join(root, `network-request-${requestId}.json`);
   const resultPath = path.join(root, `network-result-${requestId}.json`);
-  await writeFile(requestPath, JSON.stringify({ entry, key: networkKey(entry), expiresAt: Date.now() + 180000 }), { flag: 'wx' });
+  await writeFile(requestPath, JSON.stringify({ operation, ...(operation === 'trust' ? { entry, key: networkKey(entry) } : {}), expiresAt: Date.now() + 180000 }), { flag: 'wx' });
   try {
     const script = fileURLToPath(new URL('../scripts/request-network-trust.ps1', import.meta.url));
-    const { stdout } = await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', script, '-RequestId', requestId], { windowsHide: true, timeout: 200000, maxBuffer: 16384 });
+    const { stdout } = await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', script, '-RequestId', requestId, '-DataRoot', path.dirname(root), '-Operation', operation], { windowsHide: true, timeout: 200000, maxBuffer: 16384 });
     const result = JSON.parse(stdout.replace(/^\uFEFF/, '').trim());
     if (result.ok !== true) throw fail(result.cancelled ? 'Windows izni iptal edildi. Ağ güvenilen listeye eklenmedi.' : 'Windows ağ izni tamamlanamadı. Ağın bağlı olduğunu kontrol edip tekrar dene.');
   } catch (error) {
@@ -30,12 +31,12 @@ export async function requestNetworkPermission(root, entry) {
   }
 }
 
-export async function createNetworkManager({ root, networkReader, permissionRunner = requestNetworkPermission, onChange = () => {} }) {
+export async function createNetworkManager({ root, networkReader, permissionRunner = requestNetworkPermission, cleanupRunner = target => requestNetworkPermission(target, null, 'cleanup'), onChange = () => {} }) {
   const configPath = path.join(root, 'config.json');
   let config = JSON.parse(await readFile(configPath, 'utf8'));
   let operation = null;
-  async function save(entries) {
-    const next = { ...config, trustedNetworks: entries };
+  async function save(entries, changes = {}) {
+    const next = { ...config, ...changes, trustedNetworks: entries };
     const temporary = configPath + '.next';
     await writeFile(temporary, JSON.stringify(next, null, 2));
     await rename(temporary, configPath);
@@ -50,6 +51,15 @@ export async function createNetworkManager({ root, networkReader, permissionRunn
   return {
     config: () => config,
     operation: () => operation,
+    async cleanupPermissions() {
+      acquire('cleanup', '0'.repeat(32));
+      try {
+        // Fail closed even if UAC is cancelled or Windows cleanup is only partial.
+        await save(approvedNetworks(config).map(entry => ({ ...entry, permissionGranted: false })), { permissionsRevoked: true });
+        await cleanupRunner(root);
+        return { ok: true, message: 'PanoKöprü Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.' };
+      } finally { operation = null; }
+    },
     async inspect() {
       const connected = (await networkReader()).filter(canTrust);
       return {

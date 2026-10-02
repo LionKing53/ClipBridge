@@ -17,6 +17,7 @@ using System.Windows.Forms;
 internal static class Program
 {
     internal static EventWaitHandle OpenWindowEvent;
+    internal static RuntimeContext Context;
     private static string InstallRoot
     {
         get { return AppDomain.CurrentDomain.BaseDirectory; }
@@ -30,11 +31,15 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        try { Context = RuntimeContext.Load(AppRoot); }
+        catch { MessageBox.Show("PanoKopru runtime configuration is missing or unsafe. See the installation guide."); return; }
+        // Native development startup remains blocked until clean-machine acceptance.
+        if (Context.Mode != "production") { MessageBox.Show("Use the isolated Node development harness for this source version."); return; }
         bool background = Array.IndexOf(args, "--background") >= 0;
         if (background)
         {
             bool serviceOwner;
-            using (var serviceMutex = new Mutex(true, "Local\\PanoKopruService", out serviceOwner))
+            using (var serviceMutex = new Mutex(true, Context.MutexName("Service"), out serviceOwner))
             {
                 if (serviceOwner) RunBackgroundService();
             }
@@ -42,9 +47,9 @@ internal static class Program
         }
 
         bool windowOwner;
-        using (var windowMutex = new Mutex(true, "Local\\PanoKopruDesktop", out windowOwner))
+        using (var windowMutex = new Mutex(true, Context.MutexName("Desktop"), out windowOwner))
         {
-            OpenWindowEvent = new EventWaitHandle(false, EventResetMode.AutoReset, "Local\\PanoKopruOpenWindow");
+            OpenWindowEvent = new EventWaitHandle(false, EventResetMode.AutoReset, Context.MutexName("OpenWindow"));
             if (!windowOwner) { OpenWindowEvent.Set(); return; }
             if (!ServiceIsRunning())
             {
@@ -88,13 +93,18 @@ internal static class Program
     {
         try
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:32145/health");
+            HttpWebRequest request = (HttpWebRequest)WebRequest.Create("http://127.0.0.1:" + Context.ApiPort + "/health");
             request.Timeout = 700;
             request.ReadWriteTimeout = 700;
             request.Method = "GET";
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
-                return response.StatusCode == HttpStatusCode.OK;
+                using (var reader = new StreamReader(response.GetResponseStream()))
+                {
+                    var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
+                    var value = serializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(reader.ReadToEnd());
+                    return response.StatusCode == HttpStatusCode.OK && value.ContainsKey("instanceId") && (string)value["instanceId"] == Context.InstanceId;
+                }
             }
         }
         catch

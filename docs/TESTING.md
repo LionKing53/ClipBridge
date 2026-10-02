@@ -41,3 +41,30 @@ Gerçek UAC/firewall, başka yönetici hesabı, temiz Windows kurulumu, paket/la
 derlemesi, Tailscale'siz iPhone ilk kurulum, yeni veri köküne geçiş, gerçek iPhone
 uçtan uca aktarımı, güncelleme/rollback/kaldırma. Bu oturumda kişisel telefondaki
 eski başarılı testler yeniden yapılmış gibi raporlanmamalı.
+
+## 2026-10-03 eklenen kapsam
+
+- Node/C#/PowerShell ortak runtime kimliği ve port sözleşmesi. C# yalnız geçici
+  RuntimeProbe.exe olarak derlenir; WebView uygulaması çalıştırılmaz.
+- PowerShell firewall sahiplik yüklemi yalnız sahte nesnelerle çalışır; gerçek
+  NetFirewall cmdlet'leri çağrılmaz.
+- Çevrimdışı göç/yedek bütünlüğü, eşzamanlı eski veri değişimi, şema reddi.
+- Bütün Node sunucusunun açık test adaptörleriyle başlatılması; port çakışması,
+  instance kilidi ve kısmi başlangıç temizliği.
+- Süreli halka açık CA sunucusu yalnız 127.0.0.1'de ve sentetik CA ile. Test CA
+  özel anahtarı veya güven deposu değişikliği test kaynağına dahil değildir.
+- Kurulum parmak izi/onay akışı, masaüstü API yetkisi/Origin, yerel eşleştirme.
+- Saklama politikası, favoriler/yönetilmeyen dosyalar, sahiplikli geçici dosyalar,
+  tanılama alan izin listesi, hata kodları.
+- Yalıtılmış sürüm deposu doğrulama, hatalı güncelleme recovery, veri koruyan
+  rollback ve uyumsuz şema engeli. Gerçek updater değildir.
+- Edge UI'da sentetik kurulum ekranı, parmak izi formu, depolama eşiği ve iptal.
+
+`npm.cmd run report:dependencies` 121 kilit girdisinin envanterini, mevcut
+kurulumdaki lisans/bildirim kanıtlarını ve kaynak-kilidi SBOM'unu üretir. Bu
+dosyalar build/ altında kalır; runtime/SDK içeren nihai paket için yeniden üretim
+ve insan kontrolü gerekir. `npm.cmd audit` zaman bağımlı bilinen açık taramasıdır;
+sıfır sonuç tüm yazılımın güvenli olduğunu kanıtlamaz.
+
+PowerShell betikleri ayrıca yalnız AST ayrıştırmasına tabi tutulur. Üretim yan
+etkileri çalıştırılmaz. Ayrıntılı manuel matris: [ACCEPTANCE.md](ACCEPTANCE.md).

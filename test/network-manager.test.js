@@ -17,7 +17,7 @@ async function fixture(t, options = {}) {
   let connected = [home], calls = 0, changes = 0;
   const manager = await createNetworkManager({ root, networkReader: async () => connected,
     permissionRunner: options.permissionRunner || (async () => { calls++; connected = connected.map(net => ({ ...net, category: 'Private' })); }),
-    onChange: () => { changes++; } });
+    cleanupRunner: options.cleanupRunner || (async () => {}), onChange: () => { changes++; } });
   return { manager, root, setConnected: nets => { connected = nets; }, calls: () => calls, changes: () => changes };
 }
 test('network manager adds only connected exact records, retains existing trust and persists atomically', async t => {
@@ -73,4 +73,18 @@ test('same adapter and changed name cannot inherit trust; repair does not duplic
   assert.equal(approvedNetworks(f.manager.config()).length, 1);
   f.setConnected([{ ...home, name: 'Untrusted Campus' }]);
   assert.equal((await f.manager.inspect()).connected[0].trusted, false);
+});
+
+test('permission cleanup revokes access before UAC and remains closed after cancellation', async t => {
+  const f = await fixture(t, { cleanupRunner: async () => {
+    assert.equal(f.manager.config().permissionsRevoked, true);
+    assert.equal(hasNetworkPermission(f.manager.config(), home, { ok: true }), false);
+    throw new Error('cancelled');
+  } });
+  await assert.rejects(f.manager.cleanupPermissions(), /cancelled/);
+  assert.equal(f.manager.operation(), null);
+  assert.equal(approvedNetworks(f.manager.config()).length, 1);
+  assert.equal(f.changes(), 1);
+  await f.manager.trust(networkKey(home));
+  assert.equal(hasNetworkPermission(f.manager.config(), home, undefined), true);
 });

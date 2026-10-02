@@ -1,10 +1,13 @@
-param([ValidateSet('Ensure','Load')][string]$Mode = 'Ensure', [Parameter(Mandatory=$true)][string]$Address)
+param([ValidateSet('Ensure','Load')][string]$Mode = 'Ensure', [Parameter(Mandatory=$true)][string]$Address, [Parameter(Mandatory=$true)][string]$DataRoot)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
+. (Join-Path $PSScriptRoot 'runtime-context.ps1')
+$context = Get-PanoKopruContext -DataRoot $DataRoot
+if ($context.mode -ne 'production') { throw 'Certificate operations require production mode.' }
 Add-Type -AssemblyName System.Security
 [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
 $appRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
-$stateRoot = Join-Path $appRoot '.clipboard-bridge\lan'
+$stateRoot = Join-Path $context.dataRoot 'lan'
 $settings = Get-Content -LiteralPath (Join-Path $stateRoot 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
 if ($settings.hostname -notmatch '^panokopru-[a-f0-9]{8}\.local$') { throw 'Invalid local hostname.' }
 $parsedAddress = $null

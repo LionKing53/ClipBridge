@@ -17,13 +17,23 @@ Uygulamanın ağ kontrolü bu nedenle korunmalıdır.
 
 Listeden çıkarma uygulama güvenini kaldırır, yerel bağlantıları kapatır ve kalan
 izinli ağları yeniden değerlendirir. Windows profilini veya firewall kurallarını
-geri almaz; Tailscale yolunu kapatmaz. Eski kaldırma yardımcısı yeni ağ başına
-kuralları kapsamıyor. Ayrı, sahipliği doğrulanan izin temizliği henüz geliştirilmedi.
+geri almaz; Tailscale yolunu kapatmaz. Kaynakta ayrı Windows izinlerini temizle
+işlemi eklendi: önce uygulama izinlerini kapatır, sonra yönetici onayıyla yalnız
+adı/grubu/yürütülebilir hedefi eşleşen eski ve yeni kuralları temizler. İptalde
+yerel erişim kapalı kalır; İzni onar gerekir. Windows profilini geri çevirmez.
+Gerçek UAC/firewall kabul testi henüz yapılmadı.
 
 ## Sertifika ve ilk kurulum sınırı
 
-Mevcut yerel aktarım kurulduktan sonra Tailscale'siz çalışır; ilk sertifika/QR
-akışı ise hâlâ Tailscale'e dayanır. Tailscale'siz ilk kurulum henüz hazır değildir.
+Mevcut kişisel sürümün eski ilk sertifika rehberi Tailscale'e dayanır. Yeni kaynakta
+Tailscale'siz ilk kurulum eklendi, kişisel kuruluma uygulanmadı. Kullanıcı canlı
+ağı seçip Özel profil etkisini onaylar. Geçici HTTP uç noktası yalnız herkese açık
+CA sertifikasını sunar: en çok iki dakika, 16 indirme, seçilen IPv4/alt ağ,
+tam Host ve Origin denetimleri. Pano API'si/anahtar/özel anahtar sunulmaz.
+Telefon parmak izi doğrulaması ve elle güven onayından sonra HTTP kapanır, HTTPS
+açılır; eşleştirme sırrı yalnız HTTPS üzerinden kullanılır. Bu TLS atlatma değildir.
+Gerçek iPhone'da ilk indirme/profil/sertifika ayrıntıları ve güven adımları henüz
+doğrulanmadı. Deneme başarısı olmadan bu akış yayınlanmamalıdır.
 iPhone'a elle yüklenen kök CA için tam güven verilmesi sadece bu ağa/adrese
 özgü bir izin değildir. Parmak izi bağımsız olarak karşılaştırılmalıdır. TLS
 doğrulamasını kapatmak veya sertifika uyarılarını atlatmak çözüm değildir.
@@ -35,3 +45,8 @@ eşleştirme ayrı tasarlanmalıdır. iPhone'daki profil kaldırma elle yapılı
 
 Bu kaynak kopyasından eski PowerShell yardımcılarını çalıştırmayın. Veri kökü,
 farklı yönetici hesabıyla UAC ve sahiplik denetimleri tamamlanmadan dağıtım yoktur.
+
+Apple'ın elle yüklenen sertifikalar için tam güven açıklaması:
+[Manually installed certificate profiles](https://support.apple.com/en-ca/102390).
+Kök parmak izini bilgisayar ile telefondaki sertifika ayrıntıları arasında,
+güven vermeden önce karşılaştırın. Kestirmede/Safari'de TLS doğrulamasını kapatmayın.

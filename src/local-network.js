@@ -39,6 +39,7 @@ export function trustedHome(config, networks) {
 }
 export function hasNetworkPermission(config, net, permission) {
   if (approvedNetworks(config).some(entry => entry.permissionGranted === true && matchesApprovedNetwork(entry, net))) return true;
+  if (config.permissionsRevoked) return false;
   if (permission?.ok !== true) return false;
   if (Array.isArray(permission.approvedNetworks)) {
     return permission.approvedNetworks.some(approved => matchesApprovedNetwork(approved, net));
@@ -49,34 +50,35 @@ export function hasNetworkPermission(config, net, permission) {
       && permission.approvedProfileIds.some(id => id.toLowerCase() === net.id.toLowerCase())
     : !!config.home && matchesApprovedNetwork(config.home, net);
 }
-export async function prepareLocalNetwork(stateRoot, approvedProfileId) {
+export async function prepareLocalNetwork(stateRoot, approvedProfileId, { port = 32147 } = {}) {
   const root = path.join(stateRoot, 'lan');
   const networks = await getLocalNetworks();
   const home = networks.find(net => net.id.toLowerCase() === approvedProfileId.toLowerCase() && isPrivateIPv4(net.address));
   if (!home) throw new Error('Onaylanan ev ağı bulunamadı.');
   await mkdir(root, { recursive: true });
-  await powershell('protect-local-state.ps1');
+  await powershell('protect-local-state.ps1', ['-DataRoot', stateRoot]);
   let config;
   try { config = JSON.parse(await readFile(path.join(root, 'config.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
-  if (config && config.home.id.toLowerCase() !== approvedProfileId.toLowerCase()) throw new Error('Mevcut güvenilir ağ sessizce değiştirilemez.');
+  if (config && !config.setupPending) throw new Error('Mevcut kurulum ilk kurulum işlemiyle değiştirilemez.');
   if (!config) {
-    config = { enabled: true, hostname: `panokopru-${randomBytes(4).toString('hex')}.local`, port: 32147, home: { id: home.id, name: home.name, interfaceAlias: home.interfaceAlias, previousCategory: home.category }, createdAt: new Date().toISOString() };
+    config = { enabled: false, setupPending: true, trustedNetworks: [], hostname: `panokopru-${randomBytes(4).toString('hex')}.local`, port, home: { id: home.id, name: home.name, interfaceAlias: home.interfaceAlias, previousCategory: home.category }, createdAt: new Date().toISOString() };
     await writeFile(path.join(root, 'config.json'), JSON.stringify(config, null, 2), { flag: 'wx' });
   }
-  await powershell('local-certificates.ps1', ['-Mode', 'Ensure', '-Address', home.address]);
+  await powershell('local-certificates.ps1', ['-Mode', 'Ensure', '-Address', home.address, '-DataRoot', stateRoot]);
   return { hostname: config.hostname, address: home.address, port: config.port, category: home.category };
 }
 export async function loadLocalTLS(root, address) {
-  await powershell('local-certificates.ps1', ['-Mode', 'Ensure', '-Address', address]);
-  const { passphrase } = await powershell('local-certificates.ps1', ['-Mode', 'Load', '-Address', address]);
+  await powershell('local-certificates.ps1', ['-Mode', 'Ensure', '-Address', address, '-DataRoot', path.dirname(root)]);
+  const { passphrase } = await powershell('local-certificates.ps1', ['-Mode', 'Load', '-Address', address, '-DataRoot', path.dirname(root)]);
   return { pfx: await readFile(path.join(root, 'server.pfx')), passphrase, minVersion: 'TLSv1.2', handshakeTimeout: 10000 };
 }
 const escape = value => String(value ?? '').replace(/[&<>"']/g, x => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[x]);
-export async function createLocalNetwork({ stateRoot, apiOptions, networkReader = getLocalNetworks }) {
+export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, networkReader = getLocalNetworks }) {
   const root = path.join(stateRoot, 'lan');
   let config;
-  try { config = JSON.parse(await readFile(path.join(root, 'config.json'), 'utf8')); } catch { return { status: () => ({ configured: false, state: 'not_configured' }), handleSetup: async () => false, close() {} }; }
-  if (!/^panokopru-[a-f0-9]{8}\.local$/.test(config.hostname) || config.port !== 32147) throw new Error('Geçersiz yerel ağ ayarı.');
+  try { config = JSON.parse(await readFile(path.join(root, 'config.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; return { status: () => ({ configured: false, state: 'not_configured' }), handleSetup: async () => false, close() {} }; }
+  if (!/^panokopru-[a-f0-9]{8}\.local$/.test(config.hostname) || config.port !== port) throw new Error('Geçersiz yerel ağ ayarı.');
+  if (config.setupPending) return { status: () => ({ configured: false, setupPending: true, state: 'setup_pending' }), handleSetup: async () => false, close() {} };
   const certificate = new X509Certificate(await readFile(path.join(root, 'PanoKopru-Local-CA.cer')));
   let status = { configured: true, state: 'checking', hostname: config.hostname, port: config.port, homeName: config.home?.name, fingerprint: certificate.fingerprint256, fingerprintSHA1: certificate.fingerprint };
   let server, mdns, boundNetwork, lastCheck = 0, refreshing = false, closed = false, lastRenewal = 0;
@@ -91,6 +93,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, networkReader 
     if (server) { server.closeAllConnections(); server.close(); server = null; }
   }
   const publicStatus = () => ({ ...status,
+    canCleanupPermissions: true,
     networkOperation: manager.operation(),
     connectedNetworks: currentNetworks.filter(canTrust).map(net => ({ key: networkKey(net), name: net.name, interfaceAlias: net.interfaceAlias, address: net.address, category: net.category, trusted: approvedNetworks(config).some(entry => matchesApprovedNetwork(entry, net)) })),
     allowedNetworks: approvedNetworks(config).map(entry => ({
@@ -151,6 +154,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, networkReader 
     inspectNetworks: () => manager.inspect(),
     trustNetwork: key => manager.trust(key),
     removeNetwork: key => manager.remove(key),
+    cleanupPermissions: () => manager.cleanupPermissions(),
     close() { closed = true; clearInterval(timer); closeListener(); },
     async handleSetup(req, res) {
       const pathname = new URL(req.url, 'http://localhost').pathname;

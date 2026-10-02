@@ -48,11 +48,13 @@ await execFileAsync(compiler, [
   `/win32manifest:${path.join(projectRoot, 'launcher/app.manifest')}`,
   "/reference:System.Windows.Forms.dll",
   "/reference:System.Drawing.dll",
+  "/reference:System.Web.Extensions.dll",
   `/reference:${path.join(projectRoot, 'vendor/webview2/lib/net462/Microsoft.Web.WebView2.Core.dll')}`,
   `/reference:${path.join(projectRoot, 'vendor/webview2/lib/net462/Microsoft.Web.WebView2.WinForms.dll')}`,
   `/win32icon:${iconPath}`,
   `/out:${executablePath}`,
   path.join(projectRoot, "launcher", "PanoKopru.cs"),
+  path.join(projectRoot, "launcher", "RuntimeContext.cs"),
   path.join(projectRoot, "launcher", "DesktopWindow.cs")
 ], { cwd: projectRoot, windowsHide: true });
 

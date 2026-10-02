@@ -27,7 +27,7 @@ const defaultSystem = {
   reveal: source => run('explorer.exe', ['/select,', source], { windowsHide: true }).catch(() => {})
 };
 const json = (res, status, value) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(value)); };
-export async function createDesktopServer({ config, history, transfers, diagnostics = () => [], localNetwork, system = defaultSystem }) {
+export async function createDesktopServer({ config, history, transfers, diagnostics = () => [], localNetwork, storage, system = defaultSystem }) {
   if (system === defaultSystem) assertProductionReady();
   // Explicitly supplied adapters must be complete; never fall back to real OS actions.
   for (const key of Object.keys(defaultSystem)) {
@@ -56,14 +56,33 @@ export async function createDesktopServer({ config, history, transfers, diagnost
     if (req.headers.host !== `127.0.0.1:${res.socket.localPort}` || (req.headers.origin && req.headers.origin !== localOrigin)) return json(res, 403, { error: 'Erişim reddedildi.' });
     try {
       const url = new URL(req.url, localOrigin);
-      const files = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/theme.js': ['theme.js', 'text/javascript'], '/theme.css': ['theme.css', 'text/css'] };
+      const files = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/theme.js': ['theme.js', 'text/javascript'], '/theme.css': ['theme.css', 'text/css'], '/setup.css': ['setup.css', 'text/css'] };
       if (req.method === 'GET' && files[url.pathname]) {
         const [name, type] = files[url.pathname]; res.setHeader('Content-Type', type + '; charset=utf-8'); res.end(await readFile(path.join(publicRoot, name))); return;
       }
       const actual = Buffer.from(req.headers.authorization || ''); const expected = Buffer.from('Bearer ' + token);
       if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return json(res, 401, { error: 'Uygulamayı masaüstü kısayolundan yeniden aç.' });
       if (req.method === 'GET' && url.pathname === '/api/state') {
-        return json(res, 200, { ...history.list(), machine: system.hostname(), version: '1.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
+        return json(res, 200, { ...history.list(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
+      }
+      if (url.pathname === '/api/setup' && req.method === 'GET') {
+        if (!localNetwork?.setup) return json(res, 409, { error: 'Kurulum sihirbazı bu ortamda yok.' });
+        const setup = localNetwork.setup.status();
+        return json(res, 200, { ...setup, networks: await localNetwork.setup.networks(), qr: setup.downloadUrl ? await QRCode.toDataURL(setup.downloadUrl, { width: 320, margin: 2 }) : null });
+      }
+      if (req.method === 'POST' && ['/api/setup/begin', '/api/setup/confirm', '/api/setup/cancel'].includes(url.pathname)) {
+        if (!localNetwork?.setup) return json(res, 409, { error: 'Kurulum sihirbazı bu ortamda yok.' });
+        const input = await body(req);
+        const action = url.pathname.split('/').pop();
+        if (action === 'cancel' && input.confirmed !== true) return json(res, 400, { error: 'İptal onayı gerekiyor.' });
+        await localNetwork.setup[action](input);
+        return json(res, 200, { ok: true, ...localNetwork.setup.status() });
+      }
+      if (req.method === 'POST' && ['/api/storage/policy', '/api/storage/cleanup'].includes(url.pathname)) {
+        if (!storage) return json(res, 409, { error: 'Depolama yönetimi bu ortamda yok.' });
+        const input = await body(req);
+        if (url.pathname.endsWith('/policy')) { await storage.policy(input.retentionDays); return json(res, 200, { ok: true }); }
+        return json(res, 200, { ok: true, ...await storage.cleanup(input) });
       }
       if (req.method === 'GET' && url.pathname === '/api/local-setup') {
         const local = localNetwork?.status();
@@ -79,6 +98,11 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         if (!localNetwork?.inspectNetworks) return json(res, 409, { error: 'Yerel ağ kurulumu henüz hazır değil.' });
         return json(res, 200, await localNetwork.inspectNetworks());
       }
+      if (req.method === 'POST' && url.pathname === '/api/networks/cleanup') {
+        if (!localNetwork?.cleanupPermissions) return json(res, 409, { error: 'İzin temizliği bu ortamda kullanılamıyor.' });
+        if ((await body(req)).confirmed !== true) return json(res, 400, { error: 'Windows izin temizliği için açık onay gerekiyor.' });
+        return json(res, 200, await localNetwork.cleanupPermissions());
+      }
       if (req.method === 'POST' && ['/api/networks/trust', '/api/networks/remove'].includes(url.pathname)) {
         if (!localNetwork?.trustNetwork) return json(res, 409, { error: 'Yerel ağ yönetimi hazır değil.' });
         const value = await body(req);
@@ -86,6 +110,12 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         return json(res, 200, await (url.pathname.endsWith('/trust') ? localNetwork.trustNetwork(value.key) : localNetwork.removeNetwork(value.key)));
       }
       if (req.method === 'GET' && url.pathname === '/api/pairing') {
+        if (url.searchParams.get('transport') === 'local') {
+          const local = localNetwork?.status();
+          if (local?.state !== 'ready' || !local.endpoint) return json(res, 409, { error: 'Önce yerel sertifika kurulumunu tamamla ve güvenilen ağa bağlan.' });
+          const origin = new URL(local.endpoint).origin;
+          return json(res, 200, { endpoint: local.endpoint, qr: await QRCode.toDataURL(`${origin}/setup#token=${encodeURIComponent(config.token)}`, { width: 320, margin: 2 }) });
+        }
         const net = await network();
         if (!net.dnsName || !net.connected) throw new Error('Eşleştirme için Windows’ta Tailscale bağlantısını aç.');
         const endpoint = `https://${net.dnsName}/api/v1/clipboard`;
