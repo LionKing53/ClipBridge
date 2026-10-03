@@ -54,3 +54,32 @@ the separate sharp/libvips corresponding-source and replacement review.
 origin, checksum, interruption, size, linked-path and concurrent download cases.
 `npm.cmd run build:native` validates the full C# compilation against the pinned SDK.
 Compilation is not an execution or end-to-end acceptance test.
+
+## Guarded engineering candidate
+
+After reviewing and committing a clean source tree, run:
+
+```powershell
+npm.cmd run build:candidate
+```
+
+This builds a fresh native output and creates `build/candidate-<id>/payload/`.
+`distribution-inputs.json` explicitly names app/native inputs. The payload also
+contains the complete allowlisted source snapshot, including launcher/build/test
+sources. Production dependencies are freshly restored from the lock with scripts
+disabled, separate blank npm configuration and a separate cache. Existing
+node_modules, installed program files and private state are not inputs.
+
+The exact installed dependency set (excluding development-only packages),
+collected license texts and native archive pins are recorded in `review/`.
+The CycloneDX component inventory does not claim a vulnerability audit, a complete
+transitive native-library breakdown or license-compliance approval. All payload
+files are listed and hashed in `release.json`; `candidate-evidence.json` outside
+the payload pins its hash and records source commit and file/byte counts.
+
+Only a clean committed tree is accepted. Source hashes and commit/working-tree
+state are rechecked before sealing. Partial failed candidates stay under ignored
+build/ for diagnosis; they must not be distributed. No automatic installation or
+execution follows. The SOURCE-CHECKOUT guard and NOT-INSTALLABLE.txt are retained.
+This step tests package composition, not the final user install/update/uninstall
+experience. It is **not the package to give a non-developer for acceptance yet**.

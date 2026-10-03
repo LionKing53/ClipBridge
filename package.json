@@ -6,6 +6,7 @@
   "description": "PanoKopru - Shortcut-triggered iPhone and Windows clipboard bridge (development baseline)",
   "type": "module",
   "scripts": {
+    "build:candidate": "node scripts/build-candidate.js",
     "toolchain:fetch": "node scripts/acquire-toolchain.js",
     "build:native": "node scripts/build-native.js",
     "build": "node scripts/build-app.js",

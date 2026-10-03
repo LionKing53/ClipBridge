@@ -25,6 +25,10 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Tamamlanan kaynak işleri
 
+- İzin listeli mühendislik adayı üreticisi eklendi: temiz commit zorunluluğu,
+  yeni üretim bağımlılık kurulumu, tüm izinli kaynakların snapshot'ı, bileşen/lisans
+  envanteri, manifest hash'i ve SOURCE-CHECKOUT koruması. Dört dosya-politikası
+  testi geçti; ilk gerçek aday üretimi henüz yapılmadı. Kurucu değildir.
 - Sabit hash'li resmi Node/SDK indirme, sınırlı ve sahiplikli cache, seçilmiş
   arşiv girdilerini doğrulayarak çıkarma ve Node yayıncı imzası kontrolü eklendi.
   Tam C#/WebView2 uygulaması temiz girdilerle derlendi. Çıktı yalnız derleme

@@ -2,6 +2,10 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "distribution-inputs.json",
+    "scripts/build-candidate.js",
+    "src/package-files.js",
+    "test/package-files.test.js",
     "docs/NATIVE-BUILD.md",
     "test/artifact-download.test.js",
     "scripts/extract-toolchain.ps1",

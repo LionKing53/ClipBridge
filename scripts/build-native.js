@@ -10,6 +10,7 @@ import pngToIco from 'png-to-ico';
 import { assertNoLinks } from '../src/runtime-context.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
+export async function buildNative() {
 if (process.platform !== 'win32') throw new Error('Native build requires Windows x64 tools.');
 const output = path.join(root, 'build', 'native-' + randomUUID());
 await assertNoLinks(output);
@@ -36,3 +37,6 @@ await writeFile(path.join(output, 'build-evidence.json'), JSON.stringify({ forma
   executable: { bytes: (await readFile(exe)).length, sha256: createHash('sha256').update(await readFile(exe)).digest('hex') }, signed: false, installed: false, launched: false }, null, 2));
 console.log('Native compile passed: ' + path.relative(root, output));
 console.log('Compile-only artifact; no install, app launch, publication or personal-data access.');
+return output;
+}
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) await buildNative();

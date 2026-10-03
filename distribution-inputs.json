@@ -1,0 +1,32 @@
+{
+  "format": 1,
+  "purpose": "Guarded engineering candidate, not an approved installer",
+  "app": [
+    "SOURCE-CHECKOUT", "package.json", "package-lock.json", "LICENSE",
+    "assets/PanoKopru.svg",
+    "desktop/app.js", "desktop/index.html", "desktop/style.css",
+    "desktop/theme.css", "desktop/theme.js", "desktop/setup.css",
+    "src/app.js", "src/boot.js", "src/certificate-bootstrap.js",
+    "src/clipboard-media.js", "src/clipboard.js", "src/config.js",
+    "src/desktop-server.js", "src/diagnostics.js", "src/errors.js",
+    "src/history.js", "src/info.js", "src/local-network.js",
+    "src/local-services.js", "src/network-manager.js", "src/network-policy.js",
+    "src/onboarding.js", "src/pair.js", "src/rich-text.js",
+    "src/runtime-context.js", "src/server.js", "src/storage.js",
+    "src/transfer.js", "src/uploads.js",
+    "scripts/source-guard.js", "scripts/source-guard.ps1",
+    "scripts/runtime-context.ps1", "scripts/protect-local-state.ps1",
+    "scripts/cleanup-network-permissions.ps1", "scripts/firewall-ownership.ps1",
+    "scripts/enable-local-network.ps1", "scripts/grant-network-trust.ps1",
+    "scripts/local-certificates.ps1", "scripts/local-network-info.ps1",
+    "scripts/prepare-local-network.js", "scripts/request-local-permission.ps1",
+    "scripts/request-network-trust.ps1"
+  ],
+  "native": [
+    "PanoKopru.exe", "PanoKopru.ico", "Microsoft.Web.WebView2.Core.dll",
+    "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll",
+    "runtime/node.exe", "licenses/node-LICENSE.txt",
+    "licenses/webview2-LICENSE.txt", "licenses/webview2-NOTICE.txt",
+    "build-evidence.json", "toolchain-evidence.json"
+  ]
+}

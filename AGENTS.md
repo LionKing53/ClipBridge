@@ -76,6 +76,12 @@ compile all launcher sources into a fresh build/native-* directory, preserve the
 SOURCE-CHECKOUT marker and never run the resulting app or installer. It does not
 relax the guarded legacy build-app.js or authorize personal deployment.
 
+`build-candidate.js` is a file-only packaging check on a clean committed source:
+fresh production dependencies with scripts disabled, explicit app/native inputs,
+allowlisted source snapshot, notices/inventory, sealed manifest and source guard.
+Its ignored build/candidate-* output is NOT an installer or accepted release.
+It may not launch packaged executables or change any Windows/application state.
+
 ## Deployment/release gates
 
 No install move, service restart, data migration, firewall changes, certificate

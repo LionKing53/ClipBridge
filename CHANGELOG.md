@@ -1,5 +1,18 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — izin listeli aday paket üretimi
+
+- Açık uygulama/native dosya listesi, tam izinli kaynak snapshot'ı ve boş
+  klasöre scriptsiz üretim bağımlılık kurulumu kullanan aday üreticisi.
+- Temiz commit ve değişmeyen kaynak hash'leri zorunluluğu; paket içindeki tüm
+  dosyaları doğrulayan manifest, bileşen ve lisans metni envanteri.
+- Kaynak koruması ve kurulamaz işareti korunur; installer/updater değildir.
+- Dört yeni sentetik dosya politikası testi geçti. Gerçek aday üretimi sıradaki
+  doğrulamadır; başarılı kabul testi olarak gösterilmez.
+
+Kişisel kurulum/veri/kestirme/şema değişmedi. Üretim yaşam döngüsü ve son kullanıcı
+test paketi hâlâ tamamlanmadı. GitHub işlemi yapılmadı.
+
 ## Unreleased — 2026-10-03 — doğrulanmış native derleme
 
 - Resmi Node 24.15.0 x64 / WebView2 SDK 1.0.4258.31 için sürüm, kaynak ve
