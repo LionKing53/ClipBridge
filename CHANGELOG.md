@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — sahiplikli geçici ZIP temizliği
+
+- Çoklu dosyaların ZIP çıktıları çakışmayan, instance/id kayıtlı klasörlere alınır.
+  Arşiv oluşturma hatası, gönderme, tür sorgusu ve masaüstü yakalama sonrasında
+  yalnız kendi geçici dosyaları temizlenir; asıl dosyalara dokunulmaz.
+- Açılışta 24 saatten eski sahiplikli kalıntılar temizlenir. Eski sahipsiz ZIP'ler,
+  yabancı dosyalar/instance'lar, değiştirilmiş sahiplik ve junction'lar korunur.
+- Yedi yeni test; tam takım 105/105 ve Edge UI geçti. Şema/API/kestirme değişmedi.
+- Önceki `0124d43` commit'inden ilk korumalı aday paket üretimi: 1.358 dosya ve
+  89 üretim bağımlılığı bütünlük kontrolünden geçti. Kurulum/kabul/yayın değildir.
+
 ## Unreleased — 2026-10-03 — izin listeli aday paket üretimi
 
 - Açık uygulama/native dosya listesi, tam izinli kaynak snapshot'ı ve boş

@@ -11,7 +11,7 @@
     "src/desktop-server.js", "src/diagnostics.js", "src/errors.js",
     "src/history.js", "src/info.js", "src/local-network.js",
     "src/local-services.js", "src/network-manager.js", "src/network-policy.js",
-    "src/onboarding.js", "src/pair.js", "src/rich-text.js",
+    "src/onboarding.js", "src/owned-outbox.js", "src/pair.js", "src/rich-text.js",
     "src/runtime-context.js", "src/server.js", "src/storage.js",
     "src/transfer.js", "src/uploads.js",
     "scripts/source-guard.js", "scripts/source-guard.ps1",

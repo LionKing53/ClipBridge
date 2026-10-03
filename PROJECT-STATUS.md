@@ -28,7 +28,13 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - İzin listeli mühendislik adayı üreticisi eklendi: temiz commit zorunluluğu,
   yeni üretim bağımlılık kurulumu, tüm izinli kaynakların snapshot'ı, bileşen/lisans
   envanteri, manifest hash'i ve SOURCE-CHECKOUT koruması. Dört dosya-politikası
-  testi geçti; ilk gerçek aday üretimi henüz yapılmadı. Kurucu değildir.
+  testi geçti. `0124d43` kaynak commit'inden ilk gerçek aday üretimi geçti:
+  1.358 dosya, 89 üretim bağımlılığı; tam manifest/hash doğrulandı. Bu aday sonraki
+  kaynak değişikliklerini içermez ve kurucu değildir.
+- Çoklu dosya ZIP'leri benzersiz, instance sahiplikli outbox klasörlerine alınır.
+  Normal bitiş, tür sorgusu, history hatası ve stat hatasında temizlenir; başlangıçta
+  yalnız 24 saatten eski kendi kalıntıları silinir. Asıl dosya/eski sahipsiz ZIP,
+  başka instance ve bağlantılı klasörler korunur. Yedi yeni test geçti.
 - Sabit hash'li resmi Node/SDK indirme, sınırlı ve sahiplikli cache, seçilmiş
   arşiv girdilerini doğrulayarak çıkarma ve Node yayıncı imzası kontrolü eklendi.
   Tam C#/WebView2 uygulaması temiz girdilerle derlendi. Çıktı yalnız derleme
@@ -148,11 +154,12 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 5. Tailscale'siz gerçek iPhone sertifika indirme/ayrıntı/parmak izi/güven adımları
    ve iki yönlü metin/fotoğraf/PDF/video. Güncel Apple/iOS ekranları kabul kaydıyla
    doğrulanmalı; eski kişisel testler yeni kaynak kanıtı değildir.
-6. Çökmeden kalan outbox arşivleri için sahiplikli temizlik; gerçek disk dolması
-   testleri; tüm eski API/PowerShell yollarında ayrıntılı hata sınıflandırması.
-7. Son Windows paketinin allowlist üretimi, bağımlılık/native runtime lisans
+6. Sahiplikli outbox temizliği kaynakta tamamlandı. Gerçek disk dolması testleri
+   ve tüm eski API/PowerShell yollarında ayrıntılı hata sınıflandırması bekliyor.
+7. Koruma içeren aday Windows paketinin allowlist üretimi test edildi; son kullanıcı
+   kurulabilir paket entegrasyonu, bağımlılık/native runtime lisans
    uygunluğu (özellikle LGPL/WebView2), nihai SBOM/bildirimler ve tam Git geçmişi,
-   arşiv/QR/görsel gizlilik denetimi. Yayın paketi veya dağıtılabilir exe üretilmedi.
+   arşiv/QR/görsel gizlilik denetimi. Yayına uygun paket veya kullanıcı kurucusu yok.
 
 Ayrıntı: docs/ROADMAP.md, docs/LIFECYCLE.md, docs/ACCEPTANCE.md.
 Sonraki mühendislik işi üretim paket/launcher/yaşam döngüsü adaptörleri; ardından

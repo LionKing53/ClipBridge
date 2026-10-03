@@ -79,10 +79,10 @@ ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
 | Geçiş | data-migration copy-only motoru ve sentetik yedek/göç testleri | Üretim ACL adaptörü, gerçek CA/DPAPI/WebView teması, özel doğrulanmış yedek |
 | İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; önkontrol motoru ve yalıtılmış Windows registry/disk/PE/loopback adaptörü | Üretim kapsamı/LAN/IPv6 ve installer bağlantısı; gerçek iPhone; aynı/farklı yönetici UAC |
 | İzinler | Eski/yeni kuralların sahiplikli temizliği; iptalde kapalı kalma | Gerçek firewall, iki arayüz ve aktarım sırasında ağ değişimi |
-| Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload sahipliği | Gerçek disk dolması, yarım kalmış outbox arşivlerini sahiplikli temizleme |
+| Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload ve outbox sahiplikli temizlik | Gerçek disk dolması ve zorla kapanma kabulü |
 | Hatalar | Hassas alanları dışlayan tanılama, temel kararlı hata kodları | Tüm eski API/PowerShell yollarında ayrıntılı sınıflandırma |
 | Güncelleme | Üretimi reddeden yalıtılmış release-store çekirdeği; veri koruyan rollback testleri | İmzalı paket/launcher adaptörü, gerçek durdurma/recovery, yeni kaldırıcı |
-| Dağıtım | Kilitli resmi Node/SDK edinimi, yayıncı doğrulaması, tam compile-only native derleme; kaynak-kilidi SBOM | WebView2 Runtime, allowlist binary paket üretimi, nihai SBOM/lisans uygunluğu |
+| Dağıtım | Kilitli Node/SDK, yayıncı doğrulaması, tam native derleme ve allowlist korumalı aday; bileşen/lisans envanteri | WebView2 Runtime, kurulabilir paket entegrasyonu, nihai SBOM/lisans uygunluğu |
 | Belgeler | TR/EN README/kestirmeler, mimari, yaşam döngüsü, sorun giderme ve kabul matrisi | Çalışan installer üzerinde eksiksiz son kullanıcı rehberi |
 | Lisans | Kullanıcı GPL-3.0-or-later seçti; LICENSE ve metadata eklendi | Paketlenmiş bileşenlerle dağıtım uygunluğu; logo/ad politikası |
 

@@ -1,6 +1,7 @@
 import http from 'node:http';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import { readFile, writeFile, stat, unlink } from 'node:fs/promises';
+import { readFile, writeFile, stat } from 'node:fs/promises';
+import { disposeTransfer } from './owned-outbox.js';
 import path from 'node:path';
 import os from 'node:os';
 import { fileURLToPath } from 'node:url';
@@ -123,7 +124,7 @@ export async function createDesktopServer({ config, history, transfers, diagnost
       }
       if (req.method === 'POST' && url.pathname === '/api/capture') {
         const item = await transfers.getItem();
-        try { await history.record(item, 'local'); } finally { if (item.temporary) await unlink(item.path).catch(() => {}); }
+        try { await history.record(item, 'local'); } finally { await disposeTransfer(item).catch(() => {}); }
         return json(res, 200, { ok: true });
       }
       if (req.method === 'POST' && url.pathname === '/api/settings') { await history.settings(await body(req)); return json(res, 200, { ok: true }); }

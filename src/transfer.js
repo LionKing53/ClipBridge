@@ -1,8 +1,7 @@
-import { createWriteStream } from "node:fs";
 import { mkdir, stat, writeFile, rename, copyFile, unlink } from "node:fs/promises";
 import path from "node:path";
 import { randomBytes } from "node:crypto";
-import { ZipArchive } from "archiver";
+import { createOwnedArchive } from './owned-outbox.js';
 import mime from "mime-types";
 import {
   getWindowsClipboardItem,
@@ -21,26 +20,9 @@ function safeFilename(filename, fallback = "PanoKopru-dosya") {
   return cleaned || fallback;
 }
 
-async function createZip(paths, outputPath) {
-  await new Promise((resolve, reject) => {
-    const output = createWriteStream(outputPath);
-    const archive = new ZipArchive({ zlib: { level: 6 } });
-    output.on("close", resolve);
-    output.on("error", reject);
-    archive.on("error", reject);
-    archive.pipe(output);
-    for (const sourcePath of paths) {
-      const name = safeFilename(path.basename(sourcePath));
-      archive.file(sourcePath, { name });
-    }
-    archive.finalize();
-  });
-}
-
 export function createTransferHandlers(config, { onReceived = async () => {}, storage } = {}) {
   const stateRoot = path.dirname(config.configPath);
   const inbox = path.join(stateRoot, "inbox");
-  const outbox = path.join(stateRoot, "outbox");
 
   async function storeIncomingFile(item) {
     const filename = safeFilename(item.filename);
@@ -125,16 +107,7 @@ export function createTransferHandlers(config, { onReceived = async () => {}, st
           };
         }
 
-        await mkdir(outbox, { recursive: true });
-        const zipPath = path.join(outbox, `PanoKopru-${Date.now()}.zip`);
-        await createZip(paths, zipPath);
-        return {
-          type: "file",
-          path: zipPath,
-          filename: "PanoKopru-Dosyalar.zip",
-          mimeType: "application/zip",
-          temporary: true
-        };
+        return createOwnedArchive(config.context, paths.map(sourcePath => ({ path: sourcePath, name: safeFilename(path.basename(sourcePath)) })));
       }
       throw new Error(`Desteklenmeyen Windows pano turu: ${item.type}`);
     }

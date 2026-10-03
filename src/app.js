@@ -1,12 +1,13 @@
 import { timingSafeEqual } from "node:crypto";
 import { createReadStream } from "node:fs";
-import { stat, unlink } from "node:fs/promises";
+import { stat } from "node:fs/promises";
 import http from "node:http";
 import https from 'node:https';
 import { pipeline } from "node:stream/promises";
 import { isRtf, isFlatRtfd, normalizeClipboardItem } from "./rich-text.js";
 import { MAX_FILE_BYTES, MAX_TEXT_BYTES, UploadStorage, readMultipartUpload, readBinaryUpload } from "./uploads.js";
 import { publicError } from './errors.js';
+import { disposeTransfer } from './owned-outbox.js';
 
 export const MAX_BODY_BYTES = MAX_FILE_BYTES;
 
@@ -57,13 +58,13 @@ async function sendClipboardItem(response, item, onSent) {
   };
 
   if (item.path) {
-    const info = await stat(item.path);
-    response.writeHead(200, { ...headers, "Content-Length": info.size });
     try {
+      const info = await stat(item.path);
+      response.writeHead(200, { ...headers, "Content-Length": info.size });
       await pipeline(createReadStream(item.path), response);
       await onSent(item).catch(() => {});
     } finally {
-      if (item.temporary) await unlink(item.path).catch(() => {});
+      await disposeTransfer(item).catch(() => {});
     }
     return;
   }
@@ -256,7 +257,7 @@ export function createServer({
         const failure = publicError(error, 'clipboard_read_failed');
         json(response, failure.status, { ok: false, error: failure.code });
       } finally {
-        if (item?.temporary && item.path) await unlink(item.path).catch(() => {});
+        await disposeTransfer(item).catch(() => {});
       }
       return;
     }

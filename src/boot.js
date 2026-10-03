@@ -9,6 +9,7 @@ import { assertProductionReady } from '../scripts/source-guard.js';
 import { createDiagnostics } from './diagnostics.js';
 import { createStorage, cleanStaging } from './storage.js';
 import path from 'node:path';
+import { cleanOwnedOutbox } from './owned-outbox.js';
 
 export async function startBridge(context, adapters = {}) {
   const isolated = context.mode !== 'production';
@@ -32,6 +33,7 @@ export async function startBridge(context, adapters = {}) {
     const storage = await createStorage(context.dataRoot, history);
     const stagingRoot = path.join(context.dataRoot, 'temp');
     await cleanStaging(stagingRoot, context.instanceId);
+    await cleanOwnedOutbox(context);
     diagnostics = await createDiagnostics(context.dataRoot);
     const transfers = adapters.transfers || createTransferHandlers(config, { storage, onReceived: item => history.record(item, 'inbound') });
     const apiOptions = { token: config.token, instanceId: context.instanceId, uploadOptions: { stagingRoot, instanceId: context.instanceId }, setClipboardItem: transfers.setItem, getClipboardItem: transfers.getItem,
