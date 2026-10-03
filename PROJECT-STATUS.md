@@ -7,7 +7,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 - Tek kaynak: `%USERPROFILE%/source/PanoKopru`.
 - Son adımlar: `97dfd17` doğrulanmış native derleme; `0124d43` korumalı aday paket;
-  `0003fc6` sahiplikli ZIP temizliği. Teslim commit'i için `git log -1`, değişiklikler için
+  `0003fc6` sahiplikli ZIP temizliği; `0c884b3` kontrollü durdurma.
+  Teslim commit'i için `git log -1`, değişiklikler için
   `git status --short` esas alınır.
 - Paket `1.0.0`, launcher `1.0.0.0` miras numaralardır; yeni genel yayın yok.
 - Kullanıcı proje lisansını **GPL-3.0-or-later** seçti. LICENSE, paket metadata
@@ -90,8 +91,17 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
   girdisi** statik kapısı ve whitespace kontrolü geçti. Native uygulama açılmadı.
 - Derlenmiş kontrol harness'i yalnız sentetik Node çocuğunu başlatıp stdin ile
   durdurdu; gerçek clipboard/network/CA adaptörü veya kişisel süreç kullanılmadı.
-- İlk korumalı paket commit'i `0124d43`; en son kaynak için aday yeniden üretimi
-  henüz bekliyor. Nihai son kullanıcı kurucusu veya genel yayın hazır değil.
+- Güncel mühendislik adayı `0c884b3e7f18922af24b96752fdbd68bf2369c54` commit'inden
+  temiz çalışma ağacıyla yeniden üretildi: **1.367 dosya, 135.829.847 payload baytı,
+  89 üretim bağımlılığı**. Bütün dosyalar manifest/hash kontrolünden geçti.
+  Manifest SHA-256: `8034f3e88408a04e2f189ee4997d63e2090cca595923808fb4b080ddb5e5507a`.
+  Yerel kanıt: `build/candidate-057fc241-d79f-443a-b15d-ad36af6887d6/candidate-evidence.json`.
+  Bu kaydın eklendiği sonraki belge commit'i paketin kaynak commit'i değildir.
+- Son tam takım tekrarında da **111/111** geçti. `npm.cmd audit --omit=dev --json`
+  üretim npm bağımlılıklarında **0 bilinen açık** bildirdi; Node/SDK/native bileşenlerin
+  bütün güvenlik denetimi değildir ve sonuç zaman bağımlıdır.
+- Nihai son kullanıcı kurucusu veya genel yayın hazır değil. Adaydaki kaynak
+  koruması kaldırılmadı, exe çalıştırılmadı; kişisel kurulum/veri ve GitHub değişmedi.
 
 ## Önceki Windows gözlem adaptörü sonucu — 2026-10-03
 

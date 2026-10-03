@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## Doğrulama kaydı — 2026-10-03 — `0c884b3` mühendislik adayı
+
+- Temiz commit'ten ikinci aday paket: 1.367 dosya, 89 üretim bağımlılığı;
+  dosya manifesti ve hash'ler doğrulandı. Native derleme, UI ve kaynak kapısı geçti.
+- Tam test takımı son tekrarında da 111/111; üretim npm audit sonucu 0 bilinen açık.
+- Paket SOURCE-CHECKOUT korumalıdır; kullanıcı kurucusu/yayın paketi değildir.
+  Kurulum, güncelleme/geri alma, kaldırma entegrasyonu ve gerçek kabul bekliyor.
+- Bu kayıt yalnız belgelendirmedir; adayın kaynak commit'ini değiştirmez.
+
 ## Unreleased — 2026-10-03 — sahiplikli kontrollü durdurma
 
 - Launcher kendi başlattığı Node sürecini kalıtılan stdin pipe üzerinden durdurur.
