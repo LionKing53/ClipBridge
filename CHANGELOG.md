@@ -1,5 +1,19 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — doğrulanmış native derleme
+
+- Resmi Node 24.15.0 x64 / WebView2 SDK 1.0.4258.31 için sürüm, kaynak ve
+  SHA-256/SHA-512 kilidi; sınırlı, no-clobber, kesinti temizliği yapan indirme.
+- Arşiv bütünlüğü, seçilmiş girdiler, bağlantılı yol reddi ve Node Authenticode
+  yayıncı kontrolü; runtime ve SDK lisans/bildirimlerini koruma.
+- Tam C#/WebView2 derlemesi; kaynak commit/dirty durumu ve hash kanıtları.
+  Launcher lisans metadata'sı kullanıcı seçimiyle uyumlu hale getirildi.
+- Yedi yeni test; 94/94 tam test, Edge UI ve gerçek native derleme geçti.
+
+Bu bir kurucu değildir. Üretilen exe imzasız ve kaynak korumalıdır; çalıştırılmadı.
+Kişisel kurulum, API, kestirme ve veri şeması değişmedi. WebView2 Runtime,
+üretim yaşam döngüsü, nihai paket/SBOM ve gerçek cihaz kabulü bekliyor.
+
 ## Unreleased — 2026-10-03 — yalıtılmış Windows kurulum gözlemleri
 
 - Önkontrol motoruna bağlanabilen gerçek Windows gözlem adaptörü: WebView2'nin

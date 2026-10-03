@@ -25,6 +25,11 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Tamamlanan kaynak işleri
 
+- Sabit hash'li resmi Node/SDK indirme, sınırlı ve sahiplikli cache, seçilmiş
+  arşiv girdilerini doğrulayarak çıkarma ve Node yayıncı imzası kontrolü eklendi.
+  Tam C#/WebView2 uygulaması temiz girdilerle derlendi. Çıktı yalnız derleme
+  kanıtıdır: imzasız, SOURCE-CHECKOUT korumalı; çalıştırılmadı veya kurulmadı.
+  İlk doğrulama 94/94 test, Edge UI ve native derleme geçti.
 - İlk kurulum önkontrol karar motoru: doğrulanmış paket, Node/WebView2/platform,
   ayrı ve var olmayan hedefler, aynı diskte toplanan alan ihtiyacı, portlar,
   varsayılan kapalı başlangıç tercihi, süre sınırlı ve hassas bilgi sızdırmayan
@@ -125,10 +130,10 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Bitmeyen işler — diğer sohbet bunları tamamlandı saymamalı
 
-1. Gerçek kurulum/başlatıcı/paket adaptörü: temiz Node/WebView2 edinimi ve
-   bütünlük doğrulaması, önkontrolün üretim kullanıcı/süreç kapsamı ve LAN/IPv6
+1. Gerçek kurulum/başlatıcı/paket adaptörü: Node/SDK edinimi ve tam native derleme
+   tamamlandı; WebView2 Runtime edinimi, önkontrolün üretim kullanıcı/süreç kapsamı ve LAN/IPv6
    adaptörleriyle kurucuya bağlanması, başlangıç tercihinin güvenli uygulanması,
-   native uygulama build ve versioned release pointer entegrasyonu.
+   versioned release pointer entegrasyonu bekliyor.
 2. Üretim updater/recovery ve veri koruyan kaldırıcı. İmzalı/pinlenmiş yayın
    metadata'sı, gerçek süreç sahipliği/durdurma, kesintili ilk kurulum ve stale
    instance kilidi kurtarma. Eski tehlikeli kaldırıcı alınmadı; yenisi henüz yok.

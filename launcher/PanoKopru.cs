@@ -10,7 +10,7 @@ using System.Windows.Forms;
 [assembly: AssemblyDescription("iPhone ve Windows pano k\u00f6pr\u00fcs\u00fc")]
 [assembly: AssemblyCompany("PanoK\u00f6pr\u00fc")]
 [assembly: AssemblyProduct("PanoK\u00f6pr\u00fc")]
-[assembly: AssemblyCopyright("Kisisel kullanim")]
+[assembly: AssemblyCopyright("GPL-3.0-or-later; see LICENSE")]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]
 

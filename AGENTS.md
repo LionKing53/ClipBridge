@@ -70,6 +70,12 @@ reads synthetic context via PowerShell; it does not build/run the native app.
 `release-store.js` is an isolated prototype, not a production updater. Keep its
 production refusal until launcher, ownership, signing and acceptance are ready.
 
+`acquire-toolchain.js` may download pinned official archives into ignored build/.
+`build-native.js` is a compile-only exception: extract selected verified inputs,
+compile all launcher sources into a fresh build/native-* directory, preserve the
+SOURCE-CHECKOUT marker and never run the resulting app or installer. It does not
+relax the guarded legacy build-app.js or authorize personal deployment.
+
 ## Deployment/release gates
 
 No install move, service restart, data migration, firewall changes, certificate

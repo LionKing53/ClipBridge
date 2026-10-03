@@ -2,6 +2,13 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "docs/NATIVE-BUILD.md",
+    "test/artifact-download.test.js",
+    "scripts/extract-toolchain.ps1",
+    "scripts/build-native.js",
+    "toolchain-lock.json",
+    "src/artifact-download.js",
+    "scripts/acquire-toolchain.js",
     "test/windows-install-probes.test.js",
     "test/support/SyntheticNode.cs",
     "scripts/InstallProbe.cs",

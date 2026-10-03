@@ -82,7 +82,7 @@ ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
 | Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload sahipliği | Gerçek disk dolması, yarım kalmış outbox arşivlerini sahiplikli temizleme |
 | Hatalar | Hassas alanları dışlayan tanılama, temel kararlı hata kodları | Tüm eski API/PowerShell yollarında ayrıntılı sınıflandırma |
 | Güncelleme | Üretimi reddeden yalıtılmış release-store çekirdeği; veri koruyan rollback testleri | İmzalı paket/launcher adaptörü, gerçek durdurma/recovery, yeni kaldırıcı |
-| Dağıtım | Kilit dosyası düzeltmesi, envanter/lisans kanıtı/kaynak-kilidi SBOM | Temiz Node/SDK edinimi, allowlist binary paket üretimi, nihai SBOM/lisans uygunluğu |
+| Dağıtım | Kilitli resmi Node/SDK edinimi, yayıncı doğrulaması, tam compile-only native derleme; kaynak-kilidi SBOM | WebView2 Runtime, allowlist binary paket üretimi, nihai SBOM/lisans uygunluğu |
 | Belgeler | TR/EN README/kestirmeler, mimari, yaşam döngüsü, sorun giderme ve kabul matrisi | Çalışan installer üzerinde eksiksiz son kullanıcı rehberi |
 | Lisans | Kullanıcı GPL-3.0-or-later seçti; LICENSE ve metadata eklendi | Paketlenmiş bileşenlerle dağıtım uygunluğu; logo/ad politikası |
 
