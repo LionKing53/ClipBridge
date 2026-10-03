@@ -1,5 +1,24 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — ilk kurulum önkontrol adımı
+
+- Paket bütünlüğü, Node/WebView2 sürümü, platform, yazma erişimi, disk alanı ve
+  port durumunu ayrı sonuçlarla değerlendiren önkontrol motoru eklendi.
+- Var olan hedefler ve bağlantılı klasör ataları reddedilir. Aynı diskte program
+  ve veri alanı ihtiyacı birlikte hesaplanır. Eksik bilgi ve zaman aşımı engeldir.
+- Başlangıç tercihi varsayılan kapalı; kontrol sonucu ayarı uygulamaz. Hata
+  raporlarına kişisel yollar veya ham sistem hataları konulmaz.
+- On yeni sentetik test ve önkontrol/adaptör sözleşmesi belgesi eklendi.
+
+Sınır: gerçek Windows adaptörleri ve kurucu bağlantısı henüz yok. Sonuç daima
+`productionReady: false` içerir. Kurulu uygulama, veri şeması, API ve kestirmeler
+değişmedi; kaynak/üretim korumaları kaldırılmadı. Bu adım dağıtılabilir exe değildir.
+
+Doğrulama: son üç tam koşu 78/78, Edge UI ve 100 kaynaklık kontrol geçti. Bir ara
+koşuda yaklaşık 853 saniyelik uzama ve dört mevcut aktarım testi hatası görüldü;
+neden doğrulanmadı ve durum kaydına eklendi. Yeni önkontrol testleri o koşuda da
+geçti. Gerçek Windows kurucu/kullanıcı cihazı kabulü yapılmadı.
+
 ## Unreleased — 2026-10-03 — yalıtılmış çalışma ve yayın altyapısı
 
 - Ortak Node/C#/PowerShell veri kökü, açık runtime modu, ayrı test portları,

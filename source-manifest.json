@@ -2,6 +2,9 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "docs/INSTALL-PREFLIGHT.md",
+    "src/install-preflight.js",
+    "test/install-preflight.test.js",
     "LICENSE",
     "THIRD-PARTY-NOTICES.md",
     "desktop/setup.css",

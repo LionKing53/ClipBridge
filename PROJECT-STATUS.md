@@ -6,8 +6,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 ## Sürüm ve sahiplik
 
 - Tek kaynak: `%USERPROFILE%/source/PanoKopru`.
-- Bu test kaydının kaynak commit'i: `222c14d`. Ardından yalnız bu durum kaydı
-  güncellendi. Teslim commit'i için `git log -1`, değişiklikler için
+- Son önkontrol geliştirmesinin başlangıç commit'i: `d60838f`; önceki test
+  tabanı `222c14d`. Teslim commit'i için `git log -1`, değişiklikler için
   `git status --short` esas alınır.
 - Paket `1.0.0`, launcher `1.0.0.0` miras numaralardır; yeni genel yayın yok.
 - Kullanıcı proje lisansını **GPL-3.0-or-later** seçti. LICENSE, paket metadata
@@ -25,6 +25,11 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Tamamlanan kaynak işleri
 
+- İlk kurulum önkontrol karar motoru: doğrulanmış paket, Node/WebView2/platform,
+  ayrı ve var olmayan hedefler, aynı diskte toplanan alan ihtiyacı, portlar,
+  varsayılan kapalı başlangıç tercihi, süre sınırlı ve hassas bilgi sızdırmayan
+  sonuçlar. On sentetik test. Gerçek Windows adaptörü/kurucu entegrasyonu yok;
+  `productionReady: false` değişmez. Ayrıntı: docs/INSTALL-PREFLIGHT.md.
 - Node/C#/PowerShell ortak runtime sözleşmesi; açık mod/veri kökü/portlar, korunan
   kişisel kök reddi, instance kimliği ve kilidi. Eksik test adaptörü gerçek sisteme
   düşmez. Şema 1, unversioned migration gereği ve yeni şema reddi.
@@ -51,7 +56,24 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - AGENTS/README/CHANGELOG ve mimari, yaşam döngüsü, TR/EN kestirmeler, sorun
   giderme, lisans kanıtı ve kabul matrisi güncellendi.
 
-## Gerçek test kaydı
+## Son adım doğrulaması — 2026-10-03
+
+- Önkontrolün 10/10 testi geçti; geçici paketler ve sahte OS gözlemleri kullanıldı.
+- `npm.cmd test`: son koşuda **78/78 geçti, 0 atlanan**. Ardından tam takım iki
+  kez daha çalıştırıldı ve ikisi de geçti (bu adımda 10 yeni test).
+- Bir ara koşu yaklaşık 853 saniye sürdü ve mevcut RTF/RTFD ile büyük yükleme
+  testlerinden dördü başarısız oldu (422 ve ECONNRESET). Nedeni doğrulanmadı;
+  son üç tam koşunun geçmesi bu önceki hataları açıklamış veya gidermiş sayılmaz.
+  Kabul öncesi test güvenilirliği takibinde tutulmalı; ilgili üretim kodu bu
+  adımda değiştirilmedi.
+- `npm.cmd run check:source`: **100 izinli kaynak**, 121 kilit girdisi; geçti.
+- `git diff --check`: geçti. Bağımlılıklar/sürüm numarası değiştirilmedi;
+  bu adımda yeniden npm ci, audit veya bağımlılık raporu çalıştırılmadı.
+- Edge headless UI testi yeniden geçti; arayüzde değişiklik yapılmadı.
+- Gerçek registry, UAC/firewall, port uygunluk adaptörü veya kurucu çalıştırılmadı.
+  Kişisel kurulum/veri okunmadı veya değiştirilmedi; GitHub işlemi yapılmadı.
+
+## Önceki tabanın gerçek test kaydı (`222c14d`)
 
 2026-10-03, Windows x64, Node 24.15.0, npm 11.12.1:
 
@@ -78,7 +100,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 ## Bitmeyen işler — diğer sohbet bunları tamamlandı saymamalı
 
 1. Gerçek kurulum/başlatıcı/paket adaptörü: temiz Node/WebView2 edinimi ve
-   bütünlük doğrulaması, runtime/prerequisite kontrolü, başlangıç tercihi,
+   bütünlük doğrulaması, önkontrol motorunun gerçek Windows adaptörleri ve
+   kurucuya bağlanması, başlangıç tercihinin güvenli uygulanması,
    native uygulama build ve versioned release pointer entegrasyonu.
 2. Üretim updater/recovery ve veri koruyan kaldırıcı. İmzalı/pinlenmiş yayın
    metadata'sı, gerçek süreç sahipliği/durdurma, kesintili ilk kurulum ve stale

@@ -5,6 +5,14 @@ source onto a working installation. The source guard must remain in place.
 
 ## Implemented and isolated-tested
 
+`install-preflight.js` adds a read-only first-install decision engine with
+mandatory injected OS probes, package integrity checks, separate data/program
+targets, existing-target/link rejection, WebView2/Node/platform checks, shared-
+volume disk budgeting, port checks and an opt-in startup preference. Unknown
+results and timeouts block readiness; reports omit sensitive probe details.
+It is not connected to an installer and always reports `productionReady: false`.
+See [the input/probe contract and limitations](INSTALL-PREFLIGHT.md).
+
 `data-migration.js` performs an explicitly confirmed same-account, offline,
 copy-only migration. Paths must be absolute, disjoint, unlinked, and targets
 absent. A caller-provided reviewed private ACL adapter is mandatory. It creates
