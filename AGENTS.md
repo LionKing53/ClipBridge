@@ -82,6 +82,11 @@ allowlisted source snapshot, notices/inventory, sealed manifest and source guard
 Its ignored build/candidate-* output is NOT an installer or accepted release.
 It may not launch packaged executables or change any Windows/application state.
 
+The isolated OwnedNodeProbe may compile only OwnedNode.cs plus its synthetic
+harness and run a synthetic Node stdin child with temporary test output. It must
+not compile/run Program/Main, WebView or production clipboard/network adapters.
+Native application start/stop and real installer acceptance remain separate.
+
 ## Deployment/release gates
 
 No install move, service restart, data migration, firewall changes, certificate

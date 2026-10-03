@@ -6,8 +6,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 ## Sürüm ve sahiplik
 
 - Tek kaynak: `%USERPROFILE%/source/PanoKopru`.
-- Son Windows gözlem adaptörü adımının başlangıç commit'i: `0df0571`; önceki test
-  tabanı `222c14d`. Teslim commit'i için `git log -1`, değişiklikler için
+- Son adımlar: `97dfd17` doğrulanmış native derleme; `0124d43` korumalı aday paket;
+  `0003fc6` sahiplikli ZIP temizliği. Teslim commit'i için `git log -1`, değişiklikler için
   `git status --short` esas alınır.
 - Paket `1.0.0`, launcher `1.0.0.0` miras numaralardır; yeni genel yayın yok.
 - Kullanıcı proje lisansını **GPL-3.0-or-later** seçti. LICENSE, paket metadata
@@ -25,6 +25,11 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Tamamlanan kaynak işleri
 
+- Launcher/Node kontrollü durdurma bağlandı: ebeveynin sahip olduğu stdin pipe,
+  ebeveyn kapanınca temiz çıkış, aynı cleanup promise'i, kullanıcıya özel durdurma
+  olayları, tray tam durdur ve `--stop`. PID/isimle kill yok; takılan çocuk varken
+  sahiplik bırakılmaz. Altı sentetik kontrol testi ve tam native derleme geçti.
+  Gerçek native start/stop/ACL/zaman aşımı kabulü yapılmadı; kurucu entegrasyonu değil.
 - İzin listeli mühendislik adayı üreticisi eklendi: temiz commit zorunluluğu,
   yeni üretim bağımlılık kurulumu, tüm izinli kaynakların snapshot'ı, bileşen/lisans
   envanteri, manifest hash'i ve SOURCE-CHECKOUT koruması. Dört dosya-politikası
@@ -77,7 +82,18 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - AGENTS/README/CHANGELOG ve mimari, yaşam döngüsü, TR/EN kestirmeler, sorun
   giderme, lisans kanıtı ve kabul matrisi güncellendi.
 
-## Windows gözlem adaptörü doğrulaması — 2026-10-03
+## Son geliştirme doğrulaması — 2026-10-03
+
+- `npm.cmd test`: **111/111 geçti, 0 atlanan**. Son eklenen kapsam: 7 indirme,
+  4 paket dosyası politikası, 7 outbox temizliği, 6 sahiplikli durdurma testi.
+- Edge headless UI, tam C#/WebView2 native derleme, **123 izinli kaynak / 121 kilit
+  girdisi** statik kapısı ve whitespace kontrolü geçti. Native uygulama açılmadı.
+- Derlenmiş kontrol harness'i yalnız sentetik Node çocuğunu başlatıp stdin ile
+  durdurdu; gerçek clipboard/network/CA adaptörü veya kişisel süreç kullanılmadı.
+- İlk korumalı paket commit'i `0124d43`; en son kaynak için aday yeniden üretimi
+  henüz bekliyor. Nihai son kullanıcı kurucusu veya genel yayın hazır değil.
+
+## Önceki Windows gözlem adaptörü sonucu — 2026-10-03
 
 - İlgili testler **19/19** geçti (11 karar motoru + 8 Windows/port adaptörü).
 - `npm.cmd test`: **87/87 geçti, 0 atlanan**; tam takım bir kez daha tekrarlandı
@@ -145,7 +161,7 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
    adaptörleriyle kurucuya bağlanması, başlangıç tercihinin güvenli uygulanması,
    versioned release pointer entegrasyonu bekliyor.
 2. Üretim updater/recovery ve veri koruyan kaldırıcı. İmzalı/pinlenmiş yayın
-   metadata'sı, gerçek süreç sahipliği/durdurma, kesintili ilk kurulum ve stale
+   metadata'sı, kaynakta bağlanan sahiplikli durdurmanın gerçek kabulü, kesintili ilk kurulum ve stale
    instance kilidi kurtarma. Eski tehlikeli kaldırıcı alınmadı; yenisi henüz yok.
 3. Gerçek veri göçü için üretim ACL adaptörü, doğrulanmış özel yedek; CA/DPAPI,
    ağlar, geçmiş/favoriler/gelen dosyalar ve WebView temasının kabulü.

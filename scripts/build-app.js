@@ -55,6 +55,7 @@ await execFileAsync(compiler, [
   `/out:${executablePath}`,
   path.join(projectRoot, "launcher", "PanoKopru.cs"),
   path.join(projectRoot, "launcher", "RuntimeContext.cs"),
+  path.join(projectRoot, "launcher", "OwnedNode.cs"),
   path.join(projectRoot, "launcher", "DesktopWindow.cs")
 ], { cwd: projectRoot, windowsHide: true });
 

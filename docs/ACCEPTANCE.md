@@ -10,16 +10,17 @@ in public test output. No manual row below has been executed in this source turn
 | --- | --- | --- |
 | Shared roots/ports/identity | Node + compiled C# resolver + read-only PowerShell comparison | Full WebView launcher and standard-user paths |
 | Startup collision | Separate ports, partial-start cleanup, lock refusal | Existing install running, stale lock after crash |
+| Controlled stop | Stdin/EOF single cleanup, compiled owned-child harness, unrelated synthetic process preserved | Full tray/--stop, real event ACLs, concurrent startup, hung child, session logoff |
 | Migration | Verified synthetic backup, concurrent-write rejection, path rewrite | Same-account CA/DPAPI/theme/file preservation |
 | First local setup | Public CA listener, TTL, Host/Origin/network guard; fake fingerprint workflow and UI | Real iPhone certificate download/details/full-trust without Tailscale |
 | Windows trust | Fake UAC cancellation, simultaneous operation/network change | Same-user and different-admin UAC, timeout, partial failure |
 | Firewall removal | Fail-closed application permissions + scoped helper source | Actual old/new owned-rule cleanup; foreign rules untouched |
 | Connections | Pure subnet/network policy and transport guard | Two adapters, Public/unknown network, removal mid-transfer |
 | Transfer | Unicode/RTF/RTFD, image/file envelopes, streaming 65 MiB, exact artificial limits | Both directions text/photo/PDF/video, actual 512 MiB boundary, interrupted phone transfer |
-| Storage | Owned-only cleanup, favorites/unmanaged preservation, stable ENOSPC mapping | Real disk exhaustion during upload/history/config write |
+| Storage | Owned upload/outbox cleanup, favorites/unmanaged preservation, stable ENOSPC mapping | Real disk exhaustion and forced interruption during upload/archive/history/config write |
 | Update/rollback | Isolated manifest/kernel, failed activation recovery, schema guard | Production bootstrapper, power loss, initial install interruption |
 | Removal | Design only; destructive legacy uninstaller excluded | Keep/delete data, owned artifacts, shared Tailscale unaffected |
-| Clean distribution | Fresh npm lock restore, audit, inventory/notices evidence | Clean x64 Windows without Node/Tailscale/WebView2; SDK/runtime acquisition and native build |
+| Clean distribution | Pinned Node/SDK acquisition, Node publisher, full native compile, guarded allowlist candidate + inventory/notices | Actual installer on clean x64 Windows without Node/Tailscale/WebView2; Runtime acquisition |
 | Privacy/license | Allowlist gate, synthetic UI, lock inventory | Complete Git history/archive/QR/image inspection, project license, binary license compliance |
 
 Release is blocked while production integrations in LIFECYCLE.md and unexecuted

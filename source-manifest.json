@@ -2,6 +2,11 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "test/support/supervisor-child.js",
+    "src/supervisor-control.js",
+    "launcher/OwnedNode.cs",
+    "test/supervisor-control.test.js",
+    "test/support/OwnedNodeProbe.cs",
     "src/owned-outbox.js",
     "test/owned-outbox.test.js",
     "distribution-inputs.json",

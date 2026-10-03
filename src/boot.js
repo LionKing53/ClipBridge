@@ -18,15 +18,14 @@ export async function startBridge(context, adapters = {}) {
   const release = await acquireInstance(context);
   const servers = []; let localNetwork, diagnostics;
   const closeServer = server => new Promise(resolve => { server.closeAllConnections(); server.close(() => resolve()); });
-  let stopped = false;
-  const close = async () => {
-    if (stopped) return; stopped = true;
+  let closing;
+  const close = () => closing ||= (async () => {
     try { await localNetwork?.close(); }
     finally {
       try { await Promise.all(servers.map(closeServer)); await diagnostics?.flush(); }
       finally { await release(); }
     }
-  };
+  })();
   try {
     const config = await loadConfig(context);
     const history = await createHistory(context.dataRoot);

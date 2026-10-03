@@ -1,5 +1,21 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — sahiplikli kontrollü durdurma
+
+- Launcher kendi başlattığı Node sürecini kalıtılan stdin pipe üzerinden durdurur.
+  Ebeveyn kapanması da temiz çıkışı tetikler; ağdan açık kapatma endpoint'i yok.
+- Tray tam durdur ve `--stop` eklendi; kullanıcı/instance kapsamlı olaylar,
+  yaklaşık 30 saniyelik bekleme ve hata çıkış kodu. Takılan süreç zorla öldürülmez
+  ve sahiplik mutex'i erken bırakılmaz. Üç denemeden sonra otomatik yeniden
+  başlatma durur; stale lock körlemesine silinmez.
+- Eşzamanlı Node kapanışları aynı tamamlanma promise'ini bekler. Node child
+  ortamından kod enjekte edebilen NODE_OPTIONS/NODE_PATH kaldırılır.
+- Sentetik C# çocuk süreç testi dahil altı kontrol testi geçti;
+  tam uygulama derlendi ama çalıştırılmadı. Native kabul ve kurucu hâlâ bekliyor.
+
+Kişisel kurulum, Windows ayarları, veri şeması ve kestirmeler değiştirilmedi.
+Kaynak/aday üretim korumaları korunuyor; yayımlanabilir paket onayı değildir.
+
 ## Unreleased — 2026-10-03 — sahiplikli geçici ZIP temizliği
 
 - Çoklu dosyaların ZIP çıktıları çakışmayan, instance/id kayıtlı klasörlere alınır.

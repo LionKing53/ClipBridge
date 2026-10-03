@@ -37,13 +37,17 @@ internal sealed class DesktopWindow : Form
         var menu = new ContextMenuStrip();
         menu.Items.Add("PanoK\u00f6pr\u00fc'y\u00fc a\u00e7", null, (s,e) => Reveal());
         menu.Items.Add("Pencereyi kapat (k\u00f6pr\u00fc a\u00e7\u0131k kal\u0131r)", null, (s,e) => { exiting = true; Close(); });
+        menu.Items.Add("PanoKopru'yu tamamen durdur", null, (s,e) => Program.RequestShutdown());
         tray.ContextMenuStrip = menu;
         tray.DoubleClick += (s,e) => Reveal();
         FormClosing += (s,e) => { if (!exiting && e.CloseReason == CloseReason.UserClosing) { e.Cancel = true; Hide(); } };
         FormClosed += (s,e) => { tray.Visible = false; tray.Dispose(); };
         Shown += async (s,e) => { try { int dark = 1; DwmSetWindowAttribute(Handle, 20, ref dark, 4); } catch {} await InitializeBrowser(); };
         var reopen = new Timer { Interval = 500 };
-        reopen.Tick += (s,e) => { if (Program.OpenWindowEvent.WaitOne(0)) Reveal(); };
+        reopen.Tick += (s,e) => {
+            if (Program.StopWindowEvent.WaitOne(0)) { exiting = true; Close(); return; }
+            if (Program.OpenWindowEvent.WaitOne(0)) Reveal();
+        };
         reopen.Start();
         FormClosed += (s,e) => reopen.Dispose();
     }

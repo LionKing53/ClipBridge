@@ -42,15 +42,37 @@ Recovery and rollback recheck package integrity/schema and change the program
 pointer only. They never restore old user data. Tests confirm new transfers
 survive a failed update/rollback and newer schemas block incompatible rollback.
 
+The native launcher now owns its child through the Process handle it creates
+and an inherited stdin control pipe. Stop requests ask Node to close listeners,
+flush diagnostics and release its instance lock. Parent EOF also requests
+shutdown; malformed/oversized pipe input fails closed, never executes commands.
+Concurrent close callers await the same cleanup promise. No network shutdown
+route was added.
+
+The native tray includes a full-stop action and `--stop` signals per-instance,
+current-user-only stop events, then waits approximately 30 seconds. Timeout has
+exit code 2, not an indication that files may be overwritten. The background
+owner retains its mutex while a non-cooperating child is still alive. It never
+enumerates/kills processes by name/PID and never adopts a separately running
+backend. Automatic restart attempts are bounded to three; crash-lock recovery
+is still explicit and not implemented in the production launcher.
+
+Verification uses a compiled OwnedNodeProbe with a synthetic stdin child and
+temporary output only, plus isolated Node control/whole-server tests. The full
+native application compiles but has NOT been launched for acceptance. Real
+named-event ACL, multiple-session/start-stop races, hung-child timeout and
+transfer interruption remain native acceptance cases. Source guards remain.
+
 ## Remaining production integration (release blockers)
 
 - Stable launcher/bootstrapper must consume versioned release pointers. Current
   launcher still uses the established app/runtime layout; **do not connect the
   isolated kernel to it without redesigning and testing ownership/permissions**.
-- Verify/acquire clean Node and WebView2 artifacts; handle prerequisite absence,
+- Clean pinned Node/SDK acquisition and guarded candidate assembly are tested;
+  acquire/check WebView2 Runtime and handle prerequisite absence,
   disk capacity, writable paths, port conflicts and user startup preference.
 - Implement signed/pinned release acquisition, production preflight, controlled
-  process shutdown, interrupted initial installation and crash-lock recovery.
+  process shutdown acceptance, interrupted initial installation and crash-lock recovery.
 - Add real ACL adapter for legacy migration and private verified backup. Confirm
   actual CA/DPAPI, hostname, trusted networks, favorites, files and theme survive.
 - Add production-safe uninstaller with explicit keep/delete personal data choice.

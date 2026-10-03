@@ -27,7 +27,9 @@ test('isolated whole-server boot uses distinct identity, private data and inject
   const token = JSON.parse(await readFile(path.join(context.dataRoot, 'config.json'), 'utf8')).token;
   assert.equal(await (await fetch(base + '/api/v1/clipboard', { headers: { Authorization: 'Bearer ' + token } })).text(), 'Synthetic clipboard');
   await assert.rejects(startBridge(context, adapters), { code: 'ERR_INSTANCE_LOCKED' });
-  await bridge.close(); const release = await acquireInstance(context); await release();
+  const firstClose = bridge.close();
+  assert.equal(bridge.close(), firstClose, 'Concurrent shutdown callers await the same complete cleanup');
+  await firstClose; const release = await acquireInstance(context); await release();
 });
 test('port collision shuts down partial startup and releases only its instance lock', async t => {
   const { context, adapters } = await fixture(t);

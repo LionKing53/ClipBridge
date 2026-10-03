@@ -21,7 +21,7 @@ const pngs = await Promise.all([16,24,32,48,64,128,256].map(size => sharp(svg).r
 const icon = path.join(output, 'PanoKopru.ico'); await writeFile(icon, await pngToIco(pngs));
 const compiler = path.join(process.env.SystemRoot, 'Microsoft.NET', 'Framework64', 'v4.0.30319', 'csc.exe');
 const exe = path.join(output, 'PanoKopru.exe');
-const sources = ['launcher/PanoKopru.cs', 'launcher/RuntimeContext.cs', 'launcher/DesktopWindow.cs'];
+const sources = ['launcher/PanoKopru.cs', 'launcher/RuntimeContext.cs', 'launcher/DesktopWindow.cs', 'launcher/OwnedNode.cs'];
 const args = ['/nologo', '/target:winexe', '/platform:x64', '/win32manifest:' + path.join(root, 'launcher', 'app.manifest'),
   '/reference:System.Windows.Forms.dll', '/reference:System.Drawing.dll', '/reference:System.Web.Extensions.dll',
   ...['Core','WinForms'].map(name => '/reference:' + path.join(output, 'sdk', `Microsoft.Web.WebView2.${name}.dll`)),
