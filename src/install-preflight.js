@@ -75,6 +75,7 @@ export async function runInstallPreflight(options) {
   }
   await check('host', async () => {
     const host = await probe('host');
+    if (host?.elevated === true) return 'ERR_INSTALL_ELEVATED_CONTEXT';
     return host?.platform === 'win32' && host?.arch === 'x64' ? 'OK' : 'ERR_INSTALL_PLATFORM';
   });
   let manifest;

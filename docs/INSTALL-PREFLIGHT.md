@@ -1,7 +1,8 @@
 # First-install preflight contract
 
-Status: isolated-tested decision engine, **not a usable installer**. No production
-OS probe adapter, setup executable, download or startup registration is supplied.
+Status: decision engine and real Windows observation adapter tested in isolation,
+**not a usable installer**. No production OS adapter, setup executable, download
+or startup registration is supplied.
 `runInstallPreflight` in `src/install-preflight.js` is not connected to the current
 launcher or release store. Do not treat a successful report as deployment approval.
 
@@ -18,9 +19,10 @@ candidate must include a nonempty `runtime/node.exe`; this is not yet a complete
 native application layout check. The package hash must come from authenticated
 release metadata; taking a hash from the same untrusted download is insufficient.
 
-The engine only reads the candidate and checks target existence/link ancestry.
-It never creates destination directories, inspects existing personal data,
-downloads/executes a runtime, stops an application or changes Windows settings.
+The engine and Windows adapter only read candidate/target metadata; the adapter
+also temporarily binds and closes isolated loopback sockets. They never create
+destination directories, inspect existing personal data, download/execute a
+runtime, stop an application or change Windows settings.
 Existing destinations, including empty directories, block **first install**.
 Resume, update, adoption and migration must be separate ownership-checked flows.
 
@@ -32,9 +34,9 @@ clean up an adapter that ignores it. Real adapters still need acceptance tests.
 
 | Probe | Required result | Future adapter obligation |
 | --- | --- | --- |
-| `host(options)` | `{ platform: 'win32', arch: 'x64' }` | Identify the actual target OS/architecture; supported Windows versions remain a separate release gate |
+| `host(options)` | `{ platform: 'win32', arch: 'x64', elevated: false }` | Identify the actual target OS/architecture and original non-elevated context; supported Windows versions remain a separate release gate |
 | `webView2(options)` | `{ complete: true, versions: [userPv, machinePv] }` | Read both Runtime registry scopes; `null` for confirmed absence, incomplete/error for inaccessible scope |
-| `nodeRuntime(absoluteExecutable, options)` | `{ version, platform: 'win32', arch: 'x64' }` | Inspect only the verified candidate, never PATH or the personal installation; execution needs bounded lifetime |
+| `nodeRuntime(absoluteExecutable, options)` | `{ version, platform: 'win32', arch: 'x64' }` | Inspect only the verified candidate's PE/version resources, never execute it or use PATH/personal runtime |
 | `destination(absoluteRoot, options)` | `{ writable: true, volumeId, freeBytes }` | Inspect the nearest existing ancestor for the intended user's rights; return a canonical volume identity and available bytes |
 | `port(number, options)` | strict `true` only when available | Account for relevant address families/bind addresses and release all temporary sockets; no killing conflicting processes |
 
@@ -56,7 +58,53 @@ See [Microsoft's WebView2 distribution guidance](https://learn.microsoft.com/en-
 
 The pure evaluator compares four numeric components, considers both scopes, and
 distinguishes missing, outdated and unknown. A failed scope lookup is not evidence
-of absence. No registry lookup or Runtime installer was executed in these tests.
+of absence. The Windows adapter test now reads both registry scopes; it never
+logs their raw values, writes a key or runs a Runtime installer.
+
+## Windows observation adapter (isolated only)
+
+`createIsolatedWindowsInstallProbes` requires a validated development/test context
+and a pinned candidate beneath its explicit data root. It rejects production
+contexts, foreign targets, package-overlapping destinations, linked ancestors and
+ports not listed in that context. Runtime metadata is rechecked against the full
+package manifest immediately before inspection. All adapter failures are sanitized.
+
+The fixed `inspect-install-host.ps1` helper compiles the repository's small C#
+observer with Add-Type (temporary compiler artifacts may be created). It uses
+hidden, noninteractive PowerShell, a bounded output buffer, a ten-second child
+timeout and AbortSignal cancellation. Targets are argument data, never shell
+source. It does not invoke a candidate executable or a production permission
+helper. Elevated contexts are reported by Host and refused by other operations;
+the preflight engine blocks such a host. Different-user/UAC installer handling
+remains unimplemented.
+
+Host architecture comes from
+[IsWow64Process2](https://learn.microsoft.com/en-us/windows/win32/api/wow64apiset/nf-wow64apiset-iswow64process2),
+not just the architecture of the querying process. Unsupported API calls fail
+closed. Destination probing opens the nearest existing ancestor using
+[CreateFile directory semantics](https://learn.microsoft.com/en-us/windows/win32/fileio/obtaining-a-handle-to-a-directory)
+with OPEN_EXISTING and add-file/add-subdirectory rights; it creates nothing.
+This only observes the ancestor's current access, not inherited rights on future
+children, Controlled Folder Access behavior, or eventual write success.
+
+Available bytes use the caller-specific result of
+[GetDiskFreeSpaceEx](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getdiskfreespaceexw);
+volume grouping uses
+[GetVolumeNameForVolumeMountPoint](https://learn.microsoft.com/en-us/windows/win32/api/fileapi/nf-fileapi-getvolumenameforvolumemountpointw).
+UNC paths, long paths over the conservative 240-character helper limit, and
+reparse points (including mounted folders) are rejected. A denied/unknown query
+does not grant readiness.
+
+Node inspection reads PE machine type and
+[ProductVersion metadata](https://learn.microsoft.com/en-us/dotnet/api/system.diagnostics.fileversioninfo.productversion)
+while holding a read handle that denies writes/deletion. It is not proof the
+runtime can actually start; that requires a separately scoped clean-artifact
+smoke test and authenticated package provenance.
+
+The port adapter tests only IPv4 loopback, never all interfaces, firewall policy
+or LAN reachability. Production binding on the selected LAN interface, IPv6 and
+race-aware activation are still acceptance gates. Even a passing report retains
+`productionReady: false`.
 
 ## Capacity and races
 
@@ -75,14 +123,19 @@ trust this report or execute a candidate whose bytes changed after verification.
 
 ## Current tests and remaining integration
 
-Ten tests use temporary synthetic packages and injected OS observations. They
+Eleven engine tests use temporary synthetic packages and injected OS observations. They
 cover successful read-only planning, WebView2 version scopes, invalid inputs,
 existing targets, tampering, shared-volume budgeting, distinct failure codes,
-sanitized errors, timeout cancellation and a linked destination ancestor.
+sanitized errors, timeout cancellation, a linked destination ancestor and elevated
+user-context rejection. Eight adapter tests add real loopback lifecycle checks,
+scope enforcement, read-only registry/disk observations, native PE metadata and
+child-process cancellation. A synthetic Node-named executable is compiled but
+never executed. Full preflight composition uses that fixture plus a synthetic
+WebView version so success does not depend on installed WebView versions.
 No actual Windows clipboard, certificate, network permission or personal runtime
 is used. Reports always include `productionReady: false`.
 
-Next: reviewed Windows probe adapters, clean pinned Node/WebView2 SDK acquisition,
+Next: clean pinned Node/WebView2 SDK acquisition,
 an isolated native build and complete package layout verification. Then connect
-the checks to setup UI and production lifecycle only after ownership/recovery
+the checks/production adapters to setup UI and lifecycle only after ownership/recovery
 design and clean-machine acceptance. Keep `SOURCE-CHECKOUT` and production guards.

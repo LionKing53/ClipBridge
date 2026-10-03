@@ -77,7 +77,7 @@ ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
 | --- | --- | --- |
 | Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar, instance kilidi | Tam native launcher, crash recovery, yönlendirilmiş profil desteği |
 | Geçiş | data-migration copy-only motoru ve sentetik yedek/göç testleri | Üretim ACL adaptörü, gerçek CA/DPAPI/WebView teması, özel doğrulanmış yedek |
-| İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; enjekte edilen önkontrollerle paket/Node/WebView2/disk/port/başlangıç karar motoru | Gerçek Windows önkontrol adaptörleri ve installer bağlantısı; gerçek iPhone; aynı/farklı yönetici UAC |
+| İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; önkontrol motoru ve yalıtılmış Windows registry/disk/PE/loopback adaptörü | Üretim kapsamı/LAN/IPv6 ve installer bağlantısı; gerçek iPhone; aynı/farklı yönetici UAC |
 | İzinler | Eski/yeni kuralların sahiplikli temizliği; iptalde kapalı kalma | Gerçek firewall, iki arayüz ve aktarım sırasında ağ değişimi |
 | Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload sahipliği | Gerçek disk dolması, yarım kalmış outbox arşivlerini sahiplikli temizleme |
 | Hatalar | Hassas alanları dışlayan tanılama, temel kararlı hata kodları | Tüm eski API/PowerShell yollarında ayrıntılı sınıflandırma |

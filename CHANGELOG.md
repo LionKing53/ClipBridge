@@ -1,5 +1,23 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-03 — yalıtılmış Windows kurulum gözlemleri
+
+- Önkontrol motoruna bağlanabilen gerçek Windows gözlem adaptörü: WebView2'nin
+  iki registry konumu, OS mimarisi, hedef üst klasörünün erişim/disk bilgisi ve
+  hash'i doğrulanmış aday Node dosyasının PE sürüm bilgisi. Dosya çalıştırılmaz.
+- Sabit gizli PowerShell yardımcısı süre/çıktı sınırı ve iptal desteği kullanır.
+  Hata metinleri kişisel yol/registry değeri sızdırmaz. Yönetici bağlamı normal
+  kullanıcı yerine kabul edilmez; production context hâlâ engellidir.
+- Yalnız yalıtılmış IPv4 loopback portları; iptal ve dolu port sonrası soket
+  kapanması test edildi. Gerçek LAN/firewall/IPv6 kabulü olarak gösterilmez.
+- Dokuz yeni test; toplam 87 testlik takım iki kez, Edge UI ve 105 kaynaklık
+  statik kontrol geçti. İlk fixture kapsam hatası
+  ortak korumayı değiştirmeden düzeltildi; ayrıntı PROJECT-STATUS.md'de.
+
+Uyumluluk: kurulu uygulama/API/kestirme/veri şeması değişmedi. Üretim Windows
+adaptörü, temiz paket/native uygulama derlemesi ve kurucu entegrasyonu bekliyor.
+Gerçek kurulum dosyası veya yayın üretilmedi; Windows ayarları değiştirilmedi.
+
 ## Unreleased — 2026-10-03 — ilk kurulum önkontrol adımı
 
 - Paket bütünlüğü, Node/WebView2 sürümü, platform, yazma erişimi, disk alanı ve

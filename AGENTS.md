@@ -56,6 +56,14 @@ No real network trust/UAC/firewall/certificate/clipboard test without explicit
 scope and separate acceptance arrangements. Never run inherited helper scripts
 merely because they are present. See docs/TESTING.md.
 
+Narrow diagnostic exception: the new read-only `inspect-install-host.ps1` and
+`InstallProbe.cs` may inspect OS architecture and WebView2 Runtime registry
+values, and inspect access/disk/PE metadata only on synthetic temporary targets.
+`createIsolatedWindowsInstallProbes` requires a validated non-production context,
+scopes targets under its data root and probes only its isolated loopback ports.
+This does not allow production adapters, registry/ACL changes, candidate binary
+execution, installation or personal-data reads. Existing production gates stay.
+
 PowerShell may block npm.ps1; use npm.cmd without changing machine execution
 policy. The runtime contract probe compiles only a synthetic C# executable and
 reads synthetic context via PowerShell; it does not build/run the native app.

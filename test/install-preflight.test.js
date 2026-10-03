@@ -141,3 +141,13 @@ test('a linked destination ancestor is blocked without inspecting its redirected
   assert.equal(report.passed, false); assert.equal(code(report, 'program'), 'ERR_INSTALL_CHECK_FAILED');
   assert.deepEqual(await readdir(destination), []);
 });
+
+test('elevated installation observation cannot stand in for the intended user context', async t => {
+  const { options } = await fixture(t);
+  options.probes.host = async () => ({ platform: 'win32', arch: 'x64', elevated: true });
+  options.probes.nodeRuntime = () => assert.fail('Host rejection must prevent candidate inspection');
+  const report = await runInstallPreflight(options);
+  assert.equal(report.passed, false);
+  assert.equal(code(report, 'host'), 'ERR_INSTALL_ELEVATED_CONTEXT');
+  assert.equal(code(report, 'node'), 'ERR_INSTALL_HOST_REQUIRED');
+});

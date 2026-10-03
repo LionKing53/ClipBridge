@@ -42,6 +42,25 @@ derlemesi, Tailscale'siz iPhone ilk kurulum, yeni veri köküne geçiş, gerçek
 uçtan uca aktarımı, güncelleme/rollback/kaldırma. Bu oturumda kişisel telefondaki
 eski başarılı testler yeniden yapılmış gibi raporlanmamalı.
 
+## Windows kurulum gözlemleri — yalıtılmış kapsam
+
+`windows-install-probes.test.js`: yeni salt okunur yardımcı Windows mimarisini ve
+iki WebView2 registry konumunu sorgular; ham sürüm/cihaz değerleri kayda yazılmaz.
+Geçici hedeflerin üst klasöründe oluşturma hakkı, disk boşluğu ve volume kimliği
+okunur; hedef klasör oluşturulmaz, ACL değiştirilmez. Sentetik Node adlı küçük
+PE dosyası derlenip metadata'sı okunur; dosya çalıştırılmaz. Powershell Add-Type
+kendi geçici derleme dosyalarını oluşturabilir; kurulu uygulama hedef değildir.
+
+Portlar yalnız 127.0.0.1 ve testin seçtiği geçici portlardır. Dolu port, iptal,
+yeniden bağlanabilme ve işlem kapsamı test edilir. Gerçek LAN/IPv6/firewall
+uygunluğu sonucu değildir. Üretim context'i ve kapsam dışı yollar reddedilir.
+Yönetici oturumunda helper veri gözlemlerini reddeder; test yalnız bu reddi
+doğrular ve bunu diagnostic satırında belirtir. Normal kullanıcı oturumunda
+gerçek salt okunur gözlemlerin tamamlandığı diagnostic satırları ayrı gösterilir.
+
+Bu dar istisna eski etkili yardımcıların veya production launcher'ın testlerde
+serbest bırakıldığı anlamına gelmez. Ayrıntılar: [INSTALL-PREFLIGHT.md](INSTALL-PREFLIGHT.md).
+
 ## 2026-10-03 eklenen kapsam
 
 - Node/C#/PowerShell ortak runtime kimliği ve port sözleşmesi. C# yalnız geçici
@@ -66,5 +85,7 @@ dosyalar build/ altında kalır; runtime/SDK içeren nihai paket için yeniden �
 ve insan kontrolü gerekir. `npm.cmd audit` zaman bağımlı bilinen açık taramasıdır;
 sıfır sonuç tüm yazılımın güvenli olduğunu kanıtlamaz.
 
-PowerShell betikleri ayrıca yalnız AST ayrıştırmasına tabi tutulur. Üretim yan
-etkileri çalıştırılmaz. Ayrıntılı manuel matris: [ACCEPTANCE.md](ACCEPTANCE.md).
+Etkili üretim PowerShell betikleri ayrıca AST ayrıştırmasına tabi tutulur;
+UAC/firewall/CA yan etkileri çalıştırılmaz. Yukarıdaki salt okunur Windows gözlem
+yardımcısı ile saf runtime/ownership sözleşmeleri belirtilen test kapsamında
+çalıştırılır. Ayrıntılı manuel matris: [ACCEPTANCE.md](ACCEPTANCE.md).

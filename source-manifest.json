@@ -2,6 +2,11 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "test/windows-install-probes.test.js",
+    "test/support/SyntheticNode.cs",
+    "scripts/InstallProbe.cs",
+    "scripts/inspect-install-host.ps1",
+    "src/windows-install-probes.js",
     "docs/INSTALL-PREFLIGHT.md",
     "src/install-preflight.js",
     "test/install-preflight.test.js",

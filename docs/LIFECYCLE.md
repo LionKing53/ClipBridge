@@ -11,6 +11,9 @@ targets, existing-target/link rejection, WebView2/Node/platform checks, shared-
 volume disk budgeting, port checks and an opt-in startup preference. Unknown
 results and timeouts block readiness; reports omit sensitive probe details.
 It is not connected to an installer and always reports `productionReady: false`.
+The Windows observer now supplies real metadata/access/space probes in validated
+isolated contexts, with scoped IPv4 loopback probes. It rejects production mode
+and elevated data inspection; it does not execute the candidate Node binary.
 See [the input/probe contract and limitations](INSTALL-PREFLIGHT.md).
 
 `data-migration.js` performs an explicitly confirmed same-account, offline,
