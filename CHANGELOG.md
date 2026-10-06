@@ -1,5 +1,26 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-06 — bağımsız ilk kurucu
+
+- Paket hash'ine bağlı bağımsız Windows Forms kurucu ve compile-only üretici.
+  Normal kullanıcı, x64/Windows sürümü, Node PE, WebView2, disk, yazma hakkı ve
+  IPv4 port denetimi. Eksik Runtime için kullanıcı onaylı resmi sayfa düğmesi.
+- İlk kurulum motoru mevcut programı veya veriyi benimsemez/üzerine yazmaz;
+  özel staging, tekrar hash kontrolü, ready receipt ve atomik hedef taşıma.
+  Kopyalama/aktivasyon öncesinde iptal; başarısız staging inceleme için korunur.
+- Başlat menüsü, isteğe bağlı masaüstü ve varsayılan kapalı başlangıç kısayolu;
+  mevcut kısayol korunur, kısmi başarı bildirilir. Uygulama otomatik başlatılmaz.
+- Dokuz sentetik kurucu testi, toplam **132/132 test**, Edge UI ve **140 kaynak /
+  121 kilit girdisi** kapısı geçti. Tam kurucu derlemesi temiz adaydan sonra
+  ayrıca kaydedilecek. Gerçek Windows ACL/COM/kurulum/native kabulü yapılmadı.
+- Önceki `b440145` temiz mühendislik adayı üretildi ve doğrulandı: 1.379 dosya,
+  89 üretim bağımlılığı. Paket kanıtı PROJECT-STATUS.md'de; ilk kurucuyu içermez.
+
+Uyumluluk: yeni ilk kurucu yalnız boş kullanıcı hedefi içindir; güncelleme, göç
+veya kaldırıcı değildir. Kaynak/aday koruması kaldırılmadı; kurucu bu adayları
+reddeder. API/veri şeması/kestirmeler ve kişisel kurulum değişmedi. Kullanıcıya
+verilecek çalışabilir paket, üretim yaşam döngüsü ve gerçek cihaz kabulü bekliyor.
+
 ## Unreleased — 2026-10-06 — açılış, kurtarma ve yayın denetimi
 
 - Native açılışta kurulum yeri/kullanıcı/ready kaydı, manifest ve dosya hash'leri

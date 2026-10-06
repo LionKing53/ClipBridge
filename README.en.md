@@ -50,6 +50,9 @@ and payload before setting its runtime context, reports missing WebView2 Runtime
 with an opt-in official download-page handoff, and implements confirmed dead-lock
 recovery. These changes are synthetic-tested/compiled, not installed acceptance.
 The SDK is not the Runtime. See [installed launch contract](docs/INSTALLED-LAUNCH.md).
+The standalone first-installer now implements staging, receipt writing and
+opt-in shortcuts/startup, but is only compiled against guarded candidates and
+has not passed real Windows acceptance. See [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
 
 See [architecture](docs/ARCHITECTURE.md), [lifecycle boundaries](docs/LIFECYCLE.md),
 [acceptance matrix](docs/ACCEPTANCE.md), [TR/EN Shortcuts](docs/SHORTCUTS.md),

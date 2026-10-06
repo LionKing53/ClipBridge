@@ -7,6 +7,7 @@
   "type": "module",
   "scripts": {
     "build:candidate": "node scripts/build-candidate.js",
+    "build:setup": "node scripts/build-setup.js",
     "toolchain:fetch": "node scripts/acquire-toolchain.js",
     "build:native": "node scripts/build-native.js",
     "build": "node scripts/build-app.js",

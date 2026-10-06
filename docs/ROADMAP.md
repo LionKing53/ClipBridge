@@ -68,21 +68,21 @@ Bir aşamanın tamamlanması sonraki aşamanın veya kişisel dağıtımın onay
 - GitHub sohbeti güncel commit, test kayıtları ve çalışma ağacını yeniden
   inceler. Bu sohbet uzak depo oluşturmaz, push/release yapmaz.
 
-## 2026-10-03 uygulama karşılığı ve kalan işler
+## 2026-10-06 uygulama karşılığı ve kalan işler
 
 Bu bölüm yukarıdaki gereksinimlerin yerini almaz; neyin gerçekten yapıldığını
 ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
 
 | Alan | Kaynaktaki karşılığı | Kalan kapı |
 | --- | --- | --- |
-| Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar; kurulum kaydı/hash doğrulayan native açılış ve onaylı ölü-PID kilit kurtarma | Gerçek native/crash kabulü, kurucu kayıt entegrasyonu, yönlendirilmiş profil desteği |
+| Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar; ilk kurucunun ready kaydı, hash doğrulayan native açılış ve onaylı ölü-PID kilit kurtarma | Gerçek native/crash/kurulum kabulü, yönlendirilmiş profil desteği |
 | Geçiş | data-migration copy-only motoru ve sentetik yedek/göç testleri | Üretim ACL adaptörü, gerçek CA/DPAPI/WebView teması, özel doğrulanmış yedek |
-| İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; önkontrol motoru ve yalıtılmış Windows registry/disk/PE/loopback adaptörü | Üretim kapsamı/LAN/IPv6 ve installer bağlantısı; gerçek iPhone; aynı/farklı yönetici UAC |
+| İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; önkontrol; bağımsız C# ilk kurucu, private staging/receipt ve kısayol/başlangıç adaptörü | Korumalı kurucunun gerçek Windows ACL/COM/IPv4/kesinti kabulü ve çalışabilir test paketi onayı; gerçek iPhone/UAC |
 | İzinler | Eski/yeni kuralların sahiplikli temizliği; iptalde kapalı kalma | Gerçek firewall, iki arayüz ve aktarım sırasında ağ değişimi |
 | Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload ve outbox sahiplikli temizlik | Gerçek disk dolması ve zorla kapanma kabulü |
 | Hatalar | Hassas alanları dışlayan tanılama; API/desktop güvenli kod+mesaj; pano, UAC iptal/süre/başarısızlık, ağ değişimi, TLS/disk/bağlantı ayrımı; sınırlı pano yardımcısı | Gerçek Windows/iPhone hata kabulü; genel doğrulama alt durumlarının ayrıntılandırılması |
 | Güncelleme | Yalıtılmış release-store ve veri koruyan rollback; launcher/Node sahiplikli stdin durdurma | İmzalı paket/launcher sürüm yönlendirmesi, native durdurma kabulü/recovery, yeni kaldırıcı |
-| Dağıtım | Kilitli Node/SDK, yayıncı doğrulaması, tam native derleme ve allowlist korumalı aday; Runtime yokluğunda onaylı resmi sayfa yönlendirmesi; bileşen/lisans envanteri | Kurucuda Runtime akışı, kurulabilir paket entegrasyonu, nihai SBOM/lisans uygunluğu |
+| Dağıtım | Kilitli Node/SDK, yayıncı doğrulaması, tam native derleme ve allowlist korumalı aday; launcher ve ilk kurucuda Runtime yokluğunda onaylı resmi sayfa yönlendirmesi; bileşen/lisans envanteri | Gerçek Runtime edinim kabulü, kurulabilir paket entegrasyonu, nihai SBOM/lisans uygunluğu |
 | Belgeler | TR/EN README/kestirmeler, mimari, yaşam döngüsü, sorun giderme ve kabul matrisi | Çalışan installer üzerinde eksiksiz son kullanıcı rehberi |
 | Lisans | Kullanıcı GPL-3.0-or-later seçti; LICENSE ve metadata eklendi | Paketlenmiş bileşenlerle dağıtım uygunluğu; logo/ad politikası |
 

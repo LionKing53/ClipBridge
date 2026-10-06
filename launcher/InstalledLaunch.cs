@@ -12,9 +12,9 @@ using System.Web.Script.Serialization;
 internal static class InstalledLaunch
 {
     private static Exception Invalid() { return new InvalidOperationException("Installation receipt or payload is missing, changed or not ready."); }
-    private static string Full(string value) { return Path.GetFullPath(value).TrimEnd('\\', '/'); }
-    private static bool Same(string a, string b) { return String.Equals(Full(a), Full(b), StringComparison.OrdinalIgnoreCase); }
-    private static void NoLinks(string path)
+    internal static string Full(string value) { return Path.GetFullPath(value).TrimEnd('\\', '/'); }
+    internal static bool Same(string a, string b) { return String.Equals(Full(a), Full(b), StringComparison.OrdinalIgnoreCase); }
+    internal static void NoLinks(string path)
     {
         for (string part = Full(path); !String.IsNullOrEmpty(part); part = Path.GetDirectoryName(part))
         {
@@ -36,7 +36,7 @@ internal static class InstalledLaunch
     {
         object item; return value != null && value.TryGetValue(key, out item) ? item as string : null;
     }
-    private static long Number(Dictionary<string, object> value, string key)
+    internal static long Number(Dictionary<string, object> value, string key)
     {
         object item;
         if (value == null || !value.TryGetValue(key, out item) || (!(item is int) && !(item is long))) throw Invalid();
@@ -47,7 +47,7 @@ internal static class InstalledLaunch
         using (var stream = new FileStream(file, FileMode.Open, FileAccess.Read, FileShare.Read))
         using (var sha = SHA256.Create()) return BitConverter.ToString(sha.ComputeHash(stream)).Replace("-", "").ToLowerInvariant();
     }
-    private static string SafeFile(string root, string relative)
+    internal static string SafeFile(string root, string relative)
     {
         if (String.IsNullOrEmpty(relative) || !Regex.IsMatch(relative, "^[a-zA-Z0-9_.@/-]+$") || relative.StartsWith("/")) throw Invalid();
         foreach (string part in relative.Split('/'))
@@ -56,17 +56,17 @@ internal static class InstalledLaunch
         if (!Full(file).StartsWith(Full(root) + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) throw Invalid();
         NoLinks(file); return file;
     }
-    private static void CheckInventory(string root, string directory, HashSet<string> names)
+    private static void CheckInventory(string root, string directory, HashSet<string> names, bool installed)
     {
         NoLinks(directory);
         foreach (string entry in Directory.GetFileSystemEntries(directory))
         {
             NoLinks(entry);
-            if (Directory.Exists(entry)) CheckInventory(root, entry, names);
+            if (Directory.Exists(entry)) CheckInventory(root, entry, names, installed);
             else
             {
                 string relative = entry.Substring(Full(root).Length + 1).Replace('\\', '/');
-                if (relative != "install-receipt.json" && relative != "release.json" && !names.Contains(relative)) throw Invalid();
+                if (!(installed && relative == "install-receipt.json") && relative != "release.json" && !names.Contains(relative)) throw Invalid();
             }
         }
     }
@@ -83,6 +83,14 @@ internal static class InstalledLaunch
         string digest = Text(receipt, "manifestHash");
         if (Number(receipt, "format") != 1 || Text(receipt, "application") != "PanoKopru" || Text(receipt, "state") != "ready" ||
             Text(receipt, "ownerSid") != ownerSid || String.IsNullOrEmpty(ownerSid) || !Regex.IsMatch(digest ?? "", "^[a-f0-9]{64}$")) throw Invalid();
+        ValidatePayload(installRoot, digest, true);
+        string data = Path.Combine(localAppData, "PanoKopru"); NoLinks(data); return data;
+    }
+    internal static Dictionary<string, object> ValidatePayload(string installRoot, string digest, bool installed)
+    {
+        NoLinks(installRoot);
+        if (!Regex.IsMatch(digest ?? "", "^[a-f0-9]{64}$") || File.Exists(Path.Combine(installRoot, "app", "SOURCE-CHECKOUT")) ||
+            File.Exists(Path.Combine(installRoot, "SOURCE-CHECKOUT")) || File.Exists(Path.Combine(installRoot, "NOT-INSTALLABLE.txt"))) throw Invalid();
         string manifestFile = Path.Combine(installRoot, "release.json");
         var manifest = Json(manifestFile, 4 * 1024 * 1024);
         if (Hash(manifestFile) != digest || Number(manifest, "format") != 1 || Number(manifest, "schemaMin") > 1 || Number(manifest, "schemaMin") < 1 ||
@@ -101,8 +109,8 @@ internal static class InstalledLaunch
         }
         foreach (string required in new [] { "PanoKopru.exe", "runtime/node.exe", "app/src/server.js", "Microsoft.Web.WebView2.Core.dll", "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll" })
             if (!names.Contains(required)) throw Invalid();
-        CheckInventory(Full(installRoot), Full(installRoot), names);
-        string data = Path.Combine(localAppData, "PanoKopru"); NoLinks(data); return data;
+        CheckInventory(Full(installRoot), Full(installRoot), names, installed);
+        return manifest;
     }
     internal static void ConfigureEnvironment(string installRoot)
     {

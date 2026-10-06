@@ -2,6 +2,13 @@
   "version": 1,
   "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
   "files": [
+    "docs/FIRST-INSTALL.md",
+    "launcher/FreshInstall.cs",
+    "launcher/WindowsFreshInstall.cs",
+    "launcher/Setup.cs",
+    "scripts/build-setup.js",
+    "test/fresh-install.test.js",
+    "test/support/FreshInstallProbe.cs",
     "scripts/check-history.js",
     "test/history-audit.test.js",
     "docs/INSTALLED-LAUNCH.md",

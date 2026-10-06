@@ -61,6 +61,14 @@ eder; gerçek exe/pano/WebView/kurucu çalıştırmaz. `instance-recovery.test.j
 yalnız geçici veri ve sentetik çocuk PID'si kullanır. `errors.test.js` pano
 işlemlerini sahte süreç nesneleriyle sınar; gerçek PowerShell panosu kullanılmaz.
 
+`fresh-install.test.js` yalnız FreshInstall/InstalledLaunch ve sentetik adaptörü
+derler. Sahte profil içinde çalıştırılamaz metin dosyaları kopyalar; gerçek ACL,
+COM, kısayol veya başlangıç ayarı değiştirmez. İptal, mevcut veri, değiştirilmiş
+kaynak, aktivasyon yarışı ve kısmi başarı dahil dokuz testtir.
+`build:setup` ise temiz kaynak commit'iyle eşleşen korumalı adayın yanında tam
+kurucuyu yalnız derler; exe çalıştırmaz. Korumalı payload kurucu tarafından
+reddedilir. Gerçek kurucu kabulü bu işlemlerden ayrı tutulur.
+
 ## Windows kurulum gözlemleri — yalıtılmış kapsam
 
 `windows-install-probes.test.js`: yeni salt okunur yardımcı Windows mimarisini ve

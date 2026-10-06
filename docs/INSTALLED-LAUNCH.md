@@ -70,12 +70,14 @@ race and crash acceptance remain to be performed on a disposable test machine.
 ## Remaining integration
 
 The stable app/runtime layout still differs from the isolated release-store's
-versioned directories. This receipt contract does **not** connect that updater
-or implement first install, shortcut/startup registration, rollback or uninstall.
+versioned directories. A standalone first-installer now implements receipt writing,
+private staging and shortcut/startup registration; see [FIRST-INSTALL.md](FIRST-INSTALL.md).
+It is compiled against guarded candidates, not production-accepted. This receipt
+contract does **not** connect the updater or implement rollback or uninstall.
 The installer and elevated helpers must agree on one reviewed activation layout
 before deployment. Personal legacy installation/migration remains separate.
 
 Türkçe özet: çift tıklama için güvenli bağlam yükleme ve eksik Runtime bildirimi
-kaynakta var; aday paket hâlâ açılamaz. Kurucu bu kayıt sözleşmesini henüz
-uygulamıyor. Kilit kurtarma kullanıcı onayı ve kapalı süreç doğrulaması ister;
+kaynakta var; aday paket hâlâ açılamaz. Yeni ilk kurucu kayıt sözleşmesini
+uyguluyor, fakat gerçek Windows kabulü bekliyor. Kilit kurtarma kullanıcı onayı ve kapalı süreç doğrulaması ister;
 veri yedeği geri yüklemez, aktif süreci kapatmaz. Kişisel kurulum değişmedi.

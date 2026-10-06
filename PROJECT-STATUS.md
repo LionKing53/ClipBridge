@@ -7,7 +7,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 - Tek kaynak: `%USERPROFILE%/source/PanoKopru`.
 - Son adımlar: `97dfd17` doğrulanmış native derleme; `0124d43` korumalı aday paket;
-  `0003fc6` sahiplikli ZIP temizliği; `0c884b3` kontrollü durdurma.
+  `0003fc6` sahiplikli ZIP temizliği; `0c884b3` kontrollü durdurma;
+  `b440145` kurulu açılış, kilit kurtarma ve güvenli hata sözleşmesi.
   Teslim commit'i için `git log -1`, değişiklikler için
   `git status --short` esas alınır.
 - Paket `1.0.0`, launcher `1.0.0.0` miras numaralardır; yeni genel yayın yok.
@@ -28,7 +29,12 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 - Kurulum kaydı ve paket hash/env sınırlarını doğrulayan native açılış; eksik
   WebView2 Runtime için onaylı resmi sayfa yönlendirmesi; backend başlamazsa boş
-  pencere açmama. Kaynak/aday koruması korunur; kayıt yazan kurucu hâlâ yok.
+  pencere açmama. Kaynak/aday koruması korunur.
+- Bağımsız ilk kurucu: pinli payload doğrulama, mevcut program/veriyi reddetme,
+  özel staging/ready kurulum kaydı, atomik etkinleştirme ve isteğe bağlı kullanıcı
+  kısayolları. Windows adaptörü ve iptal destekli Forms penceresi kaynakta var;
+  gerçek kurulum çalıştırılmadı. Korumalı adaylar bilerek kurulamaz. Ayrıntı:
+  docs/FIRST-INSTALL.md. Güncelleme veya veri geçiş aracı değildir.
 - Onaylı `--recover-lock`: mevcut veri kimliği ve dosya sahiplik kaydı, ölü PID
   kontrolü ve acquire/release/recovery kilitlemesi. Canlı/yeniden kullanılmış PID,
   bozuk/yabancı kayıt veya kritik-bölüm kalıntısı otomatik silinmez. Veri restore yok.
@@ -96,7 +102,23 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - AGENTS/README/CHANGELOG ve mimari, yaşam döngüsü, TR/EN kestirmeler, sorun
   giderme, lisans kanıtı ve kabul matrisi güncellendi.
 
-## Son geliştirme doğrulaması — 2026-10-06
+## Son geliştirme doğrulaması — 2026-10-06 — ilk kurucu
+
+- `npm.cmd test`: **132/132 geçti, 0 atlanan**; Edge headless UI geçti.
+- Kaynak kapısı **140 izinli dosya / 121 kilit girdisi**. Yeni bağımlılık yok.
+- Dokuz testlik derlenmiş kurucu harness'i yalnız geçici sentetik dosyalarda
+  çalıştı: ilk kurulum, mevcut hedef/veri, bozuk kaynak, aktivasyon yarışı,
+  iptal, kısmi kısayol hatası, junction ve yabancı kilit. Gerçek Windows adaptörü,
+  ACL/COM/başlangıç, üretim portları ve uygulama çalıştırılmadı.
+- Bağımsız kurucunun tam derlemesi sonraki temiz commit/paket kontrolünde
+  doğrulanacak. Şu aşamada kullanıcıya verilecek çalışabilir test paketi yok.
+- Önceki temiz `b440145f303ef897a7632e1596e60baf98a48971` aday üretimi geçti:
+  **1.379 dosya, 135.910.893 payload baytı, 89 üretim bağımlılığı**.
+  Manifest SHA-256: `4821ace4db838690fe11151ab3842e93ca7c2b9d017b93016fae9352b441c2d5`.
+  Yerel kanıt: `build/candidate-6aba98a7-2d02-4759-99f8-79d66f8e06ea/candidate-evidence.json`.
+  Bu aday ilk kurucu değişikliklerini içermez; kurucu/uygulama çalıştırılmadı.
+
+## Önceki geliştirme doğrulaması — 2026-10-06 — açılış/kurtarma
 
 - `npm.cmd test`: **123/123 geçti, 0 atlanan** (önceki 111'e 12 yeni test).
 - Edge headless UI geçti; tam C#/WebView2 native derleme geçti. Native uygulama
@@ -203,11 +225,11 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Bitmeyen işler — diğer sohbet bunları tamamlandı saymamalı
 
-1. Gerçek kurulum/başlatıcı/paket adaptörü: Node/SDK edinimi ve tam native derleme
-   tamamlandı; Runtime yokluğu için başlatıcıda manuel yönlendirme var. Kurucuda
-   WebView2 Runtime akışı, önkontrolün üretim kullanıcı/süreç kapsamı ve LAN/IPv6
-   adaptörleriyle kurucuya bağlanması, başlangıç tercihinin güvenli uygulanması,
-   versioned release pointer entegrasyonu bekliyor.
+1. İlk kurucunun kaynak entegrasyonu var: Node PE/WebView2, normal kullanıcı,
+   disk/yazma hakkı ve IPv4 port kontrolü; açık onaylı Runtime indirme sayfası,
+   özel staging/receipt ve başlangıç kısayolu. Gerçek ACL/COM/port/Runtime yokluğu,
+   kesinti ve native açılış kabulü bekliyor. IPv6/yönlendirilmiş profil/ARM64
+   desteklenmiş sayılmaz. Versioned release pointer entegrasyonu da bekliyor.
 2. Üretim updater/recovery ve veri koruyan kaldırıcı. İmzalı/pinlenmiş yayın
    metadata'sı, kaynakta bağlanan sahiplikli durdurmanın gerçek kabulü, kesintili ilk kurulum ve stale
    instance kilidi kurtarmanın gerçek native kabulü (onaylı kaynak akışı ve

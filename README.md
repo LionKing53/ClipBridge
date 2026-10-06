@@ -45,8 +45,10 @@ değildir. Sabit hash'li Node/WebView2 **SDK** edinimi, native derleme ve izin
 listeli aday paketleme doğrulandı. **Runtime**, SDK'dan farklıdır: başlatıcıda
 eksik Runtime için resmi indirme sayfasına onaylı yönlendirme var; otomatik
 Runtime kurulumu yok. Kurulum kaydı doğrulayan açılış ve onaylı kilit kurtarma
-kodu eklendi; gerçek kurucu/updater/kaldırıcı entegrasyonu ve cihaz kabulü bekliyor.
+kodu eklendi. Bağımsız ilk kurucu kaynakta var; yalnız korumalı aday için derlenir,
+çalıştırılmaz. Gerçek kurucu kabulü, updater/kaldırıcı ve cihaz kabulü bekliyor.
 Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
+İlk kurucunun kapsamı ve sınırları: [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
 
 ## Belgeler
 

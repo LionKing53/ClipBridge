@@ -93,6 +93,15 @@ it must never call Program, ConfigureEnvironment, WebView or a production adapte
 Crash-recovery tests use synthetic child PIDs and temporary data only. Signal 0
 checks process existence, never terminates it; tests must not target personal locks.
 
+The FreshInstallProbe may compile only FreshInstall.cs, InstalledLaunch.cs and
+its synthetic adapter/harness. It copies non-executable fixture files under a
+temporary fake profile, never changes ACLs, registers shortcuts or invokes the
+real WindowsFreshInstall adapter. `build-setup.js` may compile the full standalone
+setup beside a matching clean guarded candidate, binding its manifest hash. Do
+not run that executable. It retains the candidate's source/not-installable gates;
+this compile-only exception does not authorize production installation, source
+guard removal, unguarded packaging or personal-machine acceptance.
+
 ## Deployment/release gates
 
 No install move, service restart, data migration, firewall changes, certificate

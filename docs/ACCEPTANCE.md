@@ -11,6 +11,7 @@ in public test output. No manual row below has been executed in this source turn
 | Shared roots/ports/identity | Node + compiled C# resolver + read-only PowerShell comparison | Full WebView launcher and standard-user paths |
 | Startup collision | Separate ports, partial-start cleanup, lock refusal; explicit dead-PID recovery and live/foreign-lock rejection | Existing install running, actual crash/recovery dialog, multiple sessions |
 | Installed launch | Compiled read-only receipt/hash/path/owner probe; tampering, incomplete receipt, source marker, extra file and junction rejection | Actual installer receipt, normal double-click, missing Runtime, failed backend |
+| Fresh installer | Compiled transaction with fake Windows adapter; existing data/program refusal, copy revalidation, target race, cancellation, partial shortcut failure and lock/link rejection | Real ACL/COM, missing Runtime, opt-in login startup, cancellation/crash and full setup UI; guarded candidates are intentionally not installable |
 | Controlled stop | Stdin/EOF single cleanup, compiled owned-child harness, unrelated synthetic process preserved | Full tray/--stop, real event ACLs, concurrent startup, hung child, session logoff |
 | Migration | Verified synthetic backup, concurrent-write rejection, path rewrite | Same-account CA/DPAPI/theme/file preservation |
 | First local setup | Public CA listener, TTL, Host/Origin/network guard; fake fingerprint workflow and UI | Real iPhone certificate download/details/full-trust without Tailscale |

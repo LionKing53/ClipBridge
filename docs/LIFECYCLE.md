@@ -10,7 +10,12 @@ mandatory injected OS probes, package integrity checks, separate data/program
 targets, existing-target/link rejection, WebView2/Node/platform checks, shared-
 volume disk budgeting, port checks and an opt-in startup preference. Unknown
 results and timeouts block readiness; reports omit sensitive probe details.
-It is not connected to an installer and always reports `productionReady: false`.
+This JavaScript engine always reports `productionReady: false`; it remains an
+isolated reference. A standalone C# first-installer now uses the same read-only
+Windows probe primitives with a real ACL/COM adapter, independent of Node startup.
+It is compiled only against guarded candidates and not production-accepted.
+See [FIRST-INSTALL.md](FIRST-INSTALL.md) for its narrower platform, IPv4, manual
+Runtime handoff and interruption boundaries. It is not an updater/uninstaller.
 The Windows observer now supplies real metadata/access/space probes in validated
 isolated contexts, with scoped IPv4 loopback probes. It rejects production mode
 and elevated data inspection; it does not execute the candidate Node binary.
@@ -65,7 +70,8 @@ The launcher now validates a ready per-user installation receipt, release digest
 and exact payload before setting its own environment; no terminal configuration
 is needed for a future correctly installed package. Missing WebView2 Runtime has
 an opt-in official download-page handoff, and failed backend startup no longer
-opens a blank WebView. This does not implement a receipt-writing installer.
+opens a blank WebView. The new guarded standalone installer writes receipts,
+but real installed-launch acceptance remains pending.
 See [the installed-launch contract](INSTALLED-LAUNCH.md).
 
 Verification uses a compiled OwnedNodeProbe with a synthetic stdin child and
