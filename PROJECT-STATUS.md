@@ -8,7 +8,8 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - Tek kaynak: `%USERPROFILE%/source/PanoKopru`.
 - Son adımlar: `97dfd17` doğrulanmış native derleme; `0124d43` korumalı aday paket;
   `0003fc6` sahiplikli ZIP temizliği; `0c884b3` kontrollü durdurma;
-  `b440145` kurulu açılış, kilit kurtarma ve güvenli hata sözleşmesi.
+  `b440145` kurulu açılış, kilit kurtarma ve güvenli hata sözleşmesi;
+  `fd00755` korumalı bağımsız ilk kurucu.
   Teslim commit'i için `git log -1`, değişiklikler için
   `git status --short` esas alınır.
 - Paket `1.0.0`, launcher `1.0.0.0` miras numaralardır; yeni genel yayın yok.
@@ -110,8 +111,20 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
   çalıştı: ilk kurulum, mevcut hedef/veri, bozuk kaynak, aktivasyon yarışı,
   iptal, kısmi kısayol hatası, junction ve yabancı kilit. Gerçek Windows adaptörü,
   ACL/COM/başlangıç, üretim portları ve uygulama çalıştırılmadı.
-- Bağımsız kurucunun tam derlemesi sonraki temiz commit/paket kontrolünde
-  doğrulanacak. Şu aşamada kullanıcıya verilecek çalışabilir test paketi yok.
+- Temiz `fd00755076c7cdf659534d71082c7cc42ef76f95` commit'inden tam native uygulama,
+  yeni korumalı aday ve bağımsız `PanoKopruSetup.exe` **başarıyla derlendi**.
+  Aday: **1.386 dosya, 135.959.405 payload baytı, 89 üretim bağımlılığı**.
+  Manifest SHA-256: `f5c05399e16df77b8f65d6e4f19c87bf3724c056fcdf437e01bdf7d84d0c896a`.
+  Kurucu SHA-256: `5353e7c534b988c50c4b7962f858b8b731d8d766bd0ed877ba7e170bafe6dc9e`.
+  Yerel kanıtlar: `build/candidate-6868216a-c53e-4b36-9ccf-56e2de81214a/`
+  altındaki `candidate-evidence.json` ve `setup-build-evidence.json`.
+  Kurucu imzasızdır, **çalıştırılmadı** ve korumalı payload'ı kuramaz. Kullanıcıya
+  verilecek çalışabilir kabul paketi yok. Bu sonraki belge kaydı adayın kaynak
+  commit'ini değiştirmez; derleme başarıları gerçek kurulum kabulü değildir.
+- `fd00755` üzerindeki `check:history`: **13 commit, 272 blob, 13 metadata**,
+  özel yerel terimler dahil bulgu yok. Yalnız o andaki referansların kanıtıdır;
+  sonraki commit'ler yayın öncesinde yeniden taranmalı. Kapsamlı gizlilik incelemesi
+  yerine geçmez. Çalışma ağacı/whitespace kapısı geçti.
 - Önceki temiz `b440145f303ef897a7632e1596e60baf98a48971` aday üretimi geçti:
   **1.379 dosya, 135.910.893 payload baytı, 89 üretim bağımlılığı**.
   Manifest SHA-256: `4821ace4db838690fe11151ab3842e93ca7c2b9d017b93016fae9352b441c2d5`.
@@ -244,11 +257,12 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 6. Sahiplikli outbox temizliği ve temel API/PowerShell hata ayrımları kaynakta
    tamamlandı. Gerçek disk dolması, pano/izin/süre hata kabulü ve genel doğrulama
    alt durumlarının ayrıntılandırılması bekliyor.
-7. Koruma içeren aday Windows paketinin allowlist üretimi test edildi; son kullanıcı
+7. Koruma içeren aday Windows paketinin allowlist üretimi ve bağımsız kurucu
+   derlemesi test edildi; son kullanıcı
    kurulabilir paket entegrasyonu, bağımlılık/native runtime lisans
    uygunluğu (özellikle LGPL/WebView2), nihai SBOM/bildirimler ve arşiv/QR/görsel
    gizlilik denetimi. Git geçmişi otomatik taraması var, kapsamlı sır/insan incelemesi
-   yerine geçmez. Yayına uygun paket veya kullanıcı kurucusu yok.
+   yerine geçmez. Yayına uygun paket veya çalışabilir kullanıcı kurucusu yok.
 
 Ayrıntı: docs/ROADMAP.md, docs/LIFECYCLE.md, docs/ACCEPTANCE.md.
 Sonraki mühendislik işi üretim paket/launcher/yaşam döngüsü adaptörleri; ardından

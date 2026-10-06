@@ -1,5 +1,17 @@
 # Değişiklik kaydı
 
+## Doğrulama kaydı — 2026-10-06 — `fd00755` kurucu derlemesi
+
+- Temiz commit'ten tam native uygulama, 1.386 dosyalı / 89 üretim bağımlılıklı
+  mühendislik adayı ve bağımsız kurucu derlendi. Manifest ve kurucu SHA-256 kanıtları
+  PROJECT-STATUS.md'de. Bütün payload dosyalarının hash'leri doğrulandı.
+- Erişilebilir Git geçmişi taraması: 13 commit, 272 blob, 13 metadata; özel yerel
+  terimler dahil bulgu yok. Sezgisel tarama, kapsamlı yayın denetimi değil.
+- Kurucu ve uygulama çalıştırılmadı; imzasız mühendislik çıktısı ve kaynak koruması
+  korundu. Kişisel kurulum/Windows ayarları/GitHub değiştirilmedi.
+- Bu belge commit'i derlenen adayın kaynak commit'ini değiştirmez. Başka bilgisayar
+  kabulü için çalışabilir paket henüz verilmemeli; kalan kapılar durum belgesinde.
+
 ## Unreleased — 2026-10-06 — bağımsız ilk kurucu
 
 - Paket hash'ine bağlı bağımsız Windows Forms kurucu ve compile-only üretici.

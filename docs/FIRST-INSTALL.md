@@ -65,6 +65,10 @@ kaydeder. Araç hiçbir exe/kurucuyu çalıştırmaz, korumaları kaldırmaz, ku
 Çıktı imzasızdır ve yayına veya başka kullanıcıya verilmek üzere onaylanmış değildir.
 Gerçek kurucu paketinin bağımsız güvenilen hash/imza edinimi ayrıca tasarlanmalıdır.
 
+2026-10-06: `fd00755` temiz commit'inden bağımsız kurucu ve tam uygulama derlemesi
+başarılı; aynı adayın 1.386 dosyası doğrulandı. Exe çalıştırılmadı. Kesin hash ve
+kanıt yolları PROJECT-STATUS.md'de; sonraki belge commit'i derleme girdisi değildir.
+
 `fresh-install.test.js` gerçek Windows adaptörünü değil, derlenmiş işlem motorunu
 sahte adaptör ve geçici, çalıştırılamaz dosyalarla sınar: ilk kurulum, var olan
 hedef/veri, bozuk kaynak, port/prerequisite reddi, aktivasyon yarışı, kısmi kısayol

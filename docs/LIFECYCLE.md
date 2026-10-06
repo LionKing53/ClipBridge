@@ -85,9 +85,11 @@ transfer interruption remain native acceptance cases. Source guards remain.
 - Stable launcher/bootstrapper must consume versioned release pointers. Current
   launcher still uses the established app/runtime layout; **do not connect the
   isolated kernel to it without redesigning and testing ownership/permissions**.
-- Clean pinned Node/SDK acquisition and guarded candidate assembly are tested;
-  complete installer Runtime acquisition (launcher manual handoff exists),
-  disk capacity, writable paths, port conflicts and user startup preference.
+- Clean pinned Node/SDK acquisition, guarded candidate assembly and full setup
+  compilation are tested. The first-installer connects disk/access/IPv4 checks,
+  opt-in user startup and a manual Runtime download-page handoff. Real standard-
+  user ACL/COM, Runtime installation and first-launch acceptance remain pending;
+  the synthetic tests and compile-only artifact do not prove those behaviors.
 - Implement signed/pinned release acquisition, production preflight, controlled
   process shutdown acceptance, interrupted initial installation and real crash-lock recovery acceptance.
 - Add real ACL adapter for legacy migration and private verified backup. Confirm
