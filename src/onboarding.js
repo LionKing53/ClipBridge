@@ -4,6 +4,7 @@ import { X509Certificate } from 'node:crypto';
 import { canTrust, networkKey, matchesApprovedNetwork } from './network-policy.js';
 import { sameSubnet } from './local-network.js';
 import { assertRuntimeContext, assertNoLinks } from './runtime-context.js';
+import { operationError } from './errors.js';
 const fail = message => Object.assign(new Error(message), { statusCode: 409 });
 
 export async function createOnboarding({ context, networkReader, prepareIdentity, grantPermission, readCertificate, startBootstrap, activate, isConfigured }) {
@@ -25,11 +26,11 @@ export async function createOnboarding({ context, networkReader, prepareIdentity
       try {
         await transport?.close(); transport = null;
         const selected = (await networkReader()).find(net => canTrust(net) && networkKey(net) === key);
-        if (!selected) throw fail('Seçilen ağ artık bağlı değil.');
+        if (!selected) throw operationError('ERR_NETWORK_CHANGED');
         await save({ phase: 'preparing' });
         await prepareIdentity(selected); await grantPermission(selected);
         const current = (await networkReader()).find(net => canTrust(net) && matchesApprovedNetwork(selected, net) && net.category === 'Private');
-        if (!current) throw fail('Kurulum sırasında ağ değişti.');
+        if (!current) throw operationError('ERR_NETWORK_CHANGED');
         const certificate = await readCertificate(); expectedFingerprint = new X509Certificate(certificate).fingerprint256;
         transport = await startBootstrap({ context, certificate, address: current.address, isAllowed: async req => {
           const active = (await networkReader()).find(net => matchesApprovedNetwork(current, net) && net.category === 'Private' && net.address === current.address);
@@ -40,9 +41,9 @@ export async function createOnboarding({ context, networkReader, prepareIdentity
       finally { busy = false; }
     },
     async confirm({ fingerprintFromPhone, confirmedTrust }) {
-      if (busy || !transport || state.phase !== 'certificate' || Date.now() >= transport.expiresAt) throw fail('Sertifika oturumunu yeniden başlat.');
+      if (busy || !transport || state.phase !== 'certificate' || Date.now() >= transport.expiresAt) throw operationError('ERR_CERTIFICATE_SESSION');
       const normalize = value => String(value || '').replace(/[:\s]/g, '').toUpperCase();
-      if (confirmedTrust !== true || normalize(fingerprintFromPhone) !== normalize(expectedFingerprint)) throw fail('Telefondaki sertifika parmak izi eşleşmiyor veya elle güven onayı eksik.');
+      if (confirmedTrust !== true || normalize(fingerprintFromPhone) !== normalize(expectedFingerprint)) throw operationError('ERR_FINGERPRINT_MISMATCH');
       busy = true;
       try { await transport.close(); transport = null; await activate(); await save({ phase: 'complete', phoneEndToEndVerified: false }); busy = false; return status(); }
       catch (error) { await save({ phase: 'interrupted' }); throw error; }

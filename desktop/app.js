@@ -29,7 +29,7 @@ let networkBusy = false;
 const thumbs = new Map();
 async function api(url, options = {}) {
   const response = await fetch('/api/' + url, { ...options, headers: { Authorization: 'Bearer ' + token, 'Content-Type': 'application/json', ...options.headers } });
-  if (!response.ok) { const value = await response.json().catch(() => ({})); throw new Error(value.error || 'Servise ulaşılamadı. Uygulamayı yeniden aç.'); }
+  if (!response.ok) { const value = await response.json().catch(() => ({})); throw new Error(value.message || value.error || 'Servise ulaşılamadı. Uygulamayı yeniden aç.'); }
   return response.json();
 }
 function toast(message, error = false) { clearTimeout(toastTimer); const el = $('#toast'); el.textContent = message; el.classList.toggle('error', error); el.hidden = false; toastTimer = setTimeout(() => el.hidden = true, error ? 7000 : 3200); }
@@ -111,7 +111,7 @@ async function refresh() {
     $('#paused-label').hidden = state.settings.enabled; $('#retention').textContent = 'Son ' + state.settings.limit + ' kayıt';
     $('#capture').disabled = !state.settings.enabled; $('#empty-capture').disabled = !state.settings.enabled;
     const event = state.diagnostics.at(-1); const stages = { completed: 'Aktarım tamamlandı', failed: 'Aktarım başarısız', unauthorized: 'Yetkilendirme reddedildi', reading: 'İçerik alınıyor', normalizing: 'İçerik hazırlanıyor', writing_clipboard: 'Panoya yazılıyor', received: 'İstek alındı' };
-    $('#diagnostic').textContent = event ? `${when(event.startedAt)} · ${stages[event.stage] || event.stage}${event.transport === 'local' ? ' · Yerel HTTPS' : ''}${event.bytes ? ' · ' + bytes(event.bytes) : ''}` : 'Henüz aktarım bilgisi yok.';
+    $('#diagnostic').textContent = event ? `${when(event.startedAt)} · ${stages[event.stage] || event.stage}${event.transport === 'local' ? ' · Yerel HTTPS' : ''}${event.bytes ? ' · ' + bytes(event.bytes) : ''}${event.errorCode ? ' · ' + event.errorCode : ''}` : 'Henüz aktarım bilgisi yok.';
     if (changed || !$('#items').children.length) renderItems();
   } catch (error) { $('.status').classList.add('offline'); $('.status').innerHTML = '<i></i>Servise ulaşılamıyor'; throw error; } finally { busy = false; }
 }

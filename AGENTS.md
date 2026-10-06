@@ -87,6 +87,12 @@ harness and run a synthetic Node stdin child with temporary test output. It must
 not compile/run Program/Main, WebView or production clipboard/network adapters.
 Native application start/stop and real installer acceptance remain separate.
 
+The InstalledLaunchProbe may compile only InstalledLaunch.cs and its synthetic
+console harness. It validates receipts and hashes under a temporary fake profile;
+it must never call Program, ConfigureEnvironment, WebView or a production adapter.
+Crash-recovery tests use synthetic child PIDs and temporary data only. Signal 0
+checks process existence, never terminates it; tests must not target personal locks.
+
 ## Deployment/release gates
 
 No install move, service restart, data migration, firewall changes, certificate

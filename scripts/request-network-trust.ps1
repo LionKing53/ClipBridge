@@ -11,5 +11,14 @@ try {
     if ($process.ExitCode -ne 0) { Write-Output '{"ok":false}'; exit 0 }
     Get-Content -LiteralPath $resultPath -Raw -Encoding UTF8 | Write-Output
 } catch {
-    Write-Output '{"ok":false,"cancelled":true}'
+    # Only Win32 ERROR_CANCELLED is a user cancellation. Other startup/read/
+    # helper failures must not be misreported as a declined UAC prompt.
+    $failure = $_.Exception
+    $cancelled = $false
+    while ($null -ne $failure) {
+        if ($failure -is [ComponentModel.Win32Exception] -and $failure.NativeErrorCode -eq 1223) { $cancelled = $true }
+        $failure = $failure.InnerException
+    }
+    if ($cancelled) { Write-Output '{"ok":false,"cancelled":true}' }
+    else { Write-Output '{"ok":false,"cancelled":false}' }
 }

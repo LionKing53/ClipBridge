@@ -41,5 +41,7 @@ test('first-run, permission cleanup and storage endpoints enforce auth/origin an
   assert.equal((await post('setup/begin', { confirmed: true })).status, 200); assert.equal(begun, 1); assert.equal(confirmed, 0);
   assert.equal((await post('setup/cancel', {})).status, 400);
   assert.equal((await fetch(origin + '/api/pairing?transport=local', { headers })).status, 200);
-  assert.equal((await fetch(origin + '/api/pairing', { headers })).status, 500);
+  const offlinePairing = await fetch(origin + '/api/pairing', { headers });
+  assert.equal(offlinePairing.status, 503);
+  assert.equal((await offlinePairing.json()).error, 'tailscale_unavailable');
 });

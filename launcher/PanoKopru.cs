@@ -32,10 +32,29 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        try { Context = RuntimeContext.Load(AppRoot); }
-        catch { MessageBox.Show("PanoKopru runtime configuration is missing or unsafe. See the installation guide."); return; }
+        try { InstalledLaunch.ConfigureEnvironment(InstallRoot); Context = RuntimeContext.Load(AppRoot); }
+        catch { Environment.ExitCode = 4; MessageBox.Show("PanoKopru kurulumu eksik, degismis veya bu kullaniciya ait degil. Kurulum kilavuzunu kontrol et. Kaynak/aday paket dogrudan acilamaz."); return; }
         // Native development startup remains blocked until clean-machine acceptance.
         if (Context.Mode != "production") { MessageBox.Show("Use the isolated Node development harness for this source version."); return; }
+        if (Array.IndexOf(args, "--recover-lock") >= 0)
+        {
+            if (MutexIsHeld("Service") || MutexIsHeld("Desktop") || ServiceIsRunning()) { Environment.ExitCode = 7; MessageBox.Show("Once PanoKopru'yu tamamen durdur."); return; }
+            if (MessageBox.Show("Yalniz kapanmis bir surece ait pano kilidi kontrol edilecek. Veriler silinmez, uygulama otomatik baslatilmaz. Devam edilsin mi?", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            try
+            {
+                var recovery = NodeStartInfo(Path.Combine("src", "recover-instance.js"));
+                recovery.Arguments += " --confirmed";
+                using (var process = Process.Start(recovery))
+                {
+                    process.StandardInput.Close();
+                    if (!process.WaitForExit(10000)) { Environment.ExitCode = 7; MessageBox.Show("Kilit kontrolu bitmedi. Programi yeniden baslatma; tanilama kilavuzunu kontrol et."); return; }
+                    Environment.ExitCode = process.ExitCode;
+                    MessageBox.Show(process.ExitCode == 0 ? "Kilit kontrolu tamamlandi. PanoKopru'yu yeniden acabilirsin." : "Kilit guvenle kaldirilamadi. Kilidi elle silme; tanilama kilavuzunu kontrol et.");
+                }
+            }
+            catch { Environment.ExitCode = 7; MessageBox.Show("Kilit kontrolu tamamlanamadi."); }
+            return;
+        }
         if (Array.IndexOf(args, "--stop") >= 0)
         {
             RequestShutdown();
@@ -60,6 +79,25 @@ internal static class Program
             return;
         }
 
+        // SDK files are not the Runtime. Missing Runtime is reported before a
+        // backend or blank WebView window is started. No automatic UAC/download.
+        try
+        {
+            string browserVersion = Microsoft.Web.WebView2.Core.CoreWebView2Environment.GetAvailableBrowserVersionString();
+            // Reject an Edge preview-channel suffix; it is not an installed
+            // production WebView2 Runtime prerequisite.
+            if (!System.Text.RegularExpressions.Regex.IsMatch(browserVersion ?? "", "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$")) throw new InvalidOperationException();
+        }
+        catch
+        {
+            Environment.ExitCode = 5;
+            if (MessageBox.Show("Microsoft Edge WebView2 Runtime bulunamadi. Microsoft'un resmi indirme sayfasi acilsin mi? Kurulumdan sonra PanoKopru'yu yeniden ac.", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            {
+                try { Process.Start(new ProcessStartInfo { FileName = "https://developer.microsoft.com/microsoft-edge/webview2/", UseShellExecute = true }); } catch { }
+            }
+            return;
+        }
+
         bool windowOwner;
         using (var windowMutex = new Mutex(true, Context.MutexName("Desktop"), out windowOwner))
         {
@@ -70,6 +108,12 @@ internal static class Program
             {
                 Process.Start(new ProcessStartInfo { FileName = Application.ExecutablePath, Arguments = "--background", UseShellExecute = false, CreateNoWindow = true, WindowStyle = ProcessWindowStyle.Hidden });
                 for (int i = 0; i < 20 && !ServiceIsRunning(); i++) Thread.Sleep(250);
+            }
+            if (!ServiceIsRunning())
+            {
+                Environment.ExitCode = 6;
+                MessageBox.Show("PanoKopru koprusu baslatilamadi. Port cakismasi veya onceki kapanis kilidi olabilir. Tanilama/kurulum kilavuzunu kontrol et; veri klasorunu silme.");
+                OpenWindowEvent.Dispose(); StopWindowEvent.Dispose(); return;
             }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -138,12 +182,19 @@ internal static class Program
             request.Timeout = 700;
             request.ReadWriteTimeout = 700;
             request.Method = "GET";
+            request.Proxy = null;
+            // ReadWriteTimeout is per read; also bound the whole probe against
+            // a listener trickling bytes so --stop cannot wait indefinitely.
+            using (var deadline = new System.Threading.Timer(state => { try { request.Abort(); } catch { } }, null, 1200, Timeout.Infinite))
             using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
             {
                 using (var reader = new StreamReader(response.GetResponseStream()))
                 {
                     var serializer = new System.Web.Script.Serialization.JavaScriptSerializer();
-                    var value = serializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(reader.ReadToEnd());
+                    var buffer = new char[4097]; int size = 0, count;
+                    while (size < buffer.Length && (count = reader.Read(buffer, size, buffer.Length - size)) > 0) size += count;
+                    if (size > 4096) return false;
+                    var value = serializer.Deserialize<System.Collections.Generic.Dictionary<string, object>>(new string(buffer, 0, size));
                     return response.StatusCode == HttpStatusCode.OK && value.ContainsKey("instanceId") && (string)value["instanceId"] == Context.InstanceId;
                 }
             }

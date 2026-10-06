@@ -9,6 +9,7 @@ import { createDesktopServer } from '../src/desktop-server.js';
 import { createTestSystem, fixtureMachine } from '../test/support/desktop-system.js';
 import sharp from 'sharp';
 import { createStorage } from '../src/storage.js';
+import { operationError } from '../src/errors.js';
 
 const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-ui-test-'));
 const history = await createHistory(root);
@@ -31,7 +32,7 @@ const server = await createDesktopServer({ system: createTestSystem(), config: {
   status: () => localState,
   inspectNetworks: async () => ({ connected: localState.connectedNetworks }),
   trustNetwork: async key => {
-    if (denyTrust) { denyTrust = false; throw Object.assign(new Error('Windows izni iptal edildi.'), { statusCode: 409 }); }
+    if (denyTrust) { denyTrust = false; throw operationError('ERR_PERMISSION_CANCELLED'); }
     const net = localState.connectedNetworks.find(net => net.key === key);
     localState.allowedNetworks.push({ ...net, connection: net.interfaceAlias, active: false }); net.trusted = true;
     return { ok: true, message: 'Ağ güvenilen listeye eklendi.' };

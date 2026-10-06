@@ -16,6 +16,7 @@
     "test": "node --test test/*.test.js",
     "test:ui": "node scripts/verify-desktop-ui.js",
     "check:source": "node scripts/check-source.js",
+    "check:history": "node scripts/check-history.js",
     "report:dependencies": "node scripts/dependency-report.js"
   },
   "dependencies": {

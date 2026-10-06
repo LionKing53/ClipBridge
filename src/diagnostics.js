@@ -1,5 +1,6 @@
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import { isPublicErrorCode } from './errors.js';
 const stages = new Set(['received','unauthorized','reading','normalizing','writing_clipboard','completed','failed']);
 const types = new Set(['text','file','image']);
 function clean(event) {
@@ -10,6 +11,7 @@ function clean(event) {
   for (const key of ['bytes','status']) if (Number.isSafeInteger(event[key]) && event[key] >= 0) result[key] = event[key];
   for (const key of ['rtf','rtfd']) if (typeof event[key] === 'boolean') result[key] = event[key];
   if (['local','tailscale'].includes(event.transport)) result.transport = event.transport;
+  if (isPublicErrorCode(event.errorCode)) result.errorCode = event.errorCode;
   return result;
 }
 export async function createDiagnostics(root) {

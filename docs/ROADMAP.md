@@ -75,14 +75,14 @@ ayırır. Tüm B–E aşamaları tamamlandı olarak işaretlenmemelidir.
 
 | Alan | Kaynaktaki karşılığı | Kalan kapı |
 | --- | --- | --- |
-| Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar, instance kilidi | Tam native launcher, crash recovery, yönlendirilmiş profil desteği |
+| Veri/kimlik | runtime-context Node/C#/PS, schema 1, açık portlar; kurulum kaydı/hash doğrulayan native açılış ve onaylı ölü-PID kilit kurtarma | Gerçek native/crash kabulü, kurucu kayıt entegrasyonu, yönlendirilmiş profil desteği |
 | Geçiş | data-migration copy-only motoru ve sentetik yedek/göç testleri | Üretim ACL adaptörü, gerçek CA/DPAPI/WebView teması, özel doğrulanmış yedek |
 | İlk kurulum | onboarding + public certificate bootstrap + desktop API/UI + local pairing; önkontrol motoru ve yalıtılmış Windows registry/disk/PE/loopback adaptörü | Üretim kapsamı/LAN/IPv6 ve installer bağlantısı; gerçek iPhone; aynı/farklı yönetici UAC |
 | İzinler | Eski/yeni kuralların sahiplikli temizliği; iptalde kapalı kalma | Gerçek firewall, iki arayüz ve aktarım sırasında ağ değişimi |
 | Depolama | Kullanım ekranı, onaylı gelen dosya temizliği, geçici upload ve outbox sahiplikli temizlik | Gerçek disk dolması ve zorla kapanma kabulü |
-| Hatalar | Hassas alanları dışlayan tanılama, temel kararlı hata kodları | Tüm eski API/PowerShell yollarında ayrıntılı sınıflandırma |
+| Hatalar | Hassas alanları dışlayan tanılama; API/desktop güvenli kod+mesaj; pano, UAC iptal/süre/başarısızlık, ağ değişimi, TLS/disk/bağlantı ayrımı; sınırlı pano yardımcısı | Gerçek Windows/iPhone hata kabulü; genel doğrulama alt durumlarının ayrıntılandırılması |
 | Güncelleme | Yalıtılmış release-store ve veri koruyan rollback; launcher/Node sahiplikli stdin durdurma | İmzalı paket/launcher sürüm yönlendirmesi, native durdurma kabulü/recovery, yeni kaldırıcı |
-| Dağıtım | Kilitli Node/SDK, yayıncı doğrulaması, tam native derleme ve allowlist korumalı aday; bileşen/lisans envanteri | WebView2 Runtime, kurulabilir paket entegrasyonu, nihai SBOM/lisans uygunluğu |
+| Dağıtım | Kilitli Node/SDK, yayıncı doğrulaması, tam native derleme ve allowlist korumalı aday; Runtime yokluğunda onaylı resmi sayfa yönlendirmesi; bileşen/lisans envanteri | Kurucuda Runtime akışı, kurulabilir paket entegrasyonu, nihai SBOM/lisans uygunluğu |
 | Belgeler | TR/EN README/kestirmeler, mimari, yaşam döngüsü, sorun giderme ve kabul matrisi | Çalışan installer üzerinde eksiksiz son kullanıcı rehberi |
 | Lisans | Kullanıcı GPL-3.0-or-later seçti; LICENSE ve metadata eklendi | Paketlenmiş bileşenlerle dağıtım uygunluğu; logo/ad politikası |
 

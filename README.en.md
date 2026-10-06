@@ -17,9 +17,10 @@ location, and text to the iPhone clipboard for later manual pasting.
 
 Read AGENTS.md, PROJECT-STATUS.md and docs/ROADMAP.md before development.
 Use `npm ci --ignore-scripts --no-audit --no-fund`, `npm test`,
-`npm run test:ui` (requires Edge) and `npm run check:source`.
-Production startup/build/pairing remain intentionally blocked pending native
-acceptance. Shared roots/ports/process identity, offline migration, local-first
+`npm run test:ui` (requires Edge), `npm run check:source` and `npm run check:history`.
+Production startup/legacy build/pairing remain intentionally blocked pending native
+acceptance. `build:native` compiles only; `build:candidate` produces a guarded,
+non-installable engineering payload. Shared roots/ports/process identity, offline migration, local-first
 setup UI, owned permission cleanup and storage management now exist in source.
 Tests use temporary roots,
 loopback ephemeral ports and synthetic data. Windows-only RTF tests use a hidden
@@ -35,13 +36,20 @@ distribution SBOM or a license-compliance approval. Use npm.cmd in PowerShell if
 the npm.ps1 wrapper is blocked; do not weaken machine execution policy.
 
 Major release gates: production installer/bootstrapper/updater/uninstaller,
-native WebView build and runtime acquisition, real ACL migration, clean Windows
+WebView2 Runtime installation, real ACL migration, clean Windows
 and real-iPhone acceptance, final binary notices and privacy review. The isolated
 update/rollback kernel does not update an installation. This project is licensed
 under the GNU General Public License version 3 or, at your option, any later
 version (**GPL-3.0-or-later**); see [LICENSE](LICENSE). Provided without warranty
 to the extent permitted by applicable law. Logo provenance is recorded
 as an owner statement, not a legal guarantee.
+
+Pinned Node/SDK acquisition, full native compilation and guarded allowlist
+packaging are verified. The launcher now validates an owned installation receipt
+and payload before setting its runtime context, reports missing WebView2 Runtime
+with an opt-in official download-page handoff, and implements confirmed dead-lock
+recovery. These changes are synthetic-tested/compiled, not installed acceptance.
+The SDK is not the Runtime. See [installed launch contract](docs/INSTALLED-LAUNCH.md).
 
 See [architecture](docs/ARCHITECTURE.md), [lifecycle boundaries](docs/LIFECYCLE.md),
 [acceptance matrix](docs/ACCEPTANCE.md), [TR/EN Shortcuts](docs/SHORTCUTS.md),

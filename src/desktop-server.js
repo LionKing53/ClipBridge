@@ -11,6 +11,7 @@ import QRCode from 'qrcode';
 import { setWindowsClipboard } from './clipboard.js';
 import { setWindowsClipboardFiles, setWindowsClipboardImageAndFile } from './clipboard-media.js';
 import { assertProductionReady } from '../scripts/source-guard.js';
+import { publicFailure, operationError } from './errors.js';
 
 const run = promisify(execFile);
 const publicRoot = fileURLToPath(new URL('../desktop/', import.meta.url));
@@ -87,9 +88,9 @@ export async function createDesktopServer({ config, history, transfers, diagnost
       }
       if (req.method === 'GET' && url.pathname === '/api/local-setup') {
         const local = localNetwork?.status();
-        if (!local?.configured) throw Object.assign(new Error('Yerel ağ kurulumu henüz hazırlanmadı.'), { statusCode: 409 });
+        if (!local?.configured) throw operationError('ERR_SETUP_REQUIRED');
         const net = await network();
-        if (!net.dnsName || !net.connected) throw Object.assign(new Error('İlk sertifika kurulumu için Windows Tailscale bağlantısı gerekli.'), { statusCode: 409 });
+        if (!net.dnsName || !net.connected) throw operationError('ERR_TAILSCALE_UNAVAILABLE');
         return json(res, 200, { ...local, url: `https://${net.dnsName}/local-setup`, qr: await QRCode.toDataURL(`https://${net.dnsName}/local-setup`, { width: 320, margin: 2 }) });
       }
       if (req.method === 'POST' && url.pathname === '/api/local-permission') {
@@ -118,7 +119,7 @@ export async function createDesktopServer({ config, history, transfers, diagnost
           return json(res, 200, { endpoint: local.endpoint, qr: await QRCode.toDataURL(`${origin}/setup#token=${encodeURIComponent(config.token)}`, { width: 320, margin: 2 }) });
         }
         const net = await network();
-        if (!net.dnsName || !net.connected) throw new Error('Eşleştirme için Windows’ta Tailscale bağlantısını aç.');
+        if (!net.dnsName || !net.connected) throw operationError('ERR_TAILSCALE_UNAVAILABLE');
         const endpoint = `https://${net.dnsName}/api/v1/clipboard`;
         return json(res, 200, { endpoint, qr: await QRCode.toDataURL(`https://${net.dnsName}/setup#token=${encodeURIComponent(config.token)}`, { width: 320, margin: 2 }) });
       }
@@ -142,10 +143,10 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         if (req.method === 'POST' && action === 'favorite') { await history.favorite(id); return json(res, 200, { ok: true }); }
         if (req.method === 'POST' && ['copy', 'reveal'].includes(action)) {
           if (action === 'copy' && item.type === 'text') {
-            if (item.truncated) throw new Error('Bu uzun metnin yalnızca önizlemesi saklandı.');
+            if (item.truncated) throw operationError('ERR_PREVIEW_ONLY');
             await system.copyText(item.content);
           } else {
-            if (!item.source || !(await stat(item.source).catch(() => null))) throw new Error('Kaynak dosya taşınmış veya silinmiş. Yeniden aktarabilirsin.');
+            if (!item.source || !(await stat(item.source).catch(() => null))) throw operationError('ERR_SOURCE_FILE_MISSING');
             if (action === 'reveal') await system.reveal(item.source);
             else if (item.type === 'image' && item.size <= 64 * 1024 ** 2) {
               // Normalize supported formats for the Windows bitmap clipboard; retain original file drop.
@@ -158,6 +159,6 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         }
       }
       json(res, 404, { error: 'İşlem bulunamadı.' });
-    } catch (error) { if (!res.headersSent) json(res, error.statusCode || 500, { error: error.statusCode ? error.message : 'İşlem tamamlanamadı. Dosyanın yerinde ve panonun kullanılabilir olduğundan emin ol.' }); }
+    } catch (error) { const failure = publicFailure(error); if (!res.headersSent && !res.destroyed) json(res, failure.status, failure.body); }
   });
 }

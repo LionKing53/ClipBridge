@@ -1,6 +1,6 @@
 # PanoKopru — proje durumu
 
-Güncelleme: 2026-10-03. **Geliştirme sürümü; genel yayına hazır değil.**
+Güncelleme: 2026-10-06. **Geliştirme sürümü; genel yayına hazır değil.**
 A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapıları açık.
 
 ## Sürüm ve sahiplik
@@ -26,6 +26,19 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 
 ## Tamamlanan kaynak işleri
 
+- Kurulum kaydı ve paket hash/env sınırlarını doğrulayan native açılış; eksik
+  WebView2 Runtime için onaylı resmi sayfa yönlendirmesi; backend başlamazsa boş
+  pencere açmama. Kaynak/aday koruması korunur; kayıt yazan kurucu hâlâ yok.
+- Onaylı `--recover-lock`: mevcut veri kimliği ve dosya sahiplik kaydı, ölü PID
+  kontrolü ve acquire/release/recovery kilitlemesi. Canlı/yeniden kullanılmış PID,
+  bozuk/yabancı kayıt veya kritik-bölüm kalıntısı otomatik silinmez. Veri restore yok.
+- API/desktop yakalayıcılarında ham hata metni sızıntısı kaldırıldı; güvenli kod ve
+  Türkçe mesaj. Pano okuma/yazma/süre, UAC iptal/süre/başarısızlık, ağ değişimi,
+  sertifika/disk/bağlantı ayrımı. Pano PowerShell yardımcısı 30 saniye ve 128 MiB
+  kodlanmış çıktı ile sınırlandı; stderr alınmaz. Tanılamaya yalnız izinli kod yazılır.
+- Bütün erişilebilir Git geçmişi için salt okunur `check:history` kapısı; geçmişte
+  kalıp son dosyadan silinmiş sırları da yakalayan sentetik test. Bu sezgisel araç
+  nihai arşiv/QR/görsel ve kapsamlı gizlilik incelemesinin yerine geçmez.
 - Launcher/Node kontrollü durdurma bağlandı: ebeveynin sahip olduğu stdin pipe,
   ebeveyn kapanınca temiz çıkış, aynı cleanup promise'i, kullanıcıya özel durdurma
   olayları, tray tam durdur ve `--stop`. PID/isimle kill yok; takılan çocuk varken
@@ -83,7 +96,31 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 - AGENTS/README/CHANGELOG ve mimari, yaşam döngüsü, TR/EN kestirmeler, sorun
   giderme, lisans kanıtı ve kabul matrisi güncellendi.
 
-## Son geliştirme doğrulaması — 2026-10-03
+## Son geliştirme doğrulaması — 2026-10-06
+
+- `npm.cmd test`: **123/123 geçti, 0 atlanan** (önceki 111'e 12 yeni test).
+- Edge headless UI geçti; tam C#/WebView2 native derleme geçti. Native uygulama
+  veya kurucu çalıştırılmadı. Son derleme çalışma ağacı hash'leriyle kaydedildi;
+  temiz commit'ten dağıtım paketi kabulü değildir.
+- Kaynak kapısı **133 izinli dosya / 121 kilit girdisi**, PowerShell AST ve
+  `git diff --check` geçti. Yeni bağımlılık eklenmedi.
+- `npm.cmd audit --omit=dev --json`: **0 bilinen npm üretim açığı**. Node/SDK/native
+  bileşenlerin bütünü veya gelecekteki açıklar hakkında güvenlik garantisi değildir.
+- İlk geçmiş taraması değişiklik öncesi 11 commit, 212 blob ve 11 metadata
+  nesnesinde bulgu üretmedi; Git dışı özel terimler uygulandı. Bu sayı yeni
+  değişikliklerin commit edilmeden tarandığı anlamına gelmez; her yayın öncesi
+  güncel commit üzerinde tekrar çalıştırılmalıdır.
+- İlk dar test koşusunda eski 500 beklentisi yeni `tailscale_unavailable`/503 ile
+  uyuşmadı; beklenti güvenli kodu da denetleyecek şekilde güncellendi. İlk UI
+  koşusundaki eski generic iptal fixture'ı yeni typed hata sözleşmesine geçirildi.
+  Son dar/tam/UI koşuları geçti; gerçek Windows hatası düzeltilmiş gibi sunulmaz.
+- README/TR-EN, aktarım/depolama sınırları, test/kabul ve yaşam döngüsü belgelerinin
+  eski “native derleme yok / saklama ve geçici temizlik yok / lisans seçilmedi”
+  ifadeleri düzeltildi. Başlatıcı sözleşmesi docs/INSTALLED-LAUNCH.md'de.
+- Kurulu kişisel uygulama/veri, ağ izinleri/CA, kestirmeler ve GitHub değişmedi.
+  **İlk kurucu, üretim updater/rollback/kaldırıcı ve gerçek cihaz kabulü bitmedi.**
+
+## Önceki geliştirme doğrulaması — 2026-10-03
 
 - `npm.cmd test`: **111/111 geçti, 0 atlanan**. Son eklenen kapsam: 7 indirme,
   4 paket dosyası politikası, 7 outbox temizliği, 6 sahiplikli durdurma testi.
@@ -167,12 +204,14 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 ## Bitmeyen işler — diğer sohbet bunları tamamlandı saymamalı
 
 1. Gerçek kurulum/başlatıcı/paket adaptörü: Node/SDK edinimi ve tam native derleme
-   tamamlandı; WebView2 Runtime edinimi, önkontrolün üretim kullanıcı/süreç kapsamı ve LAN/IPv6
+   tamamlandı; Runtime yokluğu için başlatıcıda manuel yönlendirme var. Kurucuda
+   WebView2 Runtime akışı, önkontrolün üretim kullanıcı/süreç kapsamı ve LAN/IPv6
    adaptörleriyle kurucuya bağlanması, başlangıç tercihinin güvenli uygulanması,
    versioned release pointer entegrasyonu bekliyor.
 2. Üretim updater/recovery ve veri koruyan kaldırıcı. İmzalı/pinlenmiş yayın
    metadata'sı, kaynakta bağlanan sahiplikli durdurmanın gerçek kabulü, kesintili ilk kurulum ve stale
-   instance kilidi kurtarma. Eski tehlikeli kaldırıcı alınmadı; yenisi henüz yok.
+   instance kilidi kurtarmanın gerçek native kabulü (onaylı kaynak akışı ve
+   sentetik test artık var). Eski tehlikeli kaldırıcı alınmadı; yenisi henüz yok.
 3. Gerçek veri göçü için üretim ACL adaptörü, doğrulanmış özel yedek; CA/DPAPI,
    ağlar, geçmiş/favoriler/gelen dosyalar ve WebView temasının kabulü.
 4. Standart/farklı yönetici UAC; iptal/zaman aşımı/kısmi başarısızlık; gerçek
@@ -180,12 +219,14 @@ A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapı
 5. Tailscale'siz gerçek iPhone sertifika indirme/ayrıntı/parmak izi/güven adımları
    ve iki yönlü metin/fotoğraf/PDF/video. Güncel Apple/iOS ekranları kabul kaydıyla
    doğrulanmalı; eski kişisel testler yeni kaynak kanıtı değildir.
-6. Sahiplikli outbox temizliği kaynakta tamamlandı. Gerçek disk dolması testleri
-   ve tüm eski API/PowerShell yollarında ayrıntılı hata sınıflandırması bekliyor.
+6. Sahiplikli outbox temizliği ve temel API/PowerShell hata ayrımları kaynakta
+   tamamlandı. Gerçek disk dolması, pano/izin/süre hata kabulü ve genel doğrulama
+   alt durumlarının ayrıntılandırılması bekliyor.
 7. Koruma içeren aday Windows paketinin allowlist üretimi test edildi; son kullanıcı
    kurulabilir paket entegrasyonu, bağımlılık/native runtime lisans
-   uygunluğu (özellikle LGPL/WebView2), nihai SBOM/bildirimler ve tam Git geçmişi,
-   arşiv/QR/görsel gizlilik denetimi. Yayına uygun paket veya kullanıcı kurucusu yok.
+   uygunluğu (özellikle LGPL/WebView2), nihai SBOM/bildirimler ve arşiv/QR/görsel
+   gizlilik denetimi. Git geçmişi otomatik taraması var, kapsamlı sır/insan incelemesi
+   yerine geçmez. Yayına uygun paket veya kullanıcı kurucusu yok.
 
 Ayrıntı: docs/ROADMAP.md, docs/LIFECYCLE.md, docs/ACCEPTANCE.md.
 Sonraki mühendislik işi üretim paket/launcher/yaşam döngüsü adaptörleri; ardından

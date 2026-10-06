@@ -1,7 +1,7 @@
 import path from 'node:path';
 import { createHash, randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { mkdir, lstat, readFile, writeFile, unlink } from 'node:fs/promises';
+import { mkdir, lstat, readFile, writeFile, unlink, rmdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 
 export const DATA_SCHEMA = 1;
@@ -80,11 +80,62 @@ export async function acquireInstance(context) {
   await mkdir(context.dataRoot, { recursive: true });
   const file = path.join(context.dataRoot, 'instance.lock');
   const id = randomUUID();
-  try { await writeFile(file, JSON.stringify({ id, pid: process.pid, instanceId: context.instanceId, startedAt: new Date().toISOString() }), { flag: 'wx' }); }
-  catch (error) { if (error.code === 'EEXIST') throw fail('Instance is running or requires reviewed crash recovery; lock was not stolen.', 'ERR_INSTANCE_LOCKED'); throw error; }
+  await withInstanceGuard(context, async () => {
+    try { await writeFile(file, JSON.stringify({ id, pid: process.pid, instanceId: context.instanceId, startedAt: new Date().toISOString() }), { flag: 'wx' }); }
+    catch (error) { if (error.code === 'EEXIST') throw fail('Instance is running or requires reviewed crash recovery; lock was not stolen.', 'ERR_INSTANCE_LOCKED'); throw error; }
+  });
   return async () => {
-    const saved = JSON.parse(await readFile(file, 'utf8'));
-    if (saved.id !== id) throw fail('Instance lock ownership changed.');
-    await unlink(file);
+    await withInstanceGuard(context, async () => {
+      const saved = await readInstanceLock(context);
+      if (saved.record.id !== id) throw fail('Instance lock ownership changed.');
+      await unlink(file);
+    });
   };
+}
+
+async function withInstanceGuard(context, action) {
+  const guard = path.join(context.dataRoot, 'instance.guard');
+  await assertNoLinks(guard);
+  // Serialize acquire/release/recovery across processes; do not steal a guard
+  // left by a crash within this short critical section. It needs manual review.
+  try { await mkdir(guard); }
+  catch (error) { if (error.code === 'EEXIST') throw fail('Instance maintenance is active or needs review.', 'ERR_INSTANCE_LOCKED'); throw error; }
+  try { return await action(); }
+  finally { await rmdir(guard); } // Never recursive; unexpected contents are retained.
+}
+
+async function readInstanceLock(context) {
+  const file = path.join(context.dataRoot, 'instance.lock'); await assertNoLinks(file);
+  const info = await lstat(file);
+  if (!info.isFile() || info.nlink !== 1 || info.size > 4096) throw fail('Unsafe instance lock.', 'ERR_INSTANCE_LOCKED');
+  const raw = await readFile(file, 'utf8'); let record;
+  try { record = JSON.parse(raw); } catch { throw fail('Malformed instance lock.', 'ERR_INSTANCE_LOCKED'); }
+  if (record?.instanceId !== context.instanceId || !/^[a-f0-9]{8}(?:-[a-f0-9]{4}){3}-[a-f0-9]{12}$/.test(record?.id || '') ||
+      !Number.isInteger(record?.pid) || record.pid < 1 || !Number.isFinite(Date.parse(record?.startedAt))) throw fail('Unrecognized instance lock.', 'ERR_INSTANCE_LOCKED');
+  return { raw, record };
+}
+
+function processIsAbsent(pid) {
+  try { process.kill(pid, 0); return false; } // Signal 0 is an existence check, NOT termination.
+  catch (error) { return error.code === 'ESRCH'; } // PID reuse, access denied and unknown errors fail closed.
+}
+
+export async function recoverStaleInstance(context, { confirmed = false } = {}) {
+  assertRuntimeContext(context);
+  if (confirmed !== true) throw fail('Explicit crash recovery confirmation required.', 'ERR_INSTANCE_LOCKED');
+  await assertNoLinks(context.dataRoot);
+  // Read only the existing identity; recovery cannot initialize or migrate data.
+  const identityPath = path.join(context.dataRoot, 'runtime-context.json');
+  await assertNoLinks(identityPath);
+  if ((await lstat(identityPath)).size > 8192) throw fail('Invalid instance identity.', 'ERR_INSTANCE_LOCKED');
+  const identity = JSON.parse(await readFile(identityPath, 'utf8'));
+  if (JSON.stringify(identity) !== JSON.stringify(context)) throw fail('Instance identity changed.', 'ERR_INSTANCE_LOCKED');
+  return withInstanceGuard(context, async () => {
+    let saved;
+    try { saved = await readInstanceLock(context); } catch (error) { if (error.code === 'ENOENT') return { recovered: false }; throw error; }
+    if (!processIsAbsent(saved.record.pid)) throw fail('Lock owner is alive, reused or cannot be inspected.', 'ERR_INSTANCE_LOCKED');
+    if ((await readInstanceLock(context)).raw !== saved.raw) throw fail('Instance lock changed during recovery.', 'ERR_INSTANCE_LOCKED');
+    await unlink(path.join(context.dataRoot, 'instance.lock'));
+    return { recovered: true, dataRestored: false };
+  });
 }

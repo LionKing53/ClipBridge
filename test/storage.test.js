@@ -37,9 +37,11 @@ test('startup staging cleanup only removes old matching owned upload directories
 });
 test('diagnostics whitelist never persists body, filenames, authorization or arbitrary MIME strings', async t => {
   const root = await fixture(t); const diagnostics = await createDiagnostics(root);
-  diagnostics.record({ stage: 'completed', bytes: 123, startedAt: '2026-10-02T12:00:00.000Z', authorization: 'private-secret', content: 'private-secret', filename: 'private-secret', requestMime: 'private-secret' });
+  diagnostics.record({ stage: 'completed', bytes: 123, startedAt: '2026-10-02T12:00:00.000Z', authorization: 'private-secret', content: 'private-secret', filename: 'private-secret', requestMime: 'private-secret', errorCode: 'private-secret' });
   await diagnostics.flush(); const data = await readFile(path.join(root, 'transfer-diagnostics.json'), 'utf8');
   assert.ok(!data.includes('private-secret')); assert.equal(diagnostics.list()[0].bytes, 123);
+  diagnostics.record({ stage: 'failed', errorCode: 'disk_full' }); await diagnostics.flush();
+  assert.equal(diagnostics.list().at(-1).errorCode, 'disk_full');
 });
 test('public errors distinguish disk, connectivity, certificate, size and instance errors without native messages', () => {
   for (const [code, expected] of [['ENOSPC','disk_full'], ['ECONNREFUSED','connection_unavailable'], ['ERR_TLS_CERT_ALTNAME_INVALID','certificate_identity_mismatch'], ['ERR_INSTANCE_LOCKED','instance_locked']]) {

@@ -1,4 +1,5 @@
-import { spawn } from "node:child_process";
+import { runClipboardProcess as runPowerShell } from './clipboard-process.js';
+import { operationError } from './errors.js';
 
 const setImageScript = [
   "$ErrorActionPreference = 'Stop'",
@@ -71,35 +72,6 @@ const getItemScript = [
   "[Console]::Out.Write([Convert]::ToBase64String($bytes))"
 ].join("; ");
 
-function runPowerShell(script, input = "", { sta = false } = {}) {
-  return new Promise((resolve, reject) => {
-    const args = ["-NoLogo", "-NoProfile", "-NonInteractive"];
-    if (sta) args.push("-STA");
-    args.push("-Command", script);
-
-    const child = spawn("powershell.exe", args, {
-      windowsHide: true,
-      stdio: ["pipe", "pipe", "pipe"]
-    });
-    const stdout = [];
-    let stderr = "";
-    child.stdout.on("data", (chunk) => stdout.push(chunk));
-    child.stderr.setEncoding("utf8");
-    child.stderr.on("data", (chunk) => {
-      stderr += chunk;
-    });
-    child.on("error", reject);
-    child.on("close", (code) => {
-      if (code === 0) {
-        resolve(Buffer.concat(stdout).toString("ascii"));
-        return;
-      }
-      reject(new Error(stderr.trim() || `PowerShell ${code} koduyla kapandi.`));
-    });
-    child.stdin.end(input, "ascii");
-  });
-}
-
 export async function setWindowsClipboardImage(data) {
   if (!Buffer.isBuffer(data) || data.length === 0) {
     throw new Error("Bos gorsel Windows panosuna yazilamaz.");
@@ -130,8 +102,11 @@ export async function setWindowsClipboardFiles(paths) {
 }
 
 export async function getWindowsClipboardItem() {
-  const encoded = (await runPowerShell(getItemScript, "", { sta: true })).trim();
-  const item = JSON.parse(Buffer.from(encoded, "base64").toString("utf8"));
+  const encoded = (await runPowerShell(getItemScript, "", { sta: true, operation: 'read' })).trim();
+  let item;
+  try { item = JSON.parse(Buffer.from(encoded, 'base64').toString('utf8')); }
+  catch { throw operationError('ERR_CLIPBOARD_READ'); }
+  if (!item || !['image', 'files', 'text'].includes(item.type)) throw operationError('ERR_CLIPBOARD_READ');
   if (item.type === "image") {
     item.data = Buffer.from(item.data, "base64");
   }

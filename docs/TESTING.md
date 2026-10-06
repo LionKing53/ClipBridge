@@ -18,6 +18,16 @@ yine de görsel kontrol gerekir. PNG örneği programatik üretilir, kişisel re
 şüpheli yollar/kimlik bilgileri ve kilit dosyası URL/bütünlük kontrolü. Bu statik
 kontrol bir güvenlik denetimi, antivirüs veya tam sır tarayıcısı değildir.
 
+`npm run check:history`: bütün mevcut Git referanslarından erişilen commit/tag
+metadata'sını ve geçmiş dosya içeriklerini salt okunur tarar. Güncel izin listesi
+dışındaki geçmiş yolları, bağlantılı/binary dosyaları, özel anahtar/uzun Bearer,
+kişisel yol/Tailscale URL kalıplarını ve varsa Git dışındaki özel terimleri kontrol
+eder. Yalnız nesne kimliği ve bulgu kodunu raporlar, özel içeriği yazdırmaz.
+Son dosya temiz olsa bile eski commit'teki bulguyu yakalayan sentetik test vardır.
+Bu sezgisel kontrol görsel/QR, nihai arşiv veya kapsamlı sır denetiminin yerine
+geçmez; unreachable/reflog nesnelerini taramaz. Çalışma ağacı ayrıca source
+kapısından geçmelidir; Git geçmişi denetimi commit edilmemiş değişiklikleri kapsamaz.
+
 ## Çalıştırılmayan / içe alınmayan eski araçlar
 
 | Araç | Yan etki / karar |
@@ -37,10 +47,19 @@ Kurulu uygulamanın hiçbir dosyası veya çalışan süreci bu testlerin hedefi
 
 ## Henüz doğrulanmayanlar
 
-Gerçek UAC/firewall, başka yönetici hesabı, temiz Windows kurulumu, paket/launcher
-derlemesi, Tailscale'siz iPhone ilk kurulum, yeni veri köküne geçiş, gerçek iPhone
+Gerçek UAC/firewall, başka yönetici hesabı, temiz Windows kurulumu, launcher'ın
+gerçek çalışması, Tailscale'siz iPhone ilk kurulum, yeni veri köküne geçiş, gerçek iPhone
 uçtan uca aktarımı, güncelleme/rollback/kaldırma. Bu oturumda kişisel telefondaki
 eski başarılı testler yeniden yapılmış gibi raporlanmamalı.
+
+Tam C#/WebView2 native derleme ve korumalı mühendislik adayı paketlemesi
+doğrulandı; bunlar uygulamanın çalıştırılması veya kurulabilir paket kabulü değildir.
+
+`installed-launch.test.js` yalnız saf InstalledLaunch sınıfını sentetik console
+harness'iyle derler. Sahte geçici Windows profilindeki metin dosyalarını kontrol
+eder; gerçek exe/pano/WebView/kurucu çalıştırmaz. `instance-recovery.test.js`
+yalnız geçici veri ve sentetik çocuk PID'si kullanır. `errors.test.js` pano
+işlemlerini sahte süreç nesneleriyle sınar; gerçek PowerShell panosu kullanılmaz.
 
 ## Windows kurulum gözlemleri — yalıtılmış kapsam
 

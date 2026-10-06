@@ -6,7 +6,7 @@ import https from 'node:https';
 import { pipeline } from "node:stream/promises";
 import { isRtf, isFlatRtfd, normalizeClipboardItem } from "./rich-text.js";
 import { MAX_FILE_BYTES, MAX_TEXT_BYTES, UploadStorage, readMultipartUpload, readBinaryUpload } from "./uploads.js";
-import { publicError } from './errors.js';
+import { publicFailure } from './errors.js';
 import { disposeTransfer } from './owned-outbox.js';
 
 export const MAX_BODY_BYTES = MAX_FILE_BYTES;
@@ -254,8 +254,8 @@ export function createServer({
         text(response, 200, clipboardKind(item));
       } catch (error) {
         logger.error("clipboard_kind_failed");
-        const failure = publicError(error, 'clipboard_read_failed');
-        json(response, failure.status, { ok: false, error: failure.code });
+        const failure = publicFailure(error, 'clipboard_read_failed');
+        json(response, failure.status, failure.body);
       } finally {
         await disposeTransfer(item).catch(() => {});
       }
@@ -275,8 +275,8 @@ export function createServer({
         await sendClipboardItem(response, item, onClipboardSent);
       } catch (error) {
         logger.error("clipboard_read_failed");
-        const failure = publicError(error, 'clipboard_read_failed');
-        if (!response.headersSent) json(response, failure.status, { ok: false, error: failure.code });
+        const failure = publicFailure(error, 'clipboard_read_failed');
+        if (!response.headersSent) json(response, failure.status, failure.body);
       }
       return;
     }
@@ -299,6 +299,7 @@ export function createServer({
 
     if (!isAuthorized(request, token)) {
       event.stage = "unauthorized";
+      event.errorCode = 'unauthorized';
       event.status = 401;
       report();
       json(response, 401, { ok: false, error: "unauthorized" });
@@ -330,19 +331,17 @@ export function createServer({
       report();
       json(response, 200, { ok: true, ...result });
     } catch (error) {
-      const failure = publicError(error, 'clipboard_update_failed');
-      const statusCode = error.statusCode || failure.status;
+      const failure = publicFailure(error, 'clipboard_update_failed');
+      const statusCode = failure.status;
       event.failedStage = event.stage;
       event.stage = "failed";
       event.status = statusCode;
+      event.errorCode = failure.body.error;
       report();
       if (statusCode === 500) {
         logger.error("clipboard_update_failed");
       }
-      json(response, statusCode, {
-        ok: false,
-        error: statusCode >= 500 ? failure.code : error.message
-      });
+      if (!response.headersSent && !response.destroyed) json(response, statusCode, failure.body);
     } finally {
       await storage.cleanup().catch(() => logger.error("Gecici aktarim dosyasi temizlenemedi."));
     }

@@ -6,9 +6,16 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { approvedNetworks, matchesApprovedNetwork, networkKey, canTrust } from './network-policy.js';
 import { assertProductionReady } from '../scripts/source-guard.js';
+import { operationError } from './errors.js';
 
 const run = promisify(execFile);
 const fail = (message, statusCode = 409) => Object.assign(new Error(message), { statusCode });
+export function checkPermissionResult(stdout) {
+  let result;
+  try { result = JSON.parse(stdout.replace(/^\uFEFF/, '').trim()); }
+  catch { throw operationError('ERR_PERMISSION_FAILED'); }
+  if (result?.ok !== true) throw operationError(result?.cancelled === true ? 'ERR_PERMISSION_CANCELLED' : 'ERR_PERMISSION_FAILED');
+}
 export async function requestNetworkPermission(root, entry, operation = 'trust') {
   assertProductionReady();
   if (!['trust','cleanup'].includes(operation)) throw fail('Geçersiz izin işlemi.');
@@ -19,11 +26,10 @@ export async function requestNetworkPermission(root, entry, operation = 'trust')
   try {
     const script = fileURLToPath(new URL('../scripts/request-network-trust.ps1', import.meta.url));
     const { stdout } = await run('powershell.exe', ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', script, '-RequestId', requestId, '-DataRoot', path.dirname(root), '-Operation', operation], { windowsHide: true, timeout: 200000, maxBuffer: 16384 });
-    const result = JSON.parse(stdout.replace(/^\uFEFF/, '').trim());
-    if (result.ok !== true) throw fail(result.cancelled ? 'Windows izni iptal edildi. Ağ güvenilen listeye eklenmedi.' : 'Windows ağ izni tamamlanamadı. Ağın bağlı olduğunu kontrol edip tekrar dene.');
+    checkPermissionResult(stdout);
   } catch (error) {
     if (error.statusCode) throw error;
-    throw fail('Windows onayı tamamlanamadı veya zaman aşımına uğradı. Ağ listeye eklenmedi.');
+    throw operationError(error.killed || error.code === 'ETIMEDOUT' ? 'ERR_PERMISSION_TIMEOUT' : 'ERR_PERMISSION_FAILED');
   } finally {
     // Only this operation's narrowly named temporary metadata files; never secrets or user files.
     await unlink(requestPath).catch(() => {});
@@ -72,14 +78,14 @@ export async function createNetworkManager({ root, networkReader, permissionRunn
       acquire('trust', key);
       try {
         const entry = (await networkReader()).find(net => canTrust(net) && networkKey(net) === key);
-        if (!entry) throw fail('Seçilen ağ artık bağlı değil. Ağ listesini yenile.');
+        if (!entry) throw operationError('ERR_NETWORK_CHANGED');
         if (approvedNetworks(config).length >= 30 && !approvedNetworks(config).some(net => networkKey(net) === key)) throw fail('En fazla 30 ağ kaydedilebilir. Kullanmadığın bir ağı çıkar.');
         // No name, address or shell arguments are accepted from the browser.
         const existing = approvedNetworks(config).find(net => networkKey(net) === key);
         const saved = { id: entry.id, name: entry.name, interfaceAlias: entry.interfaceAlias, interfaceDescription: entry.interfaceDescription, previousCategory: existing?.previousCategory || entry.category };
         await permissionRunner(root, saved);
         const current = (await networkReader()).find(net => canTrust(net) && matchesApprovedNetwork(saved, net) && net.category === 'Private');
-        if (!current) throw fail('Onay sırasında ağ değişti. Güven kaydedilmedi; yeni bağlantıyı tekrar seç.');
+        if (!current) throw operationError('ERR_NETWORK_CHANGED');
         saved.permissionGranted = true;
         const entries = approvedNetworks(config).filter(net => networkKey(net) !== key);
         const oldIndex = approvedNetworks(config).findIndex(net => networkKey(net) === key);

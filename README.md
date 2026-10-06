@@ -28,17 +28,25 @@ npm.cmd ci --ignore-scripts --no-audit --no-fund
 npm.cmd test
 npm.cmd run test:ui
 npm.cmd run check:source
+npm.cmd run check:history
 npm.cmd run report:dependencies
 npm.cmd audit
 ```
 
 Arayüz testi için Microsoft Edge gerekir. Testler geçici veri ve sahte pano/ağ
-işlemleri kullanır. Gerçek kurulumu başlatma, eşleştirme ve derleme komutları bu
-aşamada kasıtlı olarak kapalıdır. Ortak veri kökü/port/süreç kimliği, çevrimdışı
+işlemleri kullanır. Üretim başlatma, eşleştirme ve eski `build` komutu bu
+aşamada kasıtlı olarak kapalıdır. `build:native` yalnız derler, `build:candidate`
+korumalı mühendislik adayı üretir; ikisi de uygulamayı kurmaz veya çalıştırmaz.
+Ortak veri kökü/port/süreç kimliği, çevrimdışı
 göç motoru, Tailscale’siz kurulum ekranı, izin temizliği ve depolama yönetimi kaynakta
 eklendi; gerçek Windows/iPhone kabulü tamamlanmadan kurulu sürüme uygulanmayacaktır.
 Güncelleme/geri alma çekirdeği yalnız yalıtılmış testlerde çalışır; üretim updater'ı
-değildir. Node/WebView2 temiz edinimi, native paketleme ve kaldırıcı hâlâ eksiktir.
+değildir. Sabit hash'li Node/WebView2 **SDK** edinimi, native derleme ve izin
+listeli aday paketleme doğrulandı. **Runtime**, SDK'dan farklıdır: başlatıcıda
+eksik Runtime için resmi indirme sayfasına onaylı yönlendirme var; otomatik
+Runtime kurulumu yok. Kurulum kaydı doğrulayan açılış ve onaylı kilit kurtarma
+kodu eklendi; gerçek kurucu/updater/kaldırıcı entegrasyonu ve cihaz kabulü bekliyor.
+Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
 
 ## Belgeler
 

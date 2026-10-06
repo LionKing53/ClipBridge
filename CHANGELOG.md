@@ -1,5 +1,38 @@
 # Değişiklik kaydı
 
+## Unreleased — 2026-10-06 — açılış, kurtarma ve yayın denetimi
+
+- Native açılışta kurulum yeri/kullanıcı/ready kaydı, manifest ve dosya hash'leri
+  doğrulanır; kaynak kopyası çalışmaz. Doğrulamadan sonra süreç runtime ayarlarını
+  yükler. Eksik WebView2 Runtime için kullanıcı onaylı resmi indirme sayfası;
+  backend başlamazsa boş WebView yerine hata. Kurucu hâlâ kayıt yazmıyor.
+- Açık onaylı `--recover-lock` ve sabit Node giriş noktası: yalnız mevcut instance
+  kimliğiyle eşleşen, artık yaşamayan PID'nin kilidi kaldırılır. Canlı/yeniden
+  kullanılmış/belirsiz PID, bozuk/yabancı kayıt ve `instance.guard` kalıntısı korunur.
+  Normal başlatma hâlâ kilidi çalmaz; kurtarma veriyi geri yüklemez veya uygulamayı açmaz.
+- API/desktop ham native hata metnini döndürmez. `error` kararlı kod, `message`
+  güvenli Türkçe açıklamadır. Pano/UAC/ağ/TLS/disk ayrımları ve tanılama kodu eklendi.
+  Yetkisiz/validasyon doğrudan yanıtlarının mevcut biçimi korunur; catch edilen 4xx
+  artık ham mesaj taşımaz. Tailscale yokluğu 500 yerine 503 olur.
+- Windows pano yardımcısına 30 saniye/128 MiB kodlanmış çıktı sınırı ve sahip olunan
+  çocuk işlemde hata temizliği eklendi. Bu dosya aktarımlarına genel boyut limiti
+  koymaz; aşırı kodlanmış pano çıktısı artık 413, süre aşımı 504 döndürür.
+- `check:history` tüm erişilebilir referansların eski içerik ve metadata'sını
+  salt okunur tarar; yalnız nesne kimliği/bulgu sınıfı gösterir. Kapsamlı sır/görsel
+  denetimi değil. Son dosyadan kaldırılan eski bir sentetik sırrı yakalama testi var.
+- Güncelliğini yitirmiş README, saklama/temizlik, native derleme ve lisans durumu
+  ifadeleri düzeltildi; kurulu açılış/kurtarma sözleşmesi belgelendi.
+
+Doğrulama: **123/123 test**, Edge UI, tam native derleme, **133 kaynak / 121 kilit
+girdisi**, PowerShell AST ve whitespace kontrolü geçti. Npm üretim audit sonucu
+0 bilinen açık. İlk eski HTTP/UI beklentileri yeni typed sözleşmeye güncellendi;
+son koşular geçti. Gerçek UAC/CA/firewall/pano/kurucu/native kabulü yapılmadı.
+
+Uyumluluk: schema 1, kimlik/portlar, başarılı API yanıtları ve kestirme yolları
+değişmedi. Receipt olmayan legacy kurulumun üstüne kopyalanamaz; kontrollü kurucu
+ve veri geçişi gerekir. Kişisel kurulum değiştirilmedi. Kurucu, updater/rollback,
+kaldırıcı, imzalı yayın, nihai lisans ve gerçek cihaz kabulü hâlâ yayın engelidir.
+
 ## Doğrulama kaydı — 2026-10-03 — `0c884b3` mühendislik adayı
 
 - Temiz commit'ten ikinci aday paket: 1.367 dosya, 89 üretim bağımlılığı;

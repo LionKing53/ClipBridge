@@ -54,8 +54,19 @@ current-user-only stop events, then waits approximately 30 seconds. Timeout has
 exit code 2, not an indication that files may be overwritten. The background
 owner retains its mutex while a non-cooperating child is still alive. It never
 enumerates/kills processes by name/PID and never adopts a separately running
-backend. Automatic restart attempts are bounded to three; crash-lock recovery
-is still explicit and not implemented in the production launcher.
+backend. Automatic restart attempts are bounded to three. An explicit
+`--recover-lock` confirmation flow now invokes a fixed recovery entry point.
+It only removes a matching lock whose recorded PID is absent, never a living,
+reused, inaccessible or unknown PID. A surviving `instance.guard` critical-section
+marker still requires review. No data is restored/deleted. This flow is tested
+with synthetic children; actual native crash recovery acceptance remains pending.
+
+The launcher now validates a ready per-user installation receipt, release digest
+and exact payload before setting its own environment; no terminal configuration
+is needed for a future correctly installed package. Missing WebView2 Runtime has
+an opt-in official download-page handoff, and failed backend startup no longer
+opens a blank WebView. This does not implement a receipt-writing installer.
+See [the installed-launch contract](INSTALLED-LAUNCH.md).
 
 Verification uses a compiled OwnedNodeProbe with a synthetic stdin child and
 temporary output only, plus isolated Node control/whole-server tests. The full
@@ -69,10 +80,10 @@ transfer interruption remain native acceptance cases. Source guards remain.
   launcher still uses the established app/runtime layout; **do not connect the
   isolated kernel to it without redesigning and testing ownership/permissions**.
 - Clean pinned Node/SDK acquisition and guarded candidate assembly are tested;
-  acquire/check WebView2 Runtime and handle prerequisite absence,
+  complete installer Runtime acquisition (launcher manual handoff exists),
   disk capacity, writable paths, port conflicts and user startup preference.
 - Implement signed/pinned release acquisition, production preflight, controlled
-  process shutdown acceptance, interrupted initial installation and crash-lock recovery.
+  process shutdown acceptance, interrupted initial installation and real crash-lock recovery acceptance.
 - Add real ACL adapter for legacy migration and private verified backup. Confirm
   actual CA/DPAPI, hostname, trusted networks, favorites, files and theme survive.
 - Add production-safe uninstaller with explicit keep/delete personal data choice.
