@@ -17,14 +17,13 @@ export async function startBridge(context, adapters = {}) {
   if (isolated && (!adapters.transfers || !adapters.system || !adapters.localNetwork)) throw new Error('Isolated runtime requires all explicit OS adapters.');
   const release = await acquireInstance(context);
   const servers = []; let localNetwork, diagnostics;
-  const closeServer = server => new Promise(resolve => { server.closeAllConnections(); server.close(() => resolve()); });
   let closing;
   const close = () => closing ||= (async () => {
-    try { await localNetwork?.close(); }
-    finally {
-      try { await Promise.all(servers.map(closeServer)); await diagnostics?.flush(); }
-      finally { await release(); }
-    }
+    // Begin all admission stops synchronously; never release the instance while
+    // a disconnected HTTP request is still writing clipboard/history/config.
+    await Promise.all([localNetwork?.close(), ...servers.map(server => server.closeAndDrain())]);
+    await diagnostics?.flush();
+    await release();
   })();
   try {
     const config = await loadConfig(context);

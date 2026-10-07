@@ -8,6 +8,7 @@ import { isRtf, isFlatRtfd, normalizeClipboardItem } from "./rich-text.js";
 import { MAX_FILE_BYTES, MAX_TEXT_BYTES, UploadStorage, readMultipartUpload, readBinaryUpload } from "./uploads.js";
 import { publicFailure } from './errors.js';
 import { disposeTransfer } from './owned-outbox.js';
+import { manageRequests } from './managed-http.js';
 
 export const MAX_BODY_BYTES = MAX_FILE_BYTES;
 
@@ -346,5 +347,5 @@ export function createServer({
       await storage.cleanup().catch(() => logger.error("Gecici aktarim dosyasi temizlenemedi."));
     }
   };
-  return tls ? https.createServer(tls, listener) : http.createServer(listener);
+  return manageRequests(tls ? https.createServer(tls) : http.createServer(), listener);
 }

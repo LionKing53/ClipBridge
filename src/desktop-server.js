@@ -12,6 +12,7 @@ import { setWindowsClipboard } from './clipboard.js';
 import { setWindowsClipboardFiles, setWindowsClipboardImageAndFile } from './clipboard-media.js';
 import { assertProductionReady } from '../scripts/source-guard.js';
 import { publicFailure, operationError } from './errors.js';
+import { manageRequests } from './managed-http.js';
 
 const run = promisify(execFile);
 const publicRoot = fileURLToPath(new URL('../desktop/', import.meta.url));
@@ -49,7 +50,7 @@ export async function createDesktopServer({ config, history, transfers, diagnost
     let text = ''; for await (const chunk of req) { text += chunk; if (text.length > 4096) throw Object.assign(new Error('İstek çok büyük.'), { statusCode: 413 }); }
     try { return JSON.parse(text || '{}'); } catch { throw Object.assign(new Error('Geçersiz istek.'), { statusCode: 400 }); }
   }
-  return http.createServer(async (req, res) => {
+  return manageRequests(http.createServer(), async (req, res) => {
     res.setHeader('Cache-Control', 'no-store');
     res.setHeader('X-Content-Type-Options', 'nosniff');
     res.setHeader('Referrer-Policy', 'no-referrer');
@@ -65,7 +66,7 @@ export async function createDesktopServer({ config, history, transfers, diagnost
       const actual = Buffer.from(req.headers.authorization || ''); const expected = Buffer.from('Bearer ' + token);
       if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return json(res, 401, { error: 'Uygulamayı masaüstü kısayolundan yeniden aç.' });
       if (req.method === 'GET' && url.pathname === '/api/state') {
-        return json(res, 200, { ...history.list(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
+        return json(res, 200, { ...history.list(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.1.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
       }
       if (url.pathname === '/api/setup' && req.method === 'GET') {
         if (!localNetwork?.setup) return json(res, 409, { error: 'Kurulum sihirbazı bu ortamda yok.' });
@@ -89,9 +90,15 @@ export async function createDesktopServer({ config, history, transfers, diagnost
       if (req.method === 'GET' && url.pathname === '/api/local-setup') {
         const local = localNetwork?.status();
         if (!local?.configured) throw operationError('ERR_SETUP_REQUIRED');
-        const net = await network();
-        if (!net.dnsName || !net.connected) throw operationError('ERR_TAILSCALE_UNAVAILABLE');
-        return json(res, 200, { ...local, url: `https://${net.dnsName}/local-setup`, qr: await QRCode.toDataURL(`https://${net.dnsName}/local-setup`, { width: 320, margin: 2 }) });
+        let origin;
+        if (local.state === 'ready' && local.endpoint) origin = new URL(local.endpoint).origin;
+        else {
+          const net = await network();
+          if (!net.dnsName || !net.connected) throw operationError('ERR_TAILSCALE_UNAVAILABLE');
+          origin = `https://${net.dnsName}`;
+        }
+        const url = `${origin}/local-setup`;
+        return json(res, 200, { ...local, url, qr: await QRCode.toDataURL(url, { width: 320, margin: 2 }) });
       }
       if (req.method === 'POST' && url.pathname === '/api/local-permission') {
         return json(res, 409, { error: 'Güvenilen ağlar bölümünden bağlı ağı seçip İzni onar düğmesini kullan.' });

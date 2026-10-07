@@ -62,7 +62,7 @@ export async function createStorage(root, history, { now = () => Date.now() } = 
     cleanup: ({ confirmed } = {}) => queue(async () => {
       if (confirmed !== true) throw Object.assign(new Error('Dosya temizliği için onay gerekiyor.'), { statusCode: 400 });
       if (!data.retentionDays) return { removed: 0, retainedForever: true };
-      const protectedFiles = new Set(history.list().items.filter(item => item.favorite).map(item => history.detail(item.id).source).filter(Boolean).map(value => path.resolve(value).toLowerCase()));
+      return history.withSourceProtection(async protectedFiles => {
       let removed = 0; const remaining = [];
       for (const file of data.files) {
         const target = ownedTarget(file.relative);
@@ -74,6 +74,7 @@ export async function createStorage(root, history, { now = () => Date.now() } = 
         await rmdir(path.dirname(target)).catch(() => {});
       }
       data.files = remaining; await persist(); return { removed };
+      });
     })
   };
 }

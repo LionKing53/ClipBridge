@@ -14,7 +14,7 @@ test('local network accepts only valid RFC1918 IPv4 subnets', () => {
 test('home selection fails closed for public, unknown, spoofed name-only and absent networks', () => {
   const config = { home: { id: '{test-id}', name: 'approved-home' } };
   const home = { id: '{TEST-ID}', name: 'approved-home', category: 'Private', address: '192.168.1.5' };
-  assert.deepEqual(trustedHome(config, [home]), home);
+  assert.deepEqual(trustedHome(config, [home], { ok: true }), home);
   for (const entry of [{ ...home, category: 'Public' }, { ...home, id: '{different}' }, { ...home, name: 'other-network' }, { ...home, address: '8.8.8.8' }]) assert.equal(trustedHome(config, [entry]), undefined);
   assert.equal(trustedHome(config, []), undefined);
 });
@@ -22,8 +22,8 @@ test('additional USB network is explicit, adapter-bound and does not replace hom
   const home = { id: '{home}', name: 'home', interfaceAlias: 'WLAN', category: 'Private', address: '192.168.1.5' };
   const usb = { id: '{usb}', name: 'phone', interfaceAlias: 'Ethernet 3', interfaceDescription: 'Apple Mobile Device Ethernet', category: 'Private', address: '172.20.10.4' };
   const config = { home, additionalNetworks: [usb] };
-  assert.equal(trustedHome(config, [usb]), usb);
-  assert.equal(trustedHome(config, [usb, home]), home);
+  assert.equal(trustedHome(config, [usb], { ok: true, approvedNetworks: [usb] }), usb);
+  assert.equal(trustedHome(config, [usb, home], { ok: true, approvedNetworks: [usb, home] }), home);
   assert.equal(trustedHome({ home }, [usb]), undefined);
   for (const changes of [{ category: 'Public' }, { id: '{other}' }, { name: 'Untrusted Campus' }, { interfaceAlias: 'WLAN' }, { interfaceDescription: 'Other adapter' }]) {
     assert.equal(trustedHome(config, [{ ...usb, ...changes }]), undefined);
@@ -38,8 +38,8 @@ test('shared Wi-Fi adapter does not grant another network permission by adapter 
   const home = { id: '{wifi}', name: 'home', interfaceAlias: 'WLAN', category: 'Private', address: '192.168.1.5' };
   const phone = { ...home, name: 'phone', address: '172.20.10.6' };
   const config = { home, additionalNetworks: [phone] };
-  assert.equal(trustedHome(config, [phone]), phone);
-  assert.equal(trustedHome(config, [home]), home);
+  assert.equal(trustedHome(config, [phone], { ok: true, approvedNetworks: [phone] }), phone);
+  assert.equal(trustedHome(config, [home], { ok: true, approvedNetworks: [home] }), home);
   assert.equal(trustedHome(config, [{ ...phone, name: 'Untrusted Campus' }]), undefined);
   assert.equal(hasNetworkPermission(config, phone, { ok: true, approvedProfileIds: ['{wifi}'] }), false);
   assert.equal(hasNetworkPermission(config, phone, { ok: true, approvedNetworks: [home] }), false);

@@ -40,6 +40,7 @@ export async function createHistory(stateRoot) {
     root,
     list: () => ({ settings: { ...state.settings }, items: state.items.map(({ source, content, ownedBytes, ...x }) => ({ ...x, preview: content?.slice(0, 300) })) }),
     detail: id => ({ ...get(id) }),
+    withSourceProtection: action => queue(() => action(new Set(state.items.filter(item => item.favorite && item.source).map(item => path.resolve(item.source).toLowerCase())))),
     thumbnail: id => { const item = get(id); return item.thumbnail ? path.join(root, item.id + '.webp') : null; },
     record: (item, direction) => queue(async () => {
       if (!state.settings.enabled || (item.type === 'text' && !item.content)) return;
@@ -72,7 +73,13 @@ export async function createHistory(stateRoot) {
       state.items.unshift(row);
       await trim(); await persist(); return row.id;
     }),
-    favorite: id => queue(async () => { const item = get(id); item.favorite = !item.favorite; await persist(); }),
+    favorite: id => queue(async () => {
+      const item = get(id);
+      // Cleanup may have won the queue race. Never report a missing file as a
+      // successfully protected favorite; ask the caller to refresh instead.
+      if (!item.favorite && item.source && !(await stat(item.source).catch(() => null))?.isFile()) throw Object.assign(new Error('Dosya artık mevcut değil; favoriye alınamadı.'), { statusCode: 409 });
+      item.favorite = !item.favorite; await persist();
+    }),
     remove: id => queue(async () => { const item = get(id); state.items = state.items.filter(x => x.id !== id); await persist(); await removeOwned(item); }),
     clear: () => queue(async () => { const old = state.items; state.items = []; await persist(); for (const item of old) await removeOwned(item); }),
     settings: value => queue(async () => {

@@ -31,9 +31,9 @@ export function sameSubnet(remote, address, prefix) {
   const mask = (0xffffffff << (32 - prefix)) >>> 0;
   return (number(remote) & mask) === (number(address) & mask);
 }
-export function trustedHome(config, networks) {
+export function trustedHome(config, networks, permission) {
   for (const approved of approvedNetworks(config)) {
-    const found = networks.find(net => matchesApprovedNetwork(approved, net) && net.category === 'Private' && isPrivateIPv4(net.address));
+    const found = networks.find(net => matchesApprovedNetwork(approved, net) && net.category === 'Private' && isPrivateIPv4(net.address) && hasNetworkPermission(config, net, permission));
     if (found) return found;
   }
 }
@@ -81,7 +81,8 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
   if (config.setupPending) return { status: () => ({ configured: false, setupPending: true, state: 'setup_pending' }), handleSetup: async () => false, close() {} };
   const certificate = new X509Certificate(await readFile(path.join(root, 'PanoKopru-Local-CA.cer')));
   let status = { configured: true, state: 'checking', hostname: config.hostname, port: config.port, homeName: config.home?.name, fingerprint: certificate.fingerprint256, fingerprintSHA1: certificate.fingerprint };
-  let server, mdns, boundNetwork, lastCheck = 0, refreshing = false, closed = false, lastRenewal = 0;
+  let server, mdns, boundNetwork, lastCheck = 0, refreshing = false, closed = false, lastRenewal = 0, refreshTask, closing;
+  const drains = new Set();
   let currentNetworks = [];
   const manager = await createNetworkManager({ root, networkReader, onChange: () => {
     config = manager.config(); closeListener(); status = { ...status, state: 'checking', address: null, activeNetworkName: null };
@@ -90,7 +91,10 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
   function closeListener() {
     boundNetwork = null;
     if (mdns) { mdns.destroy(); mdns = null; }
-    if (server) { server.closeAllConnections(); server.close(); server = null; }
+    if (server) {
+      const task = server.closeAndDrain(); drains.add(task);
+      void task.then(() => drains.delete(task)); server = null;
+    }
   }
   const publicStatus = () => ({ ...status,
     canCleanupPermissions: true,
@@ -104,7 +108,12 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
     })),
     endpoint: status.address ? `https://${config.hostname}:${config.port}/api/v1/clipboard` : null,
     ipEndpoint: status.address ? `https://${status.address}:${config.port}/api/v1/clipboard` : null });
-  async function refresh() {
+  function refresh() {
+    if (closed) return Promise.resolve();
+    if (refreshing) return refreshTask;
+    return refreshTask = refreshNow();
+  }
+  async function refreshNow() {
     if (refreshing || closed) return;
     refreshing = true;
     try {
@@ -114,9 +123,9 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
       config = manager.config();
       const revision = config;
       lastCheck = Date.now();
-      const home = trustedHome(config, networks);
       let permission;
       try { permission = JSON.parse(await readFile(path.join(root, 'firewall-result.json'), 'utf8')); } catch {}
+      const home = trustedHome(config, networks, permission);
       if (!config.enabled || !home || !hasNetworkPermission(config, home, permission)) {
         closeListener();
         status = { ...status, address: null, activeNetworkName: null, state: !config.enabled ? 'disabled' : networks.some(net => approvedNetworks(config).some(approved => matchesApprovedNetwork(approved, net))) ? 'needs_permission' : 'away' };
@@ -155,7 +164,10 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
     trustNetwork: key => manager.trust(key),
     removeNetwork: key => manager.remove(key),
     cleanupPermissions: () => manager.cleanupPermissions(),
-    close() { closed = true; clearInterval(timer); closeListener(); },
+    close() {
+      closed = true; clearInterval(timer); closeListener();
+      return closing ||= (async () => { await refreshTask; closeListener(); await Promise.all([...drains]); })();
+    },
     async handleSetup(req, res) {
       const pathname = new URL(req.url, 'http://localhost').pathname;
       if (req.method !== 'GET' || !['/local-setup', '/local-ca.cer'].includes(pathname)) return false;
@@ -167,7 +179,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
       const origin = `https://${config.hostname}:${config.port}`;
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'");
-      res.end(`<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PanoKöprü · Ev ağı kurulumu</title><style>body{font:16px system-ui;background:#f4f6f3;color:#203329;max-width:640px;margin:auto;padding:28px 20px;line-height:1.6}section{background:white;border:1px solid #c7dcca;border-radius:14px;padding:20px;margin:20px 0}a{color:#235e3d}code{word-break:break-all;font-size:13px}small{overflow-wrap:anywhere}h1{line-height:1.2}strong{color:#285e43}</style><h1>PanoKöprü · Yerel bağlantı</h1><p>Bu sayfayı ilk kurulum için mevcut Tailscale bağlantısı üzerinden açıyorsun. Kurulumdan sonra ev ağında Tailscale gerekmeyecek.</p><section><h2>1 · Sertifikayı yükle</h2><p><a href="/local-ca.cer">PanoKöprü yerel sertifikasını indir</a></p><p>iPhone Ayarlar → Genel → VPN ve Aygıt Yönetimi bölümünden indirilen sertifika profilini yükle.</p><p>Ardından Genel → Hakkında → Sertifika Güven Ayarları bölümünde <strong>PanoKopru Local CA</strong> için güveni aç.</p><p>Bu bir cihaz yönetimi (MDM) kaydı değildir. Yine de kök sertifika güveni hassas bir ayardır: yalnızca kendi bilgisayarındaki kurulum ekranıyla eşleşen sertifikaya güven.</p><small>SHA-256: ${escape(certificate.fingerprint256)}<br>SHA-1: ${escape(certificate.fingerprint)}</small></section><section><h2>2 · Yerel bağlantıyı dene</h2><p>Telefon ve bilgisayar ev ağına bağlıyken Tailscale’ı telefonda kapat. Sonra <a href="${origin}/health">yerel bağlantı testini aç</a>. Başarılıysa <code>ok: true</code> görürsün.</p><p>Bilgisayar tarafı: ${escape(publicStatus().state)}. Windows izin onayı tamamlanmış olmalı.</p></section><section><h2>3 · Kestirmelerin yerel kopyaları</h2><p>Çalışan iki kestirmeyi silme. Kopyalarını oluşturup adlarının sonuna “Ev” ekle. Bu kopyalardaki Tailscale bağlan/ayrıl adımlarını ve bağlantı beklemesini kaldır.</p><p>Gönderme/alma API adresi:</p><code>${origin}/api/v1/clipboard</code><p>Pano türü adresi:</p><code>${origin}/api/v1/clipboard/kind</code><p>Authorization başlığını, GET/POST yöntemlerini, gönderilen içeriği ve metin/görsel/dosya dallarını değiştirme.</p><p>Eski kestirmeler uzaktan kullanım ve yedek yol olarak kalır. Otomatik yol seçimi bu kurulumun ardından ayrıca test edilecek.</p></section><p>Yerel adres çalışmıyorsa sertifika uyarısını atlama; mevcut Tailscale kestirmesini kullan.</p></html>`);
+      res.end(`<!doctype html><html lang="tr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>PanoKöprü · Ev ağı kurulumu</title><style>body{font:16px system-ui;background:#f4f6f3;color:#203329;max-width:640px;margin:auto;padding:28px 20px;line-height:1.6}section{background:white;border:1px solid #c7dcca;border-radius:14px;padding:20px;margin:20px 0}a{color:#235e3d}code{word-break:break-all;font-size:13px}small{overflow-wrap:anywhere}h1{line-height:1.2}strong{color:#285e43}</style><h1>PanoKöprü · Yerel bağlantı</h1><p>İlk sertifika kurulumu için masaüstündeki ilk kurulum sihirbazını kullan; Tailscale gerekmez. Bu sayfa mevcut yerel bağlantının sertifika ve kestirme rehberidir.</p><section><h2>1 · Sertifikayı yükle</h2><p><a href="/local-ca.cer">PanoKöprü yerel sertifikasını indir</a></p><p>iPhone Ayarlar → Genel → VPN ve Aygıt Yönetimi bölümünden indirilen sertifika profilini yükle.</p><p>Ardından Genel → Hakkında → Sertifika Güven Ayarları bölümünde <strong>PanoKopru Local CA</strong> için güveni aç.</p><p>Bu bir cihaz yönetimi (MDM) kaydı değildir. Yine de kök sertifika güveni hassas bir ayardır: yalnızca kendi bilgisayarındaki kurulum ekranıyla eşleşen sertifikaya güven.</p><small>SHA-256: ${escape(certificate.fingerprint256)}<br>SHA-1: ${escape(certificate.fingerprint)}</small></section><section><h2>2 · Yerel bağlantıyı dene</h2><p>Telefon ve bilgisayar ev ağına bağlıyken Tailscale’ı telefonda kapat. Sonra <a href="${origin}/health">yerel bağlantı testini aç</a>. Başarılıysa <code>ok: true</code> görürsün.</p><p>Bilgisayar tarafı: ${escape(publicStatus().state)}. Windows izin onayı tamamlanmış olmalı.</p></section><section><h2>3 · Kestirmelerin yerel kopyaları</h2><p>Çalışan iki kestirmeyi silme. Kopyalarını oluşturup adlarının sonuna “Ev” ekle. Bu kopyalardaki Tailscale bağlan/ayrıl adımlarını ve bağlantı beklemesini kaldır.</p><p>Gönderme/alma API adresi:</p><code>${origin}/api/v1/clipboard</code><p>Pano türü adresi:</p><code>${origin}/api/v1/clipboard/kind</code><p>Authorization başlığını, GET/POST yöntemlerini, gönderilen içeriği ve metin/görsel/dosya dallarını değiştirme.</p><p>Eski kestirmeler uzaktan kullanım ve yedek yol olarak kalır. Otomatik yol seçimi yoktur. Yerelde Aynı Ağ, uzaktan erişimde Tailscale kestirmesini kendin seç.</p></section><p>Yerel adres çalışmıyorsa sertifika uyarısını atlama; kurulum sihirbazını kontrol et veya önceden ayarladıysan Tailscale kestirmesini kullan.</p></html>`);
       return true;
     }
   };
