@@ -2,7 +2,7 @@ using System;
 using System.IO;
 using System.Threading;
 using System.Web.Script.Serialization;
-internal sealed class SyntheticFreshInstall : IFreshInstallSystem
+internal sealed class SyntheticFreshInstall : IFreshInstallSystem, IRemoveInstallSystem
 {
     internal string Root, Scenario; internal bool Desktop, Startup; internal int Probes;
     public string LocalAppData { get { return Root; } }
@@ -21,6 +21,9 @@ internal sealed class SyntheticFreshInstall : IFreshInstallSystem
         if (Scenario == "shortcut-fail") throw new InvalidOperationException("synthetic shortcut failure");
         return new string[0]; // Never COM, registry or real shortcuts.
     }
+    sealed class Lease : IDisposable { public void Dispose() { } }
+    public IDisposable StopAndCleanPermissions(string root) { if (Scenario == "remove-cancel") throw new InvalidOperationException(); return new Lease(); }
+    public void RemoveOwnedShortcuts(string root, string id) { if (Scenario == "remove-shortcut-fail") throw new InvalidOperationException(); }
 }
 internal static class FreshInstallProbe
 {
@@ -35,6 +38,11 @@ internal static class FreshInstallProbe
                 if (step == "activate" && system.Scenario == "target-race") { string target = Path.Combine(system.Root, "Programs", "PanoKopru"); Directory.CreateDirectory(target); File.WriteAllText(Path.Combine(target, "foreign.txt"), "untouched"); }
                 if (step == "activate" && system.Scenario == "cancel") cancellation.Cancel();
             }, cancellation.Token);
+            if (system.Scenario.StartsWith("remove-")) {
+                string data = Path.Combine(system.Root, "PanoKopru"); Directory.CreateDirectory(data); File.WriteAllText(Path.Combine(data, "synthetic.txt"), "retained");
+                if (system.Scenario == "remove-foreign") File.WriteAllText(Path.Combine(result.InstallRoot, "foreign.txt"), "untouched");
+                RemoveInstall.Run(system, args[2]);
+            }
             Console.WriteLine(new JavaScriptSerializer().Serialize(new { ok = true, warnings = result.Warnings, desktop = system.Desktop, startup = system.Startup, probes = system.Probes }));
             return 0;
         }

@@ -1,4 +1,4 @@
-// Guarded engineering bundle only. Never installs or launches its contents.
+// Explicit guarded or private-installable bundle. Never runs its contents.
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
@@ -10,6 +10,9 @@ import { copyApprovedFiles, packageFiles, sealCandidate, hashFile } from '../src
 import { assertNoLinks } from '../src/runtime-context.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
+const installable = process.argv.includes('--installable-test');
+if (process.argv.slice(2).some(arg => arg !== '--installable-test')) throw new Error('Unknown build option.');
+const version = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).version;
 const git = async (...args) => (await run('git', args, { cwd: root, windowsHide: true })).stdout.trim();
 if (process.platform !== 'win32' || process.arch !== 'x64') throw new Error('Candidate target is Windows x64.');
 if (await git('status', '--porcelain')) throw new Error('Commit reviewed source changes before building a candidate.');
@@ -26,7 +29,7 @@ if (evidence.baseCommit !== commit || evidence.dirtySource) throw new Error('Nat
 const work = path.join(root, 'build', 'candidate-' + randomUUID());
 const payload = path.join(work, 'payload'), app = path.join(payload, 'app');
 await assertNoLinks(work); await mkdir(work);
-await copyApprovedFiles(root, app, inputs.app);
+await copyApprovedFiles(root, app, inputs.app.filter(name => !installable || name !== 'SOURCE-CHECKOUT'));
 await copyApprovedFiles(root, path.join(payload, 'source'), source.files);
 await copyApprovedFiles(native, payload, inputs.native);
 // Fresh install; never copy source node_modules or the user's runtime/vendor.
@@ -51,7 +54,9 @@ for (const location of Object.keys(installedLock.packages).sort()) {
   const metadata = JSON.parse(await readFile(path.join(directory, 'package.json'), 'utf8'));
   if (metadata.version !== entry.version) throw new Error('Installed package version differs from lock.');
   const names = await packageFiles(directory);
-  const evidenceFiles = names.filter(name => !name.includes('node_modules/') && /^(license|licence|copying|notice|copyright)([.-]|$)/i.test(path.posix.basename(name)));
+  const evidenceFiles = names.filter(name => !name.includes('node_modules/') &&
+    (/^(license|licence|copying|notice|copyright)([.-]|$)/i.test(path.posix.basename(name)) ||
+    (metadata.name === '@img/sharp-win32-x64' && /^(README.md|versions.json)$/.test(name))));
   const texts = [];
   for (const name of evidenceFiles) {
     const content = await readFile(path.join(directory, name));
@@ -73,24 +78,25 @@ for (const artifact of toolchain.artifacts) components.push({ type: artifact.id 
   externalReferences: [{ type: 'distribution', url: artifact.url }],
   properties: [{ name: 'panokopru:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
 await mkdir(path.join(payload, 'review'));
-const limitations = ['Engineering candidate, not installable or approved for redistribution.', 'SOURCE-CHECKOUT guard retained. No app or installer was executed.',
+const limitations = [installable ? 'Installable PRIVATE acceptance package, not approved for public redistribution.' : 'Engineering candidate, not installable or approved for redistribution.',
+  installable ? 'Runtime guard omitted by explicit build; source snapshot guard retained. No app or installer executed.' : 'SOURCE-CHECKOUT guard retained. No app or installer executed.',
   'WebView2 Runtime not bundled; SDK libraries are not the Runtime.', 'Dependency/component inventory is not a vulnerability audit or license approval.',
-  'sharp/libvips corresponding-source and replacement requirements still need distribution review.', 'No actual Windows/iPhone acceptance, update, rollback or uninstall acceptance.'];
+  'sharp/libvips corresponding-source and replacement requirements still need distribution review.', 'Real Windows/iPhone acceptance pending. Clean install only; updater, rollback and legacy migration out of scope.'];
 await writeFile(path.join(payload, 'review', 'inventory.json'), JSON.stringify({ format: 1, commit, target: 'win-x64', limitations, packages: inventory }, null, 2));
 await writeFile(path.join(payload, 'review', 'candidate.cdx.json'), JSON.stringify({ bomFormat: 'CycloneDX', specVersion: '1.6', version: 1,
-  metadata: { component: { type: 'application', name: 'PanoKopru guarded candidate', version: '1.0.0-preview.1' },
-    properties: [{ name: 'panokopru:sourceCommit', value: commit }, { name: 'panokopru:status', value: 'not-installable-not-release-approved' }] }, components }, null, 2));
+  metadata: { component: { type: 'application', name: 'PanoKopru', version },
+    properties: [{ name: 'panokopru:sourceCommit', value: commit }, { name: 'panokopru:status', value: installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
 await writeFile(path.join(payload, 'review', 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
-await writeFile(path.join(payload, 'NOT-INSTALLABLE.txt'), limitations.join('\n') + '\n');
+await writeFile(path.join(payload, installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), limitations.join('\n') + '\n');
 // Source must not change underneath the build. A clean git tree alone would not
 // detect an editor changing and committing inputs while this process runs.
 for (const name of source.files) {
   if (await hashFile(path.join(root, name)) !== snapshot[name] || await hashFile(path.join(payload, 'source', name)) !== snapshot[name]) throw new Error('Source changed during packaging.');
 }
 if (await git('rev-parse', 'HEAD') !== commit || await git('status', '--porcelain')) throw new Error('Source provenance changed during packaging.');
-const result = await sealCandidate(payload, { version: '1.0.0-preview.1', commit });
-await writeFile(path.join(work, 'candidate-evidence.json'), JSON.stringify({ format: 1, purpose: 'guarded-engineering-candidate', commit,
+const result = await sealCandidate(payload, { version, commit });
+await writeFile(path.join(work, 'candidate-evidence.json'), JSON.stringify({ format: 1, purpose: installable ? 'installable-private-acceptance' : 'guarded-engineering-candidate', version, commit,
   ...result, dependencies: inventory.length, installed: false, launched: false, approvedForPublication: false }, null, 2));
 console.log(`Candidate integrity PASS: ${result.files} files, ${inventory.length} production dependencies.`);
 console.log('Output: ' + path.relative(root, work));
-console.log('Not installable; personal installation and Windows settings were not changed.');
+console.log(installable ? 'Installable private acceptance only, not publication approved. Personal installation unchanged.' : 'Guarded candidate, not installable.');

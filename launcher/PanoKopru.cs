@@ -11,8 +11,9 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("PanoK\u00f6pr\u00fc")]
 [assembly: AssemblyProduct("PanoK\u00f6pr\u00fc")]
 [assembly: AssemblyCopyright("GPL-3.0-or-later; see LICENSE")]
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyInformationalVersion("1.1.0")]
 
 internal static class Program
 {
@@ -32,6 +33,8 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        if (Array.IndexOf(args, "--stop") < 0 && Directory.Exists(Path.Combine(Path.GetDirectoryName(InstallRoot.TrimEnd('\\')), ".PanoKopru-install-lock")))
+        { Environment.ExitCode = 8; MessageBox.Show("Kurulum/kaldirma islemi suruyor veya yarim kalmis. Once kurucuyu kontrol et."); return; }
         try { InstalledLaunch.ConfigureEnvironment(InstallRoot); Context = RuntimeContext.Load(AppRoot); }
         catch { Environment.ExitCode = 4; MessageBox.Show("PanoKopru kurulumu eksik, degismis veya bu kullaniciya ait degil. Kurulum kilavuzunu kontrol et. Kaynak/aday paket dogrudan acilamaz."); return; }
         // Native development startup remains blocked until clean-machine acceptance.

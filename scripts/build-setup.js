@@ -1,6 +1,6 @@
-// Compile-only standalone first-installer, bound to an already verified guarded
-// candidate. It deliberately cannot install that candidate. Do not launch it.
-import { readFile, writeFile } from 'node:fs/promises';
+// Compile-only setup bound to a verified candidate. Explicit private test builds
+// are installable; default guarded candidates stay blocked. Never launch here.
+import { readFile, writeFile, lstat } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
@@ -15,19 +15,20 @@ await assertNoLinks(work);
 const evidence = JSON.parse(await readFile(path.join(work, 'candidate-evidence.json'), 'utf8'));
 const manifest = await verifyRelease(path.join(work, 'payload'), evidence.hash);
 const source = (await run('git', ['rev-parse', 'HEAD'], { cwd: root, windowsHide: true })).stdout.trim();
-if ((await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true })).stdout.trim() || manifest.commit !== source || evidence.commit !== source || evidence.purpose !== 'guarded-engineering-candidate') throw new Error('Matching clean committed candidate required.');
-await readFile(path.join(work, 'payload', 'app', 'SOURCE-CHECKOUT')); // Never silently produce an installable release.
+if ((await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true })).stdout.trim() || manifest.commit !== source || evidence.commit !== source || !['guarded-engineering-candidate', 'installable-private-acceptance'].includes(evidence.purpose)) throw new Error('Matching clean committed candidate required.');
+const guard = await lstat(path.join(work, 'payload', 'app', 'SOURCE-CHECKOUT')).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
+if (!!guard !== (evidence.purpose === 'guarded-engineering-candidate')) throw new Error('Payload guard differs from explicit build policy.');
 const toolchain = JSON.parse(await readFile(path.join(root, 'toolchain-lock.json'), 'utf8'));
 const policy = path.join(work, 'setup-policy.json'), exe = path.join(work, 'PanoKopruSetup.exe');
 await writeFile(policy, JSON.stringify({ manifestHash: evidence.hash, nodeVersion: toolchain.artifacts.find(item => item.id === 'node').version,
   minimumWebView2Version: '120.0.0.0' }), { flag: 'wx' });
-const sources = ['launcher/Setup.cs', 'launcher/FreshInstall.cs', 'launcher/WindowsFreshInstall.cs', 'launcher/InstalledLaunch.cs', 'scripts/InstallProbe.cs'];
+const sources = ['launcher/Setup.cs', 'launcher/FreshInstall.cs', 'launcher/RemoveInstall.cs', 'launcher/WindowsFreshInstall.cs', 'launcher/InstalledLaunch.cs', 'scripts/InstallProbe.cs'];
 await run(path.join(process.env.SystemRoot, 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'), ['/nologo', '/target:winexe', '/platform:x64',
   '/win32manifest:' + path.join(root, 'launcher/app.manifest'), '/reference:System.Windows.Forms.dll', '/reference:System.Drawing.dll', '/reference:System.Web.Extensions.dll',
   '/resource:' + policy + ',SetupPolicy', '/out:' + exe, ...sources.map(name => path.join(root, name))], { windowsHide: true, timeout: 60000 });
 const hashes = {};
 for (const name of sources) hashes[name] = createHash('sha256').update(await readFile(path.join(root, name))).digest('hex');
-await writeFile(path.join(work, 'setup-build-evidence.json'), JSON.stringify({ format: 1, purpose: 'guarded-setup-compile-only', commit: source,
+await writeFile(path.join(work, 'setup-build-evidence.json'), JSON.stringify({ format: 1, purpose: evidence.purpose, version: evidence.version, commit: source,
   payloadManifestHash: evidence.hash, executableSHA256: createHash('sha256').update(await readFile(exe)).digest('hex'), sourceHashes: hashes,
   signed: false, launched: false, installed: false, approvedForPublication: false }, null, 2), { flag: 'wx' });
-console.log('Standalone setup compile PASS; guarded payload remains not installable. No program or installer was launched.');
+console.log('Setup compile PASS: ' + evidence.purpose + '. No app or installer launched.');

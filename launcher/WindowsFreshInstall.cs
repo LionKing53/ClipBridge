@@ -9,7 +9,7 @@ using System.Security.Principal;
 
 // Used only by the explicit standalone setup executable. Tests inject a fake
 // IFreshInstallSystem instead; never change this machine's ACL/shortcut/startup.
-internal sealed class WindowsFreshInstall : IFreshInstallSystem
+internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallSystem
 {
     [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true, EntryPoint = "CreateDirectoryW")]
     static extern bool MakeDirectory(string path, IntPtr securityAttributes);
@@ -96,5 +96,80 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem
             }
         }
         return failures.ToArray();
+    }
+    public IDisposable StopAndCleanPermissions(string installRoot)
+    {
+        if (PanoKopruInstallProbe.Elevated()) throw new InvalidOperationException("ERR_INSTALL_RUN_AS_NORMAL_USER");
+        RunFixed(new System.Diagnostics.ProcessStartInfo { FileName = Path.Combine(installRoot, "PanoKopru.exe"), Arguments = "--stop" }, 40000);
+        var stopped = new StoppedLease(Path.Combine(LocalAppData, "PanoKopru"));
+        try {
+        var cleanup = new System.Diagnostics.ProcessStartInfo { FileName = Path.Combine(installRoot, "runtime", "node.exe"),
+            Arguments = "\"" + Path.Combine(installRoot, "app", "src", "uninstall-permissions.js") + "\" --confirmed", WorkingDirectory = Path.Combine(installRoot, "app") };
+        foreach (string key in new [] { "NODE_OPTIONS", "NODE_PATH" }) cleanup.EnvironmentVariables.Remove(key);
+        cleanup.EnvironmentVariables["LOCALAPPDATA"] = LocalAppData;
+        cleanup.EnvironmentVariables["PANOKOPRU_MODE"] = "production";
+        cleanup.EnvironmentVariables["PANOKOPRU_DATA_ROOT"] = Path.Combine(LocalAppData, "PanoKopru");
+        cleanup.EnvironmentVariables["PANOKOPRU_API_PORT"] = "32145";
+        cleanup.EnvironmentVariables["PANOKOPRU_DESKTOP_PORT"] = "32146";
+        cleanup.EnvironmentVariables["PANOKOPRU_LOCAL_PORT"] = "32147";
+        RunFixed(cleanup, 210000);
+        return stopped;
+        } catch { stopped.Dispose(); throw; }
+    }
+    // Hold the same native instance mutexes through permission cleanup and file
+    // removal. A launcher that passed the filesystem guard before it was created
+    // still cannot reopen the service/window while this lease is held.
+    sealed class StoppedLease : IDisposable
+    {
+        readonly List<System.Threading.Mutex> held = new List<System.Threading.Mutex>();
+        internal StoppedLease(string data)
+        {
+            string id;
+            using (var sha = System.Security.Cryptography.SHA256.Create())
+                id = BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes("production\n" + Path.GetFullPath(data).TrimEnd('\\', '/').ToLowerInvariant()))).Replace("-", "").ToLowerInvariant().Substring(0, 24);
+            try {
+                foreach (string purpose in new [] { "Service", "Desktop" }) {
+                    var mutex = new System.Threading.Mutex(false, "Local\\PanoKopru-" + id + "-" + purpose);
+                    bool acquired;
+                    try { acquired = mutex.WaitOne(0); } catch (System.Threading.AbandonedMutexException) { acquired = true; }
+                    if (!acquired) { mutex.Dispose(); throw new InvalidOperationException("ERR_REMOVE_PROCESS_ACTIVE"); }
+                    held.Add(mutex);
+                }
+            } catch { Dispose(); throw; }
+        }
+        public void Dispose() { for (int i = held.Count - 1; i >= 0; i--) { held[i].ReleaseMutex(); held[i].Dispose(); } held.Clear(); }
+    }
+    static void RunFixed(System.Diagnostics.ProcessStartInfo start, int timeout)
+    {
+        start.UseShellExecute = false; start.CreateNoWindow = true; start.WindowStyle = System.Diagnostics.ProcessWindowStyle.Hidden;
+        using (var process = System.Diagnostics.Process.Start(start))
+        {
+            // Do not kill a live process or elevated operation on timeout.
+            if (!process.WaitForExit(timeout) || process.ExitCode != 0) throw new InvalidOperationException("ERR_REMOVE_STOP_OR_PERMISSION");
+        }
+    }
+    public void RemoveOwnedShortcuts(string installRoot, string installId)
+    {
+        foreach (var pair in new [] {
+            new KeyValuePair<Environment.SpecialFolder, string>(Environment.SpecialFolder.Programs, ""),
+            new KeyValuePair<Environment.SpecialFolder, string>(Environment.SpecialFolder.DesktopDirectory, ""),
+            new KeyValuePair<Environment.SpecialFolder, string>(Environment.SpecialFolder.Startup, "--background") })
+        {
+            string directory = Environment.GetFolderPath(pair.Key);
+            if (String.IsNullOrEmpty(directory) || !Path.IsPathRooted(directory)) throw new InvalidOperationException("ERR_REMOVE_SHORTCUTS");
+            string file = Path.Combine(directory, "PanoKopru.lnk"); InstalledLaunch.NoLinks(file);
+            if (!File.Exists(file)) continue;
+            object shell = null, link = null;
+            try
+            {
+                shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
+                link = shell.GetType().InvokeMember("CreateShortcut", System.Reflection.BindingFlags.InvokeMethod, null, shell, new object[] { file });
+                Func<string, string> get = name => (string)link.GetType().InvokeMember(name, System.Reflection.BindingFlags.GetProperty, null, link, null);
+                if (String.Equals(get("TargetPath"), Path.Combine(installRoot, "PanoKopru.exe"), StringComparison.OrdinalIgnoreCase) &&
+                    get("Arguments") == pair.Value && get("Description") == "PanoKopru managed " + installId)
+                    File.Delete(file);
+            }
+            finally { if (link != null && Marshal.IsComObject(link)) Marshal.FinalReleaseComObject(link); if (shell != null && Marshal.IsComObject(shell)) Marshal.FinalReleaseComObject(shell); }
+        }
     }
 }

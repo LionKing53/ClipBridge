@@ -1,5 +1,10 @@
 # PanoKöprü
 
+**1.1.0 özel kabul paketi:** ayrı temiz Windows x64 bilgisayarda denemek için
+[Türkçe/İngilizce kısa kurulum rehberi](docs/QUICKSTART.md). Genel yayın onayı ve
+gerçek cihaz kabulü henüz yok. İlk sürüm yalnız temiz kurulumdur; otomatik
+güncelleme, üretim rollback'i ve eski verilerin göçü sonraki sürüme ertelendi.
+
 iPhone ve Windows arasında Apple Kestirmeler ile tetiklenen iki yönlü metin,
 görsel ve dosya aktarımı. Windows arayüzünde geçmiş, favoriler, arama, açık/koyu
 tema ve güvenilen ağ yönetimi bulunur.

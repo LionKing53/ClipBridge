@@ -104,6 +104,21 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### First usable release scope — owner decision 2026-10-07
+
+The owner now authorizes producing an installable, clean-install-only Windows
+x64 package through an explicit release build (never by deleting the checkout
+guard). Keep SOURCE-CHECKOUT in this repository and its source snapshot; omit it
+only from the reviewed runtime payload of that explicit build. Guarded candidate
+builds remain available. No production updater, rollback or legacy migration in
+this release: leave the experimental kernel disconnected and production-refusing.
+Add a data-preserving removal path. Do not deploy or run it on the personal host.
+Actual installation/UAC/firewall/phone acceptance is to be arranged with the owner
+on their separate clean test computer; record pending until observed/reported.
+Do not present compilation/synthetic tests as device acceptance. No GitHub writes.
+The narrow synthetic harness exception also permits testing removal core logic
+with fake process/permission/shortcut adapters and temporary owned files only.
+
 No install move, service restart, data migration, firewall changes, certificate
 changes, Tailscale Serve changes or uninstall during ordinary source work.
 Require reviewed private backup, passing isolated tests and explicit deployment

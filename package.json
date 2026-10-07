@@ -1,12 +1,14 @@
 {
   "name": "panokopru",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "license": "GPL-3.0-or-later",
   "description": "PanoKopru - Shortcut-triggered iPhone and Windows clipboard bridge (development baseline)",
   "type": "module",
   "scripts": {
     "build:candidate": "node scripts/build-candidate.js",
+    "build:test-package": "node scripts/build-candidate.js --installable-test",
+    "package:test": "node scripts/archive-package.js",
     "build:setup": "node scripts/build-setup.js",
     "toolchain:fetch": "node scripts/acquire-toolchain.js",
     "build:native": "node scripts/build-native.js",
@@ -26,7 +28,7 @@
     "mime-types": "3.0.2",
     "multicast-dns": "7.2.5",
     "qrcode": "1.5.4",
-    "sharp": "^0.35.4"
+    "sharp": "0.35.5"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",

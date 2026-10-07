@@ -13,7 +13,7 @@ test('compiled fresh-install transaction uses only synthetic files and injected 
   t.after(() => rm(root, { recursive: true, force: true }));
   const binary = path.join(root, 'FreshInstallProbe.exe');
   await run(path.join(process.env.SystemRoot, 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'), ['/nologo', '/target:exe', '/reference:System.Web.Extensions.dll', '/out:' + binary,
-    path.join(sourceRoot, 'launcher/InstalledLaunch.cs'), path.join(sourceRoot, 'launcher/FreshInstall.cs'), path.join(sourceRoot, 'test/support/FreshInstallProbe.cs')], { windowsHide: true });
+    path.join(sourceRoot, 'launcher/InstalledLaunch.cs'), path.join(sourceRoot, 'launcher/FreshInstall.cs'), path.join(sourceRoot, 'launcher/RemoveInstall.cs'), path.join(sourceRoot, 'test/support/FreshInstallProbe.cs')], { windowsHide: true });
   let counter = 0;
   async function fixture() {
     const dir = path.join(root, String(++counter)), local = path.join(dir, 'Local'), payload = path.join(dir, 'payload');
@@ -81,5 +81,18 @@ test('compiled fresh-install transaction uses only synthetic files and injected 
     const g = await fixture(), foreign = path.join(root, 'unrelated'); await mkdir(foreign);
     await symlink(foreign, path.join(g.local, 'Programs'), 'junction'); assert.equal((await g.run()).ok, false);
     assert.deepEqual(await readdir(foreign), []);
+  });
+  await t.test('removal deletes only validated program inventory and retains data', async () => {
+    const f = await fixture(); assert.equal((await f.run('remove-ok')).ok, true);
+    assert.equal(await stat(f.target).catch(() => null), null);
+    assert.equal(await readFile(path.join(f.data, 'synthetic.txt'), 'utf8'), 'retained');
+  });
+  await t.test('cancelled permission, shortcut failure and foreign files preserve program and data', async () => {
+    for (const scenario of ['remove-cancel', 'remove-shortcut-fail', 'remove-foreign']) {
+      const f = await fixture(); assert.equal((await f.run(scenario)).ok, false);
+      assert.ok((await stat(path.join(f.target, 'PanoKopru.exe'))).isFile());
+      assert.equal(await readFile(path.join(f.data, 'synthetic.txt'), 'utf8'), 'retained');
+      if (scenario === 'remove-foreign') assert.equal(await readFile(path.join(f.target, 'foreign.txt'), 'utf8'), 'untouched');
+    }
   });
 });

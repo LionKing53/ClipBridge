@@ -1,5 +1,42 @@
 # PanoKopru — proje durumu
 
+## Güncel kapsam — 2026-10-07 — 1.1.0 özel kabul adayı
+
+Bu bölüm aşağıdaki tarihsel kayıtların önündedir. Kullanıcı ilk kullanılabilir
+sürümü **yalnız temiz kurulum** olarak daralttı. Güncelleme, üretim rollback'i ve
+legacy veri göçü sonraki sürüme ertelendi; deneysel motorlar kullanıcı akışına
+bağlanmadı. Kişisel 1.0.0 kurulumuna dokunulmadı. GitHub işlemi yapılmadı.
+
+- Dört bulgu düzeltildi: kapanışta HTTP/asenkron kurulum işlerini bekleme ve
+  geç listener açılmasını önleme; yarım kurulumda izin temizliği; favori/temizlik
+  sıralaması; birden çok ağda gerçekten Windows izni olan ağı seçme.
+- Eski local-setup sayfasında Tailscale gerekliliği ve otomatik yol seçimi
+  beklentisi kaldırıldı. Yol seçimi hâlâ manuel.
+- Explicit `build:test-package` yalnız runtime payload'ında checkout korumasını
+  dışarıda bırakır; kaynak ve kaynak snapshot'ı korumalı kalır. `build:setup`
+  manifest hash'ine bağlı kurucuyu derler; `package:test` özel kabul ZIP/SHA üretir.
+- Aynı dış kurucuda güvenli kaldırma: tam durdurma, native süreç kilitlerini tutma,
+  sahiplikli firewall/kısayol/program temizliği. Veri ve CA korunur. UAC iptalinde
+  program kalır; ağ profili/Tailscale değişmez. Kısmi dosya silinmesinde bakım
+  kilidi kalır. Windows Ayarlar kaldırma kaydı yok; aynı Setup saklanmalı.
+- Paket/uygulama/kurucu sürümü 1.1.0 (Windows dört parçalı metadata 1.1.0.0),
+  veri şeması 1. API/kestirme yolları değişmedi. Mevcut program veya veri varsa
+  ilk kurucu durur. Kaldırma sonrası korunan veriyle yeniden kurulum desteklenmez.
+- TR/EN adım adım rehber ve gerçek cihaz kabul listesi: docs/QUICKSTART.md.
+- Otomatik doğrulama: **140/140 test**, Edge UI ve **146 kaynak / 121 kilit girdisi**
+  kapısı geçti. Son üretim npm audit: **0 bilinen açık**. Tarama sharp 0.35.4 için
+  yeni GHSA-wq5f-xc86-pv6w uyarısı buldu; sharp **0.35.5** olarak sabitlendi ve
+  temiz npm ci sonrası bütün testler tekrar geçti. Gerçek native/UAC/firewall/iPhone
+  kabulü **yapılmadı**. Kullanıcı ayrı bilgisayar/telefonu paket sonrası hazırlayacak.
+
+Yayın engelleri: gerçek temiz Windows + iPhone temel kabulü; sharp/libvips'in
+tam karşılık kaynak/build/yeniden bağlama yükümlülüklerinin dağıtıma göre kapanması;
+nihai paket ve görsel gizlilik incelemesi. Toplanan bildirimler/SBOM lisans onayı
+değildir. Sadece bu özel test paketi için derleme yapılıyor; genel yayın onayı yok.
+
+Paket kaynak commit'i ve SHA-256, derleme tamamlanınca ayrı teslim kaydıyla
+eklenecek. Aşağıdaki 1.0.0/korumalı aday kayıtları tarihsel kanıtlardır.
+
 Güncelleme: 2026-10-06. **Geliştirme sürümü; genel yayına hazır değil.**
 A tamamlandı. B–D çekirdekleri ilerledi; üretim entegrasyonu ve kabul kapıları açık.
 

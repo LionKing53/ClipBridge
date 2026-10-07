@@ -1,5 +1,29 @@
 # Değişiklik kaydı
 
+## 1.1.0 özel kabul adayı — 2026-10-07
+
+- Güncel npm audit'te bulunan GHSA-wq5f-xc86-pv6w nedeniyle sharp 0.35.5'e
+  sabitlendi (native libvips 8.18.7, librsvg 2.63.2). Kilit dosyası yenilendi;
+  temiz kurulum sonrası 140/140 test, Edge UI, kaynak kapısı ve üretim audit
+  (0 bilinen açık) geçti. Kaynak: https://github.com/lovell/sharp/security/advisories/GHSA-wq5f-xc86-pv6w
+
+- Asenkron HTTP/pano/kurulum işleri kapanışta izlenir; devam eden izin/aktivasyon
+  sonradan bootstrap veya yerel hizmeti yeniden açamaz. Kapanış tekrarları aynı işi bekler.
+- Yarım ilk kurulumdan Windows izinleri temizlenebilir. Favori/temizlik aynı
+  koruma kuyruğundadır; zaten silinmiş dosyaya favori isteği 409 döner.
+- Çoklu ağda izinsiz ilk eşleşme atlanır; gerçekten izinli bağlı ağ seçilir.
+- local-setup metni Tailscale'siz ilk sihirbazı ve manuel yol seçimini açıklar.
+- Açık seçenekli temiz-kurulum test paketi, sürüm 1.1.0, SHA-256 arşivi ve TR/EN
+  kısa rehber. Kaynak koruması kaynakta kalır; yalnız runtime paketleme politikası
+  özel kabul için değişir. Kişisel kurulum ve GitHub değiştirilmedi.
+- Dış Setup'ta veri koruyan kaldırma; yalnız sahip olunan dosya/kısayol/firewall.
+  UAC iptali veya aktif süreçte silme yok. Windows profil/Tailscale değişmez;
+  iPhone sertifika profili elle kaldırılır. Otomatik güncelleme/rollback/göç ertelendi.
+
+Uyumluluk: veri şeması 1, API/port/kestirmeler aynı. Mevcut program/veri üstüne
+kurulum yok. Veri koruyan kaldırmadan sonra aynı kullanıcıda yeniden kurulum yok.
+Gerçek cihaz kabulü ve sharp/libvips dağıtım incelemesi bekliyor; genel yayın değil.
+
 ## Doğrulama kaydı — 2026-10-06 — `fd00755` kurucu derlemesi
 
 - Temiz commit'ten tam native uygulama, 1.386 dosyalı / 89 üretim bağımlılıklı

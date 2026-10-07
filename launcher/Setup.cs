@@ -8,6 +8,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
 
+[assembly: AssemblyVersion("1.1.0.0")]
+[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyInformationalVersion("1.1.0")]
+
 // Standalone first-install UI, built beside a pinned payload. Never executes a
 // downloaded Node or modifies a current installation. Source/candidate guards
 // remain binding; generating this executable is not an approval to distribute.
@@ -32,7 +36,7 @@ internal sealed class SetupWindow : Form
     bool busy, completed;
     internal SetupWindow()
     {
-        Text = "PanoKopru - Ilk Kurulum"; Width = 660; Height = 500;
+        Text = "PanoKopru 1.1.0 - Kurulum / Test"; Width = 760; Height = 620;
         MinimumSize = new Size(600, 460); StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 10); BackColor = Color.FromArgb(244, 246, 243);
         var layout = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(24), AutoScroll = true };
@@ -41,15 +45,29 @@ internal sealed class SetupWindow : Form
         layout.Controls.Add(desktop); layout.Controls.Add(startup); layout.Controls.Add(consent);
         var buttons = new FlowLayoutPanel { AutoSize = true };
         var license = new Button { Text = "Lisans ve sinirlar", AutoSize = true };
-        license.Click += (s,e) => MessageBox.Show("Proje lisansi GPL-3.0-or-later; tam metin payload\\app\\LICENSE altindadir.\n\nBu kurucu yalniz ilk kurulum icindir. Guncelleme, kaldirma ve gercek cihaz kabul kapilari tamamlanmadi. Koruma iceren muhendislik adayi kurulamaz. Yayinci imzasi ve dagitim onayi bu pencereyle verilmis olmaz.", "PanoKopru");
+        license.Click += (s,e) => MessageBox.Show("Proje lisansi GPL-3.0-or-later; tam metin payload\\app\\LICENSE altindadir.\n\nBu kurucu yalniz ilk kurulum icindir. Bu paket ozel kabul testi icindir; genel yayin onayi yoktur. Verileri koruyan kaldirma var; otomatik guncelleme, rollback ve eski veri gocu yoktur. Kurucu imzasizdir; SHA-256 ve kaynagini dogrula. Rehber: payload/source/docs/QUICKSTART.md", "PanoKopru");
         var runtime = new Button { Text = "WebView2 indir (Microsoft)", AutoSize = true };
+        var remove = new Button { Text = "Kaldir (veriler korunur)", AutoSize = true };
+        remove.Click += async (s,e) => {
+            if (busy || MessageBox.Show("Bu surumun PanoKopru kurulumu, kendisine ait kisayollar ve firewall izinleri kaldirilacak. Verilerin, Windows ag profili ve Tailscale korunur. iPhone sertifikasini telefondan ayrica kaldirmalisin. Devam edilsin mi?", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            busy = true; install.Enabled = remove.Enabled = false;
+            status.Text = "Uygulama durduruluyor ve izinler temizleniyor. Windows yonetici onayini yanitla; iptal edersen program korunur.";
+            try {
+                Dictionary<string, string> policy;
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SetupPolicy"))
+                using (var reader = new StreamReader(stream)) policy = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(reader.ReadToEnd());
+                await Task.Run(() => RemoveInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]), policy["manifestHash"]));
+                completed = true; status.Text = "Program, sahip olunan kisayollar ve firewall izinleri kaldirildi. Kullanici verileri korundu. iPhone sertifika profilini Ayarlar'dan elle kaldir. Korunan veri varken temiz kurucu yeniden kurulum yapmaz.";
+            } catch { status.Text = "Kaldirma tamamlanamadi. UAC iptali, calisan islem, farkli/degismis surum veya dosya kilidi olabilir. Kullanici verileri silinmedi. Kismi dosya silinmesinde bakim kilidi korunur; elle klasor silmeden inceleme iste."; }
+            finally { busy = false; remove.Enabled = true; install.Enabled = !completed; }
+        };
         runtime.Click += (s,e) => {
             if (MessageBox.Show("Microsoft'un resmi WebView2 indirme sayfasi acilsin mi? Kurucu otomatik indirilmez veya calistirilmaz.", "WebView2", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = "https://developer.microsoft.com/microsoft-edge/webview2/", UseShellExecute = true }); }
             catch { status.Text = "Indirme sayfasi acilamadi."; }
         };
         cancel.Click += (s,e) => { if (busy && cancellation != null) { cancellation.Cancel(); cancel.Enabled = false; status.Text = "Iptal istendi. Devam eden dosya islemi bitince, etkinlestirmeden once durulacak. Etkinlesmis kurulum silinmez."; } };
-        buttons.Controls.Add(install); buttons.Controls.Add(cancel); buttons.Controls.Add(license); buttons.Controls.Add(runtime); layout.Controls.Add(buttons);
+        buttons.Controls.Add(install); buttons.Controls.Add(cancel); buttons.Controls.Add(license); buttons.Controls.Add(runtime); buttons.Controls.Add(remove); layout.Controls.Add(buttons);
         status.Width = 560; status.Text = "Normal kullanici olarak ac. Yonetici olarak calistirma.\nKurulum uygulamayi otomatik baslatmaz."; layout.Controls.Add(status); Controls.Add(layout);
         install.Click += async (s,e) => await Install();
         FormClosing += (s,e) => { if (busy) { e.Cancel = true; status.Text = "Kurulum suruyor. Dosya islemleri tamamlanana kadar bekle."; } };

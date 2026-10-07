@@ -1,5 +1,16 @@
 # Geliştirme ve yayın kapıları
 
+## 2026-10-07 ilk sürüm kararı (aşağıdaki geniş planın önündedir)
+
+1.1.0 yalnız temiz Windows x64 kurulumu ve veri koruyan kaldırma hedefler.
+Güncelleme/üretim rollback'i/legacy kişisel veri göçü sonraki sürümdedir;
+ilk sürümün yayın kapısı değildir. Deneysel çekirdekler kapalı kalır.
+Dört somut yarış/izin/ağ bulgusu ve hedefli testler kaynakta düzeltildi.
+Açık build politikasıyla kurulabilir **özel kabul** paketi hazırlanır; kaynak
+checkout koruması elle silinmez. Ayrı bilgisayar ve gerçek iPhone temel kabulü,
+native bileşenlerin dağıtım lisansları ve son gizlilik incelemesi hâlâ kapıdır.
+Test adımları: QUICKSTART.md. Eski kapsam/kayıtlar aşağıda tarihsel olarak kalır.
+
 Bu plan 2026-10-02 tarihli salt okunur inceleme ve güncel kaynak karşılaştırmasına
 dayanır. Tamamlanmış özellikleri tekrar yazmak yerine eksik altyapı tamamlanır.
 Bir aşamanın tamamlanması sonraki aşamanın veya kişisel dağıtımın onayı değildir.

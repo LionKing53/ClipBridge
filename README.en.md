@@ -1,5 +1,11 @@
 # PanoKopru
 
+**1.1.0 private acceptance package:** see [Quick start](docs/QUICKSTART.md) for a
+separate clean Windows x64 computer. Device acceptance and public distribution
+approval are pending. Clean install only: update, production rollback and legacy
+data migration are deferred. `build:test-package` explicitly produces the test
+runtime without weakening the source guard; default candidate builds stay guarded.
+
 A Windows/iPhone clipboard bridge with Shortcut-triggered bidirectional text,
 image and file transfer, desktop history, favorites, preview search, themes and
 trusted-network management.
