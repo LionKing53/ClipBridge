@@ -1,5 +1,5 @@
 // Explicit guarded or private-installable bundle. Never runs its contents.
-import { readFile, writeFile, mkdir } from 'node:fs/promises';
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { randomUUID } from 'node:crypto';
@@ -8,10 +8,17 @@ import { fileURLToPath } from 'node:url';
 import { buildNative } from './build-native.js';
 import { copyApprovedFiles, packageFiles, sealCandidate, hashFile } from '../src/package-files.js';
 import { assertNoLinks } from '../src/runtime-context.js';
+import { applyNativeOverride } from '../src/native-override.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const installable = process.argv.includes('--installable-test');
-if (process.argv.slice(2).some(arg => arg !== '--installable-test')) throw new Error('Unknown build option.');
+const options = {};
+for (let i = 2; i < process.argv.length; i++) {
+  const arg = process.argv[i]; if (arg === '--installable-test') continue;
+  if (!['--native-library-directory','--native-source-directory'].includes(arg) || options[arg] || !process.argv[i+1] || process.argv[i+1].startsWith('--')) throw new Error('Unknown, duplicate or incomplete build option');
+  options[arg] = path.resolve(process.argv[++i]);
+}
+const overrideDirectory = options['--native-library-directory'];
 const version = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).version;
 const git = async (...args) => (await run('git', args, { cwd: root, windowsHide: true })).stdout.trim();
 if (process.platform !== 'win32' || process.arch !== 'x64') throw new Error('Candidate target is Windows x64.');
@@ -45,6 +52,7 @@ await run(path.join(process.env.SystemRoot, 'System32', 'cmd.exe'), ['/d', '/s',
 
 const lock = JSON.parse(await readFile(path.join(app, 'package-lock.json'), 'utf8'));
 const installedLock = JSON.parse(await readFile(path.join(app, 'node_modules', '.package-lock.json'), 'utf8'));
+const nativeOverride = overrideDirectory ? await applyNativeOverride(root, app, overrideDirectory) : null;
 const components = [], licenses = [], inventory = [];
 for (const location of Object.keys(installedLock.packages).sort()) {
   const entry = lock.packages[location];
@@ -78,6 +86,21 @@ for (const artifact of toolchain.artifacts) components.push({ type: artifact.id 
   externalReferences: [{ type: 'distribution', url: artifact.url }],
   properties: [{ name: 'panokopru:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
 await mkdir(path.join(payload, 'review'));
+if (nativeOverride) await writeFile(path.join(payload, 'review/native-modifications.json'), JSON.stringify(nativeOverride, null, 2));
+if (options['--native-source-directory']) {
+  const directory = options['--native-source-directory']; await assertNoLinks(directory);
+  const evidence = JSON.parse(await readFile(path.join(directory, 'evidence.json'), 'utf8'));
+  const inventory = JSON.parse(await readFile(path.join(directory, 'inventory.json'), 'utf8'));
+  const lock = JSON.parse(await readFile(path.join(root, 'native-sources-lock.json'), 'utf8'));
+  const bundleName = 'PanoKopru-sharp-0.35.5-sources.zip';
+  if (inventory.sharp !== lock.sharp || evidence.nativeArchives !== lock.artifacts.length || evidence.recipeArchives !== Object.keys(lock.recipes).length || evidence.sha256 !== await hashFile(path.join(directory,bundleName))) throw new Error('Wrong native source companion');
+  for (const item of lock.artifacts) if (!inventory.artifacts.some(a => a.sha256 === item.sha256 && a.url === item.url)) throw new Error('Missing native source');
+  for (const item of Object.values(lock.recipes)) if (!inventory.artifacts.some(a => a.commit === item.commit && a.repository === item.repository)) throw new Error('Missing build recipe');
+  await mkdir(path.join(payload,'sources'));
+  await copyFile(path.join(directory,bundleName),path.join(payload,'sources',bundleName));
+  await copyFile(path.join(directory,'NATIVE-NOTICES.txt'),path.join(payload,'review/NATIVE-NOTICES.txt'));
+  await writeFile(path.join(payload,'review/native-source-delivery.json'),JSON.stringify({ ...evidence, bundle: 'sources/' + bundleName, nativeRebuildVerification: 'deferred-to-separate-environment', modifiedLibrarySourcesIncluded: !nativeOverride },null,2));
+}
 const limitations = [installable ? 'Installable PRIVATE acceptance package, not approved for public redistribution.' : 'Engineering candidate, not installable or approved for redistribution.',
   installable ? 'Runtime guard omitted by explicit build; source snapshot guard retained. No app or installer executed.' : 'SOURCE-CHECKOUT guard retained. No app or installer executed.',
   'WebView2 Runtime not bundled; SDK libraries are not the Runtime.', 'Dependency/component inventory is not a vulnerability audit or license approval.',

@@ -1,5 +1,31 @@
 # Third-party review status — not final distribution notices
 
+## Native source delivery implemented — 2026-10-08
+
+The earlier missing-source and missing-recombination provisions now have concrete
+implementations: `native-sources-lock.json`, `fetch-native-sources.js`,
+`bundle-native-sources.js`, and the explicit `--native-library-directory` build
+option. 28 native archives and 357 Rust archives were downloaded and verified
+against upstream recipe/Cargo checksums. Four pinned recipe/source snapshots
+preserve build flags and patches. 742 original license/copyright/author files
+were collected, including the full LGPL/GPL texts supplied by libheif. The
+collection includes unused/test/platform sources and is not a linked-only SBOM.
+
+The source companion and collected notices can be included in the sealed binary
+payload with `--native-source-directory`. Changed libraries are re-sealed into a
+new owner-built installer, with their hashes and untested compatibility recorded;
+there is no publisher key restriction and installed-file integrity stays on.
+Details and exact commits: `docs/NATIVE-REBUILD.md`. Modified builds must include
+their modified corresponding sources, not rely on the original companion alone.
+
+The owner explicitly moved actual native rebuild verification to another
+environment. That check remains **unperformed**, not implicitly passed by source
+collection. In particular, the source recipes retain upstream compiler/base-image
+requirements; byte-identical reproduction, full linked-component coverage and
+native ABI compatibility are not asserted without that review. The historical
+checklist below records why this work was required, not missing implementations
+that should be repeated. Public approval still requires the separate review.
+
 ## 1.1.0 package review — 2026-10-08
 
 The private acceptance payload now collects the exact Windows sharp README

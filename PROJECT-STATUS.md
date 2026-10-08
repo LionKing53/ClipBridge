@@ -1,5 +1,28 @@
 # PanoKopru — proje durumu
 
+## Native kaynak ve yeniden paketleme — 2026-10-08
+
+- 28 native kaynak arşivi upstream MXE/libvips SHA-256 değerleriyle; librsvg'nin
+  orijinal Cargo.lock dosyasındaki 357 crate checksum'larıyla indirildi/doğrulandı.
+  Fontconfig için aynı hash'li MXE aynası; mozjpeg için doğru commit tarball'ı
+  kullanıldı. İlk yanlış arşiv hash'i ve HTTP 406 başarısızlıkları atlatılmadı.
+- libvips-Windows, MXE, sharp ve sharp-libvips'in dört tam/pinli kaynak-tarif
+  snapshot'ı ve upstream patch'leri kaynak paketinde tutuluyor. 742 özgün lisans/
+  telif/yazar metni toplandı; test/opsiyonel kaynakları da içeren üst kümedir.
+- `--native-source-directory` kaynak ZIP'ini ve lisans bildirimlerini mühürlü
+  payload'a ekler. `--native-library-directory` yalnız yeni adayın üç izinli x64
+  DLL/addon dosyasını değiştirip yeni hash'lerle kurucu üretir. Kurulu dosya
+  doğrulaması kapanmaz; yayıncı anahtarı gerekmez; kişisel kurulum değişmez.
+- Hedefli üç test geçti: checksum/cache/yönlendirme; yeni paket hash doğrulaması;
+  yanlış mimari/EXE/link/yabancı yol reddi. Gerçek DLL çalıştırma testi değildir.
+- Son tam koşu: **143/143 test**, Edge UI ve **152 kaynak / 121 kilit girdisi**
+  kapısı geçti. Kaynak teslimi yeni paket üretiminde ayrıca doğrulanacak.
+- Kullanıcı **gerçek native yeniden derlemeyi ayrı ortamda doğrulamayı seçti**.
+  Bu bilgisayara Docker/WSL kurulmadı. Kaynak toplama tamamlandı; gerçek derleme,
+  ABI ve tüm bağlı bileşen kaynak kapsamı ayrı incelemede doğrulanmalı.
+- Rehber: `docs/NATIVE-REBUILD.md`. Önceki eksik kaynak/değiştirme yolu kaydı
+  tarihsel kaldı; bunların uygulaması artık var. Genel yayın onayı verilmedi.
+
 ## Son karar — 2026-10-08
 
 ### Üretilen dosyalar ve kontrol kanıtı

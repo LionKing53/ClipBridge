@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## 1.1.0 native kaynak teslimi — 2026-10-08
+
+- Pinli native kaynaklar + Cargo kaynağı indirme, checksum reddi, upstream
+  kaynak/tarif/patch snapshot'ları ve toplu lisans metinli kaynak ZIP üretimi.
+- Açık seçenekli kaynak paketi ekleme ve değiştirilmiş x64 sharp/libvips
+  dosyalarıyla yeni kurucu üretme. Yalnız yeni build staging değişir; kurulu
+  dosya doğrulaması, kullanıcı verisi ve kişisel kurulum korunur.
+- Üç hedefli dağıtım testi; yeniden derleme rehberi. Gerçek Linux/OCI native
+  derleme doğrulaması kullanıcı kararıyla ayrı ortama bırakıldı, geçmiş sayılmadı.
+- Tam test koşusu 143/143, Edge UI ve 152 kaynak/121 kilit girdisi kontrolü geçti.
+
 ## Paketleme kararı — 2026-10-08
 
 - `3255866` kaynağından 1.1.0 Setup EXE ve 52.444.014 baytlık ZIP üretildi.

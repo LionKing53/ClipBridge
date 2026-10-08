@@ -104,6 +104,15 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Native source provisions — owner decision 2026-10-08
+
+The owner assigned actual libvips rebuild validation to a separate environment.
+Do not install WSL/Docker here. File-only pinned source acquisition, tar listing/
+stdout notice reads, recipe snapshots and source-companion ZIP production are
+authorized. Do not execute upstream build scripts here. The optional native
+library override only changes fresh candidate staging; never personal installs.
+Record source/checksum/recombination tests separately from actual native builds.
+
 ### Acceptance deferral — owner decision 2026-10-08
 
 The owner postponed testing on a separate Windows computer and iPhone and asked
