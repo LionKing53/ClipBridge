@@ -1,5 +1,43 @@
 # PanoKopru — proje durumu
 
+## Son karar — 2026-10-08
+
+### Üretilen dosyalar ve kontrol kanıtı
+
+- Paket kaynağı: `32558660ed4c63e1d634bd868f27d200ad5f64a8` (temiz commit).
+  Sonraki değişiklikler kabul erteleme/teslim/lisans inceleme kayıtlarıdır;
+  paketin kaynak kimliğini değiştirmez. Nihai HEAD için `git log -1` kullanın.
+- Çıktı: `build/candidate-970263a0-b4f2-4577-b8f3-ba7bd8a1af64/`.
+  `PanoKopruSetup.exe` tek başına taşınmaz; yanındaki `payload` gerekir.
+- ZIP: `PanoKopru-1.1.0-win-x64-test.zip`, **52.444.014 bayt**, 1.398 girdi.
+  SHA-256: `3f726e18bbf99c6515243ca6567b5c4ed4274ca2b9685ea1bd9313d22f7c31b3`.
+- Setup SHA-256: `8953ebdb657b2996c406627d500094d7c5c446815cab239fd1cac040482a5f95`.
+- Payload manifest SHA-256:
+  `7f44c9f73671cb1d43b8bacd2923d73a9cac6428515ffe64ad491ef2d74b5346`.
+  1.393 dosya, 89 üretim bağımlılığı. Kaynak snapshot koruması var; runtime
+  koruması yalnız açık test-build politikasıyla dışarıda bırakılmıştır.
+- Tam native ve Setup derlendi. ZIP yeniden açılıp bütün girdiler kaynak dosyayla
+  SHA-256 karşılaştırıldı; tekrar ad/yol kontrolü ve koruma ayrımı geçti.
+  Özel terim taraması ikili/metin paket girdilerinde bulgu vermedi.
+- 2026-10-08 üretim npm audit: **0 bilinen açık**. Kaynak kapısı 146/121 geçti.
+  Paket kaynak geçmişi: 16 commit, 309 blob, 16 metadata; sezgisel gizlilik taraması
+  özel terimler dahil geçti. Bu kapsamlı güvenlik/hukuki onay değildir.
+- Kurucu **imzasızdır**, çalıştırılmadı/kurulmadı. Cihaz kabulü ertelendi.
+  Paket hâlâ özel inceleme/test çıktısıdır; genel yayın onayı yoktur.
+
+Kalan somut yayın engeli: `THIRD-PARTY-NOTICES.md` içindeki native karşılık
+kaynakları/eksiksiz lisans metinleri ve doğrulanmış yeniden derleme/değiştirme
+yolu. Mevcut hash doğrulama değiştirilmiş DLL'yi reddettiği için basit DLL
+değiştirmenin desteklendiği söylenemez. İlgili kaynak sağlama incelemesi
+tamamlanmadan bu ZIP halka açık yayın adayı olarak onaylanmamalıdır.
+
+Kullanıcı ayrı Windows/iPhone kabul testini erteledi ve EXE/paketin tamamlanmasını
+istedi. Gerçek temiz kurulum testi **ertelendi; geçmedi**. Kendi çalışan kişisel
+kurulumunda yeni ev ağını arayüzden eklediğini ve aktarımın çalıştığını bildirdi;
+bu 1.1.0 kurucusunun kabul kanıtı değildir. Kişisel kurulum yine değiştirilmedi.
+Sürümün kararlı/genel yayın onayı hâlâ verilmedi. Aşağıdaki ayrı cihaz hazırlama
+planı bu kararla ertelenmiştir; yeni cihaz beklemek paket derlemesini engellemez.
+
 ## Güncel kapsam — 2026-10-07 — 1.1.0 özel kabul adayı
 
 Bu bölüm aşağıdaki tarihsel kayıtların önündedir. Kullanıcı ilk kullanılabilir

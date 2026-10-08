@@ -1,5 +1,33 @@
 # Third-party review status — not final distribution notices
 
+## 1.1.0 package review — 2026-10-08
+
+The private acceptance payload now collects the exact Windows sharp README
+license table and versions.json as well as LICENSE/NOTICE files. The locked
+version is sharp/@img/sharp-win32-x64 0.35.5, with libvips 8.18.7 and librsvg
+2.63.2. Previous 0.35.4/8.18.6 inventories are not evidence for this payload.
+
+Still open before public binary distribution:
+
+- Obtain and identify the matching native-library sources, build recipes and
+  patches (including dependencies statically included in the libvips DLLs),
+  and prepare a verified source-delivery mechanism alongside the binary.
+- Include the applicable complete native dependency license/copyright texts;
+  an upstream README table and npm metadata are not the complete notice bundle.
+- Review the actual library replacement/rebuild route: installed-payload hash
+  checks currently reject changed DLLs. Do not claim users can simply replace
+  a library in the installed directory. The corresponding source/rebuild route
+  and any applicable installation information must be verified first.
+- Check the precise license alternatives of the native build, not the unrelated
+  libvips-all distribution. Do not substitute a generic LGPL statement for review.
+
+Primary inventory/build evidence:
+https://github.com/libvips/build-win64-mxe/tree/v8.18.7
+and the exact locked npm artifact's README.md/versions.json. The first source
+contains version-specific build inputs; it is not itself proof that we supplied
+all corresponding sources. No legal-compliance or public-distribution clearance
+is asserted by the current package. Device-test deferral does not waive these items.
+
 This source tree does not contain a bundled Node runtime, WebView2 SDK/runtime,
 or installed native libraries. Dependency code is restored from the reviewed
 lock with `npm ci --ignore-scripts`. No installed personal application is used

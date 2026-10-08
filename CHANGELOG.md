@@ -1,5 +1,19 @@
 # Değişiklik kaydı
 
+## Paketleme kararı — 2026-10-08
+
+- `3255866` kaynağından 1.1.0 Setup EXE ve 52.444.014 baytlık ZIP üretildi.
+  1.398 arşiv girdisi yeniden okunarak hash karşılaştırması geçti; SHA-256 ve
+  paket/kurucu kimlikleri PROJECT-STATUS.md'ye kaydedildi. İmzalama/çalıştırma yok.
+- Kaynak/geçmiş/özel paket terim kontrolleri geçti; güncel üretim npm audit 0
+  bilinen açık. Native bileşenler için kaynak sağlama ve kütüphane değiştirme
+  yolu açık kaldı; yalnız lisans tablosu toplanmasıyla uygunluk onayı verilmedi.
+
+- Kullanıcı ayrı Windows/iPhone temiz kurulum kabulünü erteledi. Test geçmiş
+  sayılmadı; mevcut kişisel kurulumda yeni ağın çalışması ayrı kullanıcı beyanıdır.
+- 1.1.0 EXE/ZIP üretimi devam eder. Genel yayın ve native bileşen dağıtım
+  yükümlülükleri onaylanmış sayılmaz; kişisel kurulumda işlem/GitHub yayını yok.
+
 ## 1.1.0 özel kabul adayı — 2026-10-07
 
 - Güncel npm audit'te bulunan GHSA-wq5f-xc86-pv6w nedeniyle sharp 0.35.5'e

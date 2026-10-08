@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-08: Kullanıcı ayrı cihaz kabulünü erteledi. Paket üretimi devam eder;
+gerçek temiz kurulum/native/iPhone kabulü doğrulanmamış olarak kaydedilir.
+Bu karar native bağımlılıkların lisans/kaynak sağlama incelemesini kapatmaz.
+
 ## 2026-10-07 ilk sürüm kararı (aşağıdaki geniş planın önündedir)
 
 1.1.0 yalnız temiz Windows x64 kurulumu ve veri koruyan kaldırma hedefler.

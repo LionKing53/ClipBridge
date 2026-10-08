@@ -104,6 +104,16 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Acceptance deferral — owner decision 2026-10-08
+
+The owner postponed testing on a separate Windows computer and iPhone and asked
+to finish the EXE/package. Record clean-device acceptance as deferred/unverified,
+not passed. Their reported successful network enrollment/transfer concerns the
+existing personal installation, not this source-built installer. Continue file-only
+packaging and publication checks; do not install on the personal host. Do not
+mark native-library distribution obligations resolved just because testing was
+deferred. GitHub publication remains the other conversation's responsibility.
+
 ### First usable release scope — owner decision 2026-10-07
 
 The owner now authorizes producing an installable, clean-install-only Windows
