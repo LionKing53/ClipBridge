@@ -1,5 +1,11 @@
 # Değişiklik kaydı
 
+## Tek İngilizce README — 2026-10-09
+
+- Gereksiz README.en.md yönlendirme dosyası kaldırıldı; İngilizce belge README.md.
+  Türkçe bağlantı düzeltildi. Kaldırılan kaynak geçmişte taranmaya devam eder;
+  aktif kaynak/paket girdisi değildir. Uygulama/API/veri şeması değişmedi.
+
 ## English-first README ve görseller — 2026-10-09
 
 - İngilizce ana README ve ayrıntılı kurulum/kaldırma rehberi; Türkçe kopyalar

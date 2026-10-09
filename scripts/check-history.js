@@ -67,7 +67,10 @@ export async function auditReachableHistory({ repository = root, allowed, privat
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const manifest = JSON.parse(await readFile(path.join(root, 'source-manifest.json'), 'utf8'));
-  const allowed = new Set(manifest.files);
+  const historicalFiles = manifest.historicalFiles || [];
+  if (!Array.isArray(historicalFiles) || historicalFiles.some(name => typeof name !== 'string' || name.startsWith('/') || name.includes('\\') || name.includes(':') || name.split('/').some(part => !part || part === '.' || part === '..'))) throw new Error('Invalid historical source paths.');
+  // Retired reviewed paths remain content-scanned in history but are not source/package inputs.
+  const allowed = new Set([...manifest.files, ...historicalFiles]);
   let privateTerms = [];
   try { privateTerms = JSON.parse(await readFile(path.join(root, '.local/privacy-terms.json'), 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }

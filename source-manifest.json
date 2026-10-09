@@ -85,7 +85,6 @@
     "CHANGELOG.md",
     "LOCAL-NETWORK.md",
     "PROJECT-STATUS.md",
-    "README.en.md",
     "README.md",
     "SOURCE-CHECKOUT",
     "TRANSFER-LIMITS.md",
@@ -163,6 +162,9 @@
     "docs/images/history-dark.png",
     "docs/images/trusted-networks.png",
     "docs/images/first-time-setup.png"
+  ],
+  "historicalFiles": [
+    "README.en.md"
   ],
   "documentationImages": [
     {

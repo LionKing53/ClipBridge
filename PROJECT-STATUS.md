@@ -1,9 +1,19 @@
 # PanoKopru — proje durumu
 
+## README sadeleştirme — 2026-10-09
+
+- Kullanıcı isteğiyle README.en.md kaldırıldı; İngilizce ana belge README.md,
+  Türkçe kopya README.tr.md. Türkçe belgedeki İngilizce bağlantısı düzeltildi.
+- Aktif kaynak/paket izin listesinden kaldırılan dosya, geçmiş denetiminde
+  historicalFiles üzerinden içerik taramasına tabi kalır; Git geçmişi yeniden yazılmaz.
+- History-audit hedefli testleri 4/4 geçti. Kaynak/diff kontrolleri ve commit
+  sonrası geçmiş kapısı push öncesi çalıştırılır. Uygulama testleri yeniden
+  çalıştırılmadı. Paket kaynağı
+  a8ea3dc ve kişisel kurulum 1.0.0 değişmedi; güncel kaynak git log -1/origin/main.
+
 ## English-first GitHub belgeleri — 2026-10-09
 
-- README.md İngilizce ana giriş; README.tr.md Türkçe kopya. README.en.md ana
-  İngilizce belgeye yönlendirir. QUICKSTART.md ayrıntılı İngilizce kurulum/kaldırma
+- README.md İngilizce ana giriş; README.tr.md Türkçe kopya. QUICKSTART.md ayrıntılı İngilizce kurulum/kaldırma
   rehberi; QUICKSTART.tr.md Türkçe kopya. Kestirme rehberinde İngilizce önde.
 - README ve kurulum rehberinde Mermaid bağlantı/kurulum/aktarım şemaları ve
   dört sentetik İngilizce ekran görüntüsü var. Gerçek HTML/CSS test arayüzü

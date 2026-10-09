@@ -65,7 +65,7 @@ Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
 
 ## Belgeler
 
-- [English overview](README.en.md)
+- [English overview](README.md)
 - [Plan ve yayın engelleri](docs/ROADMAP.md)
 - [Test kapsamı ve yan etkiler](docs/TESTING.md)
 - [Yerel ağ ve güvenlik sınırları](LOCAL-NETWORK.md)
