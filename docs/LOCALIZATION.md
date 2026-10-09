@@ -23,6 +23,8 @@ and transfer/network implementation. It is not a migration, reinstall or a
 general-purpose updater. Its six reviewed program inputs are hash-pinned;
 an unreviewed version is refused. Program files come from canonical source or
 the audited language-only adapter. No private data enters an artifact.
+The compatibility launcher binds to the hash-pinned existing WebView2 SDK
+assemblies; those libraries/runtime are not upgraded by a language patch.
 
 Back up privately and verify hashes before replacement. Preserve Windows
 certificate store/DPAPI identity and all user data. Rollback restores only
