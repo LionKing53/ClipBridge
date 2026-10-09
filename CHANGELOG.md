@@ -1,5 +1,15 @@
 # Değişiklik kaydı
 
+## 1.1.0 kaynak dahil paket teslimi — 2026-10-09
+
+- `a8ea3dc` kaynağından 280.046.326 baytlık kurulum ZIP'i üretildi; native
+  kaynak companion ve özgün lisans metinleri payload'a eklendi. Paket ve kaynak
+  ZIP hash'leri PROJECT-STATUS.md'de. 1.407 kurulum ZIP girdisi ve 389 kaynak
+  arşivi yeniden okunup hash doğrulaması geçti. Önceki paket tarihsel kaldı.
+- Kaynak/değiştirme paketleme uygulaması ve 143 test tamamlandı. Gerçek native
+  derleme/ABI/kaynak kapsamı incelemesi kullanıcı kararıyla ayrı ortamda;
+  temiz cihaz kabulü ertelendi. Kurucu imzasız ve çalıştırılmadı. Yayın yapılmadı.
+
 ## 1.1.0 native kaynak teslimi — 2026-10-08
 
 - Pinli native kaynaklar + Cargo kaynağı indirme, checksum reddi, upstream

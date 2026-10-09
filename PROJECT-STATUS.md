@@ -1,5 +1,44 @@
 # PanoKopru — proje durumu
 
+## Güncel paket teslimi — 2026-10-09
+
+- Paket kaynak commit'i: `a8ea3dc9b43064217aea1ccfc888bb7e3294dcdf`.
+  Sonraki teslim kaydı değişiklikleri bu paketin kaynak kimliğini değiştirmez.
+- Güncel çıktı: `build/candidate-57c8acb7-9b7c-4e73-9f38-7d95b81fcb12/`.
+  `PanoKopru-1.1.0-win-x64-test.zip`: **280.046.326 bayt**, 1.407 girdi.
+  SHA-256: `eabd9b845cba815a135a0223968a9d8e851a58dbca8ad2007701376ad9a2e2b9`.
+- Setup SHA-256: `4d9dc4f5447e098b027cfffd61ea154ed50a5aa75658fc6aa05b36d68dc2b1a1`.
+  Manifest SHA-256: `caead6a36f7bc101526dc6fb034bc4d62e0dda8617a6ca07ec5b2137da5d8db3`.
+  1.402 payload dosyası ve 89 üretim bağımlılığı. Setup ve uygulama derlendi;
+  imzalama, çalıştırma veya kurulum yapılmadı. EXE yanında payload gerekir.
+- Kaynak companion: `build/native-sources-10daa8f6-7f0a-483f-8dee-02b7c5d5ad92/`
+  içindeki `PanoKopru-sharp-0.35.5-sources.zip`, **227.427.285 bayt**.
+  SHA-256: `fb12ba7b210e5e048a2b2a57200fb40c156c06059207286c15f83bc89ac300ab`.
+  Aynı ZIP kurulum payload'ının `sources/` bölümünde de bulunur; 742 özgün
+  lisans/telif/yazar metni `review/NATIVE-NOTICES.txt` içinde teslim edilir.
+- Companion içindeki 389 kaynak/tarif arşivi checksum ile yeniden doğrulandı.
+  Kurulum ZIP'inin 1.407 girdisinin tamamı yeniden okunup dosya hash'leriyle
+  karşılaştırıldı; tekrar/yabancı yol ve kaynak/runtime koruma ayrımı geçti.
+  Özel terim taraması geçti. Kaynak geçmişi 18 commit / 326 blob / 18 metadata
+  taramasında bulgu yok; üretim npm audit 0 bilinen açık. Tam test 143/143 ve
+  Edge UI geçti. Bunlar gerçek cihaz veya gerçek native yeniden derleme değildir.
+- Önceki 52 MB paket tarihsel çıktıdır; yeni kaynak teslimini içermez.
+  Yayın sohbeti güncel 280 MB paketi ve companion'ı birlikte incelemelidir.
+
+### Ayrı ortam için kalan doğrulama
+
+Kullanıcının kararıyla gerçek libvips derlemesi ayrı ortamda yapılacak. Pinli
+tariflerdeki bütün bağlı bileşen kaynak/lisans kapsamı, derleme çıktısı ve sharp
+ABI/image-decoding testi gözlenmeden dağıtım incelemesi kapatılmaz. Upstream
+`build.sh`, SOURCE_DATE_EPOCH için Git metadata kullanır; snapshot arşivleri
+`.git` içermez. Ayrı ortamda rehberdeki pinli commit checkout'larını kullanın
+veya metadata gereksinimini açıkça sağlayıp kaydedin. Baz imaj/toolchain
+sürümlerini ve tarif uyarlamalarını kaydedin; byte-identical derleme iddiası yok.
+Yeniden derlenen DLL/addon ile yeni paket üretip hash doğrulaması ve gerçek
+görsel işleme çalışmasını ayrıca test edin. Temiz Windows/iPhone kabulü de
+kullanıcının önceki kararıyla ertelendi. GitHub yayını yapılmadı; genel yayın
+onayı henüz verilmedi. Kişisel çalışan kurulum değiştirilmedi.
+
 ## Native kaynak ve yeniden paketleme — 2026-10-08
 
 - 28 native kaynak arşivi upstream MXE/libvips SHA-256 değerleriyle; librsvg'nin
@@ -16,14 +55,14 @@
 - Hedefli üç test geçti: checksum/cache/yönlendirme; yeni paket hash doğrulaması;
   yanlış mimari/EXE/link/yabancı yol reddi. Gerçek DLL çalıştırma testi değildir.
 - Son tam koşu: **143/143 test**, Edge UI ve **152 kaynak / 121 kilit girdisi**
-  kapısı geçti. Kaynak teslimi yeni paket üretiminde ayrıca doğrulanacak.
+  kapısı geçti. Kaynak teslimi güncel paket üretiminde ve ZIP okumada doğrulandı.
 - Kullanıcı **gerçek native yeniden derlemeyi ayrı ortamda doğrulamayı seçti**.
   Bu bilgisayara Docker/WSL kurulmadı. Kaynak toplama tamamlandı; gerçek derleme,
   ABI ve tüm bağlı bileşen kaynak kapsamı ayrı incelemede doğrulanmalı.
 - Rehber: `docs/NATIVE-REBUILD.md`. Önceki eksik kaynak/değiştirme yolu kaydı
   tarihsel kaldı; bunların uygulaması artık var. Genel yayın onayı verilmedi.
 
-## Son karar — 2026-10-08
+## Önceki paket kaydı — 2026-10-08 (tarihsel)
 
 ### Üretilen dosyalar ve kontrol kanıtı
 
