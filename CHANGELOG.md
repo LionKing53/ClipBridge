@@ -2,6 +2,15 @@
 
 ## 1.2.0 — Türkçe / English — 2026-10-09
 
+- Teslim kodu `9aae4d2c225665477150eea76f113151ebfb080e`. Mevcut kişisel kurulumda
+  1.2.0 dil yaması uygulandı; 1.2.0.0 launcher mevcut WebView2 SDK ile derlendi.
+  Doğrulanmış özel yedek/kod geri alma yolu var; 65 korunan veri özeti, geçmiş ve
+  favoriler değişmedi. EN tercihi yeniden açılışta korundu; Türkçe bırakıldı.
+- 151/151 tam test, 6/6 hedefli dil/native/uyum testi, TR/EN Edge/native render,
+  SDK assembly kontrolü ve gerçek kurulu masaüstü açılışı geçti. İlk testin kendi
+  keep-alive bağlantısı ve SDK referans uyumsuzluğu teslim öncesi düzeltildi.
+  Temiz Windows/iPhone kabulü değildir; eski genel paket yeniden üretilmedi.
+
 - Gerçek kalıcı dil seçimi; merkezi TR/EN UI/hata/native katalogları. Masaüstü,
   kurulum/kaldırma/tepsi/launcher, sertifika/eşleştirme ve telefon rehberleri.
 - Dile uygun tarih/sayı, arama ve ad sıralama; erişilebilirlik/tooltip/alt metinleri.

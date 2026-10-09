@@ -1,5 +1,36 @@
 # PanoKopru — proje durumu
 
+## Dil güncellemesi teslimi — 2026-10-09
+
+- Dil uygulama kaynak commit'i: `9aae4d2c225665477150eea76f113151ebfb080e`.
+  Ana uygulama değişikliği `2848361`; USB etiket düzeltmesi `bf04871`; son
+  commit mevcut SDK'ya bağlanan kişisel uyumlu launcher üretimini tamamlar.
+  Bu teslim kaydının sonraki commit'i program kodunu değiştirmez.
+- Kişisel kurulum **1.2.0 dil yaması** olarak uygulandı; eski transfer/ağ/veri
+  çekirdeği korunur. Yeni genel kurucuyla yeniden kurulum veya veri göçü yok.
+  İlk özel yedek 2.214, ek son durum yedeği 2.223 dosya: SHA-256 doğrulandı;
+  erişim yalnız kullanıcı/SYSTEM/yöneticilerle sınırlandı. Özel yollar/manifestler
+  Git dışındadır. 65 korunan veri dosyasının özetleri değişmedi; geçmiş/favori
+  sayıları aynı. Tema/WebView profili yedeklendi, yerinde tutuldu.
+- Kurulu SDK (1.0.4191.47) ve runtime değiştirilmedi. Native launcher'ın assembly
+  referansları bu SDK ile doğrulandı; gerçek masaüstü penceresi açıldı. Kurulu web
+  kaynaklarında TR→EN→yeniden açılış→TR kontrolü geçti; özel içerik maskelendi,
+  gerçek pano/izin/sertifika işlemi çalıştırılmadı. Uygulama Türkçe bırakıldı.
+- İlk yeniden açılış doğrulamasında testin kendi HTTP keep-alive bağlantısı
+  aktif aktarım korumasına takıldı; test bağlantıları kapatıldı, koruma korundu.
+  Daha yeni derleme SDK'sı yerine mevcut hash-pinned SDK'ya bağlanıldı. Bu
+  kontroller düzeltilip tekrar geçti; veri sıfırlama/geri yükleme yapılmadı.
+- Manuel kod geri alma yolu ve doğrulanmış özgün program dosyaları özel alanda
+  hazır. Yalnız programı geri alır; yeni aktarımları/kişisel verileri eski yedekle
+  değiştirmez. Gerçek geri alma çalıştırılmadı; üretim otomatik updater açılmadı.
+- Tam test koşusu 151/151; hedefli dil/native/uyum testleri 6/6; TR/EN Edge UI,
+  native form renderleri, SDK uyumlu derleme ve legacy sentetik HTTP testi geçti.
+  Kaynak kapısı 170 metin + 4 onaylı PNG / 121 kilit girdisi; diff temiz.
+- GitHub'a push/yayın yok. Önceki 1.1.0 dağıtım paketi güncellenmedi; legacy özel
+  yama genel kurulum paketi değildir. Temiz Windows/gerçek iPhone ve libvips
+  yeniden derleme kabulü hâlâ açık. Yayın sohbeti README/görselleri gerçek
+  İngilizce arayüze göre yenilemeli; yeni 1.2.0 genel paket ayrıca üretilmeli.
+
 ## Gerçek TR/EN yerelleştirme 1.2.0 — 2026-10-09
 
 - Merkezi `locales` katalogları; masaüstü, ilk kurulum, sertifika/eşleştirme ve

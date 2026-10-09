@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09 ek karar: Gerçek TR/EN yerelleştirme 1.2.0 tamamlandı; kullanıcı
+onayıyla mevcut kişisel düzene yalnız dil yaması ve doğrulanmış özel yedek/
+kod geri alma yolu uygulandı. İlk kurulum/native form testleri sentetiktir;
+temiz Windows/iPhone kabulü ve yeni genel dağıtım paketinin üretimi ayrıdır.
+Eski belge önizleme ve kişisel kuruluma dokunmama kayıtları tarihsel kalır.
+
 2026-10-09: GitHub ana README ve kurulum rehberi İngilizce öne alınır; Türkçe
 kopyalar korunur. Sentetik İngilizce belge ekran görüntüleri ve akış şemaları
 eklendi; bu çalışma uygulama yerelleştirmesi veya cihaz kabulü değildir.
