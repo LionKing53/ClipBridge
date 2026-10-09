@@ -15,8 +15,11 @@
 - Bu çalışmada capture-docs.js geçti; history-audit.test.js 4/4 ve Edge UI testi
   geçti. Kaynak kapısı 157 metin + 4 onaylı belge PNG'si / 121 kilit girdisi geçti.
   Belge bağlantı/kod bloğu/UTF-8 kontrolleri ve git diff --check geçti.
-  Tam 143 testlik önceki koşu yeniden çalıştırılmadı. Commit sonrası erişilebilir
-  geçmiş taraması push öncesi yeniden çalıştırılır.
+  Tam 143 testlik önceki koşu yeniden çalıştırılmadı. Belge commit'i 23fff48
+  üzerindeki geçmiş taraması geçti: 22 commit / 357 blob / 22 metadata,
+  4 hash-pinned görsel; özel terimler dahil bulgu yok. GitHub Markdown API'si
+  README ve rehberi oluşturdu; bir bağlantı ve iki kurulum/aktarım Mermaid bloğu
+  korundu. Teslim kaydı sonrasında geçmiş kapısı push öncesi tekrar çalıştırılır.
 - Yayımlanan kaynak kimliği için git log -1 ve origin/main esas. Önceki EXE
   paket kaynağı a8ea3dc, kişisel kurulum 1.0.0 (kaynak commit'i bilinmiyor).
   EXE dağıtımı yok; temiz Windows/iPhone ve gerçek native yeniden derleme açık.

@@ -10,6 +10,8 @@
 - Yeniden üretilebilir yalıtılmış capture-docs.js; onaylı PNG'ler için hash/boyut/
   ölçü ve metadata kontrolü. Denetim testleri 4/4, Edge UI ve kaynak kapısı geçti.
   Sürüm/API/veri şeması ve mevcut EXE paketi değişmedi.
+- Belge commit'i 23fff48 geçmiş incelemesi geçti: 22 commit / 357 blob, 4
+  incelenmiş PNG; GitHub Markdown oluşturma ve belge bağlantı kontrolleri geçti.
 
 ## Kaynak GitHub yayını — 2026-10-09
 

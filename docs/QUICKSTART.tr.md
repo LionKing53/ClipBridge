@@ -103,4 +103,3 @@ iPhone → Windows dosya/video yükleme 512 MiB; metin/görsel işleme 64 MiB.
 Windows → iPhone yolunda aynı genel üst sınır yoktur. Geçmiş kotası toplam disk
 kotası değildir. İlk sürümde güncelleme, üretim rollback'i ve kişisel veri göçü
 yoktur. Kaynakta deneysel motor bulunması desteklendiği anlamına gelmez.
-
