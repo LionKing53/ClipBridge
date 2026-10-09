@@ -47,7 +47,7 @@ const texts = {
 const inventory = records.map(({file, ...record}) => record);
 texts['inventory.json'] = JSON.stringify({ format: 1, sharp: lock.sharp, artifacts: inventory, compiledHere: false }, null, 2);
 for (const [name, bytes] of Object.entries(texts)) { const file = path.join(output, name); await writeFile(file, bytes, { flag: 'wx' }); records.push({ name, file, sha256: await hashFile(file) }); }
-const bundle = path.join(output, 'PanoKopru-sharp-0.35.5-sources.zip');
+const bundle = path.join(output, 'ClipBridge-sharp-0.35.5-sources.zip');
 const stream = createWriteStream(bundle, { flags: 'wx' }), archive = new ZipArchive({ zlib: { level: 6 } });
 const finished = once(stream, 'close'); archive.on('error', error => stream.destroy(error)); archive.pipe(stream);
 for (const record of records) archive.file(record.file, { name: record.name, date: new Date('2000-01-01T00:00:00Z') });

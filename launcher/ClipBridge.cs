@@ -6,14 +6,14 @@ using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
 
-[assembly: AssemblyTitle("PanoK\u00f6pr\u00fc")]
-[assembly: AssemblyDescription("iPhone ve Windows pano k\u00f6pr\u00fcs\u00fc")]
-[assembly: AssemblyCompany("PanoK\u00f6pr\u00fc")]
-[assembly: AssemblyProduct("PanoK\u00f6pr\u00fc")]
+[assembly: AssemblyTitle("ClipBridge")]
+[assembly: AssemblyDescription("Shortcut-triggered iPhone and Windows clipboard bridge")]
+[assembly: AssemblyCompany("ClipBridge")]
+[assembly: AssemblyProduct("ClipBridge")]
 [assembly: AssemblyCopyright("GPL-3.0-or-later; see LICENSE")]
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0")]
+[assembly: AssemblyVersion("1.2.1.0")]
+[assembly: AssemblyFileVersion("1.2.1.0")]
+[assembly: AssemblyInformationalVersion("1.2.1")]
 
 internal static class Program
 {
@@ -33,8 +33,8 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
-        Language.Initialize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PanoKopru"), File.Exists(Path.Combine(InstallRoot, "install-receipt.json")));
-        if (Array.IndexOf(args, "--stop") < 0 && Directory.Exists(Path.Combine(Path.GetDirectoryName(InstallRoot.TrimEnd('\\')), ".PanoKopru-install-lock")))
+        Language.Initialize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ClipBridge"), File.Exists(Path.Combine(InstallRoot, "install-receipt.json")));
+        if (Array.IndexOf(args, "--stop") < 0 && Directory.Exists(Path.Combine(Path.GetDirectoryName(InstallRoot.TrimEnd('\\')), ".ClipBridge-install-lock")))
         { Environment.ExitCode = 8; MessageBox.Show(Language.Text("m_28ea1cba3a90")); return; }
         try { InstalledLaunch.ConfigureEnvironment(InstallRoot); Context = RuntimeContext.Load(AppRoot); }
         catch { Environment.ExitCode = 4; MessageBox.Show(Language.Text("m_eb5f8f5c39e8")); return; }
@@ -44,7 +44,7 @@ internal static class Program
         if (Array.IndexOf(args, "--recover-lock") >= 0)
         {
             if (MutexIsHeld("Service") || MutexIsHeld("Desktop") || ServiceIsRunning()) { Environment.ExitCode = 7; MessageBox.Show(Language.Text("m_00b11404acbb")); return; }
-            if (MessageBox.Show(Language.Text("m_9fec844b476f"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            if (MessageBox.Show(Language.Text("m_9fec844b476f"), "ClipBridge", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
             try
             {
                 var recovery = NodeStartInfo(Path.Combine("src", "recover-instance.js"));
@@ -96,7 +96,7 @@ internal static class Program
         catch
         {
             Environment.ExitCode = 5;
-            if (MessageBox.Show(Language.Text("m_e1974a81440d"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            if (MessageBox.Show(Language.Text("m_e1974a81440d"), "ClipBridge", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 try { Process.Start(new ProcessStartInfo { FileName = "https://developer.microsoft.com/microsoft-edge/webview2/", UseShellExecute = true }); } catch { }
             }
@@ -227,8 +227,8 @@ internal static class Program
         startInfo.EnvironmentVariables.Remove("NODE_OPTIONS");
         startInfo.EnvironmentVariables.Remove("NODE_PATH");
         startInfo.EnvironmentVariables.Remove("NODE_TLS_REJECT_UNAUTHORIZED");
-        startInfo.EnvironmentVariables["PANOKOPRU_SUPERVISED"] = "1";
-        startInfo.EnvironmentVariables["PANOKOPRU_SYSTEM_LANGUAGE"] = System.Globalization.CultureInfo.CurrentUICulture.Name;
+        startInfo.EnvironmentVariables["CLIPBRIDGE_SUPERVISED"] = "1";
+        startInfo.EnvironmentVariables["CLIPBRIDGE_SYSTEM_LANGUAGE"] = System.Globalization.CultureInfo.CurrentUICulture.Name;
         return startInfo;
     }
 }

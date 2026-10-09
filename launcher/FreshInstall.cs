@@ -37,18 +37,25 @@ internal static class FreshInstall
         using (var stream = new FileStream(file, FileMode.CreateNew, FileAccess.Write, FileShare.None))
         using (var writer = new StreamWriter(stream, new UTF8Encoding(false))) writer.Write(content);
     }
+    private static void NoLegacyInstallation(string local)
+    {
+        // A brand change is not permission to install a second conflicting bridge.
+        Absent(Path.Combine(local, "Programs", "PanoKopru"));
+        Absent(Path.Combine(local, "PanoKopru"));
+        Absent(Path.Combine(local, "Programs", ".PanoKopru-install-lock"));
+    }
     internal static FreshInstallResult Run(IFreshInstallSystem system, string payload, string manifestHash, bool desktop, bool startup, Action<string> progress, CancellationToken cancellation = default(CancellationToken))
     {
         if (system == null || progress == null || String.IsNullOrEmpty(system.LocalAppData) || !Path.IsPathRooted(system.LocalAppData) ||
             system.LocalAppData.StartsWith("\\\\") || !System.Text.RegularExpressions.Regex.IsMatch(system.OwnerSid ?? "", "^S-1-5-(?:[0-9]+-)*[0-9]+$")) throw new InvalidOperationException("ERR_INSTALL_USER_CONTEXT");
         string local = InstalledLaunch.Full(system.LocalAppData);
-        string parent = Path.Combine(local, "Programs"), target = Path.Combine(parent, "PanoKopru"), data = Path.Combine(local, "PanoKopru");
+        string parent = Path.Combine(local, "Programs"), target = Path.Combine(parent, "ClipBridge"), data = Path.Combine(local, "ClipBridge");
         string package = InstalledLaunch.Full(payload);
         if (package.StartsWith(target + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || InstalledLaunch.Same(package, target) ||
             package.StartsWith(data + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || InstalledLaunch.Same(package, data) ||
             target.StartsWith(package + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase) || data.StartsWith(package + Path.DirectorySeparatorChar, StringComparison.OrdinalIgnoreCase)) throw new InvalidOperationException("ERR_INSTALL_OVERLAP");
         cancellation.ThrowIfCancellationRequested();
-        Absent(target); Absent(data); InstalledLaunch.NoLinks(parent);
+        NoLegacyInstallation(local); Absent(target); Absent(data); InstalledLaunch.NoLinks(parent);
         progress("verify");
         var manifest = InstalledLaunch.ValidatePayload(package, manifestHash, false);
         long bytes = 0;
@@ -59,15 +66,15 @@ internal static class FreshInstall
         // creation for the lock and stage below. It must not adopt an existing dir.
         if (!Directory.Exists(parent)) Directory.CreateDirectory(parent);
         InstalledLaunch.NoLinks(parent);
-        string guard = Path.Combine(parent, ".PanoKopru-install-lock"), id = Guid.NewGuid().ToString("D");
+        string guard = Path.Combine(parent, ".ClipBridge-install-lock"), id = Guid.NewGuid().ToString("D");
         system.CreatePrivateDirectoryExclusive(guard);
         string guardRecord = Path.Combine(guard, "owner"); WriteNew(guardRecord, id);
         try
         {
-            Absent(target); Absent(data);
-            string stage = Path.Combine(parent, "PanoKopru.stage-" + id);
+            NoLegacyInstallation(local); Absent(target); Absent(data);
+            string stage = Path.Combine(parent, "ClipBridge.stage-" + id);
             system.CreatePrivateDirectoryExclusive(stage);
-            var receipt = new Dictionary<string, object> { { "format", 1 }, { "application", "PanoKopru" }, { "state", "staging" },
+            var receipt = new Dictionary<string, object> { { "format", 1 }, { "application", "ClipBridge" }, { "state", "staging" },
                 { "ownerSid", system.OwnerSid }, { "manifestHash", manifestHash }, { "installId", id }, { "requestedDesktopShortcut", desktop }, { "requestedStartAtLogin", startup } };
             var serializer = new JavaScriptSerializer(); string receiptFile = Path.Combine(stage, "install-receipt.json");
             WriteNew(receiptFile, serializer.Serialize(receipt));
@@ -89,7 +96,7 @@ internal static class FreshInstall
             File.Replace(next, receiptFile, null);
             progress("activate");
             cancellation.ThrowIfCancellationRequested();
-            Absent(target); Absent(data); InstalledLaunch.NoLinks(parent);
+            NoLegacyInstallation(local); Absent(target); Absent(data); InstalledLaunch.NoLinks(parent);
             Directory.Move(stage, target); // Same-volume, no overwrite; preserve failed stages for explicit review.
             InstalledLaunch.Validate(target, local, system.OwnerSid);
             progress("shortcuts");

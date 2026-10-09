@@ -19,7 +19,7 @@ if ((await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true 
 const guard = await lstat(path.join(work, 'payload', 'app', 'SOURCE-CHECKOUT')).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
 if (!!guard !== (evidence.purpose === 'guarded-engineering-candidate')) throw new Error('Payload guard differs from explicit build policy.');
 const toolchain = JSON.parse(await readFile(path.join(root, 'toolchain-lock.json'), 'utf8'));
-const policy = path.join(work, 'setup-policy.json'), exe = path.join(work, 'PanoKopruSetup.exe');
+const policy = path.join(work, 'setup-policy.json'), exe = path.join(work, 'ClipBridgeSetup.exe');
 await writeFile(policy, JSON.stringify({ manifestHash: evidence.hash, nodeVersion: toolchain.artifacts.find(item => item.id === 'node').version,
   minimumWebView2Version: '120.0.0.0' }), { flag: 'wx' });
 const sources = ['launcher/Setup.cs', 'launcher/Language.cs', 'launcher/FreshInstall.cs', 'launcher/RemoveInstall.cs', 'launcher/WindowsFreshInstall.cs', 'launcher/InstalledLaunch.cs', 'scripts/InstallProbe.cs'];

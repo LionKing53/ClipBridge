@@ -14,9 +14,9 @@ if (!work || !within(path.join(root, 'build'), work) || !/^candidate-[a-f0-9-]{3
 await assertNoLinks(work);
 const candidate = JSON.parse(await readFile(path.join(work, 'candidate-evidence.json'), 'utf8'));
 const setup = JSON.parse(await readFile(path.join(work, 'setup-build-evidence.json'), 'utf8'));
-if (candidate.purpose !== 'installable-private-acceptance' || setup.purpose !== candidate.purpose || setup.commit !== candidate.commit || setup.payloadManifestHash !== candidate.hash || setup.executableSHA256 !== await hashFile(path.join(work, 'PanoKopruSetup.exe'))) throw new Error('Mismatched private test package.');
+if (candidate.purpose !== 'installable-private-acceptance' || setup.purpose !== candidate.purpose || setup.commit !== candidate.commit || setup.payloadManifestHash !== candidate.hash || setup.executableSHA256 !== await hashFile(path.join(work, 'ClipBridgeSetup.exe'))) throw new Error('Mismatched private test package.');
 const manifest = await verifyRelease(path.join(work, 'payload'), candidate.hash);
-const names = ['PanoKopruSetup.exe', 'candidate-evidence.json', 'setup-build-evidence.json', ...await packageFiles(path.join(work, 'payload')).then(files => files.map(name => 'payload/' + name))];
+const names = ['ClipBridgeSetup.exe', 'candidate-evidence.json', 'setup-build-evidence.json', ...await packageFiles(path.join(work, 'payload')).then(files => files.map(name => 'payload/' + name))];
 // Local private-term scan covers final text AND binary entries. It is not a
 // complete secret/license/visual audit and cannot approve public distribution.
 let terms = [];
@@ -25,7 +25,7 @@ for (const name of names) {
   const bytes = await readFile(path.join(work, name));
   if (terms.some(term => bytes.toString('utf8').toLowerCase().includes(term.toLowerCase()) || bytes.toString('utf16le').toLowerCase().includes(term.toLowerCase()))) throw new Error('Private-term match in package; no archive produced.');
 }
-const name = `PanoKopru-${manifest.version}-win-x64-test.zip`, target = path.join(work, name);
+const name = `ClipBridge-${manifest.version}-win-x64-test.zip`, target = path.join(work, name);
 await assertNoLinks(target);
 const archive = new ZipArchive({ zlib: { level: 9 } });
 const output = createWriteStream(target, { flags: 'wx' });

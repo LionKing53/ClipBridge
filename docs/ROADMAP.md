@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09: Aynı TR/EN marka ClipBridge, kaynak sürümü 1.2.1. Yeni kurulumun
+teknik adları da yenilendi; eski kişisel kimlik/veri için göç veya yeniden
+eşleştirme yapılmaz. Uyumluluk: BRANDING.md. GitHub depo adı/yayını bu sohbetten
+değiştirilmez; temiz cihaz/native dağıtım kapıları aynı kalır.
+
 2026-10-09 yayın güncellemesi: 1.2.0 kaynakları ve gerçek English seçimiyle
 alınan dört sentetik ekran görüntüsü GitHub'a hazırlanır. README'de dil
 desteği açıklanır; eski yalnız Türkçe/etiket enjeksiyonu açıklaması kaldırılır.

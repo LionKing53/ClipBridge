@@ -69,7 +69,7 @@ pinned by upstream, so this is not a claim of bit-for-bit reproducibility or an
 offline compiler toolchain. Seed MXE's download cache with the bundled sources
 using the filenames expected by each recipe. The Rust crate collection can seed
 Cargo's registry cache; preserve Cargo.lock checksums and the bundled upstream
-patches. No system/container installation is performed automatically by PanoKopru.
+patches. No system/container installation is performed automatically by ClipBridge.
 
 The sharp-libvips `build/win.sh` snapshot documents packaging the Windows library
 headers/import libraries/DLLs. The sharp snapshot's `.github/workflows/ci.yml`,
@@ -80,13 +80,13 @@ the addon and replace only the DLLs. For ABI changes, rebuild the addon too.
 Compatibility must be tested with the resulting binaries; PE checks alone do
 not establish working image decoding.
 
-## Recombine with PanoKopru without disabling integrity checks
+## Recombine with ClipBridge without disabling integrity checks
 
 Recipients may modify/rebuild the application and its libraries under their
 licenses, including debugging such changes. No publisher signing key, private
 token or original developer account is needed to make a new package.
 
-In a clean committed PanoKopru source checkout, place your rebuilt x64 files in
+In a clean committed ClipBridge source checkout, place your rebuilt x64 files in
 a separate directory containing only one or more of:
 
 - `libvips-42.dll`

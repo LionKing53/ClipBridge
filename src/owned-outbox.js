@@ -21,7 +21,7 @@ async function owned(context, directory, id) {
   if (!info?.isFile() || info.isSymbolicLink() || info.size > 4096 || info.nlink !== 1) return null;
   let owner;
   try { owner = JSON.parse(await readFile(marker, 'utf8')); } catch { return null; }
-  if (owner.application !== 'PanoKopru-outbox' || owner.instanceId !== context.instanceId || !Number.isFinite(owner.createdAt)
+  if (owner.application !== 'ClipBridge-outbox' || owner.instanceId !== context.instanceId || !Number.isFinite(owner.createdAt)
       || !/^[a-f0-9-]{36}$/.test(owner.id || '') || (id && owner.id !== id)) return null;
   return { owner, names: names.map(entry => entry.name) };
 }
@@ -61,7 +61,7 @@ export async function createOwnedArchive(context, files) {
   await assertNoLinks(root); await mkdir(root, { recursive: true });
   const directory = await mkdtemp(path.join(root, 'archive-'));
   const id = randomUUID(), archivePath = path.join(directory, 'payload.zip');
-  await writeFile(path.join(directory, '.owner.json'), JSON.stringify({ application: 'PanoKopru-outbox', instanceId: context.instanceId, id, createdAt: Date.now() }), { flag: 'wx' });
+  await writeFile(path.join(directory, '.owner.json'), JSON.stringify({ application: 'ClipBridge-outbox', instanceId: context.instanceId, id, createdAt: Date.now() }), { flag: 'wx' });
   const cleanup = () => removeOwned(context, directory, id);
   const archive = new ZipArchive({ zlib: { level: 6 } });
   const output = createWriteStream(archivePath, { flags: 'wx' });
@@ -70,7 +70,7 @@ export async function createOwnedArchive(context, files) {
   try {
     for (const file of files) archive.file(file.path, { name: file.name });
     await Promise.all([finished, archive.finalize()]);
-    return { type: 'file', path: archivePath, filename: 'PanoKopru-Dosyalar.zip', mimeType: 'application/zip', temporary: true, cleanup };
+    return { type: 'file', path: archivePath, filename: 'ClipBridge-Dosyalar.zip', mimeType: 'application/zip', temporary: true, cleanup };
   } catch (error) {
     archive.abort(); archive.destroy(); output.destroy();
     await finished.catch(() => {});

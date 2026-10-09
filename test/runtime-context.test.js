@@ -6,19 +6,19 @@ import os from 'node:os';
 import { resolveRuntime, prepareRuntime, acquireInstance } from '../src/runtime-context.js';
 import { loadConfig } from '../src/config.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-context-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-context-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const env = { LOCALAPPDATA: path.join(root, 'Local'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: path.join(root, 'test-data'), PANOKOPRU_API_PORT: '42145', PANOKOPRU_DESKTOP_PORT: '42146', PANOKOPRU_LOCAL_PORT: '42147' };
+  const env = { LOCALAPPDATA: path.join(root, 'Local'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: path.join(root, 'test-data'), CLIPBRIDGE_API_PORT: '42145', CLIPBRIDGE_DESKTOP_PORT: '42146', CLIPBRIDGE_LOCAL_PORT: '42147' };
   return { root, env, context: resolveRuntime({ env }) };
 }
 test('runtime requires explicit mode, data root and non-production distinct ports', async t => {
   const { env } = await fixture(t);
-  for (const change of [{ PANOKOPRU_MODE: '' }, { PANOKOPRU_DATA_ROOT: '' }, { PANOKOPRU_DATA_ROOT: 'relative' }, { PANOKOPRU_API_PORT: '' }, { PANOKOPRU_API_PORT: '32145' }, { PANOKOPRU_API_PORT: '42146' }, { PANOKOPRU_API_PORT: '42145junk' }]) assert.throws(() => resolveRuntime({ env: { ...env, ...change } }));
-  assert.throws(() => resolveRuntime({ env: { ...env, PANOKOPRU_MODE: 'production' } }), { code: 'ERR_SOURCE_CHECKOUT' });
+  for (const change of [{ CLIPBRIDGE_MODE: '' }, { CLIPBRIDGE_DATA_ROOT: '' }, { CLIPBRIDGE_DATA_ROOT: 'relative' }, { CLIPBRIDGE_API_PORT: '' }, { CLIPBRIDGE_API_PORT: '32145' }, { CLIPBRIDGE_API_PORT: '42146' }, { CLIPBRIDGE_API_PORT: '42145junk' }]) assert.throws(() => resolveRuntime({ env: { ...env, ...change } }));
+  assert.throws(() => resolveRuntime({ env: { ...env, CLIPBRIDGE_MODE: 'production' } }), { code: 'ERR_SOURCE_CHECKOUT' });
 });
 test('protected personal/install roots, ancestors and source directories are rejected', async t => {
   const { root, env } = await fixture(t);
-  for (const target of [root, env.LOCALAPPDATA, path.join(env.LOCALAPPDATA, 'PanoKopru'), path.join(env.LOCALAPPDATA, 'PanoKopru', 'test'), path.join(env.LOCALAPPDATA, 'Programs', 'PanoKopru', 'app')]) assert.throws(() => resolveRuntime({ env: { ...env, PANOKOPRU_DATA_ROOT: target } }));
+  for (const target of [root, env.LOCALAPPDATA, path.join(env.LOCALAPPDATA, 'ClipBridge'), path.join(env.LOCALAPPDATA, 'ClipBridge', 'test'), path.join(env.LOCALAPPDATA, 'Programs', 'ClipBridge', 'app')]) assert.throws(() => resolveRuntime({ env: { ...env, CLIPBRIDGE_DATA_ROOT: target } }));
 });
 test('new context persists stable identity and token without CWD state', async t => {
   const { context, env } = await fixture(t);
@@ -28,7 +28,7 @@ test('new context persists stable identity and token without CWD state', async t
   assert.equal(JSON.parse(await readFile(path.join(context.dataRoot, 'data-schema.json'), 'utf8')).version, 1);
   assert.ok(!(await readdir(context.dataRoot)).includes('.clipboard-bridge'));
   await assert.rejects(prepareRuntime({ ...context }), /validated resolver/);
-  await assert.rejects(prepareRuntime(resolveRuntime({ env: { ...env, PANOKOPRU_API_PORT: '42148' } })), /changed/);
+  await assert.rejects(prepareRuntime(resolveRuntime({ env: { ...env, CLIPBRIDGE_API_PORT: '42148' } })), /changed/);
 });
 test('future schema and unversioned legacy state are never silently opened', async t => {
   const { context } = await fixture(t); await prepareRuntime(context);

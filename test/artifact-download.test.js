@@ -7,7 +7,7 @@ import { createHash } from 'node:crypto';
 import { downloadArtifact, validateArtifact } from '../src/artifact-download.js';
 const body = Buffer.from('synthetic binary');
 const artifact = { url: 'https://nodejs.org/dist/example.zip', file: 'example.zip', maxBytes: 32, algorithm: 'sha256', encoding: 'hex', integrity: createHash('sha256').update(body).digest('hex') };
-async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-download-')); t.after(() => rm(root, { recursive: true, force: true })); return root; }
+async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-download-')); t.after(() => rm(root, { recursive: true, force: true })); return root; }
 test('pinned downloader verifies fresh and cached bytes without another network call', async t => {
   const root = await fixture(t); let calls = 0;
   const fetcher = async (url, options) => { calls++; assert.equal(url, artifact.url); assert.equal(options.redirect, 'error'); return new Response(body); };

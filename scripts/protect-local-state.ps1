@@ -2,8 +2,8 @@ param([Parameter(Mandatory=$true)][string]$DataRoot)
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
 . (Join-Path $PSScriptRoot 'runtime-context.ps1')
-$context = Get-PanoKopruContext -DataRoot $DataRoot
-if ($context.mode -ne 'production' -or [IO.Path]::GetFullPath($context.dataRoot) -ine [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'PanoKopru'))) { throw 'Only current-user application data may be protected.' }
+$context = Get-ClipBridgeContext -DataRoot $DataRoot
+if ($context.mode -ne 'production' -or [IO.Path]::GetFullPath($context.dataRoot) -ine [IO.Path]::GetFullPath((Join-Path $env:LOCALAPPDATA 'ClipBridge'))) { throw 'Only current-user application data may be protected.' }
 $stateRoot = $context.dataRoot
 $acl = New-Object Security.AccessControl.DirectorySecurity
 $acl.SetOwner([Security.Principal.WindowsIdentity]::GetCurrent().User)

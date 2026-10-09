@@ -203,7 +203,7 @@ test("Windows pano gorselini binary PNG yaniti olarak dondurur", async () => {
     getClipboardItem: async () => ({
       type: "image",
       data: png,
-      filename: "PanoKopru.png",
+      filename: "ClipBridge.png",
       mimeType: "image/png"
     })
   });
@@ -212,6 +212,7 @@ test("Windows pano gorselini binary PNG yaniti olarak dondurur", async () => {
   });
   assert.equal(response.status, 200);
   assert.equal(response.headers.get("content-type"), "image/png");
+  assert.equal(response.headers.get("x-clipbridge-type"), "image");
   assert.equal(response.headers.get("x-panokopru-type"), "image");
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), png);
 });

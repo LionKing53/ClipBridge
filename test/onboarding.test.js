@@ -9,7 +9,7 @@ import { createOnboarding } from '../src/onboarding.js';
 import { resolveRuntime } from '../src/runtime-context.js';
 import { networkKey } from '../src/network-policy.js';
 import { testCA } from './support/public-ca.js';
-async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-onboarding-')); t.after(() => rm(root, { recursive: true, force: true })); return { root, context: resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'local'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: path.join(root,'data'), PANOKOPRU_API_PORT:'44145', PANOKOPRU_DESKTOP_PORT:'44146', PANOKOPRU_LOCAL_PORT:'44147' } }) }; }
+async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-onboarding-')); t.after(() => rm(root, { recursive: true, force: true })); return { root, context: resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'local'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: path.join(root,'data'), CLIPBRIDGE_API_PORT:'44145', CLIPBRIDGE_DESKTOP_PORT:'44146', CLIPBRIDGE_LOCAL_PORT:'44147' } }) }; }
 test('bootstrap exposes public CA only, rejects endpoints/origins/network changes and expires', async t => {
   const { context } = await fixture(t); let allowed = true, now = Date.now();
   const transport = await startCertificateBootstrap({ context, certificate: testCA, address: '127.0.0.1', isAllowed: () => allowed, port: 0, now: () => now });

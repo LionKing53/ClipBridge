@@ -36,7 +36,7 @@ kapısından geçmelidir; Git geçmişi denetimi commit edilmemiş değişiklikl
 | verify-local-network.js | Gerçek ağ/sertifika Ensure işlemi; içe alınmadı |
 | capture-desktop-window.ps1 | Gerçek ekran/kişisel bilgiler; içe alınmadı |
 | Cleanup-OldWorkspace.ps1 | Kişisel yol ve silme; içe alınmadı |
-| Uninstall-PanoKopru.ps1 | Veri silme ve paylaşılan Serve riski; içe alınmadı |
+| Uninstall-ClipBridge.ps1 | Veri silme ve paylaşılan Serve riski; içe alınmadı |
 | build-app.js | Vendor SDK ve üretim varsayımları; kaynak koruması ile kapalı |
 | prepare-local-network.js, pair.js, info.js, server.js | loadConfig üzerinden kaynak koruması ile kapalı |
 | grant/request/enable/protect/local-certificates PowerShell | UAC/firewall/CA/ACL yan etkileri; kaynak koruması ile kapalı |

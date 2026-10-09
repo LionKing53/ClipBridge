@@ -10,9 +10,9 @@ import { trustedHome, hasNetworkPermission } from '../src/local-network.js';
 const home = { id: '{11111111-1111-1111-1111-111111111111}', name: 'Ev', interfaceAlias: 'WLAN', interfaceDescription: 'Wireless', category: 'Private', address: '192.168.1.2', prefixLength: 24 };
 const phone = { ...home, name: 'Telefon', category: 'Public', address: '172.20.10.2' };
 async function fixture(t, options = {}) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-network-test-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-network-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const config = { home, additionalNetworks: [], enabled: true, hostname: 'panokopru-1234abcd.local', port: 32147 };
+  const config = { home, additionalNetworks: [], enabled: true, hostname: 'clipbridge-1234abcd.local', port: 32147 };
   await writeFile(path.join(root, 'config.json'), JSON.stringify(config));
   let connected = [home], calls = 0, changes = 0;
   const manager = await createNetworkManager({ root, networkReader: async () => connected,
@@ -26,7 +26,7 @@ test('network manager adds only connected exact records, retains existing trust 
   assert.equal(f.calls(), 1); assert.equal(f.changes(), 1);
   assert.equal(approvedNetworks(f.manager.config()).length, 2);
   const saved = JSON.parse(await readFile(path.join(f.root, 'config.json'), 'utf8'));
-  assert.equal(saved.hostname, 'panokopru-1234abcd.local');
+  assert.equal(saved.hostname, 'clipbridge-1234abcd.local');
   assert.equal(saved.trustedNetworks[1].permissionGranted, true);
   assert.equal(trustedHome(saved, [{ ...phone, category: 'Private' }]).name, 'Telefon');
   assert.equal(hasNetworkPermission(saved, { ...phone, category: 'Private' }, undefined), true);

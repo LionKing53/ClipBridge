@@ -24,7 +24,7 @@ export async function startCertificateBootstrap({ context, certificate, address,
       if (req.headers.host !== `${address}:${server.address().port}` || req.headers.origin || !await isAllowed(req)) { res.writeHead(403); res.end(); return; }
       if (req.method !== 'GET' || req.url !== route) { res.writeHead(404); res.end(); return; }
       downloads++;
-      res.writeHead(200, { 'Content-Type': 'application/x-x509-ca-cert', 'Content-Disposition': 'attachment; filename="PanoKopru-Local-CA.cer"', 'Content-Length': ca.raw.length });
+      res.writeHead(200, { 'Content-Type': 'application/x-x509-ca-cert', 'Content-Disposition': 'attachment; filename="ClipBridge-Local-CA.cer"', 'Content-Length': ca.raw.length });
       res.end(ca.raw);
     } catch { if (!res.headersSent) res.writeHead(403); res.end(); }
   });

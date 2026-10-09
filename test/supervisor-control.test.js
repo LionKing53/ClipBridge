@@ -41,7 +41,7 @@ test('already closed parent pipe immediately requests cleanup', async () => {
   await control.request(); assert.equal(calls, 1);
 });
 test('synthetic Node child exits naturally after parent closes inherited stdin', async t => {
-  const temporary = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-supervisor-'));
+  const temporary = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-supervisor-'));
   t.after(() => rm(temporary, { recursive: true, force: true }));
   const output = path.join(temporary, 'result.txt');
   const child = spawn(process.execPath, [path.join(root, 'test/support/supervisor-child.js'), output], { windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'] });
@@ -51,7 +51,7 @@ test('synthetic Node child exits naturally after parent closes inherited stdin',
   assert.equal(await readFile(output, 'utf8'), 'synthetic shutdown completed');
 });
 test('compiled owned-process probe gracefully stops only its synthetic Node child', { skip: process.platform !== 'win32', timeout: 15000 }, async t => {
-  const temporary = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-owned-process-'));
+  const temporary = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-owned-process-'));
   t.after(() => rm(temporary, { recursive: true, force: true }));
   const binary = path.join(temporary, 'OwnedNodeProbe.exe'), output = path.join(temporary, 'result.txt');
   const unrelated = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], { windowsHide: true, stdio: 'ignore' });

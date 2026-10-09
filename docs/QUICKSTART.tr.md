@@ -1,8 +1,8 @@
-# PanoKöprü 1.1.0 — özel kabul testi / private acceptance test
+# ClipBridge 1.2.1 — kurulum / özel kabul rehberi
 
 [English setup guide](QUICKSTART.md)
 
-Güncel kaynak sürümü **1.2.0**, Türkçe/English seçimini destekler:
+Güncel kaynak sürümü **1.2.1**, Türkçe/English seçimini destekler:
 **Ayarlar → Dil**. Tercih yeniden açılışta korunur. Önceki özel 1.1.0 test
 paketi dil güncellemesini içermez; yeni genel kurucu paketi yayımlanmadı.
 
@@ -14,22 +14,22 @@ karşılaştırın ve durumu bildirin.
 
 ## Türkçe — hazırlık ve kurulum
 
-1. Mevcut çalışan PanoKöprü kurulumunuzun **olmadığı** bilgisayarı kullanın.
+1. Mevcut çalışan ClipBridge kurulumunuzun **olmadığı** bilgisayarı kullanın.
    İlk hedef Windows 11 veya Windows 10 22H2 (build 19045+) Intel/AMD **x64**.
    ARM64/32-bit desteklenmez. Bu, bütün Windows sürümlerinin güvenlik desteğinin
    sürdüğü anlamına gelmez; işletim sisteminizi güncel ve destekli tutun.
    Yönlendirilmiş kullanıcı profilleri ilk pakette desteklenmez.
 2. ZIP'in **tamamını** yerel bir klasöre çıkarın. ZIP içinden çalıştırmayın;
-   `PanoKopruSetup.exe` ile `payload` klasörü yan yana kalmalı.
-3. `PanoKopruSetup.exe` dosyasını normal kullanıcı olarak açın; **Yönetici olarak
+   `ClipBridgeSetup.exe` ile `payload` klasörü yan yana kalmalı.
+3. `ClipBridgeSetup.exe` dosyasını normal kullanıcı olarak açın; **Yönetici olarak
    çalıştır** kullanmayın. Gerekirse kurucunun WebView2 düğmesiyle Microsoft'un
    resmi sayfasından x64 Evergreen Runtime kurup kurucuyu yeniden açın. Node
    pakette bulunur; Node veya Tailscale kurmanız gerekmez.
 4. Açıklamayı okuyup onaylayın ve ilk kurulumu başlatın. Başlangıçta çalışma
    isteğe bağlı ve varsayılan kapalıdır. Mevcut program **veya veri** varsa
    kurucu durur; üzerine kurma, otomatik güncelleme ve eski veri göçü yoktur.
-5. Başlat menüsünden PanoKöprü'yü açın. Program ile kişisel veriler ayrıdır:
-   `%LOCALAPPDATA%/Programs/PanoKopru` ve `%LOCALAPPDATA%/PanoKopru`.
+5. Başlat menüsünden ClipBridge’i açın. Program ile kişisel veriler ayrıdır:
+   `%LOCALAPPDATA%/Programs/ClipBridge` ve `%LOCALAPPDATA%/ClipBridge`.
 
 ## İlk iPhone eşleştirmesi — Tailscale gerekmez
 
@@ -39,13 +39,13 @@ karşılaştırın ve durumu bildirin.
    UAC onayını verin. Bu işlem ağı **Özel** profile geçirir; başka uygulamaların
    mevcut Özel profil kurallarını da etkileyebilir. Ortak/üniversite ağını sırf
    testi geçirmek için güvenilir yapmayın. İptal ederseniz sihirbazdan tekrar
-   başlayabilir veya verilmiş PanoKöprü izinlerini temizleyebilirsiniz.
+   başlayabilir veya verilmiş ClipBridge izinlerini temizleyebilirsiniz.
 3. Sihirbazın süreli sertifika QR bağlantısını iPhone'da açın. Bu ilk HTTP
    bağlantısı yalnız **açık CA sertifikasını** taşır; pano veya erişim anahtarını
    taşımamalıdır. Sertifika parmak izini bilgisayardaki değerle karşılaştırın;
    eşleşmiyorsa devam etmeyin. TLS hatasını yok saymayın.
 4. iPhone Ayarlar'da indirilen profili yükleyin (Genel → VPN ve Aygıt Yönetimi).
-   Ardından Genel → Hakkında → Sertifika Güven Ayarları'nda bu PanoKöprü köküne
+   Ardından Genel → Hakkında → Sertifika Güven Ayarları'nda bu ClipBridge köküne
    tam güveni elle açın. Ekran adları dil/sürüme göre değişebilir. Kök güveni
    yalnız bu uygulamaya özel bir izin değildir; bu CA'nın imzaladığı sertifikalara
    güven verir. Tanımadığınız profilleri yüklemeyin.
@@ -84,13 +84,13 @@ hata kodu. Bu liste doldurulmadan gerçek cihaz kabulü geçti sayılmaz.
 
 ## Güvenli kaldırma
 
-Çıkardığınız **aynı sürümün** `PanoKopruSetup.exe` dosyasını tekrar açıp
+Çıkardığınız **aynı sürümün** `ClipBridgeSetup.exe` dosyasını tekrar açıp
 **Kaldır (veriler korunur)** seçin. Uygulama durdurulur; yalnız sahipliği doğrulanan
-program dosyaları, kısayollar/başlangıç kısayolu ve PanoKöprü firewall izinleri
+program dosyaları, kısayollar/başlangıç kısayolu ve ClipBridge firewall izinleri
 temizlenir. Firewall temizliği UAC ister; iptalde program silinmez.
 Windows ağ profili ve Tailscale değiştirilmez. Kullanıcı verileri ve Windows CA
 kimliği silinmez. iPhone'da Genel → VPN ve Aygıt Yönetimi'nden yalnız bu kurulumun
-PanoKöprü sertifika profilini ayrıca kaldırın.
+ClipBridge sertifika profilini ayrıca kaldırın.
 
 Korunan veriler bulunduğundan ilk-kurulum kurucusu aynı kullanıcıya yeniden
 kurulumu reddeder; bu sürüm veri benimseme/göç yapmaz. Yeniden temiz kabul için

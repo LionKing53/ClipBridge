@@ -3,10 +3,10 @@ param([Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9-]{36}$')][string
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
 . (Join-Path $PSScriptRoot 'runtime-context.ps1')
-$binding = Get-PanoKopruProductionBinding -DataRoot $DataRoot
+$binding = Get-ClipBridgeProductionBinding -DataRoot $DataRoot
 $appRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $installRoot = [IO.Path]::GetFullPath((Join-Path $appRoot '..'))
-if ((Split-Path $installRoot -Leaf) -ne 'PanoKopru' -or (Split-Path $appRoot -Leaf) -ne 'app') { throw 'Unexpected installation.' }
+if ((Split-Path $installRoot -Leaf) -ne 'ClipBridge' -or (Split-Path $appRoot -Leaf) -ne 'app') { throw 'Unexpected installation.' }
 $stateRoot = Join-Path $binding.Context.dataRoot 'lan'
 $requestPath = Join-Path $stateRoot ('network-request-' + $RequestId + '.json')
 $resultPath = Join-Path $stateRoot ('network-result-' + $RequestId + '.json')
@@ -31,14 +31,14 @@ try {
     if (!(Test-Path -LiteralPath $runtime)) { throw 'Bundled runtime missing.' }
     # One rule pair per exact network record; disconnected USB adapters are not required.
     foreach ($spec in @(@{ Suffix='HTTPS'; Protocol='TCP'; Port=$binding.Context.ports.local }, @{ Suffix='mDNS'; Protocol='UDP'; Port=5353 })) {
-        $ruleName = 'PanoKopru-Network-' + $request.key + '-' + $spec.Suffix
+        $ruleName = 'ClipBridge-Network-' + $request.key + '-' + $spec.Suffix
         $existing = Get-NetFirewallRule -Name $ruleName -ErrorAction SilentlyContinue
         if ($existing) {
             $programs = @($existing | Get-NetFirewallApplicationFilter)
-            if ($existing.Group -ne 'PanoKopru' -or $programs.Count -ne 1 -or $programs[0].Program -ine $runtime) { throw 'Existing rule ownership mismatch.' }
+            if ($existing.Group -ne 'ClipBridge' -or $programs.Count -ne 1 -or $programs[0].Program -ine $runtime) { throw 'Existing rule ownership mismatch.' }
             Set-NetFirewallRule -Name $ruleName -Enabled True -Direction Inbound -Action Allow -Profile Private -Protocol $spec.Protocol -LocalPort $spec.Port -RemoteAddress LocalSubnet -InterfaceAlias $entry.interfaceAlias -Program $runtime -EdgeTraversalPolicy Block | Out-Null
         } else {
-            New-NetFirewallRule -Name $ruleName -DisplayName ('PanoKopru - trusted network ' + $spec.Suffix) -Group PanoKopru -Enabled True -Direction Inbound -Action Allow -Profile Private -Protocol $spec.Protocol -LocalPort $spec.Port -RemoteAddress LocalSubnet -InterfaceAlias $entry.interfaceAlias -Program $runtime -EdgeTraversalPolicy Block | Out-Null
+            New-NetFirewallRule -Name $ruleName -DisplayName ('ClipBridge - trusted network ' + $spec.Suffix) -Group ClipBridge -Enabled True -Direction Inbound -Action Allow -Profile Private -Protocol $spec.Protocol -LocalPort $spec.Port -RemoteAddress LocalSubnet -InterfaceAlias $entry.interfaceAlias -Program $runtime -EdgeTraversalPolicy Block | Out-Null
             $createdRules += $ruleName
         }
     }

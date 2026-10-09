@@ -28,7 +28,7 @@ test('documentation image exceptions reject tampering, sensitive paths and PNG m
 });
 
 test('history audit admits reviewed PNG bytes but rejects an unreviewed earlier image version', { timeout: 30000 }, async t => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-doc-history-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-doc-history-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const git = args => run('git', ['-c', 'core.hooksPath=NUL', ...args], { cwd: root, windowsHide: true });
   await git(['init', '--quiet']);
@@ -70,7 +70,7 @@ test('history gate reports only categories for private text, binary and removed/
 });
 
 test('history gate detects a secret in a prior commit even after the latest file is clean', { timeout: 30000 }, async t => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-history-audit-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-history-audit-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const git = args => run('git', ['-c', 'core.hooksPath=NUL', ...args], { cwd: root, windowsHide: true });
   await git(['init', '--quiet']);

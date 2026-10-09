@@ -19,6 +19,8 @@ function section(source, from, to) {
   if (a < 0 || b < 0) throw new Error('Missing reviewed language section');
   return source.slice(a,b);
 }
+// Brand text only: never run this over paths, mutexes, headers or user content.
+export const rebrandLegacyLabel = value => value.replaceAll('PanoKöprü', 'ClipBridge').replaceAll('PanoKopru', 'ClipBridge');
 export function adaptLegacy(inputs, canonical, nativeCatalog) {
   for (const [name, hash] of Object.entries(legacyInputs)) {
     if (createHash('sha256').update(inputs[name] || '').digest('hex') !== hash) throw new Error('Unreviewed legacy program source: ' + name);
@@ -81,9 +83,16 @@ export function adaptLegacy(inputs, canonical, nativeCatalog) {
     // Only exact catalog-owned literals; brand, paths, mutexes, tokens untouched.
     out[name] = out[name].replace(/"(?:[^"\\]|\\.)*"/g, literal => {
       let value; try { value = JSON.parse(literal); } catch { return literal; }
-      return native.has(value) ? 'Language.Text(' + JSON.stringify(native.get(value)) + ')' : literal;
-    }).replace(/AssemblyVersion\("1\.0\.0\.0"\)/,'AssemblyVersion("1.2.0.0")').replace(/AssemblyFileVersion\("1\.0\.0\.0"\)/,'AssemblyFileVersion("1.2.0.0")');
+      const label = rebrandLegacyLabel(value);
+      if (native.has(label)) return 'Language.Text(' + JSON.stringify(native.get(label)) + ')';
+      // Exact title/tray/assembly brand; technical strings retain their identities.
+      return ['PanoKöprü','PanoKopru'].includes(value) ? '"ClipBridge"' : literal;
+    }).replace(/AssemblyVersion\("1\.0\.0\.0"\)/,'AssemblyVersion("1.2.1.0")').replace(/AssemblyFileVersion\("1\.0\.0\.0"\)/,'AssemblyFileVersion("1.2.1.0")')
+      .replace(/AssemblyDescription\("(?:[^"\\]|\\.)*"\)/,'AssemblyDescription("Shortcut-triggered iPhone and Windows clipboard bridge")');
   }
+  // Match existing launcher's original menu labels against the rebranded catalog.
+  // Keep installed executable name and synchronization identities for old shortcuts.
+  out['src/desktop-server.js'] = out['src/desktop-server.js'].replace("version: '1.2.0'", "version: '1.2.1'");
   out['launcher/PanoKopru.cs'] = replaceOnce(out['launcher/PanoKopru.cs'], '        bool background =', '        Language.Initialize(Path.Combine(AppRoot, ".clipboard-bridge"), true);\n        bool background =');
   out['launcher/DesktopWindow.cs'] = replaceOnce(out['launcher/DesktopWindow.cs'], '                    if (message != "theme:dark"', `                    if (message == "language:tr" || message == "language:en") {
                         Language.Current = message.Substring(9);

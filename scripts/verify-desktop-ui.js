@@ -11,11 +11,11 @@ import sharp from 'sharp';
 import { createStorage } from '../src/storage.js';
 import { operationError } from '../src/errors.js';
 
-const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-ui-test-'));
+const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-ui-test-'));
 const history = await createHistory(root);
 const storage = await createStorage(root, history);
 let setupState = { available: false, phase: 'not_started', busy: false };
-let localState = { configured: true, state: 'ready', hostname: 'panokopru-1234abcd.local', port: 32147, activeNetworkName: 'Demo Hotspot', allowedNetworks: [
+let localState = { configured: true, state: 'ready', hostname: 'clipbridge-1234abcd.local', port: 32147, activeNetworkName: 'Demo Hotspot', allowedNetworks: [
   { key: 'a'.repeat(32), name: 'Ev ağı', connection: 'Ev ağı', active: false },
   { key: 'b'.repeat(32), name: 'Demo USB', connection: 'iPhone · USB paylaşımı', active: false },
   { key: 'c'.repeat(32), name: 'Demo Hotspot', connection: 'iPhone · Wi-Fi paylaşımı', active: true }
@@ -94,7 +94,7 @@ try {
   await page.screenshot({ path: 'build/desktop-settings-light.png', fullPage: true });
   await page.locator('#theme-select').selectOption('dark');
   assert.equal(await page.locator('html').getAttribute('data-theme'), 'dark');
-  assert.equal(await page.evaluate(() => localStorage.getItem('panokopru-theme')), 'dark');
+  assert.equal(await page.evaluate(() => localStorage.getItem('clipbridge-theme')), 'dark');
   await page.locator('[data-view="settings"]').click();
   await page.locator('#history-enabled').uncheck();
   await page.waitForFunction(() => document.querySelector('#toast').textContent.includes('duraklatıldı'));
@@ -124,11 +124,11 @@ try {
   await page.waitForFunction(() => document.querySelectorAll('.trusted-network').length === 3);
   await page.locator('.connection-details summary').click();
   await page.locator('[data-copy-endpoint="clipboard"]').click();
-  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://panokopru-1234abcd.local:32147/api/v1/clipboard');
+  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://clipbridge-1234abcd.local:32147/api/v1/clipboard');
   await page.locator('[data-copy-endpoint="kind"]').click();
-  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://panokopru-1234abcd.local:32147/api/v1/clipboard/kind');
+  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://clipbridge-1234abcd.local:32147/api/v1/clipboard/kind');
   await page.locator('[data-copy-endpoint="health"]').click();
-  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://panokopru-1234abcd.local:32147/health');
+  assert.equal(await page.evaluate(() => window.__copiedAddress), 'https://clipbridge-1234abcd.local:32147/health');
   await page.evaluate(() => { document.querySelector('#toast').hidden = true; });
   await page.screenshot({ path: 'build/desktop-connection-dark.png', fullPage: true });
   await page.locator('#theme-toggle').click();

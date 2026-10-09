@@ -9,7 +9,7 @@ import { createHistory } from '../src/history.js';
 import { createDesktopServer } from '../src/desktop-server.js';
 import { createTestSystem } from '../test/support/desktop-system.js';
 
-const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-doc-preview-'));
+const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-doc-preview-'));
 let browser, server;
 const output = path.resolve('build/docs-preview');
 try {
@@ -21,7 +21,7 @@ try {
   const document = path.join(root, 'Trip checklist.pdf'); await writeFile(document, '%PDF-1.4\nSynthetic documentation fixture');
   await history.record({ type: 'file', path: document, filename: 'Trip checklist.pdf', mimeType: 'application/pdf' }, 'inbound');
   await history.record({ type: 'text', content: 'Meeting link and next steps\nSaved manually from the demo clipboard.', filename: 'Meeting notes' }, 'local');
-  const local = { configured: true, state: 'ready', canCleanupPermissions: true, hostname: 'panokopru-1234abcd.local', port: 32147, activeNetworkName: 'Demo Home',
+  const local = { configured: true, state: 'ready', canCleanupPermissions: true, hostname: 'clipbridge-1234abcd.local', port: 32147, activeNetworkName: 'Demo Home',
     connectedNetworks: [{ key: 'a'.repeat(32), name: 'Demo Home', interfaceAlias: 'Wi-Fi', address: '192.168.50.2', category: 'Private', trusted: true }],
     allowedNetworks: [{ key: 'a'.repeat(32), name: 'Demo Home', connection: 'Wi-Fi', active: true }] };
   server = await createDesktopServer({ system: createTestSystem({ network: async () => ({ connected: false }) }),

@@ -15,7 +15,7 @@ test('source config fails closed before reading or creating state', async () => 
 });
 
 test('real network permissions are rejected before writing an operation or starting UAC', async t => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-isolation-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-isolation-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   await assert.rejects(requestNetworkPermission(root, {}), { code: 'ERR_SOURCE_CHECKOUT' });
   assert.deepEqual(await readdir(root), []);
@@ -28,7 +28,7 @@ test('desktop refuses real or incomplete adapters before creating tokens', async
 });
 
 test('desktop copy and reveal use injected adapters only', async t => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-isolation-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-isolation-'));
   const history = await createHistory(root);
   const calls = [];
   const system = createTestSystem({ copyText: async value => calls.push(['text', value]),

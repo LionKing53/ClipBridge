@@ -5,11 +5,11 @@ personal installation, and the installation is not a second source branch.
 
 | Purpose | Default / contract |
 | --- | --- |
-| Canonical source | `%USERPROFILE%/source/PanoKopru` |
-| Program | `%LOCALAPPDATA%/Programs/PanoKopru` |
-| Production data (new design) | `%LOCALAPPDATA%/PanoKopru` |
-| Development/test | Explicit absolute `PANOKOPRU_DATA_ROOT`; never production data |
-| Runtime mode | Explicit `PANOKOPRU_MODE`: production/development/test |
+| Canonical source | `%USERPROFILE%/source/ClipBridge` |
+| Program | `%LOCALAPPDATA%/Programs/ClipBridge` |
+| Production data (new design) | `%LOCALAPPDATA%/ClipBridge` |
+| Development/test | Explicit absolute `CLIPBRIDGE_DATA_ROOT`; never production data |
+| Runtime mode | Explicit `CLIPBRIDGE_MODE`: production/development/test |
 | Ports | Production API 32145, desktop 32146, local TLS 32147; isolated modes require three distinct other ports |
 
 `runtime-context.js`, `launcher/RuntimeContext.cs` and `runtime-context.ps1`

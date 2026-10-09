@@ -62,7 +62,7 @@ export async function prepareLocalNetwork(stateRoot, approvedProfileId, { port =
   try { config = JSON.parse(await readFile(path.join(root, 'config.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; }
   if (config && !config.setupPending) throw new Error('Mevcut kurulum ilk kurulum işlemiyle değiştirilemez.');
   if (!config) {
-    config = { enabled: false, setupPending: true, trustedNetworks: [], hostname: `panokopru-${randomBytes(4).toString('hex')}.local`, port, home: { id: home.id, name: home.name, interfaceAlias: home.interfaceAlias, previousCategory: home.category }, createdAt: new Date().toISOString() };
+    config = { enabled: false, setupPending: true, trustedNetworks: [], hostname: `clipbridge-${randomBytes(4).toString('hex')}.local`, port, home: { id: home.id, name: home.name, interfaceAlias: home.interfaceAlias, previousCategory: home.category }, createdAt: new Date().toISOString() };
     await writeFile(path.join(root, 'config.json'), JSON.stringify(config, null, 2), { flag: 'wx' });
   }
   await powershell('local-certificates.ps1', ['-Mode', 'Ensure', '-Address', home.address, '-DataRoot', stateRoot]);
@@ -74,13 +74,17 @@ export async function loadLocalTLS(root, address) {
   return { pfx: await readFile(path.join(root, 'server.pfx')), passphrase, minVersion: 'TLSv1.2', handshakeTimeout: 10000 };
 }
 const escape = value => String(value ?? '').replace(/[&<>"']/g, x => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[x]);
+export async function readLocalCertificate(root) {
+  try { return await readFile(path.join(root, 'ClipBridge-Local-CA.cer')); }
+  catch (error) { if (error.code !== 'ENOENT') throw error; return readFile(path.join(root, 'PanoKopru-Local-CA.cer')); }
+}
 export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, networkReader = getLocalNetworks }) {
   const root = path.join(stateRoot, 'lan');
   let config;
   try { config = JSON.parse(await readFile(path.join(root, 'config.json'), 'utf8')); } catch (error) { if (error.code !== 'ENOENT') throw error; return { status: () => ({ configured: false, state: 'not_configured' }), handleSetup: async () => false, close() {} }; }
-  if (!/^panokopru-[a-f0-9]{8}\.local$/.test(config.hostname) || config.port !== port) throw new Error('Geçersiz yerel ağ ayarı.');
+  if (!/^(?:clipbridge|panokopru)-[a-f0-9]{8}\.local$/.test(config.hostname) || config.port !== port) throw new Error('Geçersiz yerel ağ ayarı.');
   if (config.setupPending) return { status: () => ({ configured: false, setupPending: true, state: 'setup_pending' }), handleSetup: async () => false, close() {} };
-  const certificate = new X509Certificate(await readFile(path.join(root, 'PanoKopru-Local-CA.cer')));
+  const certificate = new X509Certificate(await readLocalCertificate(root));
   let status = { configured: true, state: 'checking', hostname: config.hostname, port: config.port, homeName: config.home?.name, fingerprint: certificate.fingerprint256, fingerprintSHA1: certificate.fingerprint };
   let server, mdns, boundNetwork, lastCheck = 0, refreshing = false, closed = false, lastRenewal = 0, refreshTask, closing;
   const drains = new Set();
@@ -174,7 +178,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
       if (req.method !== 'GET' || !['/local-setup', '/local-ca.cer'].includes(pathname)) return false;
       res.setHeader('Cache-Control', 'no-store'); res.setHeader('X-Content-Type-Options', 'nosniff'); res.setHeader('Referrer-Policy', 'no-referrer');
       if (pathname === '/local-ca.cer') {
-        res.setHeader('Content-Type', 'application/x-x509-ca-cert'); res.setHeader('Content-Disposition', 'attachment; filename="PanoKopru-Local-CA.cer"');
+        res.setHeader('Content-Type', 'application/x-x509-ca-cert'); res.setHeader('Content-Disposition', 'attachment; filename="ClipBridge-Local-CA.cer"');
         res.end(certificate.raw); return true;
       }
       const origin = `https://${config.hostname}:${config.port}`;
@@ -182,7 +186,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
       const t = (key, values) => translate(key, language, values);
       res.setHeader('Content-Type', 'text/html; charset=utf-8');
       res.setHeader('Content-Security-Policy', "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; frame-ancestors 'none'");
-      res.end(`<!doctype html><html lang="${language}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t('m_62d461d98956')}</title><style>body{font:16px system-ui;background:#f4f6f3;color:#203329;max-width:640px;margin:auto;padding:28px 20px;line-height:1.6}section{background:white;border:1px solid #c7dcca;border-radius:14px;padding:20px;margin:20px 0}a{color:#235e3d}code{word-break:break-all;font-size:13px}small{overflow-wrap:anywhere}h1{line-height:1.2}strong{color:#285e43}</style><h1>${t('m_d0e4569cc2cc')}</h1><p>${t('m_5a7a89e1360d')}</p><section><h2>${t('m_a94a80959c8e')}</h2><p><a href="/local-ca.cer">${t('m_39394f5cbe32')}</a></p><p>${t('m_74e5d6e46533')}</p><p>${t('m_e2c5d7c0ec6c')} <strong>PanoKopru Local CA</strong> ${t('m_0599bf8a5cb3')}</p><p>${t('m_a711ee2c1473')}</p><small>SHA-256: ${escape(certificate.fingerprint256)}<br>SHA-1: ${escape(certificate.fingerprint)}</small></section><section><h2>${t('m_c5fd69192b59')}</h2><p>${t('m_ec288fbd0f71')} <a href="${origin}/health">${t('m_ad1603e555ea')}</a>${t('m_3b6f0307af5b')} <code>ok: true</code> ${t('m_4d94860771b0')}</p><p>${t('m_6e731464010c', { state: escape(publicStatus().state) })}</p></section><section><h2>${t('m_6fc61bcd1b92')}</h2><p>${t('m_fcdaf41c7745')}</p><p>${t('m_bc880984dca6')}</p><code>${origin}/api/v1/clipboard</code><p>${t('m_a0d702b482d2')}</p><code>${origin}/api/v1/clipboard/kind</code><p>${t('m_b317aa5cc57f')}</p><p>${t('m_b03dfde73b9d')}</p></section><p>${t('m_6b0ebb41b4c1')}</p></html>`);
+      res.end(`<!doctype html><html lang="${language}"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${t('m_62d461d98956')}</title><style>body{font:16px system-ui;background:#f4f6f3;color:#203329;max-width:640px;margin:auto;padding:28px 20px;line-height:1.6}section{background:white;border:1px solid #c7dcca;border-radius:14px;padding:20px;margin:20px 0}a{color:#235e3d}code{word-break:break-all;font-size:13px}small{overflow-wrap:anywhere}h1{line-height:1.2}strong{color:#285e43}</style><h1>${t('m_d0e4569cc2cc')}</h1><p>${t('m_5a7a89e1360d')}</p><section><h2>${t('m_a94a80959c8e')}</h2><p><a href="/local-ca.cer">${t('m_39394f5cbe32')}</a></p><p>${t('m_74e5d6e46533')}</p><p>${t('m_e2c5d7c0ec6c')} <strong>${escape(certificate.subject)}</strong> ${t('m_0599bf8a5cb3')}</p><p>${t('m_a711ee2c1473')}</p><small>SHA-256: ${escape(certificate.fingerprint256)}<br>SHA-1: ${escape(certificate.fingerprint)}</small></section><section><h2>${t('m_c5fd69192b59')}</h2><p>${t('m_ec288fbd0f71')} <a href="${origin}/health">${t('m_ad1603e555ea')}</a>${t('m_3b6f0307af5b')} <code>ok: true</code> ${t('m_4d94860771b0')}</p><p>${t('m_6e731464010c', { state: escape(publicStatus().state) })}</p></section><section><h2>${t('m_6fc61bcd1b92')}</h2><p>${t('m_fcdaf41c7745')}</p><p>${t('m_bc880984dca6')}</p><code>${origin}/api/v1/clipboard</code><p>${t('m_a0d702b482d2')}</p><code>${origin}/api/v1/clipboard/kind</code><p>${t('m_b317aa5cc57f')}</p><p>${t('m_b03dfde73b9d')}</p></section><p>${t('m_6b0ebb41b4c1')}</p></html>`);
       return true;
     }
   };

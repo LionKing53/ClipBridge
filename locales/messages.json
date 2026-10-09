@@ -43,16 +43,16 @@
     "en": "Trusted list"
   },
   "m_9abdcb01e0ad": {
-    "tr": "PanoKöprü Windows izinlerini temizle",
-    "en": "Remove PanoKöprü Windows permissions"
+    "tr": "ClipBridge Windows izinlerini temizle",
+    "en": "Remove ClipBridge Windows permissions"
   },
   "m_3f8cd90a0484": {
     "tr": "Ağ adı tek başına kimlik doğrulaması değildir. Uygulama kayıtlı ağ/bağdaştırıcı eşleşmesini, HTTPS sertifikasını ve erişim anahtarını kullanır. Yalnızca kontrol ettiğin ev veya kişisel paylaşım ağlarını ekle; ortak/okul ağlarına güven verme.",
     "en": "A network name alone does not authenticate it. The app uses the saved network/adapter match, HTTPS certificate and access key. Only add home or personal hotspot networks you control; do not trust public or school networks."
   },
   "m_59eaf1d268e5": {
-    "tr": "“Aktif” Windows dinleyicisini gösterir; iPhone erişimini tek başına doğrulamaz. Listeden çıkarma PanoKöprü erişimini kapatır, Windows ağ profilini veya uygulamaya ait dar kapsamlı güvenlik duvarı kurallarını silmez.",
-    "en": "“Active” describes the Windows listener; it does not confirm iPhone access. Removing a network disables PanoKöprü access but does not remove the Windows network profile or the app's narrowly scoped firewall rules."
+    "tr": "“Aktif” Windows dinleyicisini gösterir; iPhone erişimini tek başına doğrulamaz. Listeden çıkarma ClipBridge erişimini kapatır, Windows ağ profilini veya uygulamaya ait dar kapsamlı güvenlik duvarı kurallarını silmez.",
+    "en": "“Active” describes the Windows listener; it does not confirm iPhone access. Removing a network disables ClipBridge access but does not remove the Windows network profile or the app's narrowly scoped firewall rules."
   },
   "m_1e05c835cbee": {
     "tr": "Yerel adresler ve kestirme ayarları",
@@ -523,8 +523,8 @@
     "en": "From the certificate details on your phone"
   },
   "m_4c8c5285c179": {
-    "tr": "Ayarlar → Genel → VPN ve Aygıt Yönetimi: profili yükle. Genel → Hakkında → Sertifika Güven Ayarları: doğruladığın PanoKöprü köküne tam güveni elle aç. iOS sürümüne göre isimler değişebilir.",
-    "en": "Settings → General → VPN & Device Management: install the profile. General → About → Certificate Trust Settings: manually enable full trust for the verified PanoKöprü root. Names may vary by iOS version."
+    "tr": "Ayarlar → Genel → VPN ve Aygıt Yönetimi: profili yükle. Genel → Hakkında → Sertifika Güven Ayarları: doğruladığın ClipBridge köküne tam güveni elle aç. iOS sürümüne göre isimler değişebilir.",
+    "en": "Settings → General → VPN & Device Management: install the profile. General → About → Certificate Trust Settings: manually enable full trust for the verified ClipBridge root. Names may vary by iOS version."
   },
   "m_e7b8bb961100": {
     "tr": "Parmak izini telefonda karşılaştırdım ve tam güveni açtım.",
@@ -831,8 +831,8 @@
     "en": "Remove Windows permissions?"
   },
   "m_030098f40ab6": {
-    "tr": "Yerel aktarım hemen durur. Yönetici onayıyla yalnız PanoKöprü’ye ait doğrulanmış eski/yeni firewall kuralları kaldırılır. Windows ağ profili ve Tailscale değişmez. Onay iptal edilse bile yerel erişim kapalı kalır; tekrar kullanmak için İzni onar gerekir.",
-    "en": "Local transfers stop immediately. With administrator approval, only verified old/new firewall rules owned by PanoKöprü are removed. The Windows network profile and Tailscale remain unchanged. Local access stays off even if approval is cancelled; use Repair permission to enable it again."
+    "tr": "Yerel aktarım hemen durur. Yönetici onayıyla yalnız ClipBridge’ye ait doğrulanmış eski/yeni firewall kuralları kaldırılır. Windows ağ profili ve Tailscale değişmez. Onay iptal edilse bile yerel erişim kapalı kalır; tekrar kullanmak için İzni onar gerekir.",
+    "en": "Local transfers stop immediately. With administrator approval, only verified old/new firewall rules owned by ClipBridge are removed. The Windows network profile and Tailscale remain unchanged. Local access stays off even if approval is cancelled; use Repair permission to enable it again."
   },
   "m_d7ab012af168": {
     "tr": "İzinleri temizle",
@@ -932,11 +932,11 @@
   },
   "m_4d979b193d8e": {
     "tr": "Pano Köprüsü Eşleştirme",
-    "en": "PanoKöprü Pairing"
+    "en": "ClipBridge Pairing"
   },
   "m_58e60cedcfe8": {
     "tr": "Pano Köprüsü",
-    "en": "PanoKöprü"
+    "en": "ClipBridge"
   },
   "m_b4880350519c": {
     "tr": "Bu sayfa iPhone Kestirmesini Windows bilgisayarınızla eşleştirir.",
@@ -963,12 +963,12 @@
     "en": "Copied."
   },
   "m_62d461d98956": {
-    "tr": "PanoKöprü · Ev ağı kurulumu",
-    "en": "PanoKöprü · Local network setup"
+    "tr": "ClipBridge · Ev ağı kurulumu",
+    "en": "ClipBridge · Local network setup"
   },
   "m_d0e4569cc2cc": {
-    "tr": "PanoKöprü · Yerel bağlantı",
-    "en": "PanoKöprü · Local connection"
+    "tr": "ClipBridge · Yerel bağlantı",
+    "en": "ClipBridge · Local connection"
   },
   "m_5a7a89e1360d": {
     "tr": "İlk sertifika kurulumu için masaüstündeki ilk kurulum sihirbazını kullan; Tailscale gerekmez. Bu sayfa mevcut yerel bağlantının sertifika ve kestirme rehberidir.",
@@ -979,8 +979,8 @@
     "en": "1 · Install the certificate"
   },
   "m_39394f5cbe32": {
-    "tr": "PanoKöprü yerel sertifikasını indir",
-    "en": "Download the PanoKöprü local certificate"
+    "tr": "ClipBridge yerel sertifikasını indir",
+    "en": "Download the ClipBridge local certificate"
   },
   "m_74e5d6e46533": {
     "tr": "iPhone Ayarlar → Genel → VPN ve Aygıt Yönetimi bölümünden indirilen sertifika profilini yükle.",
@@ -1099,12 +1099,12 @@
     "en": "unknown"
   },
   "m_20482d5a2669": {
-    "tr": "“{name}” ({adapter}) için PanoKöprü yerel erişimi açılacak. Windows yönetici onayı isteyebilir. Bu ağ Özel yapılır; diğer uygulamaların mevcut Özel ağ kuralları da etkilenebilir. Yalnızca kendi ev veya kişisel paylaşım ağında devam et.",
-    "en": "PanoKöprü local access will be enabled for “{name}” ({adapter}). Windows may ask for administrator approval. This network becomes Private; other apps' existing Private network rules may also be affected. Continue only on your own home or personal hotspot network."
+    "tr": "“{name}” ({adapter}) için ClipBridge yerel erişimi açılacak. Windows yönetici onayı isteyebilir. Bu ağ Özel yapılır; diğer uygulamaların mevcut Özel ağ kuralları da etkilenebilir. Yalnızca kendi ev veya kişisel paylaşım ağında devam et.",
+    "en": "ClipBridge local access will be enabled for “{name}” ({adapter}). Windows may ask for administrator approval. This network becomes Private; other apps' existing Private network rules may also be affected. Continue only on your own home or personal hotspot network."
   },
   "m_d9e825365573": {
-    "tr": "“{name}” için PanoKöprü yerel erişimi kapatılacak; aktif aktarım kesilebilir. Windows Özel/Genel ayarı ve güvenlik duvarı kuralları değişmez. Tailscale korunur. Yeniden eklemek için o ağa bağlı olman gerekir.",
-    "en": "PanoKöprü local access will be disabled for “{name}”; an active transfer may be interrupted. Windows Private/Public settings and firewall rules remain unchanged. Tailscale is preserved. You must be connected to this network to add it again."
+    "tr": "“{name}” için ClipBridge yerel erişimi kapatılacak; aktif aktarım kesilebilir. Windows Özel/Genel ayarı ve güvenlik duvarı kuralları değişmez. Tailscale korunur. Yeniden eklemek için o ağa bağlı olman gerekir.",
+    "en": "ClipBridge local access will be disabled for “{name}”; an active transfer may be interrupted. Windows Private/Public settings and firewall rules remain unchanged. Tailscale is preserved. You must be connected to this network to add it again."
   },
   "m_51f6d601c6e7": {
     "tr": "Ağ güvenilen listeye eklendi.",
@@ -1139,8 +1139,8 @@
     "en": "Size"
   },
   "m_c742b0f1cf00": {
-    "tr": "PanoKöprü Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.",
-    "en": "PanoKöprü Windows permissions removed. The network list was preserved; select Repair permission on the network you want to use. The Windows profile and Tailscale remain unchanged."
+    "tr": "ClipBridge Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.",
+    "en": "ClipBridge Windows permissions removed. The network list was preserved; select Repair permission on the network you want to use. The Windows profile and Tailscale remain unchanged."
   },
   "m_32b010293c3a": {
     "tr": "Ağ güvenilen listeye eklendi. Yerel bağlantı birkaç saniye içinde hazırlanacak.",

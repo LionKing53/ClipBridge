@@ -8,8 +8,8 @@ import { resolveRuntime, prepareRuntime } from '../src/runtime-context.js';
 import { createIsolatedReleaseStore, verifyRelease, validateReleaseManifest } from '../src/release-store.js';
 const hash = value => createHash('sha256').update(value).digest('hex');
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-release-test-')); t.after(() => rm(root, { recursive: true, force: true }));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'local'), PANOKOPRU_MODE:'test', PANOKOPRU_DATA_ROOT: path.join(root,'data'), PANOKOPRU_API_PORT:'45145', PANOKOPRU_DESKTOP_PORT:'45146', PANOKOPRU_LOCAL_PORT:'45147' } }); await prepareRuntime(context);
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-release-test-')); t.after(() => rm(root, { recursive: true, force: true }));
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'local'), CLIPBRIDGE_MODE:'test', CLIPBRIDGE_DATA_ROOT: path.join(root,'data'), CLIPBRIDGE_API_PORT:'45145', CLIPBRIDGE_DESKTOP_PORT:'45146', CLIPBRIDGE_LOCAL_PORT:'45147' } }); await prepareRuntime(context);
   const make = async (version, schemaMin = 1, schemaMax = 1) => {
     const directory = path.join(root, version); await mkdir(directory);
     const content = 'synthetic program ' + version; const manifest = { format:1, version, commit:'a'.repeat(40), schemaMin, schemaMax, files:[{ path:'app.txt', bytes:Buffer.byteLength(content), sha256:hash(content) }] };
@@ -29,7 +29,7 @@ test('package verifier rejects unlisted files, traversal, device names, case dup
 test('failed update recovery and explicit rollback preserve transfers created after the update', async t => {
   const { context, make } = await fixture(t); let healthy = true;
   const store = await createIsolatedReleaseStore({ context, stop:async()=>{}, isStopped:async()=>true, probe:async()=>true, activate:async()=>healthy });
-  const first = await make('1.0.0'), second = await make('1.1.0'), third = await make('1.2.0');
+  const first = await make('1.0.0'), second = await make('1.1.0'), third = await make('1.2.1');
   await store.update(first.directory,first.hash); await store.update(second.directory,second.hash);
   const transfer = path.join(context.dataRoot,'new-transfer.txt'); await writeFile(transfer,'retain after update');
   await store.rollback({confirmedStopped:true}); assert.equal((await store.status()).current.version,'1.0.0'); assert.equal(await readFile(transfer,'utf8'),'retain after update');

@@ -1,4 +1,24 @@
-# PanoKopru — proje durumu
+# ClipBridge — proje durumu
+
+## 1.2.1 ClipBridge adı — 2026-10-09
+
+- Kullanıcı iki dilde tek ad olarak ClipBridge'i seçti. UI/çeviri katalogları,
+  native ürün metadata'sı, launcher/kurucu/paket/asset/kısayol adları ve yeni
+  kurulumun veri/program kökleri, CLIPBRIDGE ortam değişkenleri, yeni hostname/
+  CA/firewall adları güncellendi. Tek ana kaynak yerinde; GitHub URL'si değişmez.
+- Eski kişisel adres/sertifika/anahtar/veri/başlangıç ve süreç kimlikleri korunur.
+  Uyumluluk istisnaları docs/BRANDING.md'de. Yeni ilk kurucu eski program/veri/
+  bakım kilidi varsa durur; yalıtılmış geliştirme eski kişisel kökleri de reddeder.
+  Eski protokol başlıkları, tema ve public-CA dosya adı için dar uyumluluk var.
+- Dört İngilizce sentetik belge görseli ClipBridge ile yeniden üretildi ve
+  incelendi; eski görüntü/hash ve kaynak dosya adları geçmiş denetimine eklendi.
+- Son tam koşu **156/156**, atlanan yok. Ek tema/alias ve native eski-kök
+  sınırı kontrolleri geçti; kişisel yedek/dağıtım sonucu teslim kaydına eklenecek.
+  Edge TR/EN UI, native derleme ve kurucu TR/EN renderleri geçti. Kaynak kapısı
+  172 metin + 4 onaylı PNG / 121 kilit girdisi geçti. Bağımlılıklar değişmedi.
+- Kişisel ad yaması test/yedek sonrasında uygulanacak; yeni genel kurucu paketi
+  henüz üretilmedi. GitHub işlemi yok. Temiz Windows/iPhone ve libvips gerçek
+  yeniden derleme kapıları değişmedi; tamamlandı veya yeni yayın yapılmış sayılmaz.
 
 ## 1.2.0 kaynak yayını ve gerçek İngilizce görseller — 2026-10-09
 

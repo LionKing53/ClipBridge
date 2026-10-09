@@ -18,13 +18,13 @@ internal static class RemoveInstall
 {
     internal static void Run(IRemoveInstallSystem system, string expectedHash)
     {
-        string root = Path.Combine(system.LocalAppData, "Programs", "PanoKopru");
+        string root = Path.Combine(system.LocalAppData, "Programs", "ClipBridge");
         InstalledLaunch.Validate(root, system.LocalAppData, system.OwnerSid);
         var manifest = InstalledLaunch.ValidatePayload(root, expectedHash, true);
         var receipt = new JavaScriptSerializer().Deserialize<Dictionary<string, object>>(File.ReadAllText(Path.Combine(root, "install-receipt.json")));
         string id = receipt.ContainsKey("installId") ? receipt["installId"] as string : null; Guid parsed;
         if (!Guid.TryParseExact(id, "D", out parsed)) throw new InvalidOperationException("ERR_REMOVE_OWNERSHIP");
-        string guard = Path.Combine(Path.GetDirectoryName(root), ".PanoKopru-install-lock");
+        string guard = Path.Combine(Path.GetDirectoryName(root), ".ClipBridge-install-lock");
         system.CreatePrivateDirectoryExclusive(guard);
         string marker = Path.Combine(guard, "owner"), operation = Guid.NewGuid().ToString("D");
         File.WriteAllText(marker, operation);

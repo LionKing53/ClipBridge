@@ -2,14 +2,14 @@ param([ValidateSet('Ensure','Load')][string]$Mode = 'Ensure', [Parameter(Mandato
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
 . (Join-Path $PSScriptRoot 'runtime-context.ps1')
-$context = Get-PanoKopruContext -DataRoot $DataRoot
+$context = Get-ClipBridgeContext -DataRoot $DataRoot
 if ($context.mode -ne 'production') { throw 'Certificate operations require production mode.' }
 Add-Type -AssemblyName System.Security
 [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
 $appRoot = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $stateRoot = Join-Path $context.dataRoot 'lan'
 $settings = Get-Content -LiteralPath (Join-Path $stateRoot 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json
-if ($settings.hostname -notmatch '^panokopru-[a-f0-9]{8}\.local$') { throw 'Invalid local hostname.' }
+if ($settings.hostname -notmatch '^(clipbridge|panokopru)-[a-f0-9]{8}\.local$') { throw 'Invalid local hostname.' }
 $parsedAddress = $null
 if (![Net.IPAddress]::TryParse($Address, [ref]$parsedAddress) -or $parsedAddress.AddressFamily -ne [Net.Sockets.AddressFamily]::InterNetwork) { throw 'Invalid address.' }
 $metadataPath = Join-Path $stateRoot 'certificate.json'
@@ -22,10 +22,10 @@ if ($metadata -and $metadata.rootThumbprint -match '^[A-Fa-f0-9]{40}$') {
 if ($Mode -eq 'Ensure') {
     if (!$root) {
         if ($metadata) { throw 'Local CA key is unavailable. Do not silently replace a trusted root.' }
-        $root = New-SelfSignedCertificate -Type Custom -Subject ('CN=PanoKopru Local CA ' + $settings.hostname.Split('.')[0]) -FriendlyName 'PanoKopru Local CA - NOT a Windows trusted root' -CertStoreLocation 'Cert:\CurrentUser\My' -Provider 'Microsoft Software Key Storage Provider' -KeyAlgorithm RSA -KeyLength 3072 -HashAlgorithm SHA256 -KeyExportPolicy NonExportable -KeyUsage CertSign,CRLSign -TextExtension @('2.5.29.19={critical}{text}ca=1&pathlength=0') -NotAfter (Get-Date).AddYears(10)
+        $root = New-SelfSignedCertificate -Type Custom -Subject ('CN=ClipBridge Local CA ' + $settings.hostname.Split('.')[0]) -FriendlyName 'ClipBridge Local CA - NOT a Windows trusted root' -CertStoreLocation 'Cert:\CurrentUser\My' -Provider 'Microsoft Software Key Storage Provider' -KeyAlgorithm RSA -KeyLength 3072 -HashAlgorithm SHA256 -KeyExportPolicy NonExportable -KeyUsage CertSign,CRLSign -TextExtension @('2.5.29.19={critical}{text}ca=1&pathlength=0') -NotAfter (Get-Date).AddYears(10)
         $metadata = [pscustomobject]@{ rootThumbprint = $root.Thumbprint; leafExpires = ''; address = '' }
         [IO.File]::WriteAllText($metadataPath, ($metadata | ConvertTo-Json), (New-Object Text.UTF8Encoding($false)))
-        Export-Certificate -Cert $root -FilePath (Join-Path $stateRoot 'PanoKopru-Local-CA.cer') -Type CERT | Out-Null
+        Export-Certificate -Cert $root -FilePath (Join-Path $stateRoot 'ClipBridge-Local-CA.cer') -Type CERT | Out-Null
     }
     $refresh = $metadata.address -ne $Address -or !(Test-Path -LiteralPath (Join-Path $stateRoot 'server.pfx')) -or !(Test-Path -LiteralPath (Join-Path $stateRoot 'password.dpapi'))
     if (!$refresh) { try { $refresh = [DateTime]::Parse($metadata.leafExpires).ToUniversalTime() -lt [DateTime]::UtcNow.AddDays(30) } catch { $refresh = $true } }

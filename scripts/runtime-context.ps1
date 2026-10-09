@@ -1,4 +1,4 @@
-function Get-PanoKopruContext {
+function Get-ClipBridgeContext {
     param([Parameter(Mandatory=$true)][string]$DataRoot)
     if (![IO.Path]::IsPathRooted($DataRoot) -or $DataRoot.StartsWith('\\') -or $DataRoot -match '[\x00-\x1f"<>|]') { throw 'Explicit local data root required.' }
     $full = [IO.Path]::GetFullPath($DataRoot).TrimEnd('\','/')
@@ -21,16 +21,16 @@ function Get-PanoKopruContext {
     return $context
 }
 
-function Get-PanoKopruProductionBinding {
+function Get-ClipBridgeProductionBinding {
     param([Parameter(Mandatory=$true)][string]$DataRoot)
-    $context = Get-PanoKopruContext -DataRoot $DataRoot
+    $context = Get-ClipBridgeContext -DataRoot $DataRoot
     if ($context.mode -ne 'production') { throw 'Production Windows operation required.' }
     # Resolve the original data owner, not the administrator's LOCALAPPDATA after UAC.
     $ownerSid = (Get-Acl -LiteralPath $context.dataRoot).GetOwner([Security.Principal.SecurityIdentifier]).Value
     if ($ownerSid -notmatch '^S-1-5-21-(\d+-){3}\d+$') { throw 'Expected an individual Windows user data owner.' }
     $profile = [Environment]::ExpandEnvironmentVariables((Get-ItemProperty -LiteralPath ('HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\ProfileList\' + $ownerSid) -Name ProfileImagePath).ProfileImagePath)
-    $expectedData = [IO.Path]::GetFullPath((Join-Path $profile 'AppData\Local\PanoKopru'))
-    $expectedInstall = [IO.Path]::GetFullPath((Join-Path $profile 'AppData\Local\Programs\PanoKopru'))
+    $expectedData = [IO.Path]::GetFullPath((Join-Path $profile 'AppData\Local\ClipBridge'))
+    $expectedInstall = [IO.Path]::GetFullPath((Join-Path $profile 'AppData\Local\Programs\ClipBridge'))
     $app = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
     $install = [IO.Path]::GetFullPath((Join-Path $app '..'))
     if ($context.dataRoot -ine $expectedData -or $install -ine $expectedInstall -or (Split-Path $app -Leaf) -ne 'app') { throw 'Data owner / installation binding mismatch. Redirected profiles require explicit support.' }

@@ -40,7 +40,7 @@ for (const name of ['desktop/app.js','desktop/index.html','desktop/style.css','d
 for (const name of Object.keys(files).filter(name=>name.endsWith('.js'))) await run(process.execPath,['--check',path.join(output,name)],{windowsHide:true});
 const exe = path.join(output,'PanoKopru.exe');
 await run(path.join(process.env.SystemRoot,'Microsoft.NET/Framework64/v4.0.30319/csc.exe'),['/nologo','/target:winexe','/platform:x64',
-  '/win32manifest:' + path.join(root,'launcher/app.manifest'),'/win32icon:' + path.join(native,'PanoKopru.ico'),
+  '/win32manifest:' + path.join(root,'launcher/app.manifest'),'/win32icon:' + path.join(native,'ClipBridge.ico'),
   '/reference:System.Windows.Forms.dll','/reference:System.Drawing.dll','/reference:System.Web.Extensions.dll',
   ...['Core','WinForms'].map(name=>'/reference:' + path.join(path.dirname(appRoot),`Microsoft.Web.WebView2.${name}.dll`)),
   ...['messages','native','errors'].map((name,i)=>'/resource:' + path.join(root,'locales',name+'.json') + ',' + ['Messages','NativeMessages','ErrorMessages'][i]),
@@ -49,6 +49,6 @@ files['PanoKopru.exe'] = createHash('sha256').update(await readFile(exe)).digest
 await verifyLegacyLanguagePatch(output);
 const commit = (await run('git',['rev-parse','HEAD'],{cwd:root,windowsHide:true})).stdout.trim();
 const dirty = !!(await run('git',['status','--porcelain'],{cwd:root,windowsHide:true})).stdout.trim();
-await writeFile(path.join(output,'language-patch.json'),JSON.stringify({format:1,version:'1.2.0',purpose:'owner-authorized-language-only-legacy-patch',commit,dirty,inputs:legacyInputs,requiredInstalledLibraries:legacyLibraries,files,dataMigration:false,installed:false},null,2));
+await writeFile(path.join(output,'language-patch.json'),JSON.stringify({format:1,version:'1.2.1',purpose:'owner-authorized-brand-and-language-legacy-patch',commit,dirty,inputs:legacyInputs,requiredInstalledLibraries:legacyLibraries,files,dataMigration:false,installed:false},null,2));
 console.log('Legacy language patch compile/check PASS: ' + path.relative(root,output));
 console.log('No private state read, no executable launched or installation changed.');

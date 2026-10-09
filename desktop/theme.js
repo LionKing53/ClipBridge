@@ -1,9 +1,10 @@
 import { t } from './i18n.js';
 // Apply the saved preference before the first paint, even when the service is offline.
 (() => {
-  const key = 'panokopru-theme';
+  const key = 'clipbridge-theme';
   let theme = 'dark';
-  try { if (localStorage.getItem(key) === 'light') theme = 'light'; } catch {}
+  // Read the old preference only when no new preference exists; keep user theme.
+  try { if ((localStorage.getItem(key) ?? localStorage.getItem('panokopru-theme')) === 'light') theme = 'light'; } catch {}
   function apply(value) {
     theme = value === 'light' ? 'light' : 'dark';
     document.documentElement.dataset.theme = theme;

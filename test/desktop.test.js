@@ -11,7 +11,7 @@ import http from 'node:http';
 import { createTestSystem, fixtureMachine } from './support/desktop-system.js';
 
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-desktop-test-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-desktop-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   return { root, history: await createHistory(root) };
 }

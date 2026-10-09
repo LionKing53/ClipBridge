@@ -63,7 +63,7 @@ export async function createNetworkManager({ root, networkReader, permissionRunn
         // Fail closed even if UAC is cancelled or Windows cleanup is only partial.
         await save(approvedNetworks(config).map(entry => ({ ...entry, permissionGranted: false })), { permissionsRevoked: true });
         await cleanupRunner(root);
-        return { ok: true, message: 'PanoKöprü Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.' };
+        return { ok: true, message: 'ClipBridge Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.' };
       } finally { operation = null; }
     },
     async inspect() {

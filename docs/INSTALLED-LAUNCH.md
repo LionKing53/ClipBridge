@@ -6,15 +6,15 @@ guard remains. Do not manually create a receipt to run that candidate.
 
 ## Layout and validation
 
-The current native layout is `%LOCALAPPDATA%/Programs/PanoKopru`, with `app/`
-and `runtime/` beneath it. Data stays at `%LOCALAPPDATA%/PanoKopru`. A future
+The current native layout is `%LOCALAPPDATA%/Programs/ClipBridge`, with `app/`
+and `runtime/` beneath it. Data stays at `%LOCALAPPDATA%/ClipBridge`. A future
 reviewed installer must copy and verify the complete release before writing
 `install-receipt.json` as its last ready step:
 
 ```json
 {
   "format": 1,
-  "application": "PanoKopru",
+  "application": "ClipBridge",
   "state": "ready",
   "ownerSid": "<installing Windows user SID>",
   "manifestHash": "<independently verified release.json SHA-256>"

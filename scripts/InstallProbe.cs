@@ -10,7 +10,7 @@ using System.Text;
 using Microsoft.Win32;
 using Microsoft.Win32.SafeHandles;
 
-public static class PanoKopruInstallProbe
+public static class ClipBridgeInstallProbe
 {
     [DllImport("kernel32.dll", SetLastError = true)]
     static extern bool IsWow64Process2(IntPtr process, out ushort processMachine, out ushort nativeMachine);

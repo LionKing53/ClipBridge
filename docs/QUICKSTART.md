@@ -1,5 +1,5 @@
 # Setup and iPhone pairing
-**Source version 1.2.0 · existing private acceptance package 1.1.0**
+**Source version 1.2.1 · existing private acceptance package 1.1.0**
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
@@ -9,11 +9,11 @@
 > unfinished. This guide describes the intended acceptance flow, not completed
 > device-test evidence.
 
-Version **1.2.0** supports **English / Türkçe**. Choose **Settings → Language →
+Version **1.2.1** supports **English / Türkçe**. Choose **Settings → Language →
 English** (or **Ayarlar → Dil → English**). The choice survives reopening.
 The screenshots show the real English interface with synthetic data.
 The existing private **1.1.0** package predates this language update; a new
-1.2.0 installer package has not been published. English button names below
+1.2.1 installer package has not been published. English button names below
 include Turkish equivalents where useful.
 
 ## The setup path
@@ -29,7 +29,7 @@ flowchart LR
 
 ## 1. Prepare and install
 
-Use a separate computer with **no existing PanoKopru program or data**.
+Use a separate computer with **no existing ClipBridge or PanoKopru program/data**.
 
 | Requirement | First-package scope |
 | --- | --- |
@@ -46,25 +46,29 @@ Use a separate computer with **no existing PanoKopru program or data**.
    the ZIP. Keep this layout intact:
 
    ```text
-   PanoKopru-1.1.0-win-x64-test/
-   |-- PanoKopruSetup.exe
+   ClipBridge-1.2.1-win-x64-test/
+   |-- ClipBridgeSetup.exe
    |-- payload/
        |-- release.json
        |-- app/
        |-- source/
    ```
 
-3. Open `PanoKopruSetup.exe` as a **normal user**, not with “Run as administrator.”
+3. Open `ClipBridgeSetup.exe` as a **normal user**, not with “Run as administrator.”
    If WebView2 is missing, use setup's Microsoft download-page button to install
    the x64 Evergreen Runtime, then reopen setup.
 4. Read the explanation and approve the installation. Startup at login is
    optional and **off by default**. Existing program **or data** causes setup to
    stop; this installer does not overwrite, update or migrate them.
-5. Open PanoKopru from the Windows Start menu.
+5. Open ClipBridge from the Windows Start menu.
 
 Program files and personal data are separate:
-`%LOCALAPPDATA%/Programs/PanoKopru` and `%LOCALAPPDATA%/PanoKopru`.
+`%LOCALAPPDATA%/Programs/ClipBridge` and `%LOCALAPPDATA%/ClipBridge`.
 Keep the extracted setup for removal later.
+
+These are the new 1.2.1 build names, not a public download. The previously
+recorded private 1.1.0 artifact still uses `PanoKopruSetup.exe` and old paths;
+it has not been renamed or rebuilt. See [compatibility](BRANDING.md).
 
 ## 2. Choose your trusted network
 
@@ -96,7 +100,7 @@ Closing the dialog does not cancel a Windows approval already in progress.
 3. Install the downloaded profile under **Settings → General → VPN & Device
    Management**.
 4. Under **Settings → General → About → Certificate Trust Settings**, explicitly
-   enable full trust for this installation's PanoKopru root certificate.
+   enable full trust for this installation's ClipBridge root certificate.
 5. Confirm the fingerprint and trust step in the Windows wizard. Continue to
    the local **HTTPS pairing** screen.
 
@@ -141,7 +145,7 @@ trigger, not automatic clipboard synchronization.
 | --- | --- |
 | **Add / repair permission** | Requests administrator approval and validates the selected connected network |
 | **Remove** (`Listeden çıkar`) | Revokes app trust; does not revert the Windows profile or delete firewall rules |
-| **Clean up permissions** (`PanoKöprü Windows izinlerini temizle`) | Removes only owned PanoKopru firewall rules with UAC approval; leaves the network profile and Tailscale settings unchanged |
+| **Clean up permissions** (`ClipBridge Windows izinlerini temizle`) | Removes only owned ClipBridge firewall rules with UAC approval; leaves the network profile and Tailscale settings unchanged |
 
 “Ready” means the Windows listener is ready. It does not prove iPhone reachability.
 
@@ -170,7 +174,7 @@ Do not mark device acceptance passed until this checklist has actually been run.
 
 ## Data-preserving removal
 
-Reopen the **same version's extracted** `PanoKopruSetup.exe` and choose
+Reopen the **same version's extracted** `ClipBridgeSetup.exe` and choose
 **Remove (keep data)** (`Kaldır (veriler korunur)`).
 
 Setup stops the app and removes verified owned program files, shortcuts, startup
@@ -178,7 +182,7 @@ shortcuts and firewall rules. Firewall cleanup requires UAC; cancelling it
 retains the program. Windows network profiles and Tailscale settings stay as-is.
 User data and the Windows CA identity are preserved.
 
-On iPhone, manually remove only this installation's PanoKopru certificate profile
+On iPhone, manually remove only this installation's ClipBridge certificate profile
 under **General → VPN & Device Management**.
 
 Retained data prevents another clean install under the same account. Use a
@@ -193,4 +197,4 @@ maintenance lock after interrupted removal.
 - Inbound files/video: **512 MiB**. Inbound text/image processing: **64 MiB**.
   The outbound path has no identical overall limit.
 - The history cache budget is not a total disk quota.
-- English and Turkish are available in the 1.2.0 source; the older 1.1.0 acceptance package has not been rebuilt.
+- English and Turkish are available in the 1.2.1 source; the older 1.1.0 acceptance package has not been rebuilt.

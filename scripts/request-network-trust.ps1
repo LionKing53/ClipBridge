@@ -2,7 +2,7 @@ param([Parameter(Mandatory=$true)][ValidatePattern('^[a-fA-F0-9-]{36}$')][string
 $ErrorActionPreference = 'Stop'
 . (Join-Path $PSScriptRoot 'source-guard.ps1')
 . (Join-Path $PSScriptRoot 'runtime-context.ps1')
-$binding = Get-PanoKopruProductionBinding -DataRoot $DataRoot
+$binding = Get-ClipBridgeProductionBinding -DataRoot $DataRoot
 [Console]::OutputEncoding = New-Object Text.UTF8Encoding($false)
 $helper = if ($Operation -eq 'cleanup') { Join-Path $PSScriptRoot 'cleanup-network-permissions.ps1' } else { Join-Path $PSScriptRoot 'grant-network-trust.ps1' }
 $resultPath = Join-Path $binding.Context.dataRoot ('lan\network-result-' + $RequestId + '.json')

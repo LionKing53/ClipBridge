@@ -102,7 +102,7 @@
     "README.md",
     "SOURCE-CHECKOUT",
     "TRANSFER-LIMITS.md",
-    "assets/PanoKopru.svg",
+    "assets/ClipBridge.svg",
     "desktop/app.js",
     "desktop/index.html",
     "desktop/style.css",
@@ -111,7 +111,7 @@
     "docs/ROADMAP.md",
     "docs/TESTING.md",
     "launcher/DesktopWindow.cs",
-    "launcher/PanoKopru.cs",
+    "launcher/ClipBridge.cs",
     "launcher/app.manifest",
     "package-lock.json",
     "package.json",
@@ -175,30 +175,34 @@
     "docs/images/history-light.png",
     "docs/images/history-dark.png",
     "docs/images/trusted-networks.png",
-    "docs/images/first-time-setup.png"
+    "docs/images/first-time-setup.png",
+    "test/branding.test.js",
+    "docs/BRANDING.md"
   ],
   "historicalFiles": [
-    "README.en.md"
+    "README.en.md",
+    "launcher/PanoKopru.cs",
+    "assets/PanoKopru.svg"
   ],
   "documentationImages": [
     {
       "path": "docs/images/history-light.png",
-      "sha256": "9b568b531577f180cdac788ffece6eb1fba63c34ec03810b76b9f3fa5a85e036",
-      "bytes": 279731,
+      "sha256": "c026a1f5d1011a2f5471440c19c3354255ee9cabe3b6fe839c6bf8cb258186a1",
+      "bytes": 279441,
       "width": 1440,
       "height": 1169
     },
     {
       "path": "docs/images/history-dark.png",
-      "sha256": "f77cf433e13fd4f60f38a35388ea17019640750bcfa3f4920b5b8f50f0960f6a",
-      "bytes": 255941,
+      "sha256": "a5e7e1814f6f91ae3a401b9b71ad0fe00620b1616bf4a7c68bec361742f97cb1",
+      "bytes": 255670,
       "width": 1440,
       "height": 1169
     },
     {
       "path": "docs/images/trusted-networks.png",
-      "sha256": "621da8ecaec2c899c50410a033c7bd59c100e7cec14ded1ab1c71110ad3417c7",
-      "bytes": 77096,
+      "sha256": "1e14b7679bb8cd77cca078c28a3360394ccd5e5412925b685715139085473daa",
+      "bytes": 77039,
       "width": 1134,
       "height": 878
     },
@@ -238,6 +242,34 @@
       "bytes": 38629,
       "width": 560,
       "height": 434
+    },
+    {
+      "path": "docs/images/history-light.png",
+      "sha256": "9b568b531577f180cdac788ffece6eb1fba63c34ec03810b76b9f3fa5a85e036",
+      "bytes": 279731,
+      "width": 1440,
+      "height": 1169
+    },
+    {
+      "path": "docs/images/history-dark.png",
+      "sha256": "f77cf433e13fd4f60f38a35388ea17019640750bcfa3f4920b5b8f50f0960f6a",
+      "bytes": 255941,
+      "width": 1440,
+      "height": 1169
+    },
+    {
+      "path": "docs/images/trusted-networks.png",
+      "sha256": "621da8ecaec2c899c50410a033c7bd59c100e7cec14ded1ab1c71110ad3417c7",
+      "bytes": 77096,
+      "width": 1134,
+      "height": 878
+    },
+    {
+      "path": "docs/images/first-time-setup.png",
+      "sha256": "7603c522fce75a513a2e51dd0525716979b37b3751bf56bc652cd764f5dcf76c",
+      "bytes": 37768,
+      "width": 560,
+      "height": 476
     }
   ]
 }

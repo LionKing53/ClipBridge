@@ -14,9 +14,9 @@ import { testCA } from './support/public-ca.js';
 const deferred = () => { let resolve; const promise = new Promise(r => resolve = r); return { promise, resolve }; };
 const net = { id: '{11111111-1111-1111-1111-111111111111}', name: 'Demo Home', interfaceAlias: 'WLAN', interfaceDescription: 'Demo', category: 'Private', address: '192.168.50.2', prefixLength: 24 };
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-regression-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-regression-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'Local'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: path.join(root, 'data'), PANOKOPRU_API_PORT: '45145', PANOKOPRU_DESKTOP_PORT: '45146', PANOKOPRU_LOCAL_PORT: '45147' } });
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'Local'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: path.join(root, 'data'), CLIPBRIDGE_API_PORT: '45145', CLIPBRIDGE_DESKTOP_PORT: '45146', CLIPBRIDGE_LOCAL_PORT: '45147' } });
   await mkdir(context.dataRoot);
   return { context, root: context.dataRoot };
 }

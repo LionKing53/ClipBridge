@@ -20,13 +20,13 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
     internal WindowsFreshInstall(string expectedNode, string minimumRuntime) { nodeVersion = expectedNode; runtimeMinimum = new Version(minimumRuntime); }
     public void CheckPrerequisites(string payload, long payloadBytes)
     {
-        var host = (Dictionary<string, object>)PanoKopruInstallProbe.Host();
+        var host = (Dictionary<string, object>)ClipBridgeInstallProbe.Host();
         if ((bool)host["elevated"]) throw new InvalidOperationException("ERR_INSTALL_RUN_AS_NORMAL_USER");
         if (!InstalledLaunch.Same(LocalAppData, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), "AppData", "Local"))) throw new InvalidOperationException("ERR_INSTALL_PROFILE_REDIRECTED");
         if ((string)host["arch"] != "x64" || Environment.OSVersion.Version.Major < 10 || Environment.OSVersion.Version.Build < 19045) throw new InvalidOperationException("ERR_INSTALL_PLATFORM");
-        var node = (Dictionary<string, object>)PanoKopruInstallProbe.NodeMetadata(Path.Combine(payload, "runtime", "node.exe"));
+        var node = (Dictionary<string, object>)ClipBridgeInstallProbe.NodeMetadata(Path.Combine(payload, "runtime", "node.exe"));
         if ((string)node["arch"] != "x64" || (string)node["version"] != nodeVersion) throw new InvalidOperationException("ERR_INSTALL_NODE_VERSION");
-        var web = (Dictionary<string, object>)PanoKopruInstallProbe.WebView2(); bool ready = false;
+        var web = (Dictionary<string, object>)ClipBridgeInstallProbe.WebView2(); bool ready = false;
         if (!(bool)web["complete"]) throw new InvalidOperationException("ERR_INSTALL_WEBVIEW_UNKNOWN");
         foreach (string text in (string[])web["versions"])
         {
@@ -34,8 +34,8 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
             if (text != null && System.Text.RegularExpressions.Regex.IsMatch(text, "^[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+$") && Version.TryParse(text, out version) && version >= runtimeMinimum) ready = true;
         }
         if (!ready) throw new InvalidOperationException("ERR_INSTALL_WEBVIEW_REQUIRED");
-        var program = (Dictionary<string, object>)PanoKopruInstallProbe.Destination(Path.Combine(LocalAppData, "Programs", "PanoKopru"));
-        var data = (Dictionary<string, object>)PanoKopruInstallProbe.Destination(Path.Combine(LocalAppData, "PanoKopru"));
+        var program = (Dictionary<string, object>)ClipBridgeInstallProbe.Destination(Path.Combine(LocalAppData, "Programs", "ClipBridge"));
+        var data = (Dictionary<string, object>)ClipBridgeInstallProbe.Destination(Path.Combine(LocalAppData, "ClipBridge"));
         if (!(bool)program["writable"] || !(bool)data["writable"]) throw new InvalidOperationException("ERR_INSTALL_WRITE_ACCESS");
         ulong programNeed = checked((ulong)payloadBytes * 2 + 256UL * 1024 * 1024), dataNeed = 256UL * 1024 * 1024;
         ulong programFree = Convert.ToUInt64(program["freeBytes"]), dataFree = Convert.ToUInt64(data["freeBytes"]);
@@ -76,13 +76,13 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
             {
                 if (String.IsNullOrEmpty(item.Key) || !Path.IsPathRooted(item.Key)) throw new InvalidOperationException();
                 InstalledLaunch.NoLinks(item.Key);
-                string final = Path.Combine(item.Key, "PanoKopru.lnk"); FreshInstall.Absent(final);
+                string final = Path.Combine(item.Key, "ClipBridge.lnk"); FreshInstall.Absent(final);
                 Directory.CreateDirectory(item.Key);
-                temporary = Path.Combine(item.Key, "PanoKopru-" + Guid.NewGuid().ToString("N") + ".lnk");
+                temporary = Path.Combine(item.Key, "ClipBridge-" + Guid.NewGuid().ToString("N") + ".lnk");
                 shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
                 shortcut = shell.GetType().InvokeMember("CreateShortcut", System.Reflection.BindingFlags.InvokeMethod, null, shell, new object[] { temporary });
-                foreach (var property in new Dictionary<string, string> { { "TargetPath", Path.Combine(installRoot, "PanoKopru.exe") },
-                    { "Arguments", item.Value }, { "WorkingDirectory", installRoot }, { "Description", "PanoKopru managed " + installId }, { "IconLocation", Path.Combine(installRoot, "PanoKopru.exe") + ",0" } })
+                foreach (var property in new Dictionary<string, string> { { "TargetPath", Path.Combine(installRoot, "ClipBridge.exe") },
+                    { "Arguments", item.Value }, { "WorkingDirectory", installRoot }, { "Description", "ClipBridge managed " + installId }, { "IconLocation", Path.Combine(installRoot, "ClipBridge.exe") + ",0" } })
                     shortcut.GetType().InvokeMember(property.Key, System.Reflection.BindingFlags.SetProperty, null, shortcut, new object[] { property.Value });
                 shortcut.GetType().InvokeMember("Save", System.Reflection.BindingFlags.InvokeMethod, null, shortcut, null);
                 File.Move(temporary, final); temporary = null; // No overwrite of another shortcut.
@@ -99,19 +99,19 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
     }
     public IDisposable StopAndCleanPermissions(string installRoot)
     {
-        if (PanoKopruInstallProbe.Elevated()) throw new InvalidOperationException("ERR_INSTALL_RUN_AS_NORMAL_USER");
-        RunFixed(new System.Diagnostics.ProcessStartInfo { FileName = Path.Combine(installRoot, "PanoKopru.exe"), Arguments = "--stop" }, 40000);
-        var stopped = new StoppedLease(Path.Combine(LocalAppData, "PanoKopru"));
+        if (ClipBridgeInstallProbe.Elevated()) throw new InvalidOperationException("ERR_INSTALL_RUN_AS_NORMAL_USER");
+        RunFixed(new System.Diagnostics.ProcessStartInfo { FileName = Path.Combine(installRoot, "ClipBridge.exe"), Arguments = "--stop" }, 40000);
+        var stopped = new StoppedLease(Path.Combine(LocalAppData, "ClipBridge"));
         try {
         var cleanup = new System.Diagnostics.ProcessStartInfo { FileName = Path.Combine(installRoot, "runtime", "node.exe"),
             Arguments = "\"" + Path.Combine(installRoot, "app", "src", "uninstall-permissions.js") + "\" --confirmed", WorkingDirectory = Path.Combine(installRoot, "app") };
         foreach (string key in new [] { "NODE_OPTIONS", "NODE_PATH" }) cleanup.EnvironmentVariables.Remove(key);
         cleanup.EnvironmentVariables["LOCALAPPDATA"] = LocalAppData;
-        cleanup.EnvironmentVariables["PANOKOPRU_MODE"] = "production";
-        cleanup.EnvironmentVariables["PANOKOPRU_DATA_ROOT"] = Path.Combine(LocalAppData, "PanoKopru");
-        cleanup.EnvironmentVariables["PANOKOPRU_API_PORT"] = "32145";
-        cleanup.EnvironmentVariables["PANOKOPRU_DESKTOP_PORT"] = "32146";
-        cleanup.EnvironmentVariables["PANOKOPRU_LOCAL_PORT"] = "32147";
+        cleanup.EnvironmentVariables["CLIPBRIDGE_MODE"] = "production";
+        cleanup.EnvironmentVariables["CLIPBRIDGE_DATA_ROOT"] = Path.Combine(LocalAppData, "ClipBridge");
+        cleanup.EnvironmentVariables["CLIPBRIDGE_API_PORT"] = "32145";
+        cleanup.EnvironmentVariables["CLIPBRIDGE_DESKTOP_PORT"] = "32146";
+        cleanup.EnvironmentVariables["CLIPBRIDGE_LOCAL_PORT"] = "32147";
         RunFixed(cleanup, 210000);
         return stopped;
         } catch { stopped.Dispose(); throw; }
@@ -129,7 +129,7 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
                 id = BitConverter.ToString(sha.ComputeHash(System.Text.Encoding.UTF8.GetBytes("production\n" + Path.GetFullPath(data).TrimEnd('\\', '/').ToLowerInvariant()))).Replace("-", "").ToLowerInvariant().Substring(0, 24);
             try {
                 foreach (string purpose in new [] { "Service", "Desktop" }) {
-                    var mutex = new System.Threading.Mutex(false, "Local\\PanoKopru-" + id + "-" + purpose);
+                    var mutex = new System.Threading.Mutex(false, "Local\\ClipBridge-" + id + "-" + purpose);
                     bool acquired;
                     try { acquired = mutex.WaitOne(0); } catch (System.Threading.AbandonedMutexException) { acquired = true; }
                     if (!acquired) { mutex.Dispose(); throw new InvalidOperationException("ERR_REMOVE_PROCESS_ACTIVE"); }
@@ -157,7 +157,7 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
         {
             string directory = Environment.GetFolderPath(pair.Key);
             if (String.IsNullOrEmpty(directory) || !Path.IsPathRooted(directory)) throw new InvalidOperationException("ERR_REMOVE_SHORTCUTS");
-            string file = Path.Combine(directory, "PanoKopru.lnk"); InstalledLaunch.NoLinks(file);
+            string file = Path.Combine(directory, "ClipBridge.lnk"); InstalledLaunch.NoLinks(file);
             if (!File.Exists(file)) continue;
             object shell = null, link = null;
             try
@@ -165,8 +165,8 @@ internal sealed class WindowsFreshInstall : IFreshInstallSystem, IRemoveInstallS
                 shell = Activator.CreateInstance(Type.GetTypeFromProgID("WScript.Shell"));
                 link = shell.GetType().InvokeMember("CreateShortcut", System.Reflection.BindingFlags.InvokeMethod, null, shell, new object[] { file });
                 Func<string, string> get = name => (string)link.GetType().InvokeMember(name, System.Reflection.BindingFlags.GetProperty, null, link, null);
-                if (String.Equals(get("TargetPath"), Path.Combine(installRoot, "PanoKopru.exe"), StringComparison.OrdinalIgnoreCase) &&
-                    get("Arguments") == pair.Value && get("Description") == "PanoKopru managed " + installId)
+                if (String.Equals(get("TargetPath"), Path.Combine(installRoot, "ClipBridge.exe"), StringComparison.OrdinalIgnoreCase) &&
+                    get("Arguments") == pair.Value && get("Description") == "ClipBridge managed " + installId)
                     File.Delete(file);
             }
             finally { if (link != null && Marshal.IsComObject(link)) Marshal.FinalReleaseComObject(link); if (shell != null && Marshal.IsComObject(shell)) Marshal.FinalReleaseComObject(shell); }

@@ -4,7 +4,7 @@
   "app": [
     "locales/messages.json", "locales/native.json", "locales/errors.json", "src/i18n.js", "desktop/i18n.js",
     "SOURCE-CHECKOUT", "package.json", "package-lock.json", "LICENSE",
-    "assets/PanoKopru.svg",
+    "assets/ClipBridge.svg",
     "desktop/app.js", "desktop/index.html", "desktop/style.css",
     "desktop/theme.css", "desktop/theme.js", "desktop/setup.css",
     "src/app.js", "src/boot.js", "src/certificate-bootstrap.js",
@@ -24,7 +24,7 @@
     "scripts/request-network-trust.ps1"
   ],
   "native": [
-    "PanoKopru.exe", "PanoKopru.ico", "Microsoft.Web.WebView2.Core.dll",
+    "ClipBridge.exe", "ClipBridge.ico", "Microsoft.Web.WebView2.Core.dll",
     "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll",
     "runtime/node.exe", "licenses/node-LICENSE.txt",
     "licenses/webview2-LICENSE.txt", "licenses/webview2-NOTICE.txt",

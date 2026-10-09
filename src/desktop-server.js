@@ -79,7 +79,7 @@ export async function createDesktopServer({ config, history, transfers, diagnost
       const actual = Buffer.from(req.headers.authorization || ''); const expected = Buffer.from('Bearer ' + token);
       if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return json(res, 401, { error: 'Uygulamayı masaüstü kısayolundan yeniden aç.' });
       if (req.method === 'GET' && url.pathname === '/api/state') {
-        return json(res, 200, { ...history.list(), preferences: preferences.get(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.2.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
+        return json(res, 200, { ...history.list(), preferences: preferences.get(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.2.1', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
       }
       if (url.pathname === '/api/setup' && req.method === 'GET') {
         if (!localNetwork?.setup) return json(res, 409, { error: 'Kurulum sihirbazı bu ortamda yok.' });

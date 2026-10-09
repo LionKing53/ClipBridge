@@ -16,12 +16,12 @@ const output = path.join(root, 'build', 'native-' + randomUUID());
 await assertNoLinks(output);
 const powershell = path.join(process.env.SystemRoot, 'System32', 'WindowsPowerShell', 'v1.0', 'powershell.exe');
 await run(powershell, ['-NoProfile', '-NonInteractive', '-ExecutionPolicy', 'Bypass', '-File', path.join(root, 'scripts', 'extract-toolchain.ps1'), '-OutputDirectory', output], { windowsHide: true, timeout: 60000, maxBuffer: 32768 });
-const svg = await readFile(path.join(root, 'assets', 'PanoKopru.svg'));
+const svg = await readFile(path.join(root, 'assets', 'ClipBridge.svg'));
 const pngs = await Promise.all([16,24,32,48,64,128,256].map(size => sharp(svg).resize(size, size).png().toBuffer()));
-const icon = path.join(output, 'PanoKopru.ico'); await writeFile(icon, await pngToIco(pngs));
+const icon = path.join(output, 'ClipBridge.ico'); await writeFile(icon, await pngToIco(pngs));
 const compiler = path.join(process.env.SystemRoot, 'Microsoft.NET', 'Framework64', 'v4.0.30319', 'csc.exe');
-const exe = path.join(output, 'PanoKopru.exe');
-const sources = ['launcher/PanoKopru.cs', 'launcher/Language.cs', 'launcher/RuntimeContext.cs', 'launcher/InstalledLaunch.cs', 'launcher/DesktopWindow.cs', 'launcher/OwnedNode.cs'];
+const exe = path.join(output, 'ClipBridge.exe');
+const sources = ['launcher/ClipBridge.cs', 'launcher/Language.cs', 'launcher/RuntimeContext.cs', 'launcher/InstalledLaunch.cs', 'launcher/DesktopWindow.cs', 'launcher/OwnedNode.cs'];
 const args = ['/nologo', '/target:winexe', '/platform:x64', '/win32manifest:' + path.join(root, 'launcher', 'app.manifest'),
   '/reference:System.Windows.Forms.dll', '/reference:System.Drawing.dll', '/reference:System.Web.Extensions.dll',
   ...['messages','native','errors'].map((name,i) => '/resource:' + path.join(root,'locales',name+'.json') + ',' + ['Messages','NativeMessages','ErrorMessages'][i]),
@@ -31,7 +31,7 @@ await run(compiler, args, { windowsHide: true, timeout: 60000, cwd: output, maxB
 for (const name of ['Microsoft.Web.WebView2.Core.dll', 'Microsoft.Web.WebView2.WinForms.dll', 'WebView2Loader.dll']) await copyFile(path.join(output, 'sdk', name), path.join(output, name));
 await mkdir(path.join(output, 'app')); await copyFile(path.join(root, 'SOURCE-CHECKOUT'), path.join(output, 'app', 'SOURCE-CHECKOUT'));
 const sourceHashes = {};
-for (const name of [...sources, ...['messages','native','errors'].map(name => 'locales/' + name + '.json'), 'launcher/app.manifest', 'assets/PanoKopru.svg', 'toolchain-lock.json']) sourceHashes[name] = createHash('sha256').update(await readFile(path.join(root, name))).digest('hex');
+for (const name of [...sources, ...['messages','native','errors'].map(name => 'locales/' + name + '.json'), 'launcher/app.manifest', 'assets/ClipBridge.svg', 'toolchain-lock.json']) sourceHashes[name] = createHash('sha256').update(await readFile(path.join(root, name))).digest('hex');
 const commit = (await run('git', ['rev-parse', 'HEAD'], { cwd: root, windowsHide: true })).stdout.trim();
 const dirty = !!(await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true })).stdout.trim();
 await writeFile(path.join(output, 'build-evidence.json'), JSON.stringify({ format: 1, purpose: 'compile-only-not-installable', baseCommit: commit, dirtySource: dirty, sourceHashes,

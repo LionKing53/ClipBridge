@@ -9,7 +9,7 @@ const hash = value => createHash('sha256').update(value).digest('hex');
 const code = (report, id) => report.checks.find(check => check.id === id).code;
 
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-preflight-test-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-preflight-test-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const candidateDirectory = path.join(root, 'candidate');
   await mkdir(path.join(candidateDirectory, 'runtime'), { recursive: true });

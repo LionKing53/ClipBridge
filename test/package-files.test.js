@@ -6,7 +6,7 @@ import path from 'node:path';
 import { copyApprovedFiles, sealCandidate } from '../src/package-files.js';
 import { verifyRelease } from '../src/release-store.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-package-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-package-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const source = path.join(root, 'source'), destination = path.join(root, 'candidate');
   await mkdir(source); return { root, source, destination };

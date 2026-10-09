@@ -75,16 +75,16 @@ internal static class InstalledLaunch
     internal static string Validate(string installRoot, string localAppData, string ownerSid)
     {
         if (String.IsNullOrEmpty(localAppData) || !Path.IsPathRooted(localAppData) || localAppData.StartsWith("\\\\")) throw Invalid();
-        string expected = Path.Combine(localAppData, "Programs", "PanoKopru");
+        string expected = Path.Combine(localAppData, "Programs", "ClipBridge");
         if (!Same(installRoot, expected)) throw Invalid();
         NoLinks(installRoot);
         if (File.Exists(Path.Combine(installRoot, "app", "SOURCE-CHECKOUT")) || File.Exists(Path.Combine(installRoot, "SOURCE-CHECKOUT"))) throw Invalid();
         var receipt = Json(Path.Combine(installRoot, "install-receipt.json"), 8192);
         string digest = Text(receipt, "manifestHash");
-        if (Number(receipt, "format") != 1 || Text(receipt, "application") != "PanoKopru" || Text(receipt, "state") != "ready" ||
+        if (Number(receipt, "format") != 1 || Text(receipt, "application") != "ClipBridge" || Text(receipt, "state") != "ready" ||
             Text(receipt, "ownerSid") != ownerSid || String.IsNullOrEmpty(ownerSid) || !Regex.IsMatch(digest ?? "", "^[a-f0-9]{64}$")) throw Invalid();
         ValidatePayload(installRoot, digest, true);
-        string data = Path.Combine(localAppData, "PanoKopru"); NoLinks(data); return data;
+        string data = Path.Combine(localAppData, "ClipBridge"); NoLinks(data); return data;
     }
     internal static Dictionary<string, object> ValidatePayload(string installRoot, string digest, bool installed)
     {
@@ -107,7 +107,7 @@ internal static class InstalledLaunch
             long bytes = Number(metadata, "bytes");
             if (bytes < 0 || new FileInfo(file).Length != bytes || Hash(file) != Text(metadata, "sha256")) throw Invalid();
         }
-        foreach (string required in new [] { "PanoKopru.exe", "runtime/node.exe", "app/src/server.js", "Microsoft.Web.WebView2.Core.dll", "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll" })
+        foreach (string required in new [] { "ClipBridge.exe", "runtime/node.exe", "app/src/server.js", "Microsoft.Web.WebView2.Core.dll", "Microsoft.Web.WebView2.WinForms.dll", "WebView2Loader.dll" })
             if (!names.Contains(required)) throw Invalid();
         CheckInventory(Full(installRoot), Full(installRoot), names, installed);
         return manifest;
@@ -115,18 +115,18 @@ internal static class InstalledLaunch
     internal static void ConfigureEnvironment(string installRoot)
     {
         // An explicit development/test environment is never silently promoted.
-        string mode = Environment.GetEnvironmentVariable("PANOKOPRU_MODE");
+        string mode = Environment.GetEnvironmentVariable("CLIPBRIDGE_MODE");
         if (mode != null && mode != "production") throw Invalid();
         string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string data = Validate(installRoot, local, System.Security.Principal.WindowsIdentity.GetCurrent().User.Value);
-        foreach (var pair in new Dictionary<string, string> { { "PANOKOPRU_MODE", "production" }, { "PANOKOPRU_DATA_ROOT", data },
-            { "PANOKOPRU_API_PORT", "32145" }, { "PANOKOPRU_DESKTOP_PORT", "32146" }, { "PANOKOPRU_LOCAL_PORT", "32147" }, { "LOCALAPPDATA", local } })
+        foreach (var pair in new Dictionary<string, string> { { "CLIPBRIDGE_MODE", "production" }, { "CLIPBRIDGE_DATA_ROOT", data },
+            { "CLIPBRIDGE_API_PORT", "32145" }, { "CLIPBRIDGE_DESKTOP_PORT", "32146" }, { "CLIPBRIDGE_LOCAL_PORT", "32147" }, { "LOCALAPPDATA", local } })
         {
             string old = Environment.GetEnvironmentVariable(pair.Key);
             if (old != null && !String.Equals(old.TrimEnd('\\','/'), pair.Value.TrimEnd('\\','/'), StringComparison.OrdinalIgnoreCase)) throw Invalid();
         }
-        Environment.SetEnvironmentVariable("PANOKOPRU_MODE", "production");
-        Environment.SetEnvironmentVariable("PANOKOPRU_DATA_ROOT", data);
+        Environment.SetEnvironmentVariable("CLIPBRIDGE_MODE", "production");
+        Environment.SetEnvironmentVariable("CLIPBRIDGE_DATA_ROOT", data);
         Environment.SetEnvironmentVariable("LOCALAPPDATA", local);
     }
 }

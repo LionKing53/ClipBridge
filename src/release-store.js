@@ -51,7 +51,7 @@ export async function createIsolatedReleaseStore({ context, stop, isStopped, pro
   const root = context.dataRoot + '.releases';
   await assertNoLinks(root); await mkdir(root, { recursive: true });
   const ownerFile = path.join(root, 'owner.json');
-  const owner = { application: 'PanoKopru-isolated-release-store', instanceId: context.instanceId };
+  const owner = { application: 'ClipBridge-isolated-release-store', instanceId: context.instanceId };
   try { if (JSON.stringify(JSON.parse(await readFile(ownerFile, 'utf8'))) !== JSON.stringify(owner)) throw fail('Store ownership mismatch.'); }
   catch (error) { if (error.code !== 'ENOENT') throw error; if ((await readdir(root)).length) throw fail('Non-empty unowned release store.'); await writeFile(ownerFile, JSON.stringify(owner), { flag: 'wx' }); }
   const pointer = path.join(root, 'active.json'), journal = path.join(root, 'transaction.json');

@@ -20,12 +20,12 @@
     "en": "Request cancellation"
   },
   "m_1c84efd831cc": {
-    "tr": "PanoKöprü 1.2.0 - Kurulum / Test",
-    "en": "PanoKöprü 1.2.0 - Setup / Test"
+    "tr": "ClipBridge 1.2.1 - Kurulum / Test",
+    "en": "ClipBridge 1.2.1 - Setup / Test"
   },
   "m_64576cfe72e2": {
-    "tr": "Yalnız temiz Windows x64 kullanıcı kurulumu.\nVar olan uygulama veya veri klasörünün üzerine yazılmaz.\nProgram: %LOCALAPPDATA%\\Programs\\PanoKopru\nVeri: %LOCALAPPDATA%\\PanoKopru (ilk açılışta oluşturulur).\nBu adım iPhone sertifikası veya ağ izni eklemez.",
-    "en": "Clean Windows x64 user installation only.\nExisting program or data folders are never overwritten.\nProgram: %LOCALAPPDATA%\\Programs\\PanoKopru\nData: %LOCALAPPDATA%\\PanoKopru (created on first launch).\nThis step does not add an iPhone certificate or network permissions."
+    "tr": "Yalnız temiz Windows x64 kullanıcı kurulumu.\nVar olan uygulama veya veri klasörünün üzerine yazılmaz.\nProgram: %LOCALAPPDATA%\\Programs\\ClipBridge\nVeri: %LOCALAPPDATA%\\ClipBridge (ilk açılışta oluşturulur).\nBu adım iPhone sertifikası veya ağ izni eklemez.",
+    "en": "Clean Windows x64 user installation only.\nExisting program or data folders are never overwritten.\nProgram: %LOCALAPPDATA%\\Programs\\ClipBridge\nData: %LOCALAPPDATA%\\ClipBridge (created on first launch).\nThis step does not add an iPhone certificate or network permissions."
   },
   "m_1e2298cfc22b": {
     "tr": "Lisans ve sınırlar",
@@ -44,8 +44,8 @@
     "en": "Uninstall (keep data)"
   },
   "m_149a5aa87558": {
-    "tr": "Bu sürümün PanoKöprü kurulumu, kendisine ait kısayollar ve güvenlik duvarı izinleri kaldırılacak. Verilerin, Windows ağ profili ve Tailscale korunur. iPhone sertifikasını telefondan ayrıca kaldırmalısın. Devam edilsin mi?",
-    "en": "This version's PanoKöprü installation, owned shortcuts and firewall permissions will be removed. Your data, Windows network profile and Tailscale are preserved. Remove the iPhone certificate separately on the phone. Continue?"
+    "tr": "Bu sürümün ClipBridge kurulumu, kendisine ait kısayollar ve güvenlik duvarı izinleri kaldırılacak. Verilerin, Windows ağ profili ve Tailscale korunur. iPhone sertifikasını telefondan ayrıca kaldırmalısın. Devam edilsin mi?",
+    "en": "This version's ClipBridge installation, owned shortcuts and firewall permissions will be removed. Your data, Windows network profile and Tailscale are preserved. Remove the iPhone certificate separately on the phone. Continue?"
   },
   "m_005741d319f6": {
     "tr": "Uygulama durduruluyor ve izinler temizleniyor. Windows yönetici onayını yanıtla; iptal edersen program korunur.",
@@ -104,12 +104,12 @@
     "en": "Read and accept the license and preview limitations first."
   },
   "m_891f8765553d": {
-    "tr": "Kurulum tamamlandı. PanoKöprü'yü Başlat menüsünden açabilirsin. İlk açılışta ağ ve iPhone eşleştirmesi ayarlanır.",
-    "en": "Installation complete. Open PanoKöprü from the Start menu. Configure the network and iPhone pairing on first launch."
+    "tr": "Kurulum tamamlandı. ClipBridge'yü Başlat menüsünden açabilirsin. İlk açılışta ağ ve iPhone eşleştirmesi ayarlanır.",
+    "en": "Installation complete. Open ClipBridge from the Start menu. Configure the network and iPhone pairing on first launch."
   },
   "m_d97e1a594e7d": {
-    "tr": "Program kuruldu; bazı kısayollar eklenemedi veya zaten vardı. Program klasöründeki PanoKopru.exe'yi açabilirsin. Kod: ",
-    "en": "The program was installed; some shortcuts could not be added or already existed. Open PanoKopru.exe in the program folder. Code: "
+    "tr": "Program kuruldu; bazı kısayollar eklenemedi veya zaten vardı. Program klasöründeki ClipBridge.exe'yi açabilirsin. Kod: ",
+    "en": "The program was installed; some shortcuts could not be added or already existed. Open ClipBridge.exe in the program folder. Code: "
   },
   "m_baa4c9cf5bc6": {
     "tr": "Mevcut kurulum veya veri bulundu. Üzerine yazılmadı. Güncelleme/geçiş aracı gerekiyor.",
@@ -164,16 +164,16 @@
     "en": "Installation/removal is in progress or was interrupted. Check setup first."
   },
   "m_eb5f8f5c39e8": {
-    "tr": "PanoKöprü kurulumu eksik, değişmiş veya bu kullanıcıya ait değil. Kurulum kılavuzunu kontrol et. Kaynak/aday paket doğrudan açılamaz.",
-    "en": "PanoKöprü installation is incomplete, modified or belongs to another user. Check the installation guide. A source/guarded candidate package cannot be opened directly."
+    "tr": "ClipBridge kurulumu eksik, değişmiş veya bu kullanıcıya ait değil. Kurulum kılavuzunu kontrol et. Kaynak/aday paket doğrudan açılamaz.",
+    "en": "ClipBridge installation is incomplete, modified or belongs to another user. Check the installation guide. A source/guarded candidate package cannot be opened directly."
   },
   "m_d609a2f4f913": {
     "tr": "Bu kaynak sürümünde yalıtılmış Node geliştirme ortamını kullan.",
     "en": "Use the isolated Node development harness for this source version."
   },
   "m_00b11404acbb": {
-    "tr": "Önce PanoKöprü'yü tamamen durdur.",
-    "en": "Stop PanoKöprü completely first."
+    "tr": "Önce ClipBridge'yü tamamen durdur.",
+    "en": "Stop ClipBridge completely first."
   },
   "m_9fec844b476f": {
     "tr": "Yalnız kapanmış bir sürece ait pano kilidi kontrol edilecek. Veriler silinmez, uygulama otomatik başlatılmaz. Devam edilsin mi?",
@@ -184,8 +184,8 @@
     "en": "Lock inspection did not finish. Do not restart the program; check the troubleshooting guide."
   },
   "m_f650faeaf03f": {
-    "tr": "Kilit kontrolü tamamlandı. PanoKöprü'yü yeniden açabilirsin.",
-    "en": "Lock inspection complete. You can reopen PanoKöprü."
+    "tr": "Kilit kontrolü tamamlandı. ClipBridge'yü yeniden açabilirsin.",
+    "en": "Lock inspection complete. You can reopen ClipBridge."
   },
   "m_6ad7a6080951": {
     "tr": "Kilit güvenle kaldırılamadı. Kilidi elle silme; tanılama kılavuzunu kontrol et.",
@@ -196,31 +196,31 @@
     "en": "Lock inspection could not finish."
   },
   "m_e1974a81440d": {
-    "tr": "Microsoft Edge WebView2 Runtime bulunamadı. Microsoft'un resmî indirme sayfası açılsın mı? Kurulumdan sonra PanoKöprü'yü yeniden aç.",
-    "en": "Microsoft Edge WebView2 Runtime was not found. Open Microsoft's official download page? Reopen PanoKöprü after installation."
+    "tr": "Microsoft Edge WebView2 Runtime bulunamadı. Microsoft'un resmî indirme sayfası açılsın mı? Kurulumdan sonra ClipBridge'yü yeniden aç.",
+    "en": "Microsoft Edge WebView2 Runtime was not found. Open Microsoft's official download page? Reopen ClipBridge after installation."
   },
   "m_69e1d2c1d5dc": {
-    "tr": "PanoKöprü köprüsü başlatılamadı. Port çakışması veya önceki kapanış kilidi olabilir. Tanılama/kurulum kılavuzunu kontrol et; veri klasörünü silme.",
-    "en": "The PanoKöprü bridge could not start. A port conflict or previous shutdown lock may be responsible. Check the troubleshooting/installation guide; do not delete the data folder."
+    "tr": "ClipBridge köprüsü başlatılamadı. Port çakışması veya önceki kapanış kilidi olabilir. Tanılama/kurulum kılavuzunu kontrol et; veri klasörünü silme.",
+    "en": "The ClipBridge bridge could not start. A port conflict or previous shutdown lock may be responsible. Check the troubleshooting/installation guide; do not delete the data folder."
   },
   "m_ed4706210b2f": {
-    "tr": "PanoKöprü - arka planda hazır",
-    "en": "PanoKöprü - ready in the background"
+    "tr": "ClipBridge - arka planda hazır",
+    "en": "ClipBridge - ready in the background"
   },
   "m_4a3600a8e2fe": {
-    "tr": "PanoKöprü'yü aç",
-    "en": "Open PanoKöprü"
+    "tr": "ClipBridge'yü aç",
+    "en": "Open ClipBridge"
   },
   "m_7711377349cd": {
     "tr": "Pencereyi kapat (köprü açık kalır)",
     "en": "Close window (keep bridge running)"
   },
   "m_ed9ed03a2b96": {
-    "tr": "PanoKopru'yu tamamen durdur",
-    "en": "Stop PanoKöprü completely"
+    "tr": "ClipBridge'yu tamamen durdur",
+    "en": "Stop ClipBridge completely"
   },
   "m_9742c5012302": {
-    "tr": "Arayüz açılamadı. PanoKöprü'yü yeniden açmayı deneyin. Microsoft Edge WebView2 Runtime kurulu olmalıdır.\n\nAktarım servisi ayrı olarak çalışmaya devam eder.",
-    "en": "The interface could not open. Try reopening PanoKöprü. Microsoft Edge WebView2 Runtime must be installed.\n\nThe transfer service continues running separately."
+    "tr": "Arayüz açılamadı. ClipBridge'yü yeniden açmayı deneyin. Microsoft Edge WebView2 Runtime kurulu olmalıdır.\n\nAktarım servisi ayrı olarak çalışmaya devam eder.",
+    "en": "The interface could not open. Try reopening ClipBridge. Microsoft Edge WebView2 Runtime must be installed.\n\nThe transfer service continues running separately."
   }
 }

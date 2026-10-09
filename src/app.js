@@ -50,13 +50,14 @@ async function sendClipboardItem(response, item, onSent) {
     return;
   }
 
-  const filename = item.filename || (item.type === "image" ? "PanoKopru.png" : "PanoKopru-dosya");
+  const filename = item.filename || (item.type === "image" ? "ClipBridge.png" : "ClipBridge-dosya");
   const mimeType = item.mimeType || (item.type === "image" ? "image/png" : "application/octet-stream");
   const headers = {
     "Cache-Control": "no-store",
     "Content-Type": mimeType,
     "Content-Disposition": contentDisposition(item.type === "image" ? "inline" : "attachment", filename),
-    "X-PanoKopru-Type": item.type
+    "X-ClipBridge-Type": item.type,
+    "X-PanoKopru-Type": item.type // Existing Shortcuts clients retain their protocol.
   };
 
   if (item.path) {

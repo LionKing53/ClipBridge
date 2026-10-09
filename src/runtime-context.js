@@ -14,25 +14,29 @@ const normalized = value => path.resolve(value).replace(/[\\/]+$/, '').toLowerCa
 export const within = (root, candidate) => normalized(candidate) === normalized(root) || normalized(candidate).startsWith(normalized(root) + path.sep);
 
 export function resolveRuntime({ env = process.env, checkout = existsSync(new URL('../SOURCE-CHECKOUT', import.meta.url)), projectRoot = sourceRoot } = {}) {
-  const mode = env.PANOKOPRU_MODE;
-  if (!['production', 'development', 'test'].includes(mode)) throw fail('Explicit PANOKOPRU_MODE is required; no personal-data fallback.');
+  const mode = env.CLIPBRIDGE_MODE;
+  if (!['production', 'development', 'test'].includes(mode)) throw fail('Explicit CLIPBRIDGE_MODE is required; no personal-data fallback.');
   if (checkout && mode === 'production') throw fail('Production is blocked in a source checkout.', 'ERR_SOURCE_CHECKOUT');
   if (!env.LOCALAPPDATA || !path.isAbsolute(env.LOCALAPPDATA)) throw fail('LOCALAPPDATA is required.');
-  const personal = path.join(env.LOCALAPPDATA, 'PanoKopru');
-  const install = path.join(env.LOCALAPPDATA, 'Programs', 'PanoKopru');
-  const dataRoot = env.PANOKOPRU_DATA_ROOT || (mode === 'production' ? personal : null);
+  const personal = path.join(env.LOCALAPPDATA, 'ClipBridge');
+  const install = path.join(env.LOCALAPPDATA, 'Programs', 'ClipBridge');
+  const dataRoot = env.CLIPBRIDGE_DATA_ROOT || (mode === 'production' ? personal : null);
   if (!dataRoot || !path.isAbsolute(dataRoot) || /[\x00-\x1f"<>|]/.test(dataRoot)) throw fail('An absolute, explicit data root is required.');
   const root = path.resolve(dataRoot);
+  // Renaming never grants development access to an existing legacy installation.
+  for (const legacy of [path.join(env.LOCALAPPDATA, 'PanoKopru'), path.join(env.LOCALAPPDATA, 'Programs', 'PanoKopru')]) {
+    if (within(root, legacy) || within(legacy, root)) throw fail('Data root overlaps a protected legacy installation.');
+  }
   if (root.startsWith('\\\\') || root.startsWith('//')) throw fail('Network data roots are not supported.');
   if (within(root, personal) || within(install, root) || within(root, install) || within(root, projectRoot)) {
     if (!(mode === 'production' && normalized(root) === normalized(personal))) throw fail('Data root overlaps a protected installation or parent directory.');
   }
   if (mode !== 'production' && within(personal, root)) throw fail('Development cannot use personal data.');
-  if (mode === 'production' && normalized(root) !== normalized(personal)) throw fail('Production data root must be the per-user PanoKopru directory.');
+  if (mode === 'production' && normalized(root) !== normalized(personal)) throw fail('Production data root must be the per-user ClipBridge directory.');
   if (within(projectRoot, root) && !within(path.join(projectRoot, '.local'), root)) throw fail('Source-local data must be under ignored .local.');
   const ports = {};
   for (const [name, normal] of Object.entries(productionPorts)) {
-    const value = env['PANOKOPRU_' + name.toUpperCase() + '_PORT'] || (mode === 'production' ? String(normal) : '');
+    const value = env['CLIPBRIDGE_' + name.toUpperCase() + '_PORT'] || (mode === 'production' ? String(normal) : '');
     if (!/^\d{1,5}$/.test(value) || Number(value) < 1024 || Number(value) > 65535) throw fail('Explicit valid unprivileged ports are required.');
     ports[name] = Number(value);
     if (mode === 'production' && ports[name] !== normal) throw fail('Production port changes require a coordinated installer migration.');

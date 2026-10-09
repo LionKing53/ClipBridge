@@ -19,7 +19,7 @@ internal sealed class DesktopWindow : Form
     internal DesktopWindow(string root)
     {
         appRoot = root;
-        Text = "PanoK\u00f6pr\u00fc";
+        Text = "ClipBridge";
         float scale;
         using (var graphics = Graphics.FromHwnd(IntPtr.Zero)) scale = graphics.DpiX / 96f;
         var area = Screen.PrimaryScreen.WorkingArea;
@@ -103,7 +103,7 @@ internal sealed class DesktopWindow : Form
         }
         catch (Exception)
         {
-            MessageBox.Show(Language.Text("m_9742c5012302"), "PanoK\u00f6pr\u00fc", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(Language.Text("m_9742c5012302"), "ClipBridge", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

@@ -9,7 +9,7 @@ import { applyNativeOverride, assertX64Library } from '../src/native-override.js
 import { sealCandidate } from '../src/package-files.js';
 import { verifyRelease } from '../src/release-store.js';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
-async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(),'PanoKopru-native-source-')); t.after(() => rm(root,{recursive:true,force:true})); return root; }
+async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(),'ClipBridge-native-source-')); t.after(() => rm(root,{recursive:true,force:true})); return root; }
 function pe(value) { const bytes = Buffer.alloc(256,value); bytes.write('MZ'); bytes.writeUInt32LE(64,60); bytes.writeUInt32LE(0x4550,64); bytes.writeUInt16LE(0x8664,68); bytes.writeUInt16LE(0x2000,86); return bytes; }
 test('source delivery uses pinned bytes and rejects bad cache, insecure origins and mismatch',async t => {
   const root = await fixture(t), content = Buffer.from('synthetic source');
@@ -33,7 +33,7 @@ test('owner library replacement seals new hashes only in fresh staging and prese
   assert.equal(report.compatibilityTested,false); assert.deepEqual(await readFile(path.join(input,library)),replacement);
   const payload=path.dirname(app), sealed=await sealCandidate(payload,{version:'1.1.0',commit:'a'.repeat(40)});
   await verifyRelease(payload,sealed.hash);
-  await assert.rejects(applyNativeOverride(root,path.join(root,'Programs/PanoKopru/app'),input),/fresh/);
+  await assert.rejects(applyNativeOverride(root,path.join(root,'Programs/ClipBridge/app'),input),/fresh/);
   await writeFile(path.join(input,'unapproved.dll'),replacement); await assert.rejects(applyNativeOverride(root,app,input),/only explicitly/);
   await writeFile(target,original); await assert.rejects(verifyRelease(payload,sealed.hash),/integrity/);
 });

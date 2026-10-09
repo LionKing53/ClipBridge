@@ -8,14 +8,14 @@ $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 try {
     Add-Type -Path (Join-Path $PSScriptRoot 'InstallProbe.cs')
-    if ($Operation -ne 'Host' -and [PanoKopruInstallProbe]::Elevated()) { throw 'Original non-elevated user required.' }
+    if ($Operation -ne 'Host' -and [ClipBridgeInstallProbe]::Elevated()) { throw 'Original non-elevated user required.' }
     $targetPath = ''
     if ($TargetBase64) { $targetPath = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($TargetBase64)) }
     $observation = switch ($Operation) {
-        'Host' { [PanoKopruInstallProbe]::Host() }
-        'WebView2' { [PanoKopruInstallProbe]::WebView2() }
-        'Destination' { [PanoKopruInstallProbe]::Destination($targetPath) }
-        'NodeMetadata' { [PanoKopruInstallProbe]::NodeMetadata($targetPath) }
+        'Host' { [ClipBridgeInstallProbe]::Host() }
+        'WebView2' { [ClipBridgeInstallProbe]::WebView2() }
+        'Destination' { [ClipBridgeInstallProbe]::Destination($targetPath) }
+        'NodeMetadata' { [ClipBridgeInstallProbe]::NodeMetadata($targetPath) }
     }
     $observation | ConvertTo-Json -Compress -Depth 4
 } catch {

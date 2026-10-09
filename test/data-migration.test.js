@@ -5,7 +5,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { migrateLegacyData } from '../src/data-migration.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-migration-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-migration-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const from = path.join(root, 'old'); const to = path.join(root, 'new'); const backup = path.join(root, 'backup');
   await mkdir(path.join(from, 'history'), { recursive: true }); await mkdir(path.join(from, 'inbox'));

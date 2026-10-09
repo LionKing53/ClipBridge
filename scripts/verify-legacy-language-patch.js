@@ -26,6 +26,8 @@ export async function verifyLegacyLanguagePatch(patch) {
     for(const server of [desktop,phone])await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
     const origin='http://127.0.0.1:'+desktop.address().port, phoneOrigin='http://127.0.0.1:'+phone.address().port;
     const token=await readFile(path.join(data,'desktop-token'),'utf8'),headers={Authorization:'Bearer '+token,'Content-Type':'application/json'};
+    assert.equal((await(await fetch(origin+'/api/state',{headers})).json()).version,'1.2.1');
+    assert.match(await(await fetch(origin+'/')).text(),/<title>ClipBridge<\/title>/);
     assert.equal((await(await fetch(origin+'/api/state',{headers})).json()).preferences.language,'tr');
     assert.equal((await fetch(origin+'/api/settings',{method:'POST',headers,body:JSON.stringify({language:'en'})})).status,200);
     assert.equal(history.detail(id).content,content);

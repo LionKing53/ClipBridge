@@ -21,13 +21,13 @@ test('catalogs cover owned browser/native references with matching interpolation
     const fields = text => [...text.matchAll(/\{([a-z]+)\}/g)].map(x=>x[1]).sort();
     assert.deepEqual(fields(value.tr),fields(value.en),key);
   }
-  for (const file of ['desktop/app.js','desktop/index.html','desktop/theme.js','launcher/Setup.cs','launcher/DesktopWindow.cs','launcher/PanoKopru.cs','src/app.js','src/local-network.js','src/pair.js']) {
+  for (const file of ['desktop/app.js','desktop/index.html','desktop/theme.js','launcher/Setup.cs','launcher/DesktopWindow.cs','launcher/ClipBridge.cs','src/app.js','src/local-network.js','src/pair.js']) {
     const source=await readFile(new URL('../'+file,import.meta.url),'utf8');
     for(const [,key] of source.matchAll(/(?:\bt\('|Language.Text\("|data-i18n(?:-[a-z-]+)?=")([a-zA-Z0-9_.]+)/g)) assert.ok(messages[key]||native[key],file+': '+key);
   }
 });
 test('native launcher/installer share saved language and preserve other preferences', {skip:process.platform!=='win32'}, async () => {
-  const root=await mkdtemp(path.join(os.tmpdir(),'PanoKopru-language-native-')), run=promisify(execFile);
+  const root=await mkdtemp(path.join(os.tmpdir(),'ClipBridge-language-native-')), run=promisify(execFile);
   try {
     const exe=path.join(root,'LanguageProbe.exe'), source=fileURLToPath(new URL('../',import.meta.url));
     await run(path.join(process.env.WINDIR,'Microsoft.NET/Framework64/v4.0.30319/csc.exe'),['/nologo','/target:exe','/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/out:'+exe,
@@ -36,7 +36,7 @@ test('native launcher/installer share saved language and preserve other preferen
   }finally{await rm(root,{recursive:true,force:true});}
 });
 test('native setup TR/EN form renders without horizontal overflow and without invoking OS adapters', {skip:process.platform!=='win32'}, async () => {
-  const root=await mkdtemp(path.join(os.tmpdir(),'PanoKopru-setup-language-')), run=promisify(execFile);
+  const root=await mkdtemp(path.join(os.tmpdir(),'ClipBridge-setup-language-')), run=promisify(execFile);
   try {
     const source=fileURLToPath(new URL('../',import.meta.url)), exe=path.join(root,'SetupLanguageProbe.exe');
     await run(path.join(process.env.WINDIR,'Microsoft.NET/Framework64/v4.0.30319/csc.exe'),['/nologo','/target:exe','/main:SetupLanguageProbe','/reference:System.Drawing.dll','/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/out:'+exe,
@@ -49,7 +49,7 @@ test('native setup TR/EN form renders without horizontal overflow and without in
   }finally{await rm(root,{recursive:true,force:true});}
 });
 test('language defaults distinguish existing users and new system languages; preferences persist without changing other fields', async () => {
-  const root=await mkdtemp(path.join(os.tmpdir(),'PanoKopru-language-'));
+  const root=await mkdtemp(path.join(os.tmpdir(),'ClipBridge-language-'));
   try {
     assert.equal((await createPreferences(path.join(root,'old'),{existing:true,systemLocale:'en-US'})).get().language,'tr');
     assert.equal((await createPreferences(path.join(root,'new'),{existing:false,systemLocale:'de-DE'})).get().language,'en');
@@ -65,7 +65,7 @@ test('language defaults distinguish existing users and new system languages; pre
   }finally{await rm(root,{recursive:true,force:true});}
 });
 test('desktop preference changes persist and phone pairing follows language without changing content or protocol', async () => {
-  const root=await mkdtemp(path.join(os.tmpdir(),'PanoKopru-language-http-'));let desktop,phone;
+  const root=await mkdtemp(path.join(os.tmpdir(),'ClipBridge-language-http-'));let desktop,phone;
   try {
     const preferences=await createPreferences(root);
     const history=await createHistory(root);

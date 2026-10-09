@@ -8,12 +8,12 @@ import { startBridge } from '../src/boot.js';
 import { resolveRuntime, acquireInstance } from '../src/runtime-context.js';
 import { createTestSystem } from './support/desktop-system.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-boot-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-boot-'));
   const holders = []; const ports = [];
   for (let i = 0; i < 3; i++) { const server = net.createServer(); await new Promise(resolve => server.listen(0, '127.0.0.1', resolve)); holders.push(server); ports.push(String(server.address().port)); }
   await Promise.all(holders.map(server => new Promise(resolve => server.close(resolve))));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'Local'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: path.join(root, 'state'), PANOKOPRU_API_PORT: ports[0], PANOKOPRU_DESKTOP_PORT: ports[1], PANOKOPRU_LOCAL_PORT: ports[2] } });
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'Local'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: path.join(root, 'state'), CLIPBRIDGE_API_PORT: ports[0], CLIPBRIDGE_DESKTOP_PORT: ports[1], CLIPBRIDGE_LOCAL_PORT: ports[2] } });
   const adapters = { logger: { info() {}, error() {} }, transfers: { getItem: async () => ({ type: 'text', content: 'Synthetic clipboard' }), setItem: async item => ({ type: item.type }) }, system: createTestSystem(), localNetwork: { status: () => ({ configured: false }), handleSetup: async () => false, close() {} } };
   return { context, adapters };
 }

@@ -8,8 +8,8 @@ kurulmaz. Bu dosyaları silerek kurulum denenmemelidir.
 
 ## Uygulanan akış
 
-1. Var olan `%LOCALAPPDATA%/Programs/PanoKopru` **veya**
-   `%LOCALAPPDATA%/PanoKopru` varsa dur. Boş veri klasörü bile benimsenmez.
+1. Var olan `%LOCALAPPDATA%/Programs/ClipBridge` **veya**
+   `%LOCALAPPDATA%/ClipBridge` varsa dur. Boş veri klasörü bile benimsenmez.
    Kurucu bir güncelleme/geçiş aracı değildir.
 2. Derleme sırasında kurucuya gömülen manifest hash'ini ve bütün paket dosyalarını
    kontrol et. Kaynak koruması, bilinmeyen dosya, traversal, link veya bozuk hash
@@ -59,7 +59,7 @@ Temiz commit'ten `npm.cmd run build:candidate` sonrasında, üretilen göreli kl
 npm.cmd run build:setup -- build/candidate-<üretilen-kimlik>
 ```
 
-`PanoKopruSetup.exe`, payload yanında üretilir; payload manifest hash'i derlemeye
+`ClipBridgeSetup.exe`, payload yanında üretilir; payload manifest hash'i derlemeye
 gömülür. `setup-build-evidence.json` kaynak hash'lerini ve kurucu SHA-256'sını
 kaydeder. Araç hiçbir exe/kurucuyu çalıştırmaz, korumaları kaldırmaz, kurmaz.
 Çıktı imzasızdır ve yayına veya başka kullanıcıya verilmek üzere onaylanmış değildir.

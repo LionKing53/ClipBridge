@@ -11,9 +11,9 @@ assertProductionReady();
 const execFileAsync = promisify(execFile);
 const projectRoot = process.cwd();
 const buildDirectory = path.join(projectRoot, "build");
-const executablePath = path.join(buildDirectory, "PanoKopru.exe");
-const iconPath = path.join(projectRoot, "assets", "PanoKopru.ico");
-const svgPath = path.join(projectRoot, "assets", "PanoKopru.svg");
+const executablePath = path.join(buildDirectory, "ClipBridge.exe");
+const iconPath = path.join(projectRoot, "assets", "ClipBridge.ico");
+const svgPath = path.join(projectRoot, "assets", "ClipBridge.svg");
 
 await mkdir(buildDirectory, { recursive: true });
 
@@ -23,7 +23,7 @@ const pngs = await Promise.all(
   sizes.map((size) => sharp(svg).resize(size, size).png().toBuffer())
 );
 await writeFile(iconPath, await pngToIco(pngs));
-await writeFile(path.join(projectRoot, "assets", "PanoKopru.png"), pngs.at(-1));
+await writeFile(path.join(projectRoot, "assets", "ClipBridge.png"), pngs.at(-1));
 
 const compilerCandidates = [
   "C:\\Windows\\Microsoft.NET\\Framework64\\v4.0.30319\\csc.exe",
@@ -53,7 +53,7 @@ await execFileAsync(compiler, [
   `/reference:${path.join(projectRoot, 'vendor/webview2/lib/net462/Microsoft.Web.WebView2.WinForms.dll')}`,
   `/win32icon:${iconPath}`,
   `/out:${executablePath}`,
-  path.join(projectRoot, "launcher", "PanoKopru.cs"),
+  path.join(projectRoot, "launcher", "ClipBridge.cs"),
   path.join(projectRoot, "launcher", "RuntimeContext.cs"),
   path.join(projectRoot, "launcher", "OwnedNode.cs"),
   path.join(projectRoot, "launcher", "DesktopWindow.cs")

@@ -9,10 +9,10 @@ import path from 'node:path';
 import { resolveRuntime, prepareRuntime, acquireInstance, recoverStaleInstance } from '../src/runtime-context.js';
 
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-crash-recovery-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-crash-recovery-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'profile'), PANOKOPRU_MODE: 'test',
-    PANOKOPRU_DATA_ROOT: path.join(root, 'data'), PANOKOPRU_API_PORT: '47145', PANOKOPRU_DESKTOP_PORT: '47146', PANOKOPRU_LOCAL_PORT: '47147' } });
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'profile'), CLIPBRIDGE_MODE: 'test',
+    CLIPBRIDGE_DATA_ROOT: path.join(root, 'data'), CLIPBRIDGE_API_PORT: '47145', CLIPBRIDGE_DESKTOP_PORT: '47146', CLIPBRIDGE_LOCAL_PORT: '47147' } });
   await prepareRuntime(context);
   const file = path.join(context.dataRoot, 'instance.lock');
   return { context, file, save: async pid => {

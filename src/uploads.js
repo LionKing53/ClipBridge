@@ -42,8 +42,8 @@ export class UploadStorage {
           if (this.options.stagingRoot) {
             await mkdir(this.options.stagingRoot, { recursive: true });
             this.directory = await mkdtemp(path.join(this.options.stagingRoot, 'upload-'));
-            await writeFile(path.join(this.directory, '.owner.json'), JSON.stringify({ application: 'PanoKopru', instanceId: this.options.instanceId, createdAt: Date.now() }), { flag: 'wx' });
-          } else this.directory = await mkdtemp(path.join(os.tmpdir(), "PanoKopru-upload-"));
+            await writeFile(path.join(this.directory, '.owner.json'), JSON.stringify({ application: 'ClipBridge', instanceId: this.options.instanceId, createdAt: Date.now() }), { flag: 'wx' });
+          } else this.directory = await mkdtemp(path.join(os.tmpdir(), "ClipBridge-upload-"));
           filePath = path.join(this.directory, "payload");
           handle = await open(filePath, "wx");
           for (const previous of chunks) await handle.writeFile(previous);
@@ -83,7 +83,7 @@ async function classify(payload, mimeType, filename) {
 }
 
 function fallbackFilename(mimeType) {
-  return `PanoKopru.${mime.extension(mimeType) || "bin"}`;
+  return `ClipBridge.${mime.extension(mimeType) || "bin"}`;
 }
 
 export async function readBinaryUpload(request, storage) {
@@ -93,7 +93,7 @@ export async function readBinaryUpload(request, storage) {
     throw uploadError(`Dosya ${storage.maxBytes} bayt sinirini asiyor.`);
   }
   const payload = await storage.consume(request);
-  return classify(payload, mimeType, request.headers["x-panokopru-filename"] || fallbackFilename(mimeType));
+  return classify(payload, mimeType, request.headers["x-clipbridge-filename"] || request.headers["x-panokopru-filename"] || fallbackFilename(mimeType));
 }
 
 export function readMultipartUpload(request, storage) {

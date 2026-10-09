@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
 
-[assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0")]
+[assembly: AssemblyVersion("1.2.1.0")]
+[assembly: AssemblyFileVersion("1.2.1.0")]
+[assembly: AssemblyInformationalVersion("1.2.1")]
 
 // Standalone first-install UI, built beside a pinned payload. Never executes a
 // downloaded Node or modifies a current installation. Source/candidate guards
@@ -22,7 +22,7 @@ internal static class SetupProgram
     {
         Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
         string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        Language.Initialize(Path.Combine(local, "PanoKopru"), Directory.Exists(Path.Combine(local,"PanoKopru")) || Directory.Exists(Path.Combine(local,"Programs","PanoKopru")));
+        Language.Initialize(Path.Combine(local, "ClipBridge"), Directory.Exists(Path.Combine(local,"ClipBridge")) || Directory.Exists(Path.Combine(local,"Programs","ClipBridge")));
         Application.Run(new SetupWindow());
     }
 }
@@ -47,16 +47,16 @@ internal sealed class SetupWindow : Form
         language.SelectedIndex = Language.Current == "tr" ? 0 : 1;
         language.SelectedIndexChanged += (s,e) => { if (busy) return; Language.Current = language.SelectedIndex == 0 ? "tr" : "en"; Language.Refresh(this); };
         layout.Controls.Add(language);
-        layout.Controls.Add(new Label { Text = "PanoKopru", Font = new Font("Segoe UI", 21, FontStyle.Bold), AutoSize = true });
+        layout.Controls.Add(new Label { Text = "ClipBridge", Font = new Font("Segoe UI", 21, FontStyle.Bold), AutoSize = true });
         layout.Controls.Add(new Label { Text = Language.Text("m_64576cfe72e2"), AutoSize = true });
         layout.Controls.Add(desktop); layout.Controls.Add(startup); layout.Controls.Add(consent);
         var buttons = new FlowLayoutPanel { AutoSize = true };
         var license = new Button { Text = Language.Text("m_1e2298cfc22b"), AutoSize = true };
-        license.Click += (s,e) => MessageBox.Show(Language.Text("m_ec20bf3aff0c"), "PanoKopru");
+        license.Click += (s,e) => MessageBox.Show(Language.Text("m_ec20bf3aff0c"), "ClipBridge");
         var runtime = new Button { Text = Language.Text("m_6a1aa69d5ce9"), AutoSize = true };
         var remove = new Button { Text = Language.Text("m_3aaf7b407904"), AutoSize = true };
         remove.Click += async (s,e) => {
-            if (busy || MessageBox.Show(Language.Text("m_149a5aa87558"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            if (busy || MessageBox.Show(Language.Text("m_149a5aa87558"), "ClipBridge", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             busy = true; install.Enabled = remove.Enabled = false;
             status.Text = Language.Text("m_005741d319f6");
             try {
@@ -109,7 +109,7 @@ internal sealed class SetupWindow : Form
             var result = await Task.Run(() => FreshInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]),
                 payload, policy["manifestHash"], wantDesktop, wantStartup, Progress, cancellation.Token));
             completed = true;
-            Language.SavePreference(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PanoKopru"));
+            Language.SavePreference(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ClipBridge"));
             status.Text = result.Warnings.Length == 0 ? Language.Text("m_891f8765553d") :
                 Language.Text("m_d97e1a594e7d") + String.Join(", ", result.Warnings);
         }

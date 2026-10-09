@@ -7,13 +7,18 @@ export const errorMessages = JSON.parse(readFileSync(new URL('../locales/errors.
 export const normalizeLanguage = value => /^tr(?:[-_]|$)/i.test(value || '') ? 'tr' : 'en';
 export const localeFor = language => language === 'tr' ? 'tr-TR' : 'en-US';
 const ownedMessages = new Map(Object.entries(messages).map(([key, value]) => [value.tr, key]));
+// Exact owned backend labels from the reviewed legacy adapter, not substring
+// replacement over clipboard content, file names or user-defined network names.
+for (const [key, value] of Object.entries(messages)) {
+  if (value.tr.includes('ClipBridge')) for (const previous of ['PanoKöprü','PanoKopru']) ownedMessages.set(value.tr.replaceAll('ClipBridge',previous),key);
+}
 export const translateMessage = (message, language) => ownedMessages.has(message) ? translate(ownedMessages.get(message), language) : message;
 export function translate(key, language = 'tr', values = {}) {
   const entry = messages[key] || errorMessages[key];
   if (!entry) throw new Error('Unknown translation key: ' + key);
   return entry[language === 'en' ? 'en' : 'tr'].replace(/\{([a-z]+)\}/g, (match, name) => Object.hasOwn(values, name) ? String(values[name]) : match);
 }
-export async function createPreferences(root, { existing = true, systemLocale = process.env.PANOKOPRU_SYSTEM_LANGUAGE || Intl.DateTimeFormat().resolvedOptions().locale } = {}) {
+export async function createPreferences(root, { existing = true, systemLocale = process.env.CLIPBRIDGE_SYSTEM_LANGUAGE || Intl.DateTimeFormat().resolvedOptions().locale } = {}) {
   const file = path.join(root, 'ui-settings.json');
   let value;
   try { value = JSON.parse(await readFile(file, 'utf8')); }

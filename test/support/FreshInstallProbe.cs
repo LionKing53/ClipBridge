@@ -35,11 +35,11 @@ internal static class FreshInstallProbe
             var cancellation = new CancellationTokenSource();
             var result = FreshInstall.Run(system, args[1], args[2], args[4] == "yes", args[5] == "yes", step => {
                 if (step == "copy" && system.Scenario == "source-changed") File.WriteAllText(Path.Combine(args[1], "app", "src", "server.js"), "changed source");
-                if (step == "activate" && system.Scenario == "target-race") { string target = Path.Combine(system.Root, "Programs", "PanoKopru"); Directory.CreateDirectory(target); File.WriteAllText(Path.Combine(target, "foreign.txt"), "untouched"); }
+                if (step == "activate" && system.Scenario == "target-race") { string target = Path.Combine(system.Root, "Programs", "ClipBridge"); Directory.CreateDirectory(target); File.WriteAllText(Path.Combine(target, "foreign.txt"), "untouched"); }
                 if (step == "activate" && system.Scenario == "cancel") cancellation.Cancel();
             }, cancellation.Token);
             if (system.Scenario.StartsWith("remove-")) {
-                string data = Path.Combine(system.Root, "PanoKopru"); Directory.CreateDirectory(data); File.WriteAllText(Path.Combine(data, "synthetic.txt"), "retained");
+                string data = Path.Combine(system.Root, "ClipBridge"); Directory.CreateDirectory(data); File.WriteAllText(Path.Combine(data, "synthetic.txt"), "retained");
                 if (system.Scenario == "remove-foreign") File.WriteAllText(Path.Combine(result.InstallRoot, "foreign.txt"), "untouched");
                 RemoveInstall.Run(system, args[2]);
             }

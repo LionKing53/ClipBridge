@@ -1,18 +1,22 @@
-# PanoKopru
+# ClipBridge
 ### Your text, photos and files — between Windows and iPhone.
 
 [English](README.md) · [Türkçe](README.tr.md) · [Setup guide](docs/QUICKSTART.md) · [Apple Shortcuts](docs/SHORTCUTS.md)
 
-PanoKopru is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send or
+ClipBridge is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send or
 receive an item, then keep working on your other device. Use **local HTTPS on a
 trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remotely.
 
-> **Source release · version 1.2.0**
+> **Source version 1.2.1 · ClipBridge rebrand**
 >
 > No downloadable EXE or installer is published yet. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
 > Rebuilding libvips from the source companion and verifying compatibility also
 > remain pending. Automated tests do not replace these checks.
+
+The same **ClipBridge** name is used in both languages. Existing PanoKopru
+installations and iPhone identities are not silently renamed or migrated.
+[Naming and compatibility](docs/BRANDING.md)
 
 ## A look at the desktop
 
@@ -49,7 +53,7 @@ flowchart LR
     I["iPhone<br/>Run an Apple Shortcut"]
     L["Same trusted network<br/>Local HTTPS"]
     T["Remote use<br/>Separate Tailscale Shortcut"]
-    W["Windows<br/>PanoKopru"]
+    W["Windows<br/>ClipBridge"]
     I <-->|"Choose local route"| L
     I <-->|"Choose remote route"| T
     L <--> W
@@ -71,7 +75,7 @@ These steps describe the **private acceptance package**. They are provided for
 review and future testing; there is currently no public installer download.
 
 1. **Install on a clean Windows x64 computer.** Extract the whole package and
-   keep `PanoKopruSetup.exe` beside `payload`. Run setup as a normal user.
+   keep `ClipBridgeSetup.exe` beside `payload`. Run setup as a normal user.
 2. **Choose a network you control.** Approve the narrow Windows permission
    request. Setting the network to **Private** can also affect other apps'
    existing Private-profile rules.
@@ -95,9 +99,9 @@ fingerprint independently and never bypass a certificate warning.
 
 ![English desktop interface of trusted-network management with synthetic home network details](docs/images/trusted-networks.png)
 
-**Remove a network** revokes PanoKopru's trust in that network. It does not revert
+**Remove a network** revokes ClipBridge's trust in that network. It does not revert
 the Windows network profile or delete firewall rules. **Clean up permissions** is
-a separate, administrator-approved operation that removes owned PanoKopru rules;
+a separate, administrator-approved operation that removes owned ClipBridge rules;
 it leaves Windows profiles and Tailscale settings unchanged.
 
 Trust only networks you control. A network name alone is not authentication:
@@ -164,7 +168,7 @@ hashes. The script selects the real English language option in an isolated fixtu
 
 ## License
 
-PanoKopru is licensed under **GPL-3.0-or-later**. See [LICENSE](LICENSE).
+ClipBridge is licensed under **GPL-3.0-or-later**. See [LICENSE](LICENSE).
 Third-party components retain their own licenses; their binary distribution
 review is still pending. The source repository contains no personal clipboard
 history, access keys, certificates or installed user profiles.

@@ -12,7 +12,7 @@ import { getWindowsClipboard, setWindowsClipboard } from "./clipboard.js";
 
 const MAX_FILENAME_LENGTH = 120;
 
-function safeFilename(filename, fallback = "PanoKopru-dosya") {
+function safeFilename(filename, fallback = "ClipBridge-dosya") {
   const cleaned = path.basename(filename || fallback)
     .replace(/[<>:"/\\|?*\x00-\x1f]/g, "_")
     .replace(/[. ]+$/g, "")
@@ -84,7 +84,7 @@ export function createTransferHandlers(config, { onReceived = async () => {}, st
         return {
           type: "image",
           data: item.data,
-          filename: "PanoKopru.png",
+          filename: "ClipBridge.png",
           mimeType: "image/png"
         };
       }

@@ -9,12 +9,12 @@ import { createTestSystem } from './support/desktop-system.js';
 import { createStorage } from '../src/storage.js';
 
 test('first-run, permission cleanup and storage endpoints enforce auth/origin and confirmations', async t => {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-setup-api-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-setup-api-'));
   t.after(() => rm(root, { recursive: true, force: true }));
   const history = await createHistory(root); const storage = await createStorage(root, history);
   let cleaned = 0, begun = 0, confirmed = 0;
   const network = {
-    status: () => ({ state: 'ready', endpoint: 'https://panokopru-1234abcd.local:32147/api/v1/clipboard' }),
+    status: () => ({ state: 'ready', endpoint: 'https://clipbridge-1234abcd.local:32147/api/v1/clipboard' }),
     cleanupPermissions: async () => { cleaned++; return { ok: true }; },
     setup: {
       status: () => ({ phase: 'not_started', available: true }), networks: async () => [],

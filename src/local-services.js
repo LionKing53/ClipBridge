@@ -1,6 +1,6 @@
 import path from 'node:path';
 import { readFile, writeFile, rename } from 'node:fs/promises';
-import { createLocalNetwork, prepareLocalNetwork, getLocalNetworks } from './local-network.js';
+import { createLocalNetwork, prepareLocalNetwork, getLocalNetworks, readLocalCertificate } from './local-network.js';
 import { createNetworkManager } from './network-manager.js';
 import { createOnboarding } from './onboarding.js';
 import { startCertificateBootstrap } from './certificate-bootstrap.js';
@@ -35,7 +35,7 @@ export async function createLocalServices(context, apiOptions, adapters) {
       checkpoint(); const manager = await managerFactory();
       await manager.trust(networkKey(network));
     },
-    readCertificate: adapters?.readCertificate || (() => readFile(path.join(root, 'PanoKopru-Local-CA.cer'))),
+    readCertificate: adapters?.readCertificate || (() => readLocalCertificate(root)),
     activate: async () => {
       checkpoint(); const config = JSON.parse(await readFile(file, 'utf8')); checkpoint();
       if (!config.setupPending) throw new Error('Setup identity no longer pending.');
@@ -74,7 +74,7 @@ export async function createLocalServices(context, apiOptions, adapters) {
       if (active.status().configured) return active.cleanupPermissions();
       await setup.cancel();
       try { await readFile(file, 'utf8'); }
-      catch (error) { if (error.code === 'ENOENT') return { ok: true, message: 'Henüz verilmiş PanoKöprü ağ izni yok.' }; throw error; }
+      catch (error) { if (error.code === 'ENOENT') return { ok: true, message: 'Henüz verilmiş ClipBridge ağ izni yok.' }; throw error; }
       const manager = await managerFactory();
       return manager.cleanupPermissions();
     }),

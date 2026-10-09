@@ -1,4 +1,4 @@
-# PanoKopru development contract
+# ClipBridge development contract
 
 ## Single source and ownership
 
@@ -26,9 +26,12 @@ the development conversation. No simultaneous conflicting edits.
 
 ## Private installation and data
 
-Canonical default: `%USERPROFILE%/source/PanoKopru`.
-Installed program: `%LOCALAPPDATA%/Programs/PanoKopru`.
-New-design personal data: `%LOCALAPPDATA%/PanoKopru` (NOT migrated yet).
+Canonical default for new checkouts: `%USERPROFILE%/source/ClipBridge`.
+The existing canonical checkout is not moved; use ignored machine records.
+New installation: `%LOCALAPPDATA%/Programs/ClipBridge`.
+New-design personal data: `%LOCALAPPDATA%/ClipBridge`.
+The owner's legacy installation/data retain their previous PanoKopru paths;
+no brand-related data migration or certificate/hostname regeneration is allowed.
 Exact machine paths and imported-file checksums are in ignored `.local/`.
 
 Never read or copy personal clipboard/history, tokens, pairing QR/HTML, private
@@ -104,6 +107,18 @@ this compile-only exception does not authorize production installation, source
 guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
+
+### ClipBridge rebrand — owner decision 2026-10-09
+
+Use ClipBridge as the same TR/EN brand, including new-install technical names,
+native metadata, package/shortcut/asset names and fresh network identities.
+The owner requested updating the existing application too. A narrow reviewed
+brand/language patch may be deployed after tests and a verified private backup,
+with program-only rollback. Preserve existing executable/shortcut compatibility,
+data paths, CA/hostname, tokens, network permissions, history, files and theme.
+Do not move the personal installation or recreate its identity to erase an old
+name. Legacy protocol aliases and protected paths remain explicit compatibility
+exceptions. Do not rename the public repository or push from this conversation.
 
 ### Localization and personal language patch — owner decision 2026-10-09
 

@@ -1,5 +1,19 @@
 # Değişiklik kaydı
 
+## 1.2.1 — ClipBridge — 2026-10-09
+
+- Türkçe/English için aynı ClipBridge adı; cb UI monogramı, native ürün bilgisi,
+  yeniden adlandırılmış launcher/SVG, yeni kurulum/program/veri/paket/kısayol ve
+  çalışma ortamı adları. Yeni hostname/CA/firewall ClipBridge kullanır.
+- Çalışan eski iPhone kimliği/veri dizini/launcher hedefleri otomatik taşınmaz.
+  Eski header/tema/public-CA uyumluluğu; iki marka için dar firewall sahipliği.
+  Eski kişisel kökler geliştirmeden korunur, eski kurulum yeni kurucuyu engeller.
+- Hedefli marka/veri sınırı/sertifika/tema testleri ve sentetik ClipBridge ekran
+  görüntüleri. Son tam takım 156/156, TR/EN UI/native derleme/form kontrolleri geçti;
+  son test/kişisel yama kanıtı ayrı teslim kaydında tamamlanacak.
+- API yolları/portlar, veri şeması, kullanıcı içerikleri ve kimlikler değişmez.
+  Genel kurulum paketi veya GitHub yayını yok; önceki 1.1.0 paket tarihsel kalır.
+
 ## 1.2.0 — Türkçe / English — 2026-10-09
 
 - GitHub belgeleri gerçek kalıcı English seçimine uyarlandı; yalnız Türkçe

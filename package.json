@@ -1,9 +1,9 @@
 {
-  "name": "panokopru",
-  "version": "1.2.0",
+  "name": "clipbridge",
+  "version": "1.2.1",
   "private": true,
   "license": "GPL-3.0-or-later",
-  "description": "PanoKopru - Shortcut-triggered iPhone and Windows clipboard bridge (development baseline)",
+  "description": "ClipBridge - Shortcut-triggered iPhone and Windows clipboard bridge (development baseline)",
   "type": "module",
   "scripts": {
     "build:candidate": "node scripts/build-candidate.js",

@@ -9,7 +9,7 @@ import { createDiagnostics } from '../src/diagnostics.js';
 import { UploadStorage } from '../src/uploads.js';
 import { Readable } from 'node:stream';
 import { publicError } from '../src/errors.js';
-async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-storage-')); t.after(() => rm(root, { recursive: true, force: true })); return root; }
+async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-storage-')); t.after(() => rm(root, { recursive: true, force: true })); return root; }
 test('inbox retention is opt-in, confirmed, favorite-aware, and never removes unmanaged originals', async t => {
   const root = await fixture(t); const history = await createHistory(root); let now = 1000000000000;
   const storage = await createStorage(root, history, { now: () => now });

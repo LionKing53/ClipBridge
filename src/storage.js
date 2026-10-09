@@ -22,7 +22,7 @@ export async function cleanStaging(root, instanceId, { now = Date.now(), maxAgeM
     if (!entry.isDirectory() || !/^upload-[a-zA-Z0-9]{6}$/.test(entry.name)) continue;
     const target = path.join(root, entry.name); await assertNoLinks(target);
     let owner; try { owner = JSON.parse(await readFile(path.join(target, '.owner.json'), 'utf8')); } catch { continue; }
-    if (owner.application !== 'PanoKopru' || owner.instanceId !== instanceId || !Number.isFinite(owner.createdAt) || now - owner.createdAt < maxAgeMs) continue;
+    if (owner.application !== 'ClipBridge' || owner.instanceId !== instanceId || !Number.isFinite(owner.createdAt) || now - owner.createdAt < maxAgeMs) continue;
     const children = await readdir(target, { withFileTypes: true });
     if (children.some(item => !item.isFile() || !['payload', '.owner.json'].includes(item.name))) continue;
     // Validated direct child with matching ownership; never a user/source directory.

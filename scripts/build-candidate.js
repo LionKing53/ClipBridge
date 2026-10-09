@@ -84,7 +84,7 @@ for (const artifact of toolchain.artifacts) components.push({ type: artifact.id 
   'bom-ref': 'native:' + artifact.id, name: artifact.id, version: artifact.version,
   hashes: [{ alg: artifact.algorithm === 'sha256' ? 'SHA-256' : 'SHA-512', content: artifact.encoding === 'hex' ? artifact.integrity : Buffer.from(artifact.integrity, 'base64').toString('hex') }],
   externalReferences: [{ type: 'distribution', url: artifact.url }],
-  properties: [{ name: 'panokopru:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
+  properties: [{ name: 'clipbridge:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
 await mkdir(path.join(payload, 'review'));
 if (nativeOverride) await writeFile(path.join(payload, 'review/native-modifications.json'), JSON.stringify(nativeOverride, null, 2));
 if (options['--native-source-directory']) {
@@ -92,7 +92,7 @@ if (options['--native-source-directory']) {
   const evidence = JSON.parse(await readFile(path.join(directory, 'evidence.json'), 'utf8'));
   const inventory = JSON.parse(await readFile(path.join(directory, 'inventory.json'), 'utf8'));
   const lock = JSON.parse(await readFile(path.join(root, 'native-sources-lock.json'), 'utf8'));
-  const bundleName = 'PanoKopru-sharp-0.35.5-sources.zip';
+  const bundleName = 'ClipBridge-sharp-0.35.5-sources.zip';
   if (inventory.sharp !== lock.sharp || evidence.nativeArchives !== lock.artifacts.length || evidence.recipeArchives !== Object.keys(lock.recipes).length || evidence.sha256 !== await hashFile(path.join(directory,bundleName))) throw new Error('Wrong native source companion');
   for (const item of lock.artifacts) if (!inventory.artifacts.some(a => a.sha256 === item.sha256 && a.url === item.url)) throw new Error('Missing native source');
   for (const item of Object.values(lock.recipes)) if (!inventory.artifacts.some(a => a.commit === item.commit && a.repository === item.repository)) throw new Error('Missing build recipe');
@@ -107,8 +107,8 @@ const limitations = [installable ? 'Installable PRIVATE acceptance package, not 
   'sharp/libvips corresponding-source and replacement requirements still need distribution review.', 'Real Windows/iPhone acceptance pending. Clean install only; updater, rollback and legacy migration out of scope.'];
 await writeFile(path.join(payload, 'review', 'inventory.json'), JSON.stringify({ format: 1, commit, target: 'win-x64', limitations, packages: inventory }, null, 2));
 await writeFile(path.join(payload, 'review', 'candidate.cdx.json'), JSON.stringify({ bomFormat: 'CycloneDX', specVersion: '1.6', version: 1,
-  metadata: { component: { type: 'application', name: 'PanoKopru', version },
-    properties: [{ name: 'panokopru:sourceCommit', value: commit }, { name: 'panokopru:status', value: installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
+  metadata: { component: { type: 'application', name: 'ClipBridge', version },
+    properties: [{ name: 'clipbridge:sourceCommit', value: commit }, { name: 'clipbridge:status', value: installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
 await writeFile(path.join(payload, 'review', 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
 await writeFile(path.join(payload, installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), limitations.join('\n') + '\n');
 // Source must not change underneath the build. A clean git tree alone would not

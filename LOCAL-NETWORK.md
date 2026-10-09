@@ -1,7 +1,7 @@
 # Yerel ağ güvenlik modeli
 
 Mevcut uygulama izin verilen bağlı ağ üzerinde HTTPS kullanır. Yerel adres
-kurulumda üretilen `panokopru-<rastgele-kimlik>.local` adıdır; bu bir kullanıcının
+kurulumda üretilen `clipbridge-<rastgele-kimlik>.local` adıdır; bu bir kullanıcının
 gerçek adresi değildir. Yerel API yolu `/api/v1/clipboard`, tür yolu
 `/api/v1/clipboard/kind`; iki yön de erişim anahtarı gerektirir.
 

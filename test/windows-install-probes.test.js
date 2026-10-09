@@ -20,14 +20,14 @@ async function listen() {
 }
 const close = server => new Promise(resolve => server.close(resolve));
 async function fixture(t) {
-  const temporary = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-windows-preflight-'));
+  const temporary = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-windows-preflight-'));
   t.after(() => rm(temporary, { recursive: true, force: true }));
   const root = path.join(temporary, 'scope'); await mkdir(root);
   const listeners = await Promise.all([listen(), listen(), listen()]);
   const ports = listeners.map(server => server.address().port);
   await Promise.all(listeners.map(close));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(temporary, 'profile'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: root,
-    PANOKOPRU_API_PORT: String(ports[0]), PANOKOPRU_DESKTOP_PORT: String(ports[1]), PANOKOPRU_LOCAL_PORT: String(ports[2]) } });
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(temporary, 'profile'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: root,
+    CLIPBRIDGE_API_PORT: String(ports[0]), CLIPBRIDGE_DESKTOP_PORT: String(ports[1]), CLIPBRIDGE_LOCAL_PORT: String(ports[2]) } });
   const candidateDirectory = path.join(root, 'candidate');
   await mkdir(path.join(candidateDirectory, 'runtime'), { recursive: true });
   return { root, ports, context, candidateDirectory };
@@ -57,7 +57,7 @@ test('loopback cancellation before/during listen never leaks a bound port', asyn
 test('Windows probe factory rejects forged/production contexts and unscoped paths or ports', windows, async t => {
   const f = await fixture(t);
   assert.throws(() => createIsolatedWindowsInstallProbes({ context: { ...f.context }, candidateDirectory: f.candidateDirectory, manifestHash: 'a'.repeat(64) }));
-  const production = resolveRuntime({ checkout: false, env: { PANOKOPRU_MODE: 'production', LOCALAPPDATA: path.join(f.root, 'profile') } });
+  const production = resolveRuntime({ checkout: false, env: { CLIPBRIDGE_MODE: 'production', LOCALAPPDATA: path.join(f.root, 'profile') } });
   assert.throws(() => createIsolatedWindowsInstallProbes({ context: production, candidateDirectory: f.candidateDirectory, manifestHash: 'a'.repeat(64) }));
   assert.throws(() => createIsolatedWindowsInstallProbes({ context: f.context, candidateDirectory: path.dirname(f.root), manifestHash: 'a'.repeat(64) }));
   const probes = makeProbes(f);

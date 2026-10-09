@@ -9,10 +9,10 @@ import { createServer } from '../src/app.js';
 import { createDesktopServer } from '../src/desktop-server.js';
 import { createTestSystem } from './support/desktop-system.js';
 async function fixture(t) {
-  const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-outbox-'));
+  const root = await mkdtemp(path.join(os.tmpdir(), 'ClipBridge-outbox-'));
   t.after(() => rm(root, { recursive: true, force: true }));
-  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'profile'), PANOKOPRU_MODE: 'test', PANOKOPRU_DATA_ROOT: path.join(root, 'state'),
-    PANOKOPRU_API_PORT: '41010', PANOKOPRU_DESKTOP_PORT: '41011', PANOKOPRU_LOCAL_PORT: '41012' } });
+  const context = resolveRuntime({ env: { LOCALAPPDATA: path.join(root, 'profile'), CLIPBRIDGE_MODE: 'test', CLIPBRIDGE_DATA_ROOT: path.join(root, 'state'),
+    CLIPBRIDGE_API_PORT: '41010', CLIPBRIDGE_DESKTOP_PORT: '41011', CLIPBRIDGE_LOCAL_PORT: '41012' } });
   const original = path.join(root, 'synthetic.txt'); await writeFile(original, 'Synthetic original');
   return { root, context, original, files: [{ path: original, name: 'synthetic.txt' }], outbox: path.join(context.dataRoot, 'outbox') };
 }
@@ -31,12 +31,12 @@ test('outbox cleanup requires ownership and age, preserves legacy archives and f
   const marker = path.join(path.dirname(foreign.path), '.owner.json');
   const owner = JSON.parse(await readFile(marker)); owner.instanceId = 'different-instance'; await writeFile(marker, JSON.stringify(owner));
   await writeFile(path.join(path.dirname(modified.path), 'unmanaged.txt'), 'keep');
-  await writeFile(path.join(outbox, 'PanoKopru-legacy.zip'), 'legacy');
+  await writeFile(path.join(outbox, 'ClipBridge-legacy.zip'), 'legacy');
   assert.equal((await cleanOwnedOutbox(context)).removed, 0);
   assert.equal((await cleanOwnedOutbox(context, { now: Date.now() + 2 * 86400000 })).removed, 1);
   await assert.rejects(readFile(old.path), { code: 'ENOENT' });
   assert.ok((await readFile(foreign.path)).length); assert.ok((await readFile(modified.path)).length);
-  assert.equal(await readFile(path.join(outbox, 'PanoKopru-legacy.zip'), 'utf8'), 'legacy');
+  assert.equal(await readFile(path.join(outbox, 'ClipBridge-legacy.zip'), 'utf8'), 'legacy');
 });
 test('cleanup skips junction entries and rejects a linked outbox root', async t => {
   const { root, context, files, outbox } = await fixture(t);
