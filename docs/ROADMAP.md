@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09 son kullanıcı kararı: Mevcut GitHub deposunun adı ClipBridge olur;
+güncel URL https://github.com/LionKing53/ClipBridge. Önceki adresi koruma kararı
+bu istekle güncellendi. Ana kaynak klasörü ve kişisel kurulum yerinde kalır.
+
 2026-10-09 yayın sohbeti: ClipBridge 1.2.1 kaynak/README/görselleri mevcut
 GitHub deposuna aktarılır; ürün açıklaması yenilenir, depo adresi korunur.
 Kaynak/geçmiş/görsel incelemesi ve uzak içerik doğrulaması yayın kapılarıdır.

@@ -108,6 +108,14 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### GitHub repository rename — owner decision 2026-10-09
+
+The owner authorized the publication conversation to rename the existing public
+repository to `LionKing53/ClipBridge`, update origin and current repository links,
+and publish this documentation record. The canonical checkout stays in place;
+personal installation/data and binary release gates remain unchanged.
+Current repository: https://github.com/LionKing53/ClipBridge.
+
 ### ClipBridge rebrand — owner decision 2026-10-09
 
 Use ClipBridge as the same TR/EN brand, including new-install technical names,

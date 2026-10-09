@@ -1,11 +1,25 @@
 # ClipBridge — proje durumu
 
+## GitHub depo adı — 2026-10-09
+
+- Mevcut public depo kullanıcı isteğiyle **LionKing53/ClipBridge** olarak
+  yeniden adlandırıldı: https://github.com/LionKing53/ClipBridge.
+  GitHub depo kimliği aynı; yeni depo/kaynak dalı oluşturulmadı. Yerel `origin`
+  yeni adrese güncellendi ve `git ls-remote` ile erişimi doğrulandı.
+- Kaynak çalışma klasörü yerinde; kaynak sürümü 1.2.1, uygulama kodu `e10c40d`,
+  önceki yayın `f86b85e`. Kişisel kurulum 1.2.1 ad/dil yaması olarak kalır;
+  uygulama veya veriler değiştirilmedi. Bu commit yalnız belge/kayıt içerir.
+- Kaynak gizlilik ve diff kontrolleri uygulanır; yayın commit'i dahil erişilebilir
+  geçmiş taranır ve uzak commit doğrulanır. Kod değişmediği için uygulama testleri
+  tekrarlanmaz. Eski adresli kayıtlar tarihseldir; güncel adres yukarıdadır.
+  Temiz Windows/iPhone, libvips ve EXE yayın kapıları değişmez.
+
 ## ClipBridge 1.2.1 kaynak yayını — 2026-10-09
 
 - Yayın girdisi `36c342b`; ad değişikliği `fff9c41`, uyumlu yama kodu
   `e10c40d`. Güncel kaynaklar, README, kurulum belgeleri ve ClipBridge adlı
   İngilizce görseller mevcut GitHub deposunun `main` dalına aktarılır.
-  Depo URL'si https://github.com/LionKing53/PanoKopru olarak korunur;
+  Güncel depo URL'si https://github.com/LionKing53/ClipBridge;
   GitHub açıklaması yeni ürün adına uyarlanır. Yayın commit'i Git kaydındadır.
 - Bu yayın incelemesinde 13/13 marka/dil/geçmiş testi ve Edge UI geçti.
   Kaynak kapısı 172 metin + 4 hash-pinned PNG / 121 kilit girdisi geçti;

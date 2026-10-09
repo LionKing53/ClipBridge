@@ -33,6 +33,8 @@ Compatibility references are intentional, not untranslated UI:
 - Old source paths and approved screenshots remain in historical audit lists.
   Git history and older package evidence are not rewritten.
 
-The canonical checkout and the current GitHub URL may retain the old directory
-or repository name. Remote repository renaming/publication belongs to the separate
-publication conversation. The old 1.1.0 package is not a ClipBridge-branded release.
+The existing canonical checkout retains its directory. The public repository is
+now [LionKing53/ClipBridge](https://github.com/LionKing53/ClipBridge); its rename
+preserves the existing repository and Git history. Publication belongs to the
+separate publication conversation. The old 1.1.0 package is not a
+ClipBridge-branded release.

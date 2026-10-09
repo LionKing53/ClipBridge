@@ -2,6 +2,10 @@
 
 ## 1.2.1 — ClipBridge — 2026-10-09
 
+- GitHub deposu kullanıcı isteğiyle `LionKing53/ClipBridge` olarak yeniden
+  adlandırıldı; mevcut depo/geçmiş korunur. Yerel origin ve güncel bağlantılar
+  yenilendi, Git erişimi doğrulandı. Uygulama kodu/kişisel kurulum değişmez.
+
 - GitHub kaynak yayını ClipBridge 1.2.1 adı, güncel README/kurulum belgeleri
   ve İngilizce görselleri içerir; mevcut depo adresi korunur. Yayın kontrolünde
   13/13 hedefli test ve Edge UI geçti; kaynak/görsel gizlilik kapısı geçti.
