@@ -1,0 +1,226 @@
+{
+  "m_3f448c896b0a": {
+    "tr": "Masaüstüne kısayol ekle",
+    "en": "Add a desktop shortcut"
+  },
+  "m_ac8c01b5417a": {
+    "tr": "Windows oturumu açılınca arka planda başlat",
+    "en": "Start in the background when signing in to Windows"
+  },
+  "m_02d39a7ab3c0": {
+    "tr": "Önizleme sınırlarını ve GPL-3.0-or-later lisansını okudum",
+    "en": "I have read the preview limitations and GPL-3.0-or-later license"
+  },
+  "m_3f60a68a1b39": {
+    "tr": "İlk kurulumu yap",
+    "en": "Install for the first time"
+  },
+  "m_ea40e51cdfe7": {
+    "tr": "İptal iste",
+    "en": "Request cancellation"
+  },
+  "m_1c84efd831cc": {
+    "tr": "PanoKöprü 1.2.0 - Kurulum / Test",
+    "en": "PanoKöprü 1.2.0 - Setup / Test"
+  },
+  "m_64576cfe72e2": {
+    "tr": "Yalnız temiz Windows x64 kullanıcı kurulumu.\nVar olan uygulama veya veri klasörünün üzerine yazılmaz.\nProgram: %LOCALAPPDATA%\\Programs\\PanoKopru\nVeri: %LOCALAPPDATA%\\PanoKopru (ilk açılışta oluşturulur).\nBu adım iPhone sertifikası veya ağ izni eklemez.",
+    "en": "Clean Windows x64 user installation only.\nExisting program or data folders are never overwritten.\nProgram: %LOCALAPPDATA%\\Programs\\PanoKopru\nData: %LOCALAPPDATA%\\PanoKopru (created on first launch).\nThis step does not add an iPhone certificate or network permissions."
+  },
+  "m_1e2298cfc22b": {
+    "tr": "Lisans ve sınırlar",
+    "en": "License and limitations"
+  },
+  "m_ec20bf3aff0c": {
+    "tr": "Proje lisansı GPL-3.0-or-later; tam metin payload\\app\\LICENSE altındadır.\n\nBu kurucu yalnız ilk kurulum içindir. Bu paket özel kabul testi içindir; genel yayın onayı yoktur. Verileri koruyan kaldırma var; otomatik güncelleme, geri alma ve eski veri göçü yoktur. Kurucu imzasızdır; SHA-256 ve kaynağını doğrula. Rehber: payload/source/docs/QUICKSTART.md",
+    "en": "Project license: GPL-3.0-or-later; full text: payload\\app\\LICENSE.\n\nThis installer supports first installation only. This package is for private acceptance testing; public release is not approved. Removal preserves data; automatic updates, rollback and legacy migration are unavailable. The installer is unsigned; verify its SHA-256 and source. Guide: payload/source/docs/QUICKSTART.md"
+  },
+  "m_6a1aa69d5ce9": {
+    "tr": "WebView2 indir (Microsoft)",
+    "en": "Download WebView2 (Microsoft)"
+  },
+  "m_3aaf7b407904": {
+    "tr": "Kaldır (veriler korunur)",
+    "en": "Uninstall (keep data)"
+  },
+  "m_149a5aa87558": {
+    "tr": "Bu sürümün PanoKöprü kurulumu, kendisine ait kısayollar ve güvenlik duvarı izinleri kaldırılacak. Verilerin, Windows ağ profili ve Tailscale korunur. iPhone sertifikasını telefondan ayrıca kaldırmalısın. Devam edilsin mi?",
+    "en": "This version's PanoKöprü installation, owned shortcuts and firewall permissions will be removed. Your data, Windows network profile and Tailscale are preserved. Remove the iPhone certificate separately on the phone. Continue?"
+  },
+  "m_005741d319f6": {
+    "tr": "Uygulama durduruluyor ve izinler temizleniyor. Windows yönetici onayını yanıtla; iptal edersen program korunur.",
+    "en": "Stopping the app and removing permissions. Respond to Windows administrator approval; cancelling keeps the program."
+  },
+  "m_c52405595f21": {
+    "tr": "Program, sahip olunan kısayollar ve güvenlik duvarı izinleri kaldırıldı. Kullanıcı verileri korundu. iPhone sertifika profilini Ayarlar'dan elle kaldır. Korunan veri varken temiz kurucu yeniden kurulum yapmaz.",
+    "en": "The program, owned shortcuts and firewall permissions were removed. User data was preserved. Manually remove the iPhone certificate profile in Settings. The clean installer will not reinstall while preserved data exists."
+  },
+  "m_6edaf65bbefd": {
+    "tr": "Kaldırma tamamlanamadı. UAC iptali, çalışan işlem, farklı/değişmiş sürüm veya dosya kilidi olabilir. Kullanıcı verileri silinmedi. Kısmi dosya silinmesinde bakım kilidi korunur; elle klasör silmeden inceleme iste.",
+    "en": "Removal could not finish. Possible causes include cancelled UAC, a running process, a different/modified version or a file lock. User data was not deleted. A maintenance lock is kept after partial file removal; request inspection before deleting folders manually."
+  },
+  "m_15f4aa4f0e59": {
+    "tr": "Microsoft'un resmî WebView2 indirme sayfası açılsın mı? Kurucu otomatik indirilmez veya çalıştırılmaz.",
+    "en": "Open Microsoft's official WebView2 download page? The installer will not be downloaded or run automatically."
+  },
+  "m_c67f4c0af20b": {
+    "tr": "İndirme sayfası açılamadı.",
+    "en": "The download page could not be opened."
+  },
+  "m_7d14510100cb": {
+    "tr": "İptal istendi. Devam eden dosya işlemi bitince, etkinleştirmeden önce durulacak. Etkinleşmiş kurulum silinmez.",
+    "en": "Cancellation requested. Setup stops before activation once the current file operation finishes. An activated installation is not deleted."
+  },
+  "m_7f2c56078f71": {
+    "tr": "Normal kullanıcı olarak aç. Yönetici olarak çalıştırma.\nKurulum uygulamayı otomatik başlatmaz.",
+    "en": "Open as a normal user, not as administrator.\nSetup does not start the app automatically."
+  },
+  "m_8009179566e2": {
+    "tr": "Kurulum sürüyor. Dosya işlemleri tamamlanana kadar bekle.",
+    "en": "Setup is in progress. Wait until file operations finish."
+  },
+  "m_b70647f03481": {
+    "tr": "Paket bütünlüğü doğrulanıyor…",
+    "en": "Verifying package integrity…"
+  },
+  "m_0c7bdf369713": {
+    "tr": "Windows, Node, WebView2, disk ve portlar kontrol ediliyor...",
+    "en": "Checking Windows, Node, WebView2, disk space and ports…"
+  },
+  "m_1738f7e414a4": {
+    "tr": "Program dosyaları ayrı hazırlama klasörüne kopyalanıyor…",
+    "en": "Copying program files to a separate staging folder…"
+  },
+  "m_181cdfc55d31": {
+    "tr": "Doğrulanmış program etkinleştiriliyor…",
+    "en": "Activating the verified program…"
+  },
+  "m_cf6af91e8578": {
+    "tr": "Seçilen kullanıcı kısayolları ekleniyor…",
+    "en": "Adding the selected user shortcuts…"
+  },
+  "m_f0837538fbdf": {
+    "tr": "Önce lisans ve önizleme sınırlarını okuyup onayla.",
+    "en": "Read and accept the license and preview limitations first."
+  },
+  "m_891f8765553d": {
+    "tr": "Kurulum tamamlandı. PanoKöprü'yü Başlat menüsünden açabilirsin. İlk açılışta ağ ve iPhone eşleştirmesi ayarlanır.",
+    "en": "Installation complete. Open PanoKöprü from the Start menu. Configure the network and iPhone pairing on first launch."
+  },
+  "m_d97e1a594e7d": {
+    "tr": "Program kuruldu; bazı kısayollar eklenemedi veya zaten vardı. Program klasöründeki PanoKopru.exe'yi açabilirsin. Kod: ",
+    "en": "The program was installed; some shortcuts could not be added or already existed. Open PanoKopru.exe in the program folder. Code: "
+  },
+  "m_baa4c9cf5bc6": {
+    "tr": "Mevcut kurulum veya veri bulundu. Üzerine yazılmadı. Güncelleme/geçiş aracı gerekiyor.",
+    "en": "Existing installation or data found. Nothing was overwritten. An update/migration tool is required."
+  },
+  "m_a3ecc4863158": {
+    "tr": "Kurucuyu kapatıp yönetici seçeneği olmadan, normal kullanıcı olarak aç.",
+    "en": "Close setup and reopen as a normal user without the administrator option."
+  },
+  "m_3798f765b24b": {
+    "tr": "Bu test hedefi Windows 10 22H2 / Windows 11 x64 içindir. ARM64 ve eski sistem kabul edilmedi.",
+    "en": "This test target supports Windows 10 22H2 / Windows 11 x64. ARM64 and older systems are not accepted."
+  },
+  "m_446adc268fad": {
+    "tr": "Yönlendirilmiş kullanıcı profili henüz desteklenmiyor. Kurulum değişiklik yapmadan durduruldu.",
+    "en": "Redirected user profiles are not supported yet. Setup stopped without making changes."
+  },
+  "m_b898af087f23": {
+    "tr": "WebView2 Runtime eksik veya eski. Resmî Microsoft sayfasından güncelleyip yeniden dene.",
+    "en": "WebView2 Runtime is missing or outdated. Update it from Microsoft's official page and retry."
+  },
+  "m_c244f5a3f564": {
+    "tr": "WebView2 kurulumu güvenle okunamadı. Kurulum durduruldu.",
+    "en": "WebView2 installation could not be inspected reliably. Setup stopped."
+  },
+  "m_668048cab6b6": {
+    "tr": "Diskte kurulum ve ilk veriler için yeterli boş alan yok.",
+    "en": "There is not enough disk space for installation and initial data."
+  },
+  "m_fa15863e3386": {
+    "tr": "Hedef klasöre yazma izni yok. Yönetici olarak zorlamak yerine kullanıcı profilini kontrol et.",
+    "en": "The target folder is not writable. Check the user profile instead of forcing installation as administrator."
+  },
+  "m_fac0edcb4eb4": {
+    "tr": "Gerekli port başka bir uygulama tarafından kullanılıyor. Hiçbir süreç sonlandırılmadı.",
+    "en": "A required port is used by another app. No process was terminated."
+  },
+  "m_4d74cec2df54": {
+    "tr": "Başka bir kurulum veya yarım kalmış kurulum kilidi var. Klasörleri elle silmeden önce inceleme gerekiyor.",
+    "en": "Another installation or an interrupted installation lock exists. Inspection is needed before manually deleting folders."
+  },
+  "m_f42037ea4e6e": {
+    "tr": "Kurulum etkinleştirilmeden iptal edildi. Varsa hazırlama klasörü inceleme için korundu; kişisel veri silinmedi.",
+    "en": "Setup was cancelled before activation. Any staging folder was kept for inspection; personal data was not deleted."
+  },
+  "m_a279e812ae0a": {
+    "tr": "Kurulum güvenle tamamlanamadı. Paket bozuk, mühendislik korumalı veya dosya işlemi başarısız olabilir. Varsa hazırlama klasörü inceleme için korundu; kişisel veri silinmedi.",
+    "en": "Setup could not finish safely. The package may be damaged, guarded for engineering use or affected by a file operation failure. Any staging folder was kept for inspection; personal data was not deleted."
+  },
+  "m_28ea1cba3a90": {
+    "tr": "Kurulum/kaldırma işlemi sürüyor veya yarım kalmış. Önce kurucuyu kontrol et.",
+    "en": "Installation/removal is in progress or was interrupted. Check setup first."
+  },
+  "m_eb5f8f5c39e8": {
+    "tr": "PanoKöprü kurulumu eksik, değişmiş veya bu kullanıcıya ait değil. Kurulum kılavuzunu kontrol et. Kaynak/aday paket doğrudan açılamaz.",
+    "en": "PanoKöprü installation is incomplete, modified or belongs to another user. Check the installation guide. A source/guarded candidate package cannot be opened directly."
+  },
+  "m_d609a2f4f913": {
+    "tr": "Bu kaynak sürümünde yalıtılmış Node geliştirme ortamını kullan.",
+    "en": "Use the isolated Node development harness for this source version."
+  },
+  "m_00b11404acbb": {
+    "tr": "Önce PanoKöprü'yü tamamen durdur.",
+    "en": "Stop PanoKöprü completely first."
+  },
+  "m_9fec844b476f": {
+    "tr": "Yalnız kapanmış bir sürece ait pano kilidi kontrol edilecek. Veriler silinmez, uygulama otomatik başlatılmaz. Devam edilsin mi?",
+    "en": "Only a clipboard lock belonging to a stopped process will be checked. No data is deleted and the app is not started automatically. Continue?"
+  },
+  "m_3295bd800112": {
+    "tr": "Kilit kontrolü bitmedi. Programı yeniden başlatma; tanılama kılavuzunu kontrol et.",
+    "en": "Lock inspection did not finish. Do not restart the program; check the troubleshooting guide."
+  },
+  "m_f650faeaf03f": {
+    "tr": "Kilit kontrolü tamamlandı. PanoKöprü'yü yeniden açabilirsin.",
+    "en": "Lock inspection complete. You can reopen PanoKöprü."
+  },
+  "m_6ad7a6080951": {
+    "tr": "Kilit güvenle kaldırılamadı. Kilidi elle silme; tanılama kılavuzunu kontrol et.",
+    "en": "The lock could not be removed safely. Do not delete it manually; check the troubleshooting guide."
+  },
+  "m_4cc2eabfef6f": {
+    "tr": "Kilit kontrolü tamamlanamadı.",
+    "en": "Lock inspection could not finish."
+  },
+  "m_e1974a81440d": {
+    "tr": "Microsoft Edge WebView2 Runtime bulunamadı. Microsoft'un resmî indirme sayfası açılsın mı? Kurulumdan sonra PanoKöprü'yü yeniden aç.",
+    "en": "Microsoft Edge WebView2 Runtime was not found. Open Microsoft's official download page? Reopen PanoKöprü after installation."
+  },
+  "m_69e1d2c1d5dc": {
+    "tr": "PanoKöprü köprüsü başlatılamadı. Port çakışması veya önceki kapanış kilidi olabilir. Tanılama/kurulum kılavuzunu kontrol et; veri klasörünü silme.",
+    "en": "The PanoKöprü bridge could not start. A port conflict or previous shutdown lock may be responsible. Check the troubleshooting/installation guide; do not delete the data folder."
+  },
+  "m_ed4706210b2f": {
+    "tr": "PanoKöprü - arka planda hazır",
+    "en": "PanoKöprü - ready in the background"
+  },
+  "m_4a3600a8e2fe": {
+    "tr": "PanoKöprü'yü aç",
+    "en": "Open PanoKöprü"
+  },
+  "m_7711377349cd": {
+    "tr": "Pencereyi kapat (köprü açık kalır)",
+    "en": "Close window (keep bridge running)"
+  },
+  "m_ed9ed03a2b96": {
+    "tr": "PanoKopru'yu tamamen durdur",
+    "en": "Stop PanoKöprü completely"
+  },
+  "m_9742c5012302": {
+    "tr": "Arayüz açılamadı. PanoKöprü'yü yeniden açmayı deneyin. Microsoft Edge WebView2 Runtime kurulu olmalıdır.\n\nAktarım servisi ayrı olarak çalışmaya devam eder.",
+    "en": "The interface could not open. Try reopening PanoKöprü. Microsoft Edge WebView2 Runtime must be installed.\n\nThe transfer service continues running separately."
+  }
+}

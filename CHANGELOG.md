@@ -1,5 +1,17 @@
 # Değişiklik kaydı
 
+## 1.2.0 — Türkçe / English — 2026-10-09
+
+- Gerçek kalıcı dil seçimi; merkezi TR/EN UI/hata/native katalogları. Masaüstü,
+  kurulum/kaldırma/tepsi/launcher, sertifika/eşleştirme ve telefon rehberleri.
+- Dile uygun tarih/sayı, arama ve ad sıralama; erişilebilirlik/tooltip/alt metinleri.
+  İngilizce uzun metinler için responsive/native satır kaydırma.
+- Ayrı `ui-settings.json`; mevcut kullanıcıda Türkçe, yeni kurulumda sistem dili.
+  Dil kaydı geçmişi budamaz; veri şeması, anahtar/sertifika/ağ/içerik değişmez.
+- Eski kişisel düzene hash-pinned dil yaması; otomatik güncelleme/veri göçü değildir.
+  Kontrollü dağıtım/geri alma sonucu ve kaynak commit'i teslim kaydında tutulur.
+- TR/EN tarayıcı ve native sentetik kontroller; gerçek cihaz kabulü sayılmaz.
+
 ## Tek İngilizce README — 2026-10-09
 
 - Gereksiz README.en.md yönlendirme dosyası kaldırıldı; İngilizce belge README.md.

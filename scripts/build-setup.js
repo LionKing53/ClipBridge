@@ -22,12 +22,13 @@ const toolchain = JSON.parse(await readFile(path.join(root, 'toolchain-lock.json
 const policy = path.join(work, 'setup-policy.json'), exe = path.join(work, 'PanoKopruSetup.exe');
 await writeFile(policy, JSON.stringify({ manifestHash: evidence.hash, nodeVersion: toolchain.artifacts.find(item => item.id === 'node').version,
   minimumWebView2Version: '120.0.0.0' }), { flag: 'wx' });
-const sources = ['launcher/Setup.cs', 'launcher/FreshInstall.cs', 'launcher/RemoveInstall.cs', 'launcher/WindowsFreshInstall.cs', 'launcher/InstalledLaunch.cs', 'scripts/InstallProbe.cs'];
+const sources = ['launcher/Setup.cs', 'launcher/Language.cs', 'launcher/FreshInstall.cs', 'launcher/RemoveInstall.cs', 'launcher/WindowsFreshInstall.cs', 'launcher/InstalledLaunch.cs', 'scripts/InstallProbe.cs'];
 await run(path.join(process.env.SystemRoot, 'Microsoft.NET/Framework64/v4.0.30319/csc.exe'), ['/nologo', '/target:winexe', '/platform:x64',
   '/win32manifest:' + path.join(root, 'launcher/app.manifest'), '/reference:System.Windows.Forms.dll', '/reference:System.Drawing.dll', '/reference:System.Web.Extensions.dll',
+  ...['messages','native','errors'].map((name,i) => '/resource:' + path.join(root,'locales',name+'.json') + ',' + ['Messages','NativeMessages','ErrorMessages'][i]),
   '/resource:' + policy + ',SetupPolicy', '/out:' + exe, ...sources.map(name => path.join(root, name))], { windowsHide: true, timeout: 60000 });
 const hashes = {};
-for (const name of sources) hashes[name] = createHash('sha256').update(await readFile(path.join(root, name))).digest('hex');
+for (const name of [...sources, ...['messages','native','errors'].map(name => 'locales/' + name + '.json')]) hashes[name] = createHash('sha256').update(await readFile(path.join(root, name))).digest('hex');
 await writeFile(path.join(work, 'setup-build-evidence.json'), JSON.stringify({ format: 1, purpose: evidence.purpose, version: evidence.version, commit: source,
   payloadManifestHash: evidence.hash, executableSHA256: createHash('sha256').update(await readFile(exe)).digest('hex'), sourceHashes: hashes,
   signed: false, launched: false, installed: false, approvedForPublication: false }, null, 2), { flag: 'wx' });

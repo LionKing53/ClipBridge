@@ -1,6 +1,6 @@
 {
   "name": "panokopru",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "private": true,
   "license": "GPL-3.0-or-later",
   "description": "PanoKopru - Shortcut-triggered iPhone and Windows clipboard bridge (development baseline)",

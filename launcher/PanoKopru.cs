@@ -11,9 +11,9 @@ using System.Windows.Forms;
 [assembly: AssemblyCompany("PanoK\u00f6pr\u00fc")]
 [assembly: AssemblyProduct("PanoK\u00f6pr\u00fc")]
 [assembly: AssemblyCopyright("GPL-3.0-or-later; see LICENSE")]
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
-[assembly: AssemblyInformationalVersion("1.1.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyInformationalVersion("1.2.0")]
 
 internal static class Program
 {
@@ -33,16 +33,18 @@ internal static class Program
     [STAThread]
     private static void Main(string[] args)
     {
+        Language.Initialize(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PanoKopru"), File.Exists(Path.Combine(InstallRoot, "install-receipt.json")));
         if (Array.IndexOf(args, "--stop") < 0 && Directory.Exists(Path.Combine(Path.GetDirectoryName(InstallRoot.TrimEnd('\\')), ".PanoKopru-install-lock")))
-        { Environment.ExitCode = 8; MessageBox.Show("Kurulum/kaldirma islemi suruyor veya yarim kalmis. Once kurucuyu kontrol et."); return; }
+        { Environment.ExitCode = 8; MessageBox.Show(Language.Text("m_28ea1cba3a90")); return; }
         try { InstalledLaunch.ConfigureEnvironment(InstallRoot); Context = RuntimeContext.Load(AppRoot); }
-        catch { Environment.ExitCode = 4; MessageBox.Show("PanoKopru kurulumu eksik, degismis veya bu kullaniciya ait degil. Kurulum kilavuzunu kontrol et. Kaynak/aday paket dogrudan acilamaz."); return; }
+        catch { Environment.ExitCode = 4; MessageBox.Show(Language.Text("m_eb5f8f5c39e8")); return; }
+        Language.Initialize(Context.DataRoot, File.Exists(Path.Combine(Context.DataRoot, "config.json")));
         // Native development startup remains blocked until clean-machine acceptance.
-        if (Context.Mode != "production") { MessageBox.Show("Use the isolated Node development harness for this source version."); return; }
+        if (Context.Mode != "production") { MessageBox.Show(Language.Text("m_d609a2f4f913")); return; }
         if (Array.IndexOf(args, "--recover-lock") >= 0)
         {
-            if (MutexIsHeld("Service") || MutexIsHeld("Desktop") || ServiceIsRunning()) { Environment.ExitCode = 7; MessageBox.Show("Once PanoKopru'yu tamamen durdur."); return; }
-            if (MessageBox.Show("Yalniz kapanmis bir surece ait pano kilidi kontrol edilecek. Veriler silinmez, uygulama otomatik baslatilmaz. Devam edilsin mi?", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
+            if (MutexIsHeld("Service") || MutexIsHeld("Desktop") || ServiceIsRunning()) { Environment.ExitCode = 7; MessageBox.Show(Language.Text("m_00b11404acbb")); return; }
+            if (MessageBox.Show(Language.Text("m_9fec844b476f"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes) return;
             try
             {
                 var recovery = NodeStartInfo(Path.Combine("src", "recover-instance.js"));
@@ -50,12 +52,12 @@ internal static class Program
                 using (var process = Process.Start(recovery))
                 {
                     process.StandardInput.Close();
-                    if (!process.WaitForExit(10000)) { Environment.ExitCode = 7; MessageBox.Show("Kilit kontrolu bitmedi. Programi yeniden baslatma; tanilama kilavuzunu kontrol et."); return; }
+                    if (!process.WaitForExit(10000)) { Environment.ExitCode = 7; MessageBox.Show(Language.Text("m_3295bd800112")); return; }
                     Environment.ExitCode = process.ExitCode;
-                    MessageBox.Show(process.ExitCode == 0 ? "Kilit kontrolu tamamlandi. PanoKopru'yu yeniden acabilirsin." : "Kilit guvenle kaldirilamadi. Kilidi elle silme; tanilama kilavuzunu kontrol et.");
+                    MessageBox.Show(process.ExitCode == 0 ? Language.Text("m_f650faeaf03f") : Language.Text("m_6ad7a6080951"));
                 }
             }
-            catch { Environment.ExitCode = 7; MessageBox.Show("Kilit kontrolu tamamlanamadi."); }
+            catch { Environment.ExitCode = 7; MessageBox.Show(Language.Text("m_4cc2eabfef6f")); }
             return;
         }
         if (Array.IndexOf(args, "--stop") >= 0)
@@ -94,7 +96,7 @@ internal static class Program
         catch
         {
             Environment.ExitCode = 5;
-            if (MessageBox.Show("Microsoft Edge WebView2 Runtime bulunamadi. Microsoft'un resmi indirme sayfasi acilsin mi? Kurulumdan sonra PanoKopru'yu yeniden ac.", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+            if (MessageBox.Show(Language.Text("m_e1974a81440d"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
             {
                 try { Process.Start(new ProcessStartInfo { FileName = "https://developer.microsoft.com/microsoft-edge/webview2/", UseShellExecute = true }); } catch { }
             }
@@ -115,7 +117,7 @@ internal static class Program
             if (!ServiceIsRunning())
             {
                 Environment.ExitCode = 6;
-                MessageBox.Show("PanoKopru koprusu baslatilamadi. Port cakismasi veya onceki kapanis kilidi olabilir. Tanilama/kurulum kilavuzunu kontrol et; veri klasorunu silme.");
+                MessageBox.Show(Language.Text("m_69e1d2c1d5dc"));
                 OpenWindowEvent.Dispose(); StopWindowEvent.Dispose(); return;
             }
             Application.EnableVisualStyles();
@@ -226,6 +228,7 @@ internal static class Program
         startInfo.EnvironmentVariables.Remove("NODE_PATH");
         startInfo.EnvironmentVariables.Remove("NODE_TLS_REJECT_UNAUTHORIZED");
         startInfo.EnvironmentVariables["PANOKOPRU_SUPERVISED"] = "1";
+        startInfo.EnvironmentVariables["PANOKOPRU_SYSTEM_LANGUAGE"] = System.Globalization.CultureInfo.CurrentUICulture.Name;
         return startInfo;
     }
 }

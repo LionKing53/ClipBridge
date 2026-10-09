@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
 
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
-[assembly: AssemblyInformationalVersion("1.1.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyInformationalVersion("1.2.0")]
 
 // Standalone first-install UI, built beside a pinned payload. Never executes a
 // downloaded Node or modifies a current installation. Source/candidate guards
@@ -21,68 +21,83 @@ internal static class SetupProgram
     static void Main()
     {
         Application.EnableVisualStyles(); Application.SetCompatibleTextRenderingDefault(false);
+        string local = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        Language.Initialize(Path.Combine(local, "PanoKopru"), Directory.Exists(Path.Combine(local,"PanoKopru")) || Directory.Exists(Path.Combine(local,"Programs","PanoKopru")));
         Application.Run(new SetupWindow());
     }
 }
 internal sealed class SetupWindow : Form
 {
     readonly Label status = new Label { AutoSize = false, Height = 110, Dock = DockStyle.Top };
-    readonly CheckBox desktop = new CheckBox { Text = "Masaustune kisayol ekle", Checked = true, AutoSize = true };
-    readonly CheckBox startup = new CheckBox { Text = "Windows oturumu acilinca arka planda baslat", Checked = false, AutoSize = true };
-    readonly CheckBox consent = new CheckBox { Text = "Onizleme sinirlarini ve GPL-3.0-or-later lisansini okudum", Checked = false, AutoSize = true };
-    readonly Button install = new Button { Text = "Ilk kurulumu yap", AutoSize = true };
-    readonly Button cancel = new Button { Text = "Iptal iste", AutoSize = true, Enabled = false };
+    readonly CheckBox desktop = new CheckBox { Text = Language.Text("m_3f448c896b0a"), Checked = true, AutoSize = true };
+    readonly CheckBox startup = new CheckBox { Text = Language.Text("m_ac8c01b5417a"), Checked = false, AutoSize = true };
+    readonly CheckBox consent = new CheckBox { Text = Language.Text("m_02d39a7ab3c0"), Checked = false, AutoSize = true };
+    readonly Button install = new Button { Text = Language.Text("m_3f60a68a1b39"), AutoSize = true };
+    readonly Button cancel = new Button { Text = Language.Text("m_ea40e51cdfe7"), AutoSize = true, Enabled = false };
     CancellationTokenSource cancellation;
     bool busy, completed;
+    readonly ComboBox language = new ComboBox { DropDownStyle = ComboBoxStyle.DropDownList, Width = 180, AccessibleName = "Türkçe / English" };
     internal SetupWindow()
     {
-        Text = "PanoKopru 1.1.0 - Kurulum / Test"; Width = 760; Height = 620;
+        Text = Language.Text("m_1c84efd831cc"); Width = 760; Height = 620;
         MinimumSize = new Size(600, 460); StartPosition = FormStartPosition.CenterScreen;
         Font = new Font("Segoe UI", 10); BackColor = Color.FromArgb(244, 246, 243);
         var layout = new FlowLayoutPanel { Dock = DockStyle.Fill, FlowDirection = FlowDirection.TopDown, WrapContents = false, Padding = new Padding(24), AutoScroll = true };
+        language.Items.AddRange(new object[] { "Türkçe", "English" });
+        language.SelectedIndex = Language.Current == "tr" ? 0 : 1;
+        language.SelectedIndexChanged += (s,e) => { if (busy) return; Language.Current = language.SelectedIndex == 0 ? "tr" : "en"; Language.Refresh(this); };
+        layout.Controls.Add(language);
         layout.Controls.Add(new Label { Text = "PanoKopru", Font = new Font("Segoe UI", 21, FontStyle.Bold), AutoSize = true });
-        layout.Controls.Add(new Label { Text = "Yalniz temiz Windows x64 kullanici kurulumu.\nVar olan uygulama veya veri klasorunun uzerine yazilmaz.\nProgram: %LOCALAPPDATA%\\Programs\\PanoKopru\nVeri: %LOCALAPPDATA%\\PanoKopru (ilk acilista olusturulur).\nBu adim iPhone sertifikasi veya ag izni eklemez.", AutoSize = true });
+        layout.Controls.Add(new Label { Text = Language.Text("m_64576cfe72e2"), AutoSize = true });
         layout.Controls.Add(desktop); layout.Controls.Add(startup); layout.Controls.Add(consent);
         var buttons = new FlowLayoutPanel { AutoSize = true };
-        var license = new Button { Text = "Lisans ve sinirlar", AutoSize = true };
-        license.Click += (s,e) => MessageBox.Show("Proje lisansi GPL-3.0-or-later; tam metin payload\\app\\LICENSE altindadir.\n\nBu kurucu yalniz ilk kurulum icindir. Bu paket ozel kabul testi icindir; genel yayin onayi yoktur. Verileri koruyan kaldirma var; otomatik guncelleme, rollback ve eski veri gocu yoktur. Kurucu imzasizdir; SHA-256 ve kaynagini dogrula. Rehber: payload/source/docs/QUICKSTART.md", "PanoKopru");
-        var runtime = new Button { Text = "WebView2 indir (Microsoft)", AutoSize = true };
-        var remove = new Button { Text = "Kaldir (veriler korunur)", AutoSize = true };
+        var license = new Button { Text = Language.Text("m_1e2298cfc22b"), AutoSize = true };
+        license.Click += (s,e) => MessageBox.Show(Language.Text("m_ec20bf3aff0c"), "PanoKopru");
+        var runtime = new Button { Text = Language.Text("m_6a1aa69d5ce9"), AutoSize = true };
+        var remove = new Button { Text = Language.Text("m_3aaf7b407904"), AutoSize = true };
         remove.Click += async (s,e) => {
-            if (busy || MessageBox.Show("Bu surumun PanoKopru kurulumu, kendisine ait kisayollar ve firewall izinleri kaldirilacak. Verilerin, Windows ag profili ve Tailscale korunur. iPhone sertifikasini telefondan ayrica kaldirmalisin. Devam edilsin mi?", "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
+            if (busy || MessageBox.Show(Language.Text("m_149a5aa87558"), "PanoKopru", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) != DialogResult.Yes) return;
             busy = true; install.Enabled = remove.Enabled = false;
-            status.Text = "Uygulama durduruluyor ve izinler temizleniyor. Windows yonetici onayini yanitla; iptal edersen program korunur.";
+            status.Text = Language.Text("m_005741d319f6");
             try {
                 Dictionary<string, string> policy;
                 using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SetupPolicy"))
                 using (var reader = new StreamReader(stream)) policy = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(reader.ReadToEnd());
                 await Task.Run(() => RemoveInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]), policy["manifestHash"]));
-                completed = true; status.Text = "Program, sahip olunan kisayollar ve firewall izinleri kaldirildi. Kullanici verileri korundu. iPhone sertifika profilini Ayarlar'dan elle kaldir. Korunan veri varken temiz kurucu yeniden kurulum yapmaz.";
-            } catch { status.Text = "Kaldirma tamamlanamadi. UAC iptali, calisan islem, farkli/degismis surum veya dosya kilidi olabilir. Kullanici verileri silinmedi. Kismi dosya silinmesinde bakim kilidi korunur; elle klasor silmeden inceleme iste."; }
+                completed = true; status.Text = Language.Text("m_c52405595f21");
+            } catch { status.Text = Language.Text("m_6edaf65bbefd"); }
             finally { busy = false; remove.Enabled = true; install.Enabled = !completed; }
         };
         runtime.Click += (s,e) => {
-            if (MessageBox.Show("Microsoft'un resmi WebView2 indirme sayfasi acilsin mi? Kurucu otomatik indirilmez veya calistirilmaz.", "WebView2", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
+            if (MessageBox.Show(Language.Text("m_15f4aa4f0e59"), "WebView2", MessageBoxButtons.YesNo) != DialogResult.Yes) return;
             try { System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo { FileName = "https://developer.microsoft.com/microsoft-edge/webview2/", UseShellExecute = true }); }
-            catch { status.Text = "Indirme sayfasi acilamadi."; }
+            catch { status.Text = Language.Text("m_c67f4c0af20b"); }
         };
-        cancel.Click += (s,e) => { if (busy && cancellation != null) { cancellation.Cancel(); cancel.Enabled = false; status.Text = "Iptal istendi. Devam eden dosya islemi bitince, etkinlestirmeden once durulacak. Etkinlesmis kurulum silinmez."; } };
+        cancel.Click += (s,e) => { if (busy && cancellation != null) { cancellation.Cancel(); cancel.Enabled = false; status.Text = Language.Text("m_7d14510100cb"); } };
         buttons.Controls.Add(install); buttons.Controls.Add(cancel); buttons.Controls.Add(license); buttons.Controls.Add(runtime); buttons.Controls.Add(remove); layout.Controls.Add(buttons);
-        status.Width = 560; status.Text = "Normal kullanici olarak ac. Yonetici olarak calistirma.\nKurulum uygulamayi otomatik baslatmaz."; layout.Controls.Add(status); Controls.Add(layout);
+        status.Width = 560; status.Text = Language.Text("m_7f2c56078f71"); layout.Controls.Add(status); Controls.Add(layout);
+        layout.SizeChanged += (s,e) => {
+            int width = Math.Max(280, layout.ClientSize.Width - 64);
+            foreach (Control child in layout.Controls) {
+                child.MaximumSize = new Size(width, 0);
+                if (child == status) child.Width = width;
+            }
+            buttons.MaximumSize = new Size(width, 0); buttons.WrapContents = true;
+        };
         install.Click += async (s,e) => await Install();
-        FormClosing += (s,e) => { if (busy) { e.Cancel = true; status.Text = "Kurulum suruyor. Dosya islemleri tamamlanana kadar bekle."; } };
+        FormClosing += (s,e) => { if (busy) { e.Cancel = true; status.Text = Language.Text("m_8009179566e2"); } };
     }
     void Progress(string step)
     {
-        string text = new Dictionary<string, string> { { "verify", "Paket butunlugu dogrulaniyor..." }, { "prerequisites", "Windows, Node, WebView2, disk ve portlar kontrol ediliyor..." },
-            { "copy", "Program dosyalari ayri hazirlama klasorune kopyalaniyor..." }, { "activate", "Dogrulanmis program etkinlestiriliyor..." }, { "shortcuts", "Secilen kullanici kisayollari ekleniyor..." } }[step];
+        string text = new Dictionary<string, string> { { "verify", Language.Text("m_b70647f03481") }, { "prerequisites", Language.Text("m_0c7bdf369713") },
+            { "copy", Language.Text("m_1738f7e414a4") }, { "activate", Language.Text("m_181cdfc55d31") }, { "shortcuts", Language.Text("m_cf6af91e8578") } }[step];
         BeginInvoke(new Action(() => status.Text = text));
     }
     async Task Install()
     {
         if (busy || completed) return;
-        if (!consent.Checked) { status.Text = "Once lisans ve onizleme sinirlarini okuyup onayla."; return; }
-        busy = true; install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = false;
+        if (!consent.Checked) { status.Text = Language.Text("m_f0837538fbdf"); return; }
+        busy = true; language.Enabled = false; install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = false;
         cancellation = new CancellationTokenSource(); cancel.Enabled = true;
         try
         {
@@ -94,27 +109,28 @@ internal sealed class SetupWindow : Form
             var result = await Task.Run(() => FreshInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]),
                 payload, policy["manifestHash"], wantDesktop, wantStartup, Progress, cancellation.Token));
             completed = true;
-            status.Text = result.Warnings.Length == 0 ? "Kurulum tamamlandi. PanoKopru'yu Baslat menusunden acabilirsin. Ilk acilista ag ve iPhone eslestirmesi ayarlanir." :
-                "Program kuruldu; bazi kisayollar eklenemedi veya zaten vardi. Program klasorundeki PanoKopru.exe'yi acabilirsin. Kod: " + String.Join(", ", result.Warnings);
+            Language.SavePreference(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "PanoKopru"));
+            status.Text = result.Warnings.Length == 0 ? Language.Text("m_891f8765553d") :
+                Language.Text("m_d97e1a594e7d") + String.Join(", ", result.Warnings);
         }
         catch (Exception error)
         {
             // Show only reviewed codes, never native messages or private paths.
             var messages = new Dictionary<string, string> {
-                { "ERR_INSTALL_EXISTING_TARGET", "Mevcut kurulum veya veri bulundu. Uzerine yazilmadi. Guncelleme/gecis araci gerekiyor." },
-                { "ERR_INSTALL_RUN_AS_NORMAL_USER", "Kurucuyu kapatip yonetici secenegi olmadan, normal kullanici olarak ac." },
-                { "ERR_INSTALL_PLATFORM", "Bu test hedefi Windows 10 22H2 / Windows 11 x64 icindir. ARM64 ve eski sistem kabul edilmedi." },
-                { "ERR_INSTALL_PROFILE_REDIRECTED", "Yonlendirilmis kullanici profili henuz desteklenmiyor. Kurulum degisiklik yapmadan durduruldu." },
-                { "ERR_INSTALL_WEBVIEW_REQUIRED", "WebView2 Runtime eksik veya eski. Resmi Microsoft sayfasindan guncelleyip yeniden dene." },
-                { "ERR_INSTALL_WEBVIEW_UNKNOWN", "WebView2 kurulumu guvenle okunamadi. Kurulum durduruldu." },
-                { "ERR_INSTALL_DISK_SPACE", "Diskte kurulum ve ilk veriler icin yeterli bos alan yok." },
-                { "ERR_INSTALL_WRITE_ACCESS", "Hedef klasore yazma izni yok. Yonetici olarak zorlamak yerine kullanici profilini kontrol et." },
-                { "ERR_INSTALL_PORT_IN_USE", "Gerekli port baska bir uygulama tarafindan kullaniliyor. Hicbir surec sonlandirilmadi." },
-                { "ERR_INSTALL_EXCLUSIVE_DIRECTORY", "Baska bir kurulum veya yarim kalmis kurulum kilidi var. Klasorleri elle silmeden once inceleme gerekiyor." } };
+                { "ERR_INSTALL_EXISTING_TARGET", Language.Text("m_baa4c9cf5bc6") },
+                { "ERR_INSTALL_RUN_AS_NORMAL_USER", Language.Text("m_a3ecc4863158") },
+                { "ERR_INSTALL_PLATFORM", Language.Text("m_3798f765b24b") },
+                { "ERR_INSTALL_PROFILE_REDIRECTED", Language.Text("m_446adc268fad") },
+                { "ERR_INSTALL_WEBVIEW_REQUIRED", Language.Text("m_b898af087f23") },
+                { "ERR_INSTALL_WEBVIEW_UNKNOWN", Language.Text("m_c244f5a3f564") },
+                { "ERR_INSTALL_DISK_SPACE", Language.Text("m_668048cab6b6") },
+                { "ERR_INSTALL_WRITE_ACCESS", Language.Text("m_fa15863e3386") },
+                { "ERR_INSTALL_PORT_IN_USE", Language.Text("m_fac0edcb4eb4") },
+                { "ERR_INSTALL_EXCLUSIVE_DIRECTORY", Language.Text("m_4d74cec2df54") } };
             string message;
-            status.Text = error is OperationCanceledException ? "Kurulum etkinlestirilmeden iptal edildi. Varsa hazirlama klasoru inceleme icin korundu; kisisel veri silinmedi." :
-                messages.TryGetValue(error.Message, out message) ? message : "Kurulum guvenle tamamlanamadi. Paket bozuk, muhendislik korumali veya dosya islemi basarisiz olabilir. Varsa hazirlama klasoru inceleme icin korundu; kisisel veri silinmedi.";
+            status.Text = error is OperationCanceledException ? Language.Text("m_f42037ea4e6e") :
+                messages.TryGetValue(error.Message, out message) ? message : Language.Text("m_a279e812ae0a");
         }
-        finally { busy = false; cancel.Enabled = false; cancellation.Dispose(); cancellation = null; if (!completed) install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = true; }
+        finally { busy = false; language.Enabled = true; cancel.Enabled = false; cancellation.Dispose(); cancellation = null; if (!completed) install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = true; }
     }
 }

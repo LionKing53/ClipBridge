@@ -32,12 +32,12 @@ internal sealed class DesktopWindow : Form
         browser.DefaultBackgroundColor = BackColor;
         Controls.Add(browser);
         tray.Icon = Icon;
-        tray.Text = "PanoK\u00f6pr\u00fc - arka planda haz\u0131r";
+        tray.Text = Language.Text("m_ed4706210b2f");
         tray.Visible = true;
         var menu = new ContextMenuStrip();
-        menu.Items.Add("PanoK\u00f6pr\u00fc'y\u00fc a\u00e7", null, (s,e) => Reveal());
-        menu.Items.Add("Pencereyi kapat (k\u00f6pr\u00fc a\u00e7\u0131k kal\u0131r)", null, (s,e) => { exiting = true; Close(); });
-        menu.Items.Add("PanoKopru'yu tamamen durdur", null, (s,e) => Program.RequestShutdown());
+        menu.Items.Add(Language.Text("m_4a3600a8e2fe"), null, (s,e) => Reveal());
+        menu.Items.Add(Language.Text("m_7711377349cd"), null, (s,e) => { exiting = true; Close(); });
+        menu.Items.Add(Language.Text("m_ed9ed03a2b96"), null, (s,e) => Program.RequestShutdown());
         tray.ContextMenuStrip = menu;
         tray.DoubleClick += (s,e) => Reveal();
         FormClosing += (s,e) => { if (!exiting && e.CloseReason == CloseReason.UserClosing) { e.Cancel = true; Hide(); } };
@@ -74,6 +74,13 @@ internal sealed class DesktopWindow : Form
                 if (e.Source != Program.Context.DesktopOrigin + "/") return;
                 try {
                     string message = e.TryGetWebMessageAsString();
+                    if (message == "language:tr" || message == "language:en") {
+                        Language.Current = message.Substring(9);
+                        tray.Text = Language.Text("m_ed4706210b2f");
+                        string[] keys = { "m_4a3600a8e2fe", "m_7711377349cd", "m_ed9ed03a2b96" };
+                        for (int i = 0; i < keys.Length; i++) tray.ContextMenuStrip.Items[i].Text = Language.Text(keys[i]);
+                        return;
+                    }
                     if (message != "theme:dark" && message != "theme:light") return;
                     int dark = message == "theme:dark" ? 1 : 0;
                     BackColor = dark == 1 ? Color.FromArgb(16, 19, 23) : Color.FromArgb(244, 246, 243);
@@ -96,7 +103,7 @@ internal sealed class DesktopWindow : Form
         }
         catch (Exception)
         {
-            MessageBox.Show("Aray\u00fcz a\u00e7\u0131lamad\u0131. PanoK\u00f6pr\u00fc'y\u00fc yeniden a\u00e7may\u0131 deneyin. Microsoft Edge WebView2 Runtime kurulu olmal\u0131d\u0131r.\n\nAktar\u0131m servisi ayr\u0131 olarak \u00e7al\u0131\u015fmaya devam eder.", "PanoK\u00f6pr\u00fc", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(Language.Text("m_9742c5012302"), "PanoK\u00f6pr\u00fc", MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
     }
 }

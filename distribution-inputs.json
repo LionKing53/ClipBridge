@@ -2,6 +2,7 @@
   "format": 1,
   "purpose": "Guarded engineering candidate, not an approved installer",
   "app": [
+    "locales/messages.json", "locales/native.json", "locales/errors.json", "src/i18n.js", "desktop/i18n.js",
     "SOURCE-CHECKOUT", "package.json", "package-lock.json", "LICENSE",
     "assets/PanoKopru.svg",
     "desktop/app.js", "desktop/index.html", "desktop/style.css",

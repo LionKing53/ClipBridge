@@ -1,5 +1,27 @@
 # PanoKopru — proje durumu
 
+## Gerçek TR/EN yerelleştirme 1.2.0 — 2026-10-09
+
+- Merkezi `locales` katalogları; masaüstü, ilk kurulum, sertifika/eşleştirme ve
+  telefon rehberleri, native kurulum/kaldırma/launcher/tepsi metinleri çevrildi.
+  Ayarlarda kalıcı dil seçimi; eski kullanıcı Türkçe, yeni kurulum sistem dili.
+  Tarih/sayı, arama ve ad sıralama seçilen dile uyar. Protokol/kod/içerik sabit.
+- Edge TR/EN UI ve 880 px taşma testleri geçti; İngilizce kurulum/ayar görselleri
+  yalnız sentetik ve ignored build altında incelendi. Native TR/EN form renderi
+  ve kalıcı ayar probe'u geçti; hiçbir kurulum/OS adaptörü çalıştırılmadı.
+- Tam test koşusu 151/151 geçti; kaynak kapısı 170 metin + 4 onaylı belge PNG'si /
+  121 kilit girdisi geçti. Dil/ad sıralama ve Türkçe büyük harf araması Edge'de
+  doğrulandı. Native launcher derlemesi ve legacy yamanın sentetik HTTP
+  dil/içerik/yetkilendirme/yerel rehber testi geçti. `git diff --check` temiz.
+- Kişisel eski kurulum için hash-pinned dil uyumluluk adaptörü derlendi. Eski
+  veri düzeni/aktarım/ağ çekirdeği korunur; yeni sürümün yeniden kurulum/göçü yok.
+  Kullanıcı bu dil güncellemesinin yedek sonrası uygulanmasına açıkça izin verdi.
+  Özel yedek/doğrulama/dağıtım sonucu ayrıca teslim kaydında belirtilecek.
+- Önceki 1.1.0 EXE paketi güncellenmedi. Temiz Windows/iPhone kabulü ve libvips
+  gerçek yeniden derleme doğrulaması hâlâ açık. GitHub işlemi yapılmaz.
+  Belge görselleri/README yayın sohbetinde yenilenecek. Kaynak commit'i bu
+  uygulama değişikliklerinin yerel commit'inden sonra teslim kaydına yazılır.
+
 ## README sadeleştirme — 2026-10-09
 
 - Kullanıcı isteğiyle README.en.md kaldırıldı; İngilizce ana belge README.md,

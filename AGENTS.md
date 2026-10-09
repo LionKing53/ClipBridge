@@ -105,6 +105,19 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Localization and personal language patch — owner decision 2026-10-09
+
+The owner explicitly authorized complete TR/EN localization and, after isolated
+tests, a narrow language update of their existing personal installation. Verify
+a private backup and retain code rollback before replacement. Do not reinstall,
+reset or migrate its legacy data; preserve identity, certificates, networks,
+history, favorites, inbox and WebView/theme. Read only reviewed program sources
+for the compatibility patch; never import personal state into the repository.
+The language patch is not a production updater or clean-device acceptance.
+Local preference/native UI checks may run on this authorized installation; do
+not exercise the real clipboard, firewall or certificates without separate scope.
+No GitHub operations. Existing publication/binary acceptance gates remain.
+
 ### English documentation and screenshots — owner decision 2026-10-09
 
 The publication conversation may make README and setup documentation English-first,

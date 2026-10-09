@@ -9,6 +9,7 @@ import { MAX_FILE_BYTES, MAX_TEXT_BYTES, UploadStorage, readMultipartUpload, rea
 import { publicFailure } from './errors.js';
 import { disposeTransfer } from './owned-outbox.js';
 import { manageRequests } from './managed-http.js';
+import { translate } from './i18n.js';
 
 export const MAX_BODY_BYTES = MAX_FILE_BYTES;
 
@@ -75,12 +76,13 @@ async function sendClipboardItem(response, item, onSent) {
   await onSent(item).catch(() => {});
 }
 
-function setupPage(response) {
+function setupPage(response, language) {
+  const t = key => translate(key, language);
   const html = `<!doctype html>
-<html lang="tr">
+<html lang="${language}">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Pano Köprüsü Eşleştirme</title>
+<title>${t('m_4d979b193d8e')}</title>
 <style>
   :root { color-scheme: light dark; font-family: system-ui, sans-serif; }
   body { margin: 0 auto; max-width: 42rem; padding: 2rem 1.25rem; line-height: 1.5; }
@@ -89,10 +91,10 @@ function setupPage(response) {
   button { font: inherit; padding: .7rem 1rem; border-radius: 10px; border: 1px solid #8888; }
   .ok { color: #159447; }
 </style>
-<h1>Pano Köprüsü</h1>
-<p>Bu sayfa iPhone Kestirmesini Windows bilgisayarınızla eşleştirir.</p>
-<div class="card"><strong>API adresi</strong><p><code id="endpoint"></code></p><button data-copy="endpoint">Adresi kopyala</button></div>
-<div class="card"><strong>Authorization başlığı</strong><p><code id="authorization"></code></p><button data-copy="authorization">Yetkilendirmeyi kopyala</button></div>
+<h1>${t('m_58e60cedcfe8')}</h1>
+<p>${t('m_b4880350519c')}</p>
+<div class="card"><strong>${t('m_dce57d76b5e7')}</strong><p><code id="endpoint"></code></p><button data-copy="endpoint">${t('m_eaaeb026a8ef')}</button></div>
+<div class="card"><strong>${t('m_cc255866a656')}</strong><p><code id="authorization"></code></p><button data-copy="authorization">${t('m_ab2a77840124')}</button></div>
 <p id="status"></p>
 <script>
   const params = new URLSearchParams(location.hash.slice(1));
@@ -100,12 +102,12 @@ function setupPage(response) {
   history.replaceState(null, "", location.pathname);
   const endpoint = location.origin + "/api/v1/clipboard";
   document.querySelector("#endpoint").textContent = endpoint;
-  document.querySelector("#authorization").textContent = token ? "Bearer " + token : "QR kodda anahtar bulunamadı";
+  document.querySelector("#authorization").textContent = token ? "Bearer " + token : ${JSON.stringify(t('m_c7151af3977d'))};
   document.querySelectorAll("button").forEach((button) => button.addEventListener("click", async () => {
     const value = document.querySelector("#" + button.dataset.copy).textContent;
     await navigator.clipboard.writeText(value);
     const status = document.querySelector("#status");
-    status.textContent = "Kopyalandı.";
+    status.textContent = ${JSON.stringify(t('m_bfd4ea44793b'))};
     status.className = "ok";
   }));
 </script>
@@ -206,6 +208,7 @@ async function readClipboardItem(request, storage) {
 
 export function createServer({
   token,
+  getLanguage = () => 'tr',
   setClipboard,
   getClipboard = async () => "",
   setClipboardItem,
@@ -239,7 +242,7 @@ export function createServer({
     }
 
     if (request.method === "GET" && url.pathname === "/setup") {
-      setupPage(response);
+      setupPage(response, getLanguage());
       return;
     }
 
@@ -255,7 +258,7 @@ export function createServer({
         text(response, 200, clipboardKind(item));
       } catch (error) {
         logger.error("clipboard_kind_failed");
-        const failure = publicFailure(error, 'clipboard_read_failed');
+        const failure = publicFailure(error, 'clipboard_read_failed', getLanguage());
         json(response, failure.status, failure.body);
       } finally {
         await disposeTransfer(item).catch(() => {});
@@ -276,7 +279,7 @@ export function createServer({
         await sendClipboardItem(response, item, onClipboardSent);
       } catch (error) {
         logger.error("clipboard_read_failed");
-        const failure = publicFailure(error, 'clipboard_read_failed');
+        const failure = publicFailure(error, 'clipboard_read_failed', getLanguage());
         if (!response.headersSent) json(response, failure.status, failure.body);
       }
       return;
@@ -332,7 +335,7 @@ export function createServer({
       report();
       json(response, 200, { ok: true, ...result });
     } catch (error) {
-      const failure = publicFailure(error, 'clipboard_update_failed');
+      const failure = publicFailure(error, 'clipboard_update_failed', getLanguage());
       const statusCode = failure.status;
       event.failedStage = event.stage;
       event.stage = "failed";

@@ -34,7 +34,7 @@ export async function startBridge(context, adapters = {}) {
     await cleanOwnedOutbox(context);
     diagnostics = await createDiagnostics(context.dataRoot);
     const transfers = adapters.transfers || createTransferHandlers(config, { storage, onReceived: item => history.record(item, 'inbound') });
-    const apiOptions = { token: config.token, instanceId: context.instanceId, uploadOptions: { stagingRoot, instanceId: context.instanceId }, setClipboardItem: transfers.setItem, getClipboardItem: transfers.getItem,
+    const apiOptions = { token: config.token, getLanguage: () => config.preferences.get().language, instanceId: context.instanceId, uploadOptions: { stagingRoot, instanceId: context.instanceId }, setClipboardItem: transfers.setItem, getClipboardItem: transfers.getItem,
       onClipboardSent: item => history.record(item, 'outbound'), onTransferEvent: event => diagnostics.record(event), logger: adapters.logger || console };
     localNetwork = adapters.localNetwork || await createLocalServices(context, { ...apiOptions, onTransferEvent: event => diagnostics.record({ ...event, transport: 'local' }) });
     const api = createServer({ ...apiOptions, handleExtraRequest: localNetwork.handleSetup });

@@ -1,4 +1,10 @@
 /* Dark is the original palette. Light uses warm whites and deep green accents. */
+.setting-row > div, .network-heading > div { min-width:0; }
+.panel, .nav, .primary, .secondary, .danger { overflow-wrap:anywhere; }
+.nav { white-space:normal; }
+.setting-row select { max-width:45%; flex-shrink:0; }
+.sort-row { display:flex; justify-content:flex-end; align-items:center; gap:12px; margin:12px 0; font-size:12px; }
+@media(max-width:780px) { .setting-row { flex-wrap:wrap; } .setting-row select { max-width:100%; } }
 .local-actions { display:flex; flex-wrap:wrap; gap:12px; align-items:center; }
 .local-actions .primary { margin-top:0; }
 .local-qr { display:block; width:240px; height:240px; border-radius:10px; margin:20px auto; }

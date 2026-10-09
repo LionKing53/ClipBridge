@@ -6,6 +6,7 @@ import { prepareRuntime, resolveRuntime } from './runtime-context.js';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { fileURLToPath } from 'node:url';
+import { createPreferences } from './i18n.js';
 
 export async function loadConfig(context) {
   // No CWD-based fallback into a personal installation during source preparation.
@@ -18,7 +19,7 @@ export async function loadConfig(context) {
   }
   const stateDirectory = context.dataRoot;
   const configPath = path.join(stateDirectory, 'config.json');
-  let stored;
+  let stored, fresh = false;
 
   try {
     stored = JSON.parse(await readFile(configPath, "utf8"));
@@ -27,6 +28,7 @@ export async function loadConfig(context) {
       throw error;
     }
 
+    fresh = true;
     stored = {
       token: randomBytes(32).toString("base64url"),
       createdAt: new Date().toISOString()
@@ -49,6 +51,7 @@ export async function loadConfig(context) {
     port: context.ports.api,
     context,
     token,
-    configPath
+    configPath,
+    preferences: await createPreferences(stateDirectory, { existing: !fresh })
   };
 }

@@ -13,6 +13,7 @@ import { setWindowsClipboardFiles, setWindowsClipboardImageAndFile } from './cli
 import { assertProductionReady } from '../scripts/source-guard.js';
 import { publicFailure, operationError } from './errors.js';
 import { manageRequests } from './managed-http.js';
+import { createPreferences, messages, errorMessages, translate, translateMessage } from './i18n.js';
 
 const run = promisify(execFile);
 const publicRoot = fileURLToPath(new URL('../desktop/', import.meta.url));
@@ -29,7 +30,7 @@ const defaultSystem = {
   copyImageAndFile: setWindowsClipboardImageAndFile,
   reveal: source => run('explorer.exe', ['/select,', source], { windowsHide: true }).catch(() => {})
 };
-const json = (res, status, value) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(value)); };
+const writeJson = (res, status, value) => { res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8' }); res.end(JSON.stringify(value)); };
 export async function createDesktopServer({ config, history, transfers, diagnostics = () => [], localNetwork, storage, system = defaultSystem }) {
   if (system === defaultSystem) assertProductionReady();
   // Explicitly supplied adapters must be complete; never fall back to real OS actions.
@@ -37,6 +38,17 @@ export async function createDesktopServer({ config, history, transfers, diagnost
     if (typeof system[key] !== 'function') throw new Error('Incomplete desktop system adapter: ' + key);
   }
   const token = randomBytes(32).toString('hex');
+  const preferences = config.preferences || await createPreferences(path.dirname(config.configPath));
+  config.preferences = preferences;
+  const json = (res, status, value) => {
+    const language = preferences.get().language;
+    if (value.message) value = { ...value, message: translateMessage(value.message, language) };
+    if (value.error && !value.message) {
+      const message = translateMessage(value.error, language);
+      value = { ...value, message: message !== value.error ? message : publicFailure({ statusCode: status }, undefined, language).body.message };
+    }
+    writeJson(res, status, value);
+  };
   await writeFile(path.join(path.dirname(config.configPath), 'desktop-token'), token, 'utf8');
   let networkCache, networkAt = 0;
   async function network() {
@@ -59,14 +71,15 @@ export async function createDesktopServer({ config, history, transfers, diagnost
     if (req.headers.host !== `127.0.0.1:${res.socket.localPort}` || (req.headers.origin && req.headers.origin !== localOrigin)) return json(res, 403, { error: 'Erişim reddedildi.' });
     try {
       const url = new URL(req.url, localOrigin);
-      const files = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/theme.js': ['theme.js', 'text/javascript'], '/theme.css': ['theme.css', 'text/css'], '/setup.css': ['setup.css', 'text/css'] };
+      const files = { '/': ['index.html', 'text/html'], '/app.js': ['app.js', 'text/javascript'], '/i18n.js': ['i18n.js', 'text/javascript'], '/style.css': ['style.css', 'text/css'], '/theme.js': ['theme.js', 'text/javascript'], '/theme.css': ['theme.css', 'text/css'], '/setup.css': ['setup.css', 'text/css'] };
+      if (req.method === 'GET' && url.pathname === '/translations.json') return json(res, 200, { ...messages, ...errorMessages });
       if (req.method === 'GET' && files[url.pathname]) {
         const [name, type] = files[url.pathname]; res.setHeader('Content-Type', type + '; charset=utf-8'); res.end(await readFile(path.join(publicRoot, name))); return;
       }
       const actual = Buffer.from(req.headers.authorization || ''); const expected = Buffer.from('Bearer ' + token);
       if (actual.length !== expected.length || !timingSafeEqual(actual, expected)) return json(res, 401, { error: 'Uygulamayı masaüstü kısayolundan yeniden aç.' });
       if (req.method === 'GET' && url.pathname === '/api/state') {
-        return json(res, 200, { ...history.list(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.1.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
+        return json(res, 200, { ...history.list(), preferences: preferences.get(), storage: storage ? await storage.summary() : null, setup: localNetwork?.setup?.status() || null, machine: system.hostname(), version: '1.2.0', network: await network(), localNetwork: localNetwork?.status() || { configured: false, state: 'not_configured' }, diagnostics: diagnostics().slice(-10), maxFileMB: 512 });
       }
       if (url.pathname === '/api/setup' && req.method === 'GET') {
         if (!localNetwork?.setup) return json(res, 409, { error: 'Kurulum sihirbazı bu ortamda yok.' });
@@ -135,7 +148,12 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         try { await history.record(item, 'local'); } finally { await disposeTransfer(item).catch(() => {}); }
         return json(res, 200, { ok: true });
       }
-      if (req.method === 'POST' && url.pathname === '/api/settings') { await history.settings(await body(req)); return json(res, 200, { ok: true }); }
+      if (req.method === 'POST' && url.pathname === '/api/settings') {
+        const input = await body(req);
+        if (Object.hasOwn(input, 'language')) await preferences.set(input.language);
+        if (Object.hasOwn(input, 'enabled') || Object.hasOwn(input, 'limit')) await history.settings(input);
+        return json(res, 200, { ok: true });
+      }
       if (req.method === 'POST' && url.pathname === '/api/clear') { await history.clear(); return json(res, 200, { ok: true }); }
       const match = /^\/api\/items\/([0-9a-f-]{36})(?:\/(thumbnail|copy|favorite|reveal))?$/.exec(url.pathname);
       if (match) {
@@ -166,6 +184,6 @@ export async function createDesktopServer({ config, history, transfers, diagnost
         }
       }
       json(res, 404, { error: 'İşlem bulunamadı.' });
-    } catch (error) { const failure = publicFailure(error); if (!res.headersSent && !res.destroyed) json(res, failure.status, failure.body); }
+    } catch (error) { const failure = publicFailure(error, undefined, preferences.get().language); if (!res.headersSent && !res.destroyed) json(res, failure.status, failure.body); }
   });
 }

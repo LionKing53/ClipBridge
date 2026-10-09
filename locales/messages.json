@@ -1,0 +1,1184 @@
+{
+  "pair.scanTitle": { "tr": "iPhone ile bu QR kodu tara", "en": "Scan this QR code with your iPhone" },
+  "pair.connectedInstruction": { "tr": "iPhone'da Tailscale bağlı olmalı. Kamera uygulamasını aç ve QR koda tut.", "en": "Connect Tailscale on your iPhone. Open Camera and point it at the QR code." },
+  "pair.opened": { "tr": "QR kodu tarayıcıda da açıldı.", "en": "The QR code also opened in your browser." },
+  "pair.copyHint": { "tr": "Sayfa iPhone'da açıldığında API adresini ve Authorization değerini kopyalayabilirsin.", "en": "When the page opens on your iPhone, copy the API address and Authorization value." },
+  "pair.statusFailed": { "tr": "Tailscale durumu okunamadı. Bağlantıyı kontrol edip yeniden dene.", "en": "Could not read Tailscale status. Check the connection and retry." },
+  "pair.dnsMissing": { "tr": "Bu bilgisayar için Tailscale MagicDNS adı bulunamadı.", "en": "No Tailscale MagicDNS name was found for this PC." },
+  "m_7cb4fe2b56ec": {
+    "tr": "AYNI AĞDA · BİRİNCİ YOL",
+    "en": "SAME NETWORK · PRIMARY ROUTE"
+  },
+  "m_31becbcf1315": {
+    "tr": "Yakında, Tailscale’siz.",
+    "en": "Nearby, without Tailscale."
+  },
+  "m_897c8e451ed7": {
+    "tr": "Yerel bağlantı denetleniyor…",
+    "en": "Checking the local connection…"
+  },
+  "m_2cbe867926f5": {
+    "tr": "DENETLENİYOR",
+    "en": "CHECKING"
+  },
+  "m_2ef663b9e421": {
+    "tr": "Güvenilen ağlar",
+    "en": "Trusted networks"
+  },
+  "m_d260edff1132": {
+    "tr": "Ağını seç, erişimi sen yönet. Wi-Fi, Ethernet ve USB bağlantıları.",
+    "en": "Choose your network and control access. Wi-Fi, Ethernet and USB connections."
+  },
+  "m_93ce0a68cdd6": {
+    "tr": "Bağlı ağları yenile",
+    "en": "Refresh connected networks"
+  },
+  "m_6393b3a66962": {
+    "tr": "Şu anda bağlı",
+    "en": "Currently connected"
+  },
+  "m_c8653934d2d7": {
+    "tr": "Güvenilen liste",
+    "en": "Trusted list"
+  },
+  "m_9abdcb01e0ad": {
+    "tr": "PanoKöprü Windows izinlerini temizle",
+    "en": "Remove PanoKöprü Windows permissions"
+  },
+  "m_3f8cd90a0484": {
+    "tr": "Ağ adı tek başına kimlik doğrulaması değildir. Uygulama kayıtlı ağ/bağdaştırıcı eşleşmesini, HTTPS sertifikasını ve erişim anahtarını kullanır. Yalnızca kontrol ettiğin ev veya kişisel paylaşım ağlarını ekle; ortak/okul ağlarına güven verme.",
+    "en": "A network name alone does not authenticate it. The app uses the saved network/adapter match, HTTPS certificate and access key. Only add home or personal hotspot networks you control; do not trust public or school networks."
+  },
+  "m_59eaf1d268e5": {
+    "tr": "“Aktif” Windows dinleyicisini gösterir; iPhone erişimini tek başına doğrulamaz. Listeden çıkarma PanoKöprü erişimini kapatır, Windows ağ profilini veya uygulamaya ait dar kapsamlı güvenlik duvarı kurallarını silmez.",
+    "en": "“Active” describes the Windows listener; it does not confirm iPhone access. Removing a network disables PanoKöprü access but does not remove the Windows network profile or the app's narrowly scoped firewall rules."
+  },
+  "m_1e05c835cbee": {
+    "tr": "Yerel adresler ve kestirme ayarları",
+    "en": "Local addresses and Shortcut settings"
+  },
+  "m_eb1b1f551d13": {
+    "tr": "Pano içeriği · gönder POST / al GET",
+    "en": "Clipboard content · send POST / receive GET"
+  },
+  "m_eaaeb026a8ef": {
+    "tr": "Adresi kopyala",
+    "en": "Copy address"
+  },
+  "m_91b58586056b": {
+    "tr": "Pano türü · GET",
+    "en": "Clipboard type · GET"
+  },
+  "m_d51caadab452": {
+    "tr": "Tür adresini kopyala",
+    "en": "Copy type address"
+  },
+  "m_e4190cc02438": {
+    "tr": "Safari bağlantı testi · ok: true",
+    "en": "Safari connection test · ok: true"
+  },
+  "m_7cb4cb3330de": {
+    "tr": "Test adresini kopyala",
+    "en": "Copy test address"
+  },
+  "m_17acb942bc98": {
+    "tr": "Her pano isteğinde aynı Authorization / Bearer anahtarı gerekir. Gönderirken Form → Dosya türünde",
+    "en": "Every clipboard request needs the same Authorization / Bearer key. When sending, use Form → File and connect the Clipboard variable to the"
+  },
+  "m_05c1a98fa4d9": {
+    "tr": "alanına Pano değişkenini bağla. Alma kestirmesinde içerik ve /kind sonuçlarını karıştırma.",
+    "en": "field. In the receiving Shortcut, keep the content and /kind results separate."
+  },
+  "m_fa2622f97dd5": {
+    "tr": "Tailscale’siz ilk kurulum",
+    "en": "First setup without Tailscale"
+  },
+  "m_8dc8ca48ba53": {
+    "tr": "Yerel eşleştirme QR kodu",
+    "en": "Local pairing QR code"
+  },
+  "m_437ef7bea19a": {
+    "tr": "Eski Tailscale sertifika rehberi",
+    "en": "Existing certificate guide"
+  },
+  "m_cd490bda51b1": {
+    "tr": "Çalışan kurulumda sertifikayı yeniden yükleme. İlk kurulumda yalnız kendi ağını seç ve sertifika parmak izini telefonda karşılaştır. “Hazır” durumu iPhone testi değildir.",
+    "en": "Do not reinstall the certificate if your setup works. For first setup, select only your own network and compare the certificate fingerprint on your phone. “Ready” is not an iPhone test."
+  },
+  "m_212491dfb986": {
+    "tr": "Yol seçimi manuel: izinli ağda “Aynı Ağ” kestirmesini, uzaktayken eski Tailscale kestirmesini çalıştır. Otomatik geçiş yok.",
+    "en": "Route selection is manual: run the “Same Network” Shortcut on a trusted network and your existing Tailscale Shortcut remotely. There is no automatic switching."
+  },
+  "m_e1b0af0c144d": {
+    "tr": "Görünüm",
+    "en": "Appearance"
+  },
+  "m_f1cdb8358232": {
+    "tr": "Açık veya koyu temayı seç. Tercihin bu bilgisayarda hatırlanır.",
+    "en": "Choose a light or dark theme. Your preference is remembered on this PC."
+  },
+  "m_d45ec45b34e8": {
+    "tr": "Koyu mod",
+    "en": "Dark mode"
+  },
+  "m_4bfad12cd252": {
+    "tr": "Açık mod",
+    "en": "Light mode"
+  },
+  "m_d3c8845406d1": {
+    "tr": "Depolama",
+    "en": "Storage"
+  },
+  "m_6bb3617768fd": {
+    "tr": "Depolama bilgisi yükleniyor.",
+    "en": "Loading storage information."
+  },
+  "m_49b9faf86cb9": {
+    "tr": "256 MiB yalnız geçmiş önbelleği bütçesidir; toplam disk kotası değildir. Geçmişi temizlemek gelen dosyaları silmez.",
+    "en": "256 MiB is the history cache budget, not a total disk quota. Clearing history does not delete incoming files."
+  },
+  "m_0b12cb8273a7": {
+    "tr": "Gelen dosyaları temizleme eşiği",
+    "en": "Incoming file retention"
+  },
+  "m_11fe8aca0a70": {
+    "tr": "Otomatik silinmez. Temizle düğmesi yalnız yeni sistemin kaydettiği dosyalara uygulanır; favoriler ve eski yönetilmeyen dosyalar korunur.",
+    "en": "Files are not deleted automatically. The cleanup button applies only to files recorded by the new system; favorites and older unmanaged files are preserved."
+  },
+  "m_67e126cd2a69": {
+    "tr": "Süresiz sakla",
+    "en": "Keep indefinitely"
+  },
+  "m_6bf2c39d996c": {
+    "tr": "7 günden eski",
+    "en": "Older than 7 days"
+  },
+  "m_b4b0f7d738da": {
+    "tr": "30 günden eski",
+    "en": "Older than 30 days"
+  },
+  "m_db4b2a079565": {
+    "tr": "90 günden eski",
+    "en": "Older than 90 days"
+  },
+  "m_8d4075ec9dcc": {
+    "tr": "Eski gelen dosyaları temizle",
+    "en": "Delete old incoming files"
+  },
+  "m_5fab80645739": {
+    "tr": "CİHAZLARIN ARASINDA.",
+    "en": "BETWEEN YOUR DEVICES."
+  },
+  "m_e848aa28c4be": {
+    "tr": "ÇALIŞMA ALANI",
+    "en": "WORKSPACE"
+  },
+  "m_27d702bcfdbd": {
+    "tr": "Aktarım geçmişi",
+    "en": "Transfer history"
+  },
+  "m_13e9f8c058c9": {
+    "tr": "Favoriler",
+    "en": "Favorites"
+  },
+  "m_7916c8f0474b": {
+    "tr": "Bağlantı",
+    "en": "Connection"
+  },
+  "m_7bbac369efe8": {
+    "tr": "Sana özel bir köprü",
+    "en": "Your personal bridge"
+  },
+  "m_9db173bed1e6": {
+    "tr": "Geçmişin bu bilgisayarda.",
+    "en": "History stays on this PC."
+  },
+  "m_ac5d6f5aec4e": {
+    "tr": "Üçüncü taraf bulut depolaması yok.",
+    "en": "No third-party cloud storage."
+  },
+  "m_80ad54ad05fa": {
+    "tr": "Ayarlar",
+    "en": "Settings"
+  },
+  "m_5321550f56c9": {
+    "tr": "Çalışma alanı",
+    "en": "Workspace"
+  },
+  "m_01165653479f": {
+    "tr": "Köprü hazır",
+    "en": "Bridge ready"
+  },
+  "m_63cd725787a8": {
+    "tr": "Yenile",
+    "en": "Refresh"
+  },
+  "m_abe63d29c0ec": {
+    "tr": "KOPYALA. GEÇİŞ YAP. DEVAM ET.",
+    "en": "COPY. SWITCH. KEEP GOING."
+  },
+  "m_4df664cd3714": {
+    "tr": "Her şey, bir pano uzağında.",
+    "en": "One clipboard. Two devices."
+  },
+  "m_23b0903bfcee": {
+    "tr": "Metinlerin, fotoğrafların ve dosyaların için ortak bir alan.",
+    "en": "A shared space for your text, photos and files."
+  },
+  "m_32d509dcc1d8": {
+    "tr": "Panoyu kaydet",
+    "en": "Save clipboard"
+  },
+  "m_2b39af7f9f65": {
+    "tr": "KİŞİSEL KÖPRÜN",
+    "en": "YOUR PERSONAL BRIDGE"
+  },
+  "m_ab10b9790781": {
+    "tr": "İki cihaz. Kesintisiz fikirler.",
+    "en": "Two devices. Keep your ideas moving."
+  },
+  "m_38c2a02b0905": {
+    "tr": "Bağlantı bilgileri alınıyor…",
+    "en": "Loading connection information…"
+  },
+  "m_65f2e19977c0": {
+    "tr": "Bağlantıyı yönet",
+    "en": "Manage connection"
+  },
+  "m_ce0bf2403ef9": {
+    "tr": "Bu bilgisayar",
+    "en": "This PC"
+  },
+  "m_4083002a1e17": {
+    "tr": "Kestirme ile aktar",
+    "en": "Transfer with a Shortcut"
+  },
+  "m_d6c98aa75a76": {
+    "tr": "Son aktarımlar",
+    "en": "Recent transfers"
+  },
+  "m_37b4a702778e": {
+    "tr": "0 öğe",
+    "en": "0 items"
+  },
+  "m_4580ee802ef5": {
+    "tr": "Geçmiş duraklatıldı",
+    "en": "History paused"
+  },
+  "m_65388f863ed7": {
+    "tr": "Geçmişte ara…",
+    "en": "Search history…"
+  },
+  "m_78691df006d7": {
+    "tr": "Geçmişte ara",
+    "en": "Search history"
+  },
+  "m_f43a65ad8268": {
+    "tr": "Tümü",
+    "en": "All"
+  },
+  "m_0cddb0f8e477": {
+    "tr": "Metinler",
+    "en": "Text"
+  },
+  "m_aade47fad114": {
+    "tr": "Görseller",
+    "en": "Images"
+  },
+  "m_36e14d97cfd9": {
+    "tr": "Dosyalar",
+    "en": "Files"
+  },
+  "m_e3bb67914990": {
+    "tr": "Tüm yönler",
+    "en": "All directions"
+  },
+  "m_a4ec50120fa1": {
+    "tr": "Aktarım yönü",
+    "en": "Transfer direction"
+  },
+  "m_7c964bbd1f39": {
+    "tr": "Köprünün ilk izini bırak.",
+    "en": "Make your first transfer."
+  },
+  "m_1b0730a5be84": {
+    "tr": "Yeni aktarımların burada görünecek.",
+    "en": "New transfers will appear here."
+  },
+  "m_3b6854d871ba": {
+    "tr": "İstersen Windows panondaki öğeyi şimdi kaydet.",
+    "en": "You can save your current Windows clipboard now."
+  },
+  "m_821e82c22b54": {
+    "tr": "Panodaki öğeyi kaydet",
+    "en": "Save clipboard item"
+  },
+  "m_0eca97fb1652": {
+    "tr": "Yalnızca aktarımlar ve elle kaydettiğin öğeler tutulur.",
+    "en": "Only transfers and manually saved items are recorded."
+  },
+  "m_92a268e39c94": {
+    "tr": "Son 100 kayıt",
+    "en": "Last 100 records"
+  },
+  "m_a40ae1f0210b": {
+    "tr": "İKİ YOL, AYNI PANO",
+    "en": "TWO ROUTES, ONE CLIPBOARD"
+  },
+  "m_59329881fdf7": {
+    "tr": "Köprünün durumu.",
+    "en": "Your bridge status."
+  },
+  "m_db99b7e09544": {
+    "tr": "İzinli ağda yerel HTTPS. Uzaktayken Tailscale. Kestirmeyi sen seçersin.",
+    "en": "Local HTTPS on a trusted network. Tailscale remotely. You choose the Shortcut."
+  },
+  "m_c3cb410cc791": {
+    "tr": "UZAKTAN · YEDEK YOL",
+    "en": "REMOTE · BACKUP ROUTE"
+  },
+  "m_103880f34c24": {
+    "tr": "Tailscale bağlantısı",
+    "en": "Tailscale connection"
+  },
+  "m_a73a77756c41": {
+    "tr": "Yerel aktarım için telefonda Tailscale açık olmak zorunda değil. Uzaktan kullanımda eski kestirmelerini kullan. Buradaki durum Windows bağlantısını gösterir; telefon bağlantısı ve Serve erişimi ayrıca gerekir.",
+    "en": "Tailscale does not need to be on on your phone for local transfers. Use your existing Shortcuts remotely. This status describes the Windows connection; the phone connection and Serve access are also required."
+  },
+  "m_34e9b85a4cab": {
+    "tr": "Tailscale eşleştirme QR kodu",
+    "en": "Tailscale pairing QR code"
+  },
+  "m_2e527a4edd0b": {
+    "tr": "Günlük kullanım",
+    "en": "Everyday use"
+  },
+  "m_8a09e030f920": {
+    "tr": "Kopyala → “Windows’a Yapıştır (Aynı Ağ)” veya ayarladığın arkaya çift dokunma → Windows’ta Ctrl+V. Fotoğraf ve belgeyi masaüstüne ya da klasöre yapıştır.",
+    "en": "Copy → “Paste to Windows (Same Network)” or your configured Back Tap → Ctrl+V on Windows. Paste photos and documents onto the desktop or into a folder."
+  },
+  "m_773894d9842e": {
+    "tr": "Ctrl+C → “Windows’tan Kopyala (Aynı Ağ)”. Metni istediğin yere yapıştır; fotoğraf Fotoğraflar’a kaydolur, belgede kayıt yeri seçilir. .txt dosyası da belgedir.",
+    "en": "Ctrl+C → “Copy from Windows (Same Network)”. Paste text wherever you want; images are saved to Photos and documents prompt for a save location. A .txt file is a document too."
+  },
+  "m_a0181f6dbb8f": {
+    "tr": "Kestirme adını değiştirebilirsin. Pano sürekli izlenmez; her aktarım için kestirme çalıştırılır.",
+    "en": "You can rename your Shortcuts. The clipboard is not continuously monitored; run a Shortcut for each transfer."
+  },
+  "m_45548a9f4b5c": {
+    "tr": "Son gelen aktarım olayı",
+    "en": "Latest incoming transfer event"
+  },
+  "m_7965f034f6f3": {
+    "tr": "Henüz aktarım bilgisi yok.",
+    "en": "No transfer information yet."
+  },
+  "m_532d0f88ff63": {
+    "tr": "İki yönün başarılı aktarımları Geçmiş ekranında bulunur. Dosyalar / videolar: en çok 512 MiB · Metin / görsel çözümleme: 64 MiB",
+    "en": "Successful transfers in both directions appear in History. iPhone uploads: files/videos up to 512 MiB · text/image processing up to 64 MiB."
+  },
+  "m_b36f9598b450": {
+    "tr": "SENİN PANON, SENİN TERCİHLERİN",
+    "en": "YOUR CLIPBOARD, YOUR PREFERENCES"
+  },
+  "m_8a3b9a8c525d": {
+    "tr": "Kendine göre ayarla.",
+    "en": "Make it yours."
+  },
+  "m_60a111b7d085": {
+    "tr": "Aktarım sistemine dokunmadan geçmişini yönet.",
+    "en": "Manage your history without changing the transfer system."
+  },
+  "m_3b25edcfd76c": {
+    "tr": "Aktarım geçmişini sakla",
+    "en": "Keep transfer history"
+  },
+  "m_3a43bf9d4806": {
+    "tr": "Yeni aktarımları yerel geçmişine ekler. Kapatıldığında köprü çalışmaya devam eder.",
+    "en": "Adds new transfers to your local history. The bridge keeps working when this is off."
+  },
+  "m_55a5bcefc0f4": {
+    "tr": "Geçmiş uzunluğu",
+    "en": "History length"
+  },
+  "m_6f29360d61ac": {
+    "tr": "Limit dolduğunda önce en eski, favori olmayan kayıtlar kaldırılır.",
+    "en": "When the limit is reached, the oldest non-favorite records are removed first."
+  },
+  "m_9fc59676b603": {
+    "tr": "50 kayıt",
+    "en": "50 records"
+  },
+  "m_ee8fb1372605": {
+    "tr": "100 kayıt",
+    "en": "100 records"
+  },
+  "m_1e6af3cd4988": {
+    "tr": "250 kayıt",
+    "en": "250 records"
+  },
+  "m_ae4b47004e07": {
+    "tr": "Yerel ve kontrollü",
+    "en": "Local and under your control"
+  },
+  "m_d6f61bcb9ada": {
+    "tr": "Geçmiş bu Windows hesabında, uygulamanın veri klasöründe saklanır. Diskte ayrıca şifrelenmez; hassas içerikler için geçmişi duraklatabilirsin.",
+    "en": "History is stored in the app's data folder under this Windows account. It is not separately encrypted on disk; you can pause history for sensitive content."
+  },
+  "m_45d4852c5fdd": {
+    "tr": "Diğer uygulamalarda kopyaladığın her şey otomatik izlenmez. Yalnızca köprüden geçen veya “Panoyu kaydet” ile eklediğin içerikler saklanır.",
+    "en": "Not everything you copy in other apps is monitored. Only content transferred through the bridge or added with “Save clipboard” is stored."
+  },
+  "m_3ec675c4432d": {
+    "tr": "Görsel / geçici dosya kopyaları için toplam 256 MiB sınırı vardır. Taşınan kaynak dosyalar tekrar kopyalanamayabilir.",
+    "en": "Image and temporary file copies have a combined 256 MiB history cache limit. Moved source files may no longer be available to copy."
+  },
+  "m_88991b1ad4cf": {
+    "tr": "Temiz bir başlangıç",
+    "en": "A fresh start"
+  },
+  "m_ae28e07d7a75": {
+    "tr": "Geçmişi temizlemek favoriler dahil kayıtları ve uygulamanın oluşturduğu önizlemeleri kaldırır. Gelen dosyaların asılları ve bilgisayarındaki kaynak dosyalar silinmez.",
+    "en": "Clearing history removes records, including favorites, and app-generated previews. Original incoming files and source files on your PC are preserved."
+  },
+  "m_4d9b27dd4731": {
+    "tr": "Aktarım geçmişini temizle",
+    "en": "Clear transfer history"
+  },
+  "m_05af728c3cf8": {
+    "tr": "KAYIT AYRINTISI",
+    "en": "RECORD DETAILS"
+  },
+  "m_7b31a9fc4816": {
+    "tr": "Kapat",
+    "en": "Close"
+  },
+  "m_b43ddb4a2361": {
+    "tr": "IPHONE İLE EŞLEŞTİR",
+    "en": "PAIR WITH IPHONE"
+  },
+  "m_387dd0398e08": {
+    "tr": "Bağlantıyı cebine taşı.",
+    "en": "Take your connection with you."
+  },
+  "m_484f026f6601": {
+    "tr": "iPhone kamerasıyla QR kodu tara. Mevcut kestirmelerin çalışıyorsa yeniden eşleştirmen gerekmez.",
+    "en": "Scan the QR code with your iPhone camera. If your existing Shortcuts work, you do not need to pair again."
+  },
+  "m_e74f6bc2278b": {
+    "tr": "Özel eşleştirme QR kodu",
+    "en": "Private pairing QR code"
+  },
+  "m_b7d53c046376": {
+    "tr": "QR kod erişim anahtarını içerir. Başkalarıyla paylaşma.",
+    "en": "The QR code contains your access key. Do not share it."
+  },
+  "m_39a8d28c1c6b": {
+    "tr": "Vazgeç",
+    "en": "Cancel"
+  },
+  "m_f698e9b40f9f": {
+    "tr": "Sil",
+    "en": "Delete"
+  },
+  "m_85ac45366c63": {
+    "tr": "YEREL İLK KURULUM",
+    "en": "FIRST LOCAL SETUP"
+  },
+  "m_67b83ed3ef2b": {
+    "tr": "Önce ağını, sonra sertifikayı doğrula.",
+    "en": "Verify your network, then your certificate."
+  },
+  "m_8630446c65ea": {
+    "tr": "Bağlı ağ",
+    "en": "Connected network"
+  },
+  "m_af78c2e2d0da": {
+    "tr": "Yalnız kendi ev veya kişisel paylaşım ağını seç. Windows bu ağı Özel yapar; diğer uygulamaların mevcut Özel ağ kuralları da etkilenebilir. Okul ve ortak ağları ekleme.",
+    "en": "Select only your own home or personal hotspot network. Windows will make it Private; other apps' existing Private network rules may also be affected. Do not add school or public networks."
+  },
+  "m_0f52b3f9fa46": {
+    "tr": "Ağı onayla ve kurulumu başlat",
+    "en": "Approve network and start setup"
+  },
+  "m_48367cbd22ee": {
+    "tr": "Yalnız herkese açık sertifika için süreli QR kod",
+    "en": "Temporary QR code for the public certificate only"
+  },
+  "m_04a54dc0f8f1": {
+    "tr": "QR kod yalnız herkese açık kök sertifikayı indirir; HTTP üzerinden pano veya anahtar gönderilmez. Telefon ve bilgisayar aynı seçilen ağda olmalıdır. Süre dolarsa yeniden başlat.",
+    "en": "The QR code downloads only the public root certificate; no clipboard content or key is sent over HTTP. The phone and PC must be on the selected network. Restart if the session expires."
+  },
+  "m_3cd1fe5d5b82": {
+    "tr": "Telefonda indirilen profilin sertifika ayrıntılarındaki SHA-256 parmak izini, güven vermeden önce aşağıdakiyle karşılaştır. Eşleşmiyorsa profili yükleme. Kök güveni yalnız bu uygulamayla sınırlı değildir: bu CA’nın imzaladığı sertifikalara güven kazandırır.",
+    "en": "Before granting trust, compare the SHA-256 fingerprint in the downloaded profile's certificate details on your phone with the one below. Do not install the profile if they differ. Root trust is not limited to this app: it grants trust to certificates signed by this CA."
+  },
+  "m_3b3b9aec28b0": {
+    "tr": "Telefondaki SHA-256 parmak izi",
+    "en": "SHA-256 fingerprint on your phone"
+  },
+  "m_c841b5d68b7b": {
+    "tr": "Telefondaki sertifika ayrıntısından",
+    "en": "From the certificate details on your phone"
+  },
+  "m_4c8c5285c179": {
+    "tr": "Ayarlar → Genel → VPN ve Aygıt Yönetimi: profili yükle. Genel → Hakkında → Sertifika Güven Ayarları: doğruladığın PanoKöprü köküne tam güveni elle aç. iOS sürümüne göre isimler değişebilir.",
+    "en": "Settings → General → VPN & Device Management: install the profile. General → About → Certificate Trust Settings: manually enable full trust for the verified PanoKöprü root. Names may vary by iOS version."
+  },
+  "m_e7b8bb961100": {
+    "tr": "Parmak izini telefonda karşılaştırdım ve tam güveni açtım.",
+    "en": "I compared the fingerprint on my phone and enabled full trust."
+  },
+  "m_724ce4ecd9eb": {
+    "tr": "Doğrula ve HTTPS’i aç",
+    "en": "Verify and enable HTTPS"
+  },
+  "m_e3757b4ab1ac": {
+    "tr": "Kurulumu iptal et",
+    "en": "Cancel setup"
+  },
+  "m_e6400377a4ea": {
+    "tr": "Pencereyi kapatmak devam eden Windows onayını iptal etmez. İptal, indirme oturumunu kapatır; verilmiş Windows izinlerini veya telefona yüklenen profili otomatik kaldırmaz.",
+    "en": "Closing the window does not cancel an ongoing Windows approval. Cancel closes the download session; it does not automatically remove granted Windows permissions or the profile installed on your phone."
+  },
+  "m_7c08e78575d6": {
+    "tr": "Uygulama teması",
+    "en": "App theme"
+  },
+  "m_2d59d57446f0": {
+    "tr": "Gelen dosya temizleme eşiği",
+    "en": "Incoming file retention threshold"
+  },
+  "m_bb9c7d5a790f": {
+    "tr": "Servise ulaşılamadı. Uygulamayı yeniden aç.",
+    "en": "Cannot reach the service. Reopen the app."
+  },
+  "m_e5417667ec53": {
+    "tr": "METİN",
+    "en": "TEXT"
+  },
+  "m_ea7f441e1e93": {
+    "tr": "GÖRSEL",
+    "en": "IMAGE"
+  },
+  "m_761d8b3a39ba": {
+    "tr": "DOSYA",
+    "en": "FILE"
+  },
+  "m_80422e38652c": {
+    "tr": "Metin",
+    "en": "Text"
+  },
+  "m_baead029ab7a": {
+    "tr": "Görsel önizlemesi",
+    "en": "Image preview"
+  },
+  "m_3e7cd14ed050": {
+    "tr": "Favorilerden çıkar",
+    "en": "Remove from favorites"
+  },
+  "m_c1f494543af2": {
+    "tr": "Favoriye ekle",
+    "en": "Add to favorites"
+  },
+  "m_16729756506a": {
+    "tr": "Favori",
+    "en": "Favorite"
+  },
+  "m_cd2d2bde2833": {
+    "tr": "Aktarım",
+    "en": "Transfer"
+  },
+  "m_a8bcca42d9ce": {
+    "tr": "Kopyala",
+    "en": "Copy"
+  },
+  "m_8b16f7e6ba88": {
+    "tr": "Önemli olanları yakınında tut.",
+    "en": "Keep what matters close."
+  },
+  "m_92b1341e52b4": {
+    "tr": "Bu aramada kayıt bulunamadı.",
+    "en": "No records match your search."
+  },
+  "m_e955d95c52c5": {
+    "tr": "Bir kaydın yıldızına dokunarak favorilerine ekle.",
+    "en": "Select a record's star to add it to your favorites."
+  },
+  "m_1372149f65af": {
+    "tr": "Başka bir kelime veya filtre deneyebilirsin.",
+    "en": "Try another search term or filter."
+  },
+  "m_b774494f03bd": {
+    "tr": "Yeni aktarımların burada görünecek. İstersen Windows panondaki öğeyi şimdi kaydet.",
+    "en": "New transfers will appear here. You can save your current Windows clipboard now."
+  },
+  "m_98f89433f5ae": {
+    "tr": "Bir daha lazım olacaklar.",
+    "en": "Keep it for next time."
+  },
+  "m_c11919473763": {
+    "tr": "Yıldızladığın metinler, görseller ve dosyalar.",
+    "en": "Your starred text, images and files."
+  },
+  "m_52651980f216": {
+    "tr": "Favori kayıtların",
+    "en": "Your favorite records"
+  },
+  "m_aeb81ef22a4c": {
+    "tr": "Windows Tailscale ağına bağlı. Aktarım için iPhone kestirmeni çalıştır.",
+    "en": "Windows is connected to Tailscale. Run your iPhone Shortcut to transfer."
+  },
+  "m_a0a1fc0f0eaa": {
+    "tr": "Köprü çalışıyor. Uzaktan aktarım için Tailscale bağlantısını aç.",
+    "en": "The bridge is running. Connect Tailscale for remote transfers."
+  },
+  "m_6a24da597cb7": {
+    "tr": "● Windows Tailscale’a bağlı",
+    "en": "● Windows is connected to Tailscale"
+  },
+  "m_2de58edca95b": {
+    "tr": "○ Tailscale bağlı değil",
+    "en": "○ Tailscale is disconnected"
+  },
+  "m_a24c79aac480": {
+    "tr": "Adres henüz alınamadı",
+    "en": "Address not available yet"
+  },
+  "m_876a4ff7ae7d": {
+    "tr": "İzinli ağ",
+    "en": "Trusted network"
+  },
+  "m_17821de8038d": {
+    "tr": "İzinli ağ bulundu. Aşağıdaki İzni onar düğmesiyle Windows ağ iznini tamamla.",
+    "en": "A trusted network was found. Use Repair permission below to complete Windows network permissions."
+  },
+  "m_e21c3ab24cd2": {
+    "tr": "İzinli bir ağda değilsin. Kendi ağındaysan aşağıdan ekleyebilir, uzaktayken Tailscale kestirmeni kullanabilirsin.",
+    "en": "You are not on a trusted network. Add your own network below or use your Tailscale Shortcut remotely."
+  },
+  "m_783776374cb6": {
+    "tr": "İzinli ağlar denetleniyor…",
+    "en": "Checking trusted networks…"
+  },
+  "m_89d03ef1811f": {
+    "tr": "Yerel bağlantı başlatılamadı. Tailscale yedek yolunu kullanabilir veya Windows izinlerini kontrol edebilirsin.",
+    "en": "The local connection could not start. Use your Tailscale backup route or check Windows permissions."
+  },
+  "m_829bc4047ba3": {
+    "tr": "Yerel bağlantı kapalı.",
+    "en": "Local connection is off."
+  },
+  "m_32e78795b1b9": {
+    "tr": "Yerel ağ kurulumu henüz hazırlanmadı.",
+    "en": "Local network setup is not ready yet."
+  },
+  "m_cbd63699a557": {
+    "tr": "HTTPS · HAZIR",
+    "en": "HTTPS · READY"
+  },
+  "m_7764ff934df6": {
+    "tr": "YEREL · KAPALI",
+    "en": "LOCAL · OFF"
+  },
+  "m_b20bd33746f5": {
+    "tr": "Yerel HTTPS",
+    "en": "Local HTTPS"
+  },
+  "m_0448fe3c9ef6": {
+    "tr": "Yol kapalı",
+    "en": "Route unavailable"
+  },
+  "m_1977db06e173": {
+    "tr": "Bu test ortamında depolama yönetimi bağlı değil.",
+    "en": "Storage management is unavailable in this test environment."
+  },
+  "m_e74a9e4f43d7": {
+    "tr": "Aktarım tamamlandı",
+    "en": "Transfer completed"
+  },
+  "m_eba11dc4f5d7": {
+    "tr": "Aktarım başarısız",
+    "en": "Transfer failed"
+  },
+  "m_8e2b201ece2d": {
+    "tr": "Yetkilendirme reddedildi",
+    "en": "Authorization denied"
+  },
+  "m_92d92763a889": {
+    "tr": "İçerik alınıyor",
+    "en": "Receiving content"
+  },
+  "m_c7eb8e06a94e": {
+    "tr": "İçerik hazırlanıyor",
+    "en": "Preparing content"
+  },
+  "m_cdb27add156f": {
+    "tr": "Panoya yazılıyor",
+    "en": "Writing to clipboard"
+  },
+  "m_49c832f2b3fa": {
+    "tr": "İstek alındı",
+    "en": "Request received"
+  },
+  "m_5f90d4080338": {
+    "tr": "Servise ulaşılamıyor",
+    "en": "Service unavailable"
+  },
+  "m_70de08dde036": {
+    "tr": "Windows panosuna kopyalandı. İstediğin yere yapıştırabilirsin.",
+    "en": "Copied to the Windows clipboard. Paste wherever you want."
+  },
+  "m_6ff8021ebc21": {
+    "tr": "Tarih",
+    "en": "Date"
+  },
+  "m_983d544e867b": {
+    "tr": "Boyut",
+    "en": "Size"
+  },
+  "m_2f0db590c3dc": {
+    "tr": "Kaynak",
+    "en": "Source"
+  },
+  "m_7c9f1b4d920f": {
+    "tr": "Tam içerik şu anda kullanılamıyor. Kaynak dosya taşınmış olabilir veya yalnızca önizleme saklanmıştır.",
+    "en": "Full content is currently unavailable. The source file may have moved, or only a preview was stored."
+  },
+  "m_993d52ddbd4c": {
+    "tr": "Geçmişten kaldır",
+    "en": "Remove from history"
+  },
+  "m_8ccff522d4d8": {
+    "tr": "Klasörde göster",
+    "en": "Show in folder"
+  },
+  "m_74fe94933629": {
+    "tr": "Yeniden kopyala",
+    "en": "Copy again"
+  },
+  "m_7428fe464b0f": {
+    "tr": "Bu kayıt kaldırılsın mı?",
+    "en": "Remove this record?"
+  },
+  "m_c03d1a9fa015": {
+    "tr": "Kayıt ve uygulamanın sakladığı kopyası kaldırılır. Asıl dosyan silinmez.",
+    "en": "The record and its app-stored copy will be removed. Your original file will not be deleted."
+  },
+  "m_c4ea157da203": {
+    "tr": "Kayıt geçmişten kaldırıldı.",
+    "en": "Record removed from history."
+  },
+  "m_4dbabacf0184": {
+    "tr": "Güven ve devam et",
+    "en": "Trust and continue"
+  },
+  "m_41ee14dfff4b": {
+    "tr": "Ağ işlemi sürüyor. Windows onay penceresi varsa yanıtla; bu işlem birkaç saniye sürebilir.",
+    "en": "A network operation is in progress. Respond to any Windows approval prompt; this may take a few seconds."
+  },
+  "m_521125c1aeb3": {
+    "tr": "Windows: Özel",
+    "en": "Windows: Private"
+  },
+  "m_39feef2e68a7": {
+    "tr": "Windows: Genel",
+    "en": "Windows: Public"
+  },
+  "m_1ab70416ecfd": {
+    "tr": "İzni onar",
+    "en": "Repair permission"
+  },
+  "m_0f8bbae399e8": {
+    "tr": "Bu ağı güvenilenlere ekle",
+    "en": "Trust this network"
+  },
+  "m_78595e5f06bb": {
+    "tr": "● Aktif",
+    "en": "● Active"
+  },
+  "m_f243272e6325": {
+    "tr": "İzinli · şu an kullanılmıyor",
+    "en": "Trusted · not currently in use"
+  },
+  "m_270f0dbe243e": {
+    "tr": "Eklenebilecek bağlı bir yerel ağ bulunamadı. Wi-Fi, Ethernet veya USB bağlantını kontrol et.",
+    "en": "No connected local network can be added. Check your Wi-Fi, Ethernet or USB connection."
+  },
+  "m_84aa5ca1faa8": {
+    "tr": "Listeden çıkar",
+    "en": "Remove from list"
+  },
+  "m_9d4a37bf90ec": {
+    "tr": "Henüz güvenilen ağ yok. Yukarıdaki kendi ağını ekleyebilirsin; Tailscale yolu etkilenmez.",
+    "en": "No trusted networks yet. Add your own network above; the Tailscale route is unaffected."
+  },
+  "m_2cf9306b4065": {
+    "tr": "Bu ağa güvenilsin mi?",
+    "en": "Trust this network?"
+  },
+  "m_c86241864463": {
+    "tr": "Ağ listeden çıkarılsın mı?",
+    "en": "Remove this network?"
+  },
+  "m_9f4308fe8389": {
+    "tr": "Bağlı ağlar yenilendi.",
+    "en": "Connected networks refreshed."
+  },
+  "m_259236509020": {
+    "tr": "Windows izinleri temizlensin mi?",
+    "en": "Remove Windows permissions?"
+  },
+  "m_030098f40ab6": {
+    "tr": "Yerel aktarım hemen durur. Yönetici onayıyla yalnız PanoKöprü’ye ait doğrulanmış eski/yeni firewall kuralları kaldırılır. Windows ağ profili ve Tailscale değişmez. Onay iptal edilse bile yerel erişim kapalı kalır; tekrar kullanmak için İzni onar gerekir.",
+    "en": "Local transfers stop immediately. With administrator approval, only verified old/new firewall rules owned by PanoKöprü are removed. The Windows network profile and Tailscale remain unchanged. Local access stays off even if approval is cancelled; use Repair permission to enable it again."
+  },
+  "m_d7ab012af168": {
+    "tr": "İzinleri temizle",
+    "en": "Remove permissions"
+  },
+  "m_1d11a88cf0c1": {
+    "tr": "Windows panosu geçmişe eklendi.",
+    "en": "Windows clipboard added to history."
+  },
+  "m_cb209ce93bcb": {
+    "tr": "Geçmiş kaydı açıldı.",
+    "en": "History recording enabled."
+  },
+  "m_1afa38e02a0b": {
+    "tr": "Geçmiş duraklatıldı. Aktarım köprüsü çalışmaya devam ediyor.",
+    "en": "History paused. The transfer bridge keeps working."
+  },
+  "m_47475d17f3c5": {
+    "tr": "Aktarım geçmişi temizlensin mi?",
+    "en": "Clear transfer history?"
+  },
+  "m_aec8f966b438": {
+    "tr": "Favoriler dahil tüm geçmiş kayıtları ve uygulamanın sakladığı kopyalar kaldırılacak. Asıl dosyalar silinmez. Bu işlem geri alınamaz.",
+    "en": "All history records, including favorites, and app-stored copies will be removed. Original files are preserved. This cannot be undone."
+  },
+  "m_6cb54297851f": {
+    "tr": "Geçmiş temizlendi. Asıl dosyalar korundu.",
+    "en": "History cleared. Original files preserved."
+  },
+  "m_bf4698208108": {
+    "tr": "Eski gelen dosyalar silinsin mi?",
+    "en": "Delete old incoming files?"
+  },
+  "m_eb36c0bb459f": {
+    "tr": "Seçilen süreden eski, bu uygulamanın yönettiği gelen dosyalar diskten silinir. Favoriler ve yönetilmeyen dosyalar korunur. Bu işlem geri alınamaz; gerekli belgelerini önce başka yere kaydet.",
+    "en": "Incoming files managed by this app and older than the selected period will be deleted from disk. Favorites and unmanaged files are preserved. This cannot be undone; save important documents elsewhere first."
+  },
+  "m_4b74f5bb1400": {
+    "tr": "Başlamak için ağı seç.",
+    "en": "Select a network to get started."
+  },
+  "m_34c35d94b852": {
+    "tr": "Windows işlemi sürüyor…",
+    "en": "Windows operation in progress…"
+  },
+  "m_20a3c2f57846": {
+    "tr": "Kurulum tamamlanmadı. Ağı yeniden seçerek devam edebilirsin.",
+    "en": "Setup did not finish. Select the network again to resume."
+  },
+  "m_89f713eb7b1d": {
+    "tr": "Sertifikayı indir, kimliğini karşılaştır ve elle güveni aç.",
+    "en": "Download the certificate, compare its identity and manually enable trust."
+  },
+  "m_c7b639f72c5f": {
+    "tr": "Windows tarafı hazır. Şimdi iPhone’dan HTTPS bağlantısını ve iki yönlü aktarımı test et.",
+    "en": "Windows is ready. Now test HTTPS access and transfers in both directions from your iPhone."
+  },
+  "m_c65c6936bd50": {
+    "tr": "Kurulum durumu bilinmiyor.",
+    "en": "Setup status is unknown."
+  },
+  "m_774be01543bd": {
+    "tr": "Yerel adres henüz hazır değil.",
+    "en": "The local address is not ready yet."
+  },
+  "m_d99fa7a1f4e0": {
+    "tr": "Adres Windows panosuna kopyalandı.",
+    "en": "Address copied to the Windows clipboard."
+  },
+  "m_d43d39be69e5": {
+    "tr": "BİR DEFALIK YEREL KURULUM",
+    "en": "ONE-TIME LOCAL SETUP"
+  },
+  "m_c4ec69dc4883": {
+    "tr": "Aynı ağda Tailscale’siz aktar.",
+    "en": "Transfer on the same network without Tailscale."
+  },
+  "m_9bdedf9ae4b9": {
+    "tr": "İlk sertifika kurulumu için uygulamadaki ilk kurulum sihirbazını kullan; Tailscale gerekmez. Bu QR kodu mevcut güvenilen bağlantıda rehberi açar. Açılan sayfa sertifika kurulumu ve yerel kestirme adımlarını gösterir. Mevcut kurulum çalışıyorsa tekrar yükleme.",
+    "en": "Use the app's first setup wizard to install the certificate; Tailscale is not required. This QR code opens the guide over an existing trusted connection. The page explains certificate setup and local Shortcuts. Do not reinstall if your setup works."
+  },
+  "m_a12f90594523": {
+    "tr": "Yerel kurulum QR kodu",
+    "en": "Local setup QR code"
+  },
+  "m_a3b619807d17": {
+    "tr": "Bu profil yalnızca sertifika içerir; cihaz yönetimi kaydı değildir. Kök sertifika güveni hassas bir ayardır: sertifika kimliğini doğrula.",
+    "en": "This profile contains only a certificate; it is not device management enrollment. Root certificate trust is a sensitive setting: verify the certificate identity."
+  },
+  "m_ee2b82cbd5ed": {
+    "tr": "Açık moda geç",
+    "en": "Switch to light mode"
+  },
+  "m_e93e526d5592": {
+    "tr": "Koyu moda geç",
+    "en": "Switch to dark mode"
+  },
+  "m_4d979b193d8e": {
+    "tr": "Pano Köprüsü Eşleştirme",
+    "en": "PanoKöprü Pairing"
+  },
+  "m_58e60cedcfe8": {
+    "tr": "Pano Köprüsü",
+    "en": "PanoKöprü"
+  },
+  "m_b4880350519c": {
+    "tr": "Bu sayfa iPhone Kestirmesini Windows bilgisayarınızla eşleştirir.",
+    "en": "This page pairs your iPhone Shortcut with your Windows PC."
+  },
+  "m_dce57d76b5e7": {
+    "tr": "API adresi",
+    "en": "API address"
+  },
+  "m_cc255866a656": {
+    "tr": "Authorization başlığı",
+    "en": "Authorization header"
+  },
+  "m_ab2a77840124": {
+    "tr": "Yetkilendirmeyi kopyala",
+    "en": "Copy authorization"
+  },
+  "m_c7151af3977d": {
+    "tr": "QR kodda anahtar bulunamadı",
+    "en": "No key found in the QR code"
+  },
+  "m_bfd4ea44793b": {
+    "tr": "Kopyalandı.",
+    "en": "Copied."
+  },
+  "m_62d461d98956": {
+    "tr": "PanoKöprü · Ev ağı kurulumu",
+    "en": "PanoKöprü · Local network setup"
+  },
+  "m_d0e4569cc2cc": {
+    "tr": "PanoKöprü · Yerel bağlantı",
+    "en": "PanoKöprü · Local connection"
+  },
+  "m_5a7a89e1360d": {
+    "tr": "İlk sertifika kurulumu için masaüstündeki ilk kurulum sihirbazını kullan; Tailscale gerekmez. Bu sayfa mevcut yerel bağlantının sertifika ve kestirme rehberidir.",
+    "en": "Use the desktop first setup wizard for the initial certificate installation; Tailscale is not required. This page is the certificate and Shortcut guide for an existing local connection."
+  },
+  "m_a94a80959c8e": {
+    "tr": "1 · Sertifikayı yükle",
+    "en": "1 · Install the certificate"
+  },
+  "m_39394f5cbe32": {
+    "tr": "PanoKöprü yerel sertifikasını indir",
+    "en": "Download the PanoKöprü local certificate"
+  },
+  "m_74e5d6e46533": {
+    "tr": "iPhone Ayarlar → Genel → VPN ve Aygıt Yönetimi bölümünden indirilen sertifika profilini yükle.",
+    "en": "On iPhone, install the downloaded certificate profile in Settings → General → VPN & Device Management."
+  },
+  "m_e2c5d7c0ec6c": {
+    "tr": "Ardından Genel → Hakkında → Sertifika Güven Ayarları bölümünde",
+    "en": "Then, in General → About → Certificate Trust Settings, enable trust for"
+  },
+  "m_0599bf8a5cb3": {
+    "tr": "için güveni aç.",
+    "en": "."
+  },
+  "m_a711ee2c1473": {
+    "tr": "Bu bir cihaz yönetimi (MDM) kaydı değildir. Yine de kök sertifika güveni hassas bir ayardır: yalnızca kendi bilgisayarındaki kurulum ekranıyla eşleşen sertifikaya güven.",
+    "en": "This is not mobile device management (MDM) enrollment. Root certificate trust is still a sensitive setting: trust only a certificate that matches the setup screen on your own PC."
+  },
+  "m_c5fd69192b59": {
+    "tr": "2 · Yerel bağlantıyı dene",
+    "en": "2 · Test the local connection"
+  },
+  "m_ec288fbd0f71": {
+    "tr": "Telefon ve bilgisayar ev ağına bağlıyken Tailscale’ı telefonda kapat. Sonra",
+    "en": "With your phone and PC on the home network, disconnect Tailscale on the phone. Then"
+  },
+  "m_ad1603e555ea": {
+    "tr": "yerel bağlantı testini aç",
+    "en": "open the local connection test"
+  },
+  "m_3b6f0307af5b": {
+    "tr": ". Başarılıysa",
+    "en": ". If successful, you will see"
+  },
+  "m_4d94860771b0": {
+    "tr": "görürsün.",
+    "en": "."
+  },
+  "m_6e731464010c": {
+    "tr": "Bilgisayar tarafı: {state}. Windows izin onayı tamamlanmış olmalı.",
+    "en": "PC status: {state}. Windows permission approval must be complete."
+  },
+  "m_6fc61bcd1b92": {
+    "tr": "3 · Kestirmelerin yerel kopyaları",
+    "en": "3 · Local copies of your Shortcuts"
+  },
+  "m_fcdaf41c7745": {
+    "tr": "Çalışan iki kestirmeyi silme. Kopyalarını oluşturup adlarının sonuna “Ev” ekle. Bu kopyalardaki Tailscale bağlan/ayrıl adımlarını ve bağlantı beklemesini kaldır.",
+    "en": "Keep your two working Shortcuts. Duplicate them and add “Home” to their names. Remove Tailscale connect/disconnect actions and the connection wait from these copies."
+  },
+  "m_bc880984dca6": {
+    "tr": "Gönderme/alma API adresi:",
+    "en": "Send/receive API address:"
+  },
+  "m_a0d702b482d2": {
+    "tr": "Pano türü adresi:",
+    "en": "Clipboard type address:"
+  },
+  "m_b317aa5cc57f": {
+    "tr": "Authorization başlığını, GET/POST yöntemlerini, gönderilen içeriği ve metin/görsel/dosya dallarını değiştirme.",
+    "en": "Keep the Authorization header, GET/POST methods, sent content and text/image/file branches unchanged."
+  },
+  "m_b03dfde73b9d": {
+    "tr": "Eski kestirmeler uzaktan kullanım ve yedek yol olarak kalır. Otomatik yol seçimi yoktur. Yerelde Aynı Ağ, uzaktan erişimde Tailscale kestirmesini kendin seç.",
+    "en": "Your existing Shortcuts remain available for remote access and backup. There is no automatic route selection. Choose the Same Network Shortcut locally and the Tailscale Shortcut remotely."
+  },
+  "m_6b0ebb41b4c1": {
+    "tr": "Yerel adres çalışmıyorsa sertifika uyarısını atlama; kurulum sihirbazını kontrol et veya önceden ayarladıysan Tailscale kestirmesini kullan.",
+    "en": "If the local address does not work, do not bypass certificate warnings; check the setup wizard or use your Tailscale Shortcut if already configured."
+  },
+  "m_68286f21e751": {
+    "tr": "USB ağı",
+    "en": "USB network"
+  },
+  "m_78152f3fec16": {
+    "tr": "Dil",
+    "en": "Language"
+  },
+  "m_dd5e4953a6ff": {
+    "tr": "Uygulama dili",
+    "en": "App language"
+  },
+  "m_51c9a721e86b": {
+    "tr": "Arayüz, kurulum ve rehberlerin dili. Tercihin bu Windows hesabında saklanır.",
+    "en": "Language for the interface, setup and guides. Your preference is saved under this Windows account."
+  },
+  "m_5b9f88f9567e": {
+    "tr": "Dil tercihi kaydedildi.",
+    "en": "Language preference saved."
+  },
+  "m_be555f5df9ee": {
+    "tr": "{count} öğe",
+    "en": "{count} items"
+  },
+  "m_e8d78007f3e2": {
+    "tr": "Son {count} kayıt",
+    "en": "Last {count} records"
+  },
+  "m_4f8f7fb0b082": {
+    "tr": "{count} gelen dosya silindi.",
+    "en": "{count} incoming files deleted."
+  },
+  "m_b89b2851f822": {
+    "tr": "{name} üzerinde yerel HTTPS hazır. “Aynı Ağ” kestirmelerini kullanabilirsin.",
+    "en": "Local HTTPS is ready on {name}. You can use your “Same Network” Shortcuts."
+  },
+  "m_0fbf49de930d": {
+    "tr": "{name} · Aynı Ağ kestirmesiyle aktar. Tailscale uzaktan kullanım için yedek.",
+    "en": "{name} · Transfer using the Same Network Shortcut. Tailscale is the backup for remote access."
+  },
+  "m_6b86f05d6c8e": {
+    "tr": "Toplam: {total} · Gelen: {inbox} · Geçmiş: {history} · Geçici: {temp} · Boş alan: {free}",
+    "en": "Total: {total} · Incoming: {inbox} · History: {history} · Temporary: {temp} · Free space: {free}"
+  },
+  "m_be41c575efb5": {
+    "tr": "bilinmiyor",
+    "en": "unknown"
+  },
+  "m_20482d5a2669": {
+    "tr": "“{name}” ({adapter}) için PanoKöprü yerel erişimi açılacak. Windows yönetici onayı isteyebilir. Bu ağ Özel yapılır; diğer uygulamaların mevcut Özel ağ kuralları da etkilenebilir. Yalnızca kendi ev veya kişisel paylaşım ağında devam et.",
+    "en": "PanoKöprü local access will be enabled for “{name}” ({adapter}). Windows may ask for administrator approval. This network becomes Private; other apps' existing Private network rules may also be affected. Continue only on your own home or personal hotspot network."
+  },
+  "m_d9e825365573": {
+    "tr": "“{name}” için PanoKöprü yerel erişimi kapatılacak; aktif aktarım kesilebilir. Windows Özel/Genel ayarı ve güvenlik duvarı kuralları değişmez. Tailscale korunur. Yeniden eklemek için o ağa bağlı olman gerekir.",
+    "en": "PanoKöprü local access will be disabled for “{name}”; an active transfer may be interrupted. Windows Private/Public settings and firewall rules remain unchanged. Tailscale is preserved. You must be connected to this network to add it again."
+  },
+  "m_51f6d601c6e7": {
+    "tr": "Ağ güvenilen listeye eklendi.",
+    "en": "Network added to the trusted list."
+  },
+  "m_8b0832113bc3": {
+    "tr": "Ağ güvenilen listeden çıkarıldı.",
+    "en": "Network removed from the trusted list."
+  },
+  "m_444e9c448360": {
+    "tr": "Windows izinleri temizlendi. Yerel erişim kapalı; yeniden kullanmak için bağlı ağı seçip İzni onar düğmesini kullan.",
+    "en": "Windows permissions removed. Local access is off; select the connected network and use Repair permission to enable it again."
+  },
+  "m_4437eca4af60": {
+    "tr": "Sırala",
+    "en": "Sort"
+  },
+  "m_7cc13871889f": {
+    "tr": "En yeni",
+    "en": "Newest first"
+  },
+  "m_6bd60b2c4146": {
+    "tr": "En eski",
+    "en": "Oldest first"
+  },
+  "m_e25e294bd346": {
+    "tr": "Ada göre",
+    "en": "Name"
+  },
+  "m_3ad500c65ae4": {
+    "tr": "Boyuta göre",
+    "en": "Size"
+  },
+  "m_c742b0f1cf00": {
+    "tr": "PanoKöprü Windows izinleri temizlendi. Ağ listesi korundu; kullanmak istediğin ağda İzni onar düğmesini seç. Windows profili ve Tailscale değişmedi.",
+    "en": "PanoKöprü Windows permissions removed. The network list was preserved; select Repair permission on the network you want to use. The Windows profile and Tailscale remain unchanged."
+  },
+  "m_32b010293c3a": {
+    "tr": "Ağ güvenilen listeye eklendi. Yerel bağlantı birkaç saniye içinde hazırlanacak.",
+    "en": "Network added to the trusted list. The local connection will be ready in a few seconds."
+  },
+  "m_ca2e13271f75": {
+    "tr": "Ağ güvenilen listeden çıkarıldı. Bu ağdaki yerel erişim kapatıldı. Windows ağ profili ve Tailscale değiştirilmedi.",
+    "en": "Network removed from the trusted list. Local access on this network is off. The Windows network profile and Tailscale remain unchanged."
+  },
+  "m_64908dfa0f92": {
+    "tr": "Kurulum sihirbazı bu ortamda yok.",
+    "en": "The setup wizard is unavailable in this environment."
+  },
+  "m_1aa535ef4131": {
+    "tr": "Depolama yönetimi bu ortamda yok.",
+    "en": "Storage management is unavailable in this environment."
+  },
+  "m_c3b8c6c47818": {
+    "tr": "Güvenilen ağlar bölümünden bağlı ağı seçip İzni onar düğmesini kullan.",
+    "en": "Select the connected network under Trusted networks and use Repair permission."
+  },
+  "m_a0ba3a75e38c": {
+    "tr": "İzin temizliği bu ortamda kullanılamıyor.",
+    "en": "Permission removal is unavailable in this environment."
+  },
+  "m_13f06d6f909a": {
+    "tr": "Önce yerel sertifika kurulumunu tamamla ve güvenilen ağa bağlan.",
+    "en": "Complete local certificate setup and connect to a trusted network first."
+  },
+  "m_f54356949b1c": {
+    "tr": "Uygulamayı masaüstü kısayolundan yeniden aç.",
+    "en": "Reopen the app from its desktop shortcut."
+  },
+  "m_25017d93bb52": {
+    "tr": "Kayıt içeriğini aç",
+    "en": "Open record details"
+  },
+  "m_e708f68f0bd4": {
+    "tr": "İşlem tamamlanamadı. Dosyanın yerinde ve panonun kullanılabilir olduğundan emin ol.",
+    "en": "The operation could not finish. Make sure the file is available and the clipboard can be accessed."
+  }
+}
