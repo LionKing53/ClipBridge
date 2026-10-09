@@ -5,6 +5,7 @@ Microsoft Edge in an isolated fixture. The capture script selects **English**
 through the application's **Settings → Language** control and verifies the
 saved preference after reload. No documentation-only text replacements are used.
 The app supports both **English and Turkish** starting with version 1.2.0.
+The current desktop screenshots use the **ClipBridge 1.2.1** product name.
 
 The sample computer (`DEMO-PC`), network (`Demo Home`), addresses, text, image
 and PDF are synthetic. No personal clipboard, network settings, credentials,

@@ -2,6 +2,11 @@
 
 ## 1.2.1 — ClipBridge — 2026-10-09
 
+- GitHub kaynak yayını ClipBridge 1.2.1 adı, güncel README/kurulum belgeleri
+  ve İngilizce görselleri içerir; mevcut depo adresi korunur. Yayın kontrolünde
+  13/13 hedefli test ve Edge UI geçti; kaynak/görsel gizlilik kapısı geçti.
+  Kişisel kuruluma bu çalışmada dokunulmaz; yeni genel EXE/ZIP yayımlanmaz.
+
 - Teslim kodu `e10c40d` (`fff9c41` ana ad değişikliği). Mevcut kişisel uygulamaya
   1.2.1 ad/dil yaması ve iki ClipBridge kısayolu uygulandı. 2.229 dosyalı özel
   doğrulanmış yedek/kod geri alma; 65 korunan veri özeti, kimlik ve geçmiş/favori

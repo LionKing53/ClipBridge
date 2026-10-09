@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09 yayın sohbeti: ClipBridge 1.2.1 kaynak/README/görselleri mevcut
+GitHub deposuna aktarılır; ürün açıklaması yenilenir, depo adresi korunur.
+Kaynak/geçmiş/görsel incelemesi ve uzak içerik doğrulaması yayın kapılarıdır.
+Bu adım genel EXE yayını veya temiz cihaz kabulü değildir.
+
 2026-10-09: Aynı TR/EN marka ClipBridge, kaynak sürümü 1.2.1. Yeni kurulumun
 teknik adları da yenilendi; eski kişisel kimlik/veri için göç veya yeniden
 eşleştirme yapılmaz. Uyumluluk: BRANDING.md. GitHub depo adı/yayını bu sohbetten

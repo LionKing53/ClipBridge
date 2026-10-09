@@ -1,5 +1,23 @@
 # ClipBridge — proje durumu
 
+## ClipBridge 1.2.1 kaynak yayını — 2026-10-09
+
+- Yayın girdisi `36c342b`; ad değişikliği `fff9c41`, uyumlu yama kodu
+  `e10c40d`. Güncel kaynaklar, README, kurulum belgeleri ve ClipBridge adlı
+  İngilizce görseller mevcut GitHub deposunun `main` dalına aktarılır.
+  Depo URL'si https://github.com/LionKing53/PanoKopru olarak korunur;
+  GitHub açıklaması yeni ürün adına uyarlanır. Yayın commit'i Git kaydındadır.
+- Bu yayın incelemesinde 13/13 marka/dil/geçmiş testi ve Edge UI geçti.
+  Kaynak kapısı 172 metin + 4 hash-pinned PNG / 121 kilit girdisi geçti;
+  dört görsel yeniden görsel/gizlilik açısından incelendi. Önceki tam koşu
+  156/156 olarak kayıtlı; bu çalışmada tam koşu tekrarlanmadı.
+- Son yayın commit'i dahil erişilebilir Git geçmişi push öncesi taranır;
+  uzak commit ve dosya ağacı push sonrasında yerel Git girdileriyle doğrulanır.
+- Kişisel kurulum önceki sohbetin uyguladığı ClipBridge 1.2.1 ad/dil yaması
+  olarak kalır; burada kurulum/veri/kısayol değiştirilmez. Genel EXE/ZIP yayını
+  yok. Temiz Windows/iPhone ve libvips yeniden derleme kapıları hâlâ açık.
+  Çalışma sonunda kaynak kilidi bırakılır.
+
 ## 1.2.1 kişisel ad güncellemesi teslimi — 2026-10-09
 
 - Kaynak/kişisel yama commit'i `e10c40d` (ana ad değişikliği `fff9c41`). Bu
