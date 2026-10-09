@@ -2,6 +2,12 @@
 
 ## 1.2.1 — ClipBridge — 2026-10-09
 
+- Teslim kodu `e10c40d` (`fff9c41` ana ad değişikliği). Mevcut kişisel uygulamaya
+  1.2.1 ad/dil yaması ve iki ClipBridge kısayolu uygulandı. 2.229 dosyalı özel
+  doğrulanmış yedek/kod geri alma; 65 korunan veri özeti, kimlik ve geçmiş/favori
+  korunumu doğrulandı. Native pencere ve kurulu TR/EN yeniden açılış geçti.
+  İlk testin monogramı da okuyan selector'u düzeltildi. Yeni genel paket/yayın yok.
+
 - Türkçe/English için aynı ClipBridge adı; cb UI monogramı, native ürün bilgisi,
   yeniden adlandırılmış launcher/SVG, yeni kurulum/program/veri/paket/kısayol ve
   çalışma ortamı adları. Yeni hostname/CA/firewall ClipBridge kullanır.

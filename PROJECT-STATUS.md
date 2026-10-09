@@ -1,5 +1,37 @@
 # ClipBridge — proje durumu
 
+## 1.2.1 kişisel ad güncellemesi teslimi — 2026-10-09
+
+- Kaynak/kişisel yama commit'i `e10c40d` (ana ad değişikliği `fff9c41`). Bu
+  teslim kaydı programı değiştirmez. Kurulu sürüm **ClipBridge 1.2.1 ad/dil
+  yaması**, eski transfer/ağ/veri çekirdeği korunur; genel yeni kurucu değildir.
+- 2.229 dosyalı yeni özel yedek SHA-256 ile doğrulandı; erişim kullanıcı,
+  SYSTEM ve yöneticilerle sınırlı. 65 korunan veri dosyasının özeti dağıtım ve
+  UI kontrolü sonrasında aynı; geçmiş/favori sayıları korunur. CA/hostname,
+  erişim anahtarı, ağ/izinler, gelen dosyalar, WebView/tema yerinde kaldı.
+- Mevcut hash-pinned WebView2 DLL'leriyle uyumlu 1.2.1.0 launcher derlendi;
+  native metadata ve gerçek ClipBridge penceresi doğrulandı. İki sahiplikli
+  masaüstü/Başlat menüsü kısayolu ClipBridge adına çevrildi; link dosyalarının
+  hash/target/arguments/icon içerikleri aynı. Özel geri alma envanteri var.
+- Kurulu tarayıcı kaynaklarında gerçek ClipBridge başlığı ve TR→EN→yeniden
+  açılış→TR kontrolü geçti; kişisel içerik maskelendi, pano/izin işlemi yok.
+  İlk test monogramın `c/b` harflerini de başlık sanan yanlış selector nedeniyle
+  başarısız oldu; selector daraltıldı, tekrar geçti. Uygulama hatası değildi.
+- Yeni yama sekiz özgün program girdisini hash-pinned doğrular; otomatik
+  üretilen yeni dosya adları da ClipBridge olur. Mevcut dosya/ağ adları veya
+  kişisel içerik yeniden yazılmaz. Legacy sentetik HTTP kontrolü geçti.
+- Önceki 1.2.0 programına yalnız kod geri alma ve ayrı kısayol-etiketi geri alma
+  hazır; özel betiklerin syntax kontrolü geçti, gerçek geri alma çalıştırılmadı.
+  Veri yedeği geri yüklenmez, sonraki aktarımlar kaybolmaz. Eski teknik exe/
+  görev/mutex/adres/sertifika adları yalnız uyumluluk için kalır (BRANDING.md).
+- `e10c40d` sonrası son tam takım **156/156**, atlanan yok; TR/EN Edge UI,
+  native derleme/form render ve legacy sentetik HTTP kontrolü geçti. Kaynak
+  kapısı 172 metin + 4 PNG / 121 kilit girdisi; son kaynak geçmişi 31 commit /
+  531 blob / 31 metadata, özel terimler uygulanmış ve bulgu yok. Sezgisel
+  kontrol, tam güvenlik/lisans denetimi değildir; teslim commit'i de taranacak.
+  Yeni genel EXE/ZIP paketi üretilmedi; eski 1.1.0 çıktı değişmez.
+  Temiz cihaz ve libvips derleme/kabul kapıları açık. GitHub işlemi yapılmadı.
+
 ## 1.2.1 ClipBridge adı — 2026-10-09
 
 - Kullanıcı iki dilde tek ad olarak ClipBridge'i seçti. UI/çeviri katalogları,

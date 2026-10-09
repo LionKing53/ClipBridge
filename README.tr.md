@@ -1,5 +1,9 @@
 # ClipBridge
 
+Türkçe ve İngilizcede aynı ad kullanılır. Eski kurulumun sertifikası, adresi
+ve verileri yalnız isim değişikliği için sıfırlanmaz veya taşınmaz.
+[Adlandırma ve uyumluluk ayrıntıları](docs/BRANDING.md)
+
 [English README](README.md) | [Kurulum](docs/QUICKSTART.tr.md)
 
 **Kaynak kod yayını — 1.2.1 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
