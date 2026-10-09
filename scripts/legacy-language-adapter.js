@@ -70,6 +70,7 @@ export function adaptLegacy(inputs, canonical, nativeCatalog) {
   out['src/app.js'] = app;
   let local = out['src/local-network.js'];
   local = "import { translate } from './i18n.js';\n" + local;
+  local = replaceOnce(local, "? 'USB ağı' : entry.interfaceAlias", "? translate('network.usb', apiOptions.getLanguage?.() || 'tr') : entry.interfaceAlias");
   local = replaceOnce(local,'    async handleSetup(req, res) {',"    async handleSetup(req, res) {\n      const language = apiOptions.getLanguage?.() || 'tr';\n      const t = (key, values) => translate(key, language, values);");
   const html = /res\.end\(`<!doctype html>[\s\S]*?<\/html>`\);/;
   if (!html.test(local) || !html.test(canonical.local)) throw new Error('Missing reviewed local guide');

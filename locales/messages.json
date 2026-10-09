@@ -1,4 +1,5 @@
 {
+  "network.usb": { "tr": "USB ağı", "en": "USB network" },
   "pair.scanTitle": { "tr": "iPhone ile bu QR kodu tara", "en": "Scan this QR code with your iPhone" },
   "pair.connectedInstruction": { "tr": "iPhone'da Tailscale bağlı olmalı. Kamera uygulamasını aç ve QR koda tut.", "en": "Connect Tailscale on your iPhone. Open Camera and point it at the QR code." },
   "pair.opened": { "tr": "QR kodu tarayıcıda da açıldı.", "en": "The QR code also opened in your browser." },

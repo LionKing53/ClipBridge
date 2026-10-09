@@ -104,7 +104,7 @@ export async function createLocalNetwork({ stateRoot, apiOptions, port = 32147, 
     allowedNetworks: approvedNetworks(config).map(entry => ({
       key: networkKey(entry), interfaceAlias: entry.interfaceAlias,
       name: entry.name,
-      connection: entry.interfaceDescription === 'Apple Mobile Device Ethernet' ? 'USB ağı' : entry.interfaceAlias,
+      connection: entry.interfaceDescription === 'Apple Mobile Device Ethernet' ? translate('network.usb', apiOptions.getLanguage?.() || 'tr') : entry.interfaceAlias,
       active: status.state === 'ready' && !!boundNetwork && matchesApprovedNetwork(entry, boundNetwork)
     })),
     endpoint: status.address ? `https://${config.hostname}:${config.port}/api/v1/clipboard` : null,
