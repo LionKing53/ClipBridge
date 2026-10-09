@@ -3,10 +3,12 @@ import { readFile, lstat } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { documentationImagePolicy, matchesDocumentationImage } from './documentation-images.js';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const manifest = JSON.parse(await readFile(path.join(root, 'source-manifest.json'), 'utf8'));
 const allowed = new Set(manifest.files);
+const documentationImages = documentationImagePolicy(manifest);
 if (manifest.version !== 1 || allowed.size !== manifest.files.length) throw new Error('Invalid source manifest.');
 const forbiddenPath = /(^|\/)(node_modules|vendor|runtime|build|dist|\.local|\.clipboard-bridge)(\/|$)|\.(pfx|p12|pem|key|cer|dpapi|exe|dll|zip|png|ico)$/i;
 const failures = [];
@@ -14,12 +16,16 @@ let privateTerms = [];
 try { privateTerms = JSON.parse(await readFile(path.join(root, '.local/privacy-terms.json'), 'utf8')); }
 catch (error) { if (error.code !== 'ENOENT') throw error; }
 for (const name of allowed) {
-  if (typeof name !== 'string' || name.includes('\\') || name.startsWith('/') || name.includes(':') || name.split('/').includes('..') || forbiddenPath.test(name)) {
+  if (typeof name !== 'string' || name.includes('\\') || name.startsWith('/') || name.includes(':') || name.split('/').includes('..') || (forbiddenPath.test(name) && !documentationImages.has(name))) {
     failures.push('Invalid allowlist path'); continue;
   }
   const target = path.join(root, name);
   const metadata = await lstat(target);
   if (!metadata.isFile() || metadata.isSymbolicLink()) { failures.push('Non-regular source file: ' + name); continue; }
+  if (documentationImages.has(name)) {
+    if (!matchesDocumentationImage(await readFile(target), documentationImages.get(name))) failures.push('Unreviewed or changed documentation image: ' + name);
+    continue;
+  }
   const text = await readFile(target, 'utf8');
   if (/-----BEGIN (?:RSA |EC |OPENSSH |ENCRYPTED )?PRIVATE KEY-----/.test(text)
       || /[A-Z]:[\\/]+Users[\\/]+[^\s\\/]+/i.test(text)
@@ -42,4 +48,4 @@ for (const [name, entry] of Object.entries(lock.packages || {})) {
   if (url.protocol !== 'https:' || url.hostname !== 'registry.npmjs.org' || url.username || url.password || !/^sha512-/.test(entry.integrity || '')) failures.push('Dependency origin/integrity missing: ' + name);
 }
 if (failures.length) throw new Error(failures.join('\n'));
-console.log(`Source gate PASS: ${allowed.size} allowed text sources; ${Object.keys(lock.packages).length - 1} locked dependency entries. Full release audit is still required.`);
+console.log(`Source gate PASS: ${allowed.size - documentationImages.size} text sources; ${documentationImages.size} reviewed hash-pinned documentation images; ${Object.keys(lock.packages).length - 1} locked dependency entries. Full release audit is still required.`);

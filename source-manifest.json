@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Reviewed text source inputs only; not a deployable distribution manifest",
+  "purpose": "Reviewed source inputs and individually reviewed hash-pinned synthetic documentation images; not a deployable distribution manifest",
   "files": [
     "docs/FIRST-INSTALL.md",
     "launcher/FreshInstall.cs",
@@ -153,6 +153,45 @@
     "test/rich-text.test.js",
     "test/source-isolation.test.js",
     "test/support/desktop-system.js",
-    "test/uploads.test.js"
+    "test/uploads.test.js",
+    "README.tr.md",
+    "docs/QUICKSTART.tr.md",
+    "docs/SCREENSHOTS.md",
+    "scripts/capture-docs.js",
+    "scripts/documentation-images.js",
+    "docs/images/history-light.png",
+    "docs/images/history-dark.png",
+    "docs/images/trusted-networks.png",
+    "docs/images/first-time-setup.png"
+  ],
+  "documentationImages": [
+    {
+      "path": "docs/images/history-light.png",
+      "sha256": "10d065cc05d46ccfda03b596f1eb8e49759082b23ebdd202d68cb7470e328181",
+      "bytes": 274141,
+      "width": 1440,
+      "height": 1124
+    },
+    {
+      "path": "docs/images/history-dark.png",
+      "sha256": "edca8c9b05366aac456d69e4dfa1b0f24f470321b2d54ac695c6e35d762b3bb2",
+      "bytes": 250042,
+      "width": 1440,
+      "height": 1124
+    },
+    {
+      "path": "docs/images/trusted-networks.png",
+      "sha256": "0811b40e559da3bb3f3d4a2acd82377cfe6f97e8aa5bde87113e572aac5d1a9c",
+      "bytes": 72095,
+      "width": 1134,
+      "height": 858
+    },
+    {
+      "path": "docs/images/first-time-setup.png",
+      "sha256": "6b185b56ce50a4b81c8a4499041ac4049b07660a0f5f6b70fa9f855d1be405c2",
+      "bytes": 38629,
+      "width": 560,
+      "height": 434
+    }
   ]
 }

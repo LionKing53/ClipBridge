@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09: GitHub ana README ve kurulum rehberi İngilizce öne alınır; Türkçe
+kopyalar korunur. Sentetik İngilizce belge ekran görüntüleri ve akış şemaları
+eklendi; bu çalışma uygulama yerelleştirmesi veya cihaz kabulü değildir.
+
 2026-10-09: Kullanıcı kaynakların son gizlilik/geçmiş incelemesinden sonra herkese
 açık GitHub kaynak deposu yayınına izin verdi. Bu aşamada EXE/ZIP dağıtımı yok.
 Temiz Windows/iPhone kabulü ve native yeniden derleme/dağıtım incelemesi binary

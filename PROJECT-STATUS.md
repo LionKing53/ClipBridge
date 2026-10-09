@@ -1,5 +1,26 @@
 # PanoKopru — proje durumu
 
+## English-first GitHub belgeleri — 2026-10-09
+
+- README.md İngilizce ana giriş; README.tr.md Türkçe kopya. README.en.md ana
+  İngilizce belgeye yönlendirir. QUICKSTART.md ayrıntılı İngilizce kurulum/kaldırma
+  rehberi; QUICKSTART.tr.md Türkçe kopya. Kestirme rehberinde İngilizce önde.
+- README ve kurulum rehberinde Mermaid bağlantı/kurulum/aktarım şemaları ve
+  dört sentetik İngilizce ekran görüntüsü var. Gerçek HTML/CSS test arayüzü
+  kullanıldı; İngilizce etiketler yalnız belge önizlemesine uygulanır. Uygulama
+  yerelleştirmesi yapılmadı; kurulu UI Türkçe, kişisel kurulum değişmedi.
+- Görseller tek tek incelendi: yalnız DEMO-PC/Demo Home, örnek metin/görsel/PDF;
+  kişisel yol, anahtar, sertifika/QR veya gerçek kullanıcı verisi yok. PNG metadata
+  engeli ve dosya bazında SHA-256/boyut/ölçü pinleri kaynak/geçmiş denetimine eklendi.
+- Bu çalışmada capture-docs.js geçti; history-audit.test.js 4/4 ve Edge UI testi
+  geçti. Kaynak kapısı 157 metin + 4 onaylı belge PNG'si / 121 kilit girdisi geçti.
+  Belge bağlantı/kod bloğu/UTF-8 kontrolleri ve git diff --check geçti.
+  Tam 143 testlik önceki koşu yeniden çalıştırılmadı. Commit sonrası erişilebilir
+  geçmiş taraması push öncesi yeniden çalıştırılır.
+- Yayımlanan kaynak kimliği için git log -1 ve origin/main esas. Önceki EXE
+  paket kaynağı a8ea3dc, kişisel kurulum 1.0.0 (kaynak commit'i bilinmiyor).
+  EXE dağıtımı yok; temiz Windows/iPhone ve gerçek native yeniden derleme açık.
+
 ## Kaynak GitHub yayını — 2026-10-09
 
 - Kullanıcı yayın sohbetine kaynak deposunu herkese açık GitHub'a yayımlama

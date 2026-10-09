@@ -105,6 +105,17 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### English documentation and screenshots — owner decision 2026-10-09
+
+The publication conversation may make README and setup documentation English-first,
+retain Turkish copies and publish synthetic English documentation screenshots.
+This is documentation preview text, not app localization. `capture-docs.js` may
+render the real desktop UI in headless Edge with temporary fixture data, complete
+synthetic OS adapters and blocked browser clipboard writes. No real installer,
+UAC, certificate store, pairing QR or personal state may be captured. Only PNGs
+individually reviewed and hash-pinned in source-manifest.json may enter Git;
+source/history gates must continue rejecting unapproved binary files and metadata.
+
 ### Source publication — owner decision 2026-10-09
 
 The owner authorized the publication conversation to review source/privacy and

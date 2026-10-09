@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## English-first README ve görseller — 2026-10-09
+
+- İngilizce ana README ve ayrıntılı kurulum/kaldırma rehberi; Türkçe kopyalar
+  korundu. Manuel bağlantı ve aktarım akışları Mermaid ile açıklandı.
+- Açık/koyu geçmiş, güvenilen ağlar ve ilk kurulum için dört İngilizce sentetik
+  belge ekran görüntüsü. UI'nin Türkçe olduğu ve görsellerin gerçek cihaz kabulü
+  olmadığı açıkça belirtildi; kurulu uygulama dili/değişiklikleri yok.
+- Yeniden üretilebilir yalıtılmış capture-docs.js; onaylı PNG'ler için hash/boyut/
+  ölçü ve metadata kontrolü. Denetim testleri 4/4, Edge UI ve kaynak kapısı geçti.
+  Sürüm/API/veri şeması ve mevcut EXE paketi değişmedi.
+
 ## Kaynak GitHub yayını — 2026-10-09
 
 - TR/EN README kaynak yayını kapsamını ve yapılmamış temiz Windows/iPhone ile

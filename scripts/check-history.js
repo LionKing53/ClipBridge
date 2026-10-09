@@ -5,6 +5,7 @@ import { promisify } from 'node:util';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
+import { documentationImagePolicy, matchesDocumentationImage } from './documentation-images.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -18,14 +19,14 @@ export function inspectHistoryContent(buffer, privateTerms = []) {
   if (privateTerms.some(term => text.toLowerCase().includes(term.toLowerCase()))) issues.push('private_local_term');
   return issues;
 }
-export function inspectHistoryPath(name, mode, allowed) {
+export function inspectHistoryPath(name, mode, allowed, documentationImages = new Map()) {
   if (mode !== '100644' && mode !== '100755') return ['linked_or_nonregular_history_entry'];
   if (!allowed.has(name)) return ['historical_path_outside_current_allowlist'];
-  if (/(^|\/)(node_modules|vendor|runtime|build|dist|\.local|\.clipboard-bridge)(\/|$)|\.(pfx|p12|pem|key|cer|dpapi|exe|dll|zip|png|ico)$/i.test(name)) return ['private_or_generated_history_path'];
+  if (/(^|\/)(node_modules|vendor|runtime|build|dist|\.local|\.clipboard-bridge)(\/|$)|\.(pfx|p12|pem|key|cer|dpapi|exe|dll|zip|png|ico)$/i.test(name) && !documentationImages.has(name)) return ['private_or_generated_history_path'];
   return [];
 }
 
-export async function auditReachableHistory({ repository = root, allowed, privateTerms = [] }) {
+export async function auditReachableHistory({ repository = root, allowed, privateTerms = [], documentationImages = new Map() }) {
   if (!(allowed instanceof Set) || !Array.isArray(privateTerms) || privateTerms.some(term => typeof term !== 'string' || !term.length)) throw new TypeError('Explicit valid history policy required.');
   const git = async args => (await run('git', args, { cwd: repository, windowsHide: true, timeout: 10000, maxBuffer: 16 * 1024 ** 2 })).stdout;
   const refsBefore = await git(['show-ref', '--head']);
@@ -40,11 +41,11 @@ export async function auditReachableHistory({ repository = root, allowed, privat
     for (const entry of (await git(['ls-tree', '-r', '-z', '--full-tree', tree])).split('\0').filter(Boolean)) {
       const tab = entry.indexOf('\t'); const [mode, type, object] = entry.slice(0, tab).split(' ');
       if (tab < 0 || !/^[a-f0-9]{40}$/.test(object)) throw new Error('Unexpected Git tree response.');
-      add(object, inspectHistoryPath(entry.slice(tab + 1), mode, allowed));
+      add(object, inspectHistoryPath(entry.slice(tab + 1), mode, allowed, documentationImages));
       if (type !== 'blob') add(object, ['non_blob_history_entry']);
     }
   }
-  let blobs = 0, metadata = 0;
+  let blobs = 0, metadata = 0, reviewedImages = 0;
   for (const object of objects) {
     if (!/^[a-f0-9]{40}$/.test(object)) throw new Error('Unsupported Git object format.');
     const type = (await git(['cat-file', '-t', object])).trim();
@@ -53,22 +54,24 @@ export async function auditReachableHistory({ repository = root, allowed, privat
     const size = Number((await git(['cat-file', '-s', object])).trim());
     if (!Number.isSafeInteger(size) || size > 4 * 1024 ** 2) { add(object, ['oversized_object_requires_review']); continue; }
     const { stdout } = await run('git', ['cat-file', type, object], { cwd: repository, windowsHide: true, timeout: 10000, encoding: 'buffer', maxBuffer: 4 * 1024 ** 2 + 1 });
-    add(object, inspectHistoryContent(stdout, privateTerms));
+    if (type === 'blob' && [...documentationImages.values()].some(entry => matchesDocumentationImage(stdout, entry))) reviewedImages++;
+    else add(object, inspectHistoryContent(stdout, privateTerms));
     if (type === 'blob') blobs++; else metadata++;
   }
   if (await git(['show-ref', '--head']) !== refsBefore) throw new Error('Git references changed during review; repeat the audit.');
-  return { format: 1, scope: 'all-currently-reachable-refs', commits: commits.length, blobs, metadata,
+  return { format: 1, scope: 'all-currently-reachable-refs', commits: commits.length, blobs, metadata, reviewedImages,
     privateTermsApplied: privateTerms.length > 0, passed: findings.length === 0, findings,
     limitations: ['Heuristic patterns, not comprehensive secret detection.', 'Unreachable/reflog objects and ignored files are not publication inputs and not inspected.',
       'QR/images, final archives, source/binary license obligations and publisher authenticity require separate review.'] };
 }
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const allowed = new Set(JSON.parse(await readFile(path.join(root, 'source-manifest.json'), 'utf8')).files);
+  const manifest = JSON.parse(await readFile(path.join(root, 'source-manifest.json'), 'utf8'));
+  const allowed = new Set(manifest.files);
   let privateTerms = [];
   try { privateTerms = JSON.parse(await readFile(path.join(root, '.local/privacy-terms.json'), 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
-  const report = await auditReachableHistory({ allowed, privateTerms });
+  const report = await auditReachableHistory({ allowed, privateTerms, documentationImages: documentationImagePolicy(manifest) });
   console.log(JSON.stringify(report, null, 2)); // Object IDs + finding codes only, never names/content/secret terms.
   if (!report.passed) process.exitCode = 1;
 }

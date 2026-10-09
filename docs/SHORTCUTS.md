@@ -1,6 +1,29 @@
-# iPhone kestirmeleri / iPhone Shortcuts
+# Apple Shortcuts / iPhone kestirmeleri
+
+[Setup guide](QUICKSTART.md) | [Türkçe](QUICKSTART.tr.md)
+
+## English
+
+
+Create separate local and optional Tailscale send/receive shortcuts. Use your
+own pairing endpoint and Bearer key. Never publish pairing QR images. This guide
+does not provide a signed importable Shortcut and does not imply automatic sync.
+
+Send: Get Clipboard → Get Contents of URL `/api/v1/clipboard`, POST, Authorization
+header, Form body with a **File** field named `content` bound to the Clipboard
+action output. Then paste on Windows; use Explorer/Desktop for files rather than
+an arbitrary text input.
+
+Receive: GET `/api/v1/clipboard` into a named Content variable. GET `/kind` with
+the same authorization, convert that second response to text into a Kind variable.
+If Kind equals `image`, save **Content** to Photos. If `file`, Save File with Ask
+Where to Save enabled. If `text`, copy **Content** to the iPhone clipboard and
+paste manually. Do not confuse the two URL outputs or save the kind label itself.
+Do not change the Windows clipboard between the two requests: they are not an
+atomic snapshot. Treat unknown kinds/error JSON as failures, not incoming files.
 
 ## Türkçe
+
 
 Bu bir kestirme oluşturma rehberidir; imzalı/import edilebilir kestirme paketi
 değildir. iOS arayüzündeki eylem adları sürüme/dile göre değişebilir. Her kullanıcı
@@ -42,22 +65,3 @@ Türü kaydetmeye çalışmayın: `image`, `file`, `text` etiketleri içerik de�
 İki GET arasında Windows panosunu değiştirmeyin; bu API çiftinin atomik snapshot
 kimliği yoktur. Tanınmayan tür/hata JSON'u gelirse kaydetmeyin; önce bağlantı ve
 yetkilendirme hatasını inceleyin. Arkaya çift dokunma isteğe bağlı kullanıcı ayarıdır.
-
-## English
-
-Create separate local and optional Tailscale send/receive shortcuts. Use your
-own pairing endpoint and Bearer key. Never publish pairing QR images. This guide
-does not provide a signed importable Shortcut and does not imply automatic sync.
-
-Send: Get Clipboard → Get Contents of URL `/api/v1/clipboard`, POST, Authorization
-header, Form body with a **File** field named `content` bound to the Clipboard
-action output. Then paste on Windows; use Explorer/Desktop for files rather than
-an arbitrary text input.
-
-Receive: GET `/api/v1/clipboard` into a named Content variable. GET `/kind` with
-the same authorization, convert that second response to text into a Kind variable.
-If Kind equals `image`, save **Content** to Photos. If `file`, Save File with Ask
-Where to Save enabled. If `text`, copy **Content** to the iPhone clipboard and
-paste manually. Do not confuse the two URL outputs or save the kind label itself.
-Do not change the Windows clipboard between the two requests: they are not an
-atomic snapshot. Treat unknown kinds/error JSON as failures, not incoming files.

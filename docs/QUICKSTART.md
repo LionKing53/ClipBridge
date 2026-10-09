@@ -1,148 +1,193 @@
-# PanoKöprü 1.1.0 — özel kabul testi / private acceptance test
+# Setup and iPhone pairing
+**PanoKopru 1.1.0 · private acceptance package**
 
-Bu paket genel yayın değildir. Gerçek Windows/iPhone kabulü ve sharp/libvips
-dağıtım incelemesi henüz tamamlanmadı. Paketi testiniz için kullanın; henüz
-başkalarına dağıtmayın. Kaynak ve kurucu imzalı değildir. Beklenmedik güvenlik
-uyarısında korumaları kapatmayın; dosyanın SHA-256 özetini teslim kaydıyla
-karşılaştırın ve durumu bildirin.
+[Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
-## Türkçe — hazırlık ve kurulum
+> **Testing is pending.** No public installer download is available yet.
+> The source-built setup has not been tested on clean Windows or with a real
+> iPhone transfer. The sharp/libvips rebuild and distribution review are also
+> unfinished. This guide describes the intended acceptance flow, not completed
+> device-test evidence.
 
-1. Mevcut çalışan PanoKöprü kurulumunuzun **olmadığı** bilgisayarı kullanın.
-   İlk hedef Windows 11 veya Windows 10 22H2 (build 19045+) Intel/AMD **x64**.
-   ARM64/32-bit desteklenmez. Bu, bütün Windows sürümlerinin güvenlik desteğinin
-   sürdüğü anlamına gelmez; işletim sisteminizi güncel ve destekli tutun.
-   Yönlendirilmiş kullanıcı profilleri ilk pakette desteklenmez.
-2. ZIP'in **tamamını** yerel bir klasöre çıkarın. ZIP içinden çalıştırmayın;
-   `PanoKopruSetup.exe` ile `payload` klasörü yan yana kalmalı.
-3. `PanoKopruSetup.exe` dosyasını normal kullanıcı olarak açın; **Yönetici olarak
-   çalıştır** kullanmayın. Gerekirse kurucunun WebView2 düğmesiyle Microsoft'un
-   resmi sayfasından x64 Evergreen Runtime kurup kurucuyu yeniden açın. Node
-   pakette bulunur; Node veya Tailscale kurmanız gerekmez.
-4. Açıklamayı okuyup onaylayın ve ilk kurulumu başlatın. Başlangıçta çalışma
-   isteğe bağlı ve varsayılan kapalıdır. Mevcut program **veya veri** varsa
-   kurucu durur; üzerine kurma, otomatik güncelleme ve eski veri göçü yoktur.
-5. Başlat menüsünden PanoKöprü'yü açın. Program ile kişisel veriler ayrıdır:
-   `%LOCALAPPDATA%/Programs/PanoKopru` ve `%LOCALAPPDATA%/PanoKopru`.
+The screenshots below are synthetic English documentation previews of the real
+desktop interface. **The current application UI is Turkish.** English button
+names in this guide are followed by their Turkish equivalents where needed.
 
-## İlk iPhone eşleştirmesi — Tailscale gerekmez
+## The setup path
 
-1. Bilgisayar ve iPhone'u aynı güvenilir ev ağına bağlayın. Misafir ağında cihaz
-   yalıtımı, mDNS engeli veya kurumsal ağ politikası bağlantıyı önleyebilir.
-2. Uygulamadaki ilk kurulum sihirbazından bağlı ağı seçin. Windows izinleri için
-   UAC onayını verin. Bu işlem ağı **Özel** profile geçirir; başka uygulamaların
-   mevcut Özel profil kurallarını da etkileyebilir. Ortak/üniversite ağını sırf
-   testi geçirmek için güvenilir yapmayın. İptal ederseniz sihirbazdan tekrar
-   başlayabilir veya verilmiş PanoKöprü izinlerini temizleyebilirsiniz.
-3. Sihirbazın süreli sertifika QR bağlantısını iPhone'da açın. Bu ilk HTTP
-   bağlantısı yalnız **açık CA sertifikasını** taşır; pano veya erişim anahtarını
-   taşımamalıdır. Sertifika parmak izini bilgisayardaki değerle karşılaştırın;
-   eşleşmiyorsa devam etmeyin. TLS hatasını yok saymayın.
-4. iPhone Ayarlar'da indirilen profili yükleyin (Genel → VPN ve Aygıt Yönetimi).
-   Ardından Genel → Hakkında → Sertifika Güven Ayarları'nda bu PanoKöprü köküne
-   tam güveni elle açın. Ekran adları dil/sürüme göre değişebilir. Kök güveni
-   yalnız bu uygulamaya özel bir izin değildir; bu CA'nın imzaladığı sertifikalara
-   güven verir. Tanımadığınız profilleri yüklemeyin.
-5. Sihirbazda tamamlandığını doğrulayın. Yerel HTTPS eşleştirme ekranının
-   **kendi adresinizi ve anahtarınızı** gösterdiğini kontrol edin. Sır içeren QR
-   veya başlık ekranlarını paylaşmayın.
-6. [Kestirme rehberindeki](SHORTCUTS.md) iki yerel kestirmeyi oluşturun. Paketin
-   kökündeki bu kopyayı okuyorsanız rehber `payload/source/docs/SHORTCUTS.md`
-   konumundadır. iPhone → Windows **POST**, Windows → iPhone iki **GET** kullanır.
-   Her istekte kendi Authorization başlığınız gerekir. Hazır/imzalı kestirme
-   paketi yoktur; rehberle elle kurulur. Tailscale kestirmeleri ayrı ve isteğe bağlıdır.
+```mermaid
+flowchart LR
+    A["1. Extract and install<br/>Clean Windows x64"]
+    B["2. Select your network<br/>Approve Windows permission"]
+    C["3. Verify the certificate<br/>Enable trust on iPhone"]
+    D["4. Create two Shortcuts<br/>Test send and receive"]
+    A --> B --> C --> D
+```
 
-## Bu akşam için temel kabul listesi
+## 1. Prepare and install
 
-Sırayla deneyin; hata olursa tam hata kodunu ve hangi adımda olduğunu bildirin.
-Anahtar, gerçek pano içeriği veya kişisel dosya yolu içeren görüntü paylaşmayın.
+Use a separate computer with **no existing PanoKopru program or data**.
 
-- [ ] Temiz kurulum ve ilk açılış başarılı.
-- [ ] İlk UAC isteğini iptal edip tekrar başlatma başarılı.
-- [ ] Yarım ilk kurulumda Windows izinlerini temizleme ve tekrar başlama başarılı.
-- [ ] Tailscale kapalıyken sertifika/eşleştirme tamamlandı.
-- [ ] İki yönde `Deneme: çğıöşü ÇĞİÖŞÜ` metni doğru yapışıyor.
-- [ ] İki yönde küçük bir JPEG/PNG fotoğraf ve sentetik PDF aktarılıyor.
-- [ ] Windows'a gelen dosya masaüstüne yapışıyor; iPhone'a gelen fotoğraf
-      Fotoğraflar'a, PDF seçilen Dosyalar konumuna kaydoluyor.
-- [ ] Uygulamayı tepsi menüsünden tamamen durdurup tekrar açınca aktarım çalışıyor.
-- [ ] Aşağıdaki kaldırma yolu başarılı; veriler korunuyor.
+| Requirement | First-package scope |
+| --- | --- |
+| Windows | Windows 11 or Windows 10 build 19045+; keep it supported and updated |
+| Architecture | Intel/AMD x64; ARM64 and 32-bit are unsupported |
+| Account | Normal Windows user, standard non-redirected profile |
+| iPhone | Apple Shortcuts and access to your trusted home network |
+| WebView2 | Evergreen Runtime; use setup's official Microsoft link if missing |
+| Node / Tailscale | Node is bundled; Tailscale is optional for remote use |
 
-Ek hata kontrolü: UAC beklerken/aktarım sırasında tam çıkış isteği verin; devam
-eden işlem güvenli biçimde sonlanmalı ve hizmet kendiliğinden yeniden açılmamalı.
-Kapanış bekleyen UAC'yi cevaplamanızı gerektirebilir. Takılırsa işlemleri elle
-öldürmek veya kurulum klasörünü silmek yerine hata durumunu bildirin.
+1. Verify the package's SHA-256 against its delivery record. Setup is unsigned.
+   Do not disable security protections to get past an unexpected warning.
+2. Extract the **whole ZIP** into a local folder. Do not launch setup from inside
+   the ZIP. Keep this layout intact:
 
-Test kaydı: Windows sürümü/mimarisi, paket sürümü ve SHA-256, geçen/kalan maddeler,
-hata kodu. Bu liste doldurulmadan gerçek cihaz kabulü geçti sayılmaz.
+   ```text
+   PanoKopru-1.1.0-win-x64-test/
+   |-- PanoKopruSetup.exe
+   |-- payload/
+       |-- release.json
+       |-- app/
+       |-- source/
+   ```
 
-## Güvenli kaldırma
+3. Open `PanoKopruSetup.exe` as a **normal user**, not with “Run as administrator.”
+   If WebView2 is missing, use setup's Microsoft download-page button to install
+   the x64 Evergreen Runtime, then reopen setup.
+4. Read the explanation and approve the installation. Startup at login is
+   optional and **off by default**. Existing program **or data** causes setup to
+   stop; this installer does not overwrite, update or migrate them.
+5. Open PanoKopru from the Windows Start menu.
 
-Çıkardığınız **aynı sürümün** `PanoKopruSetup.exe` dosyasını tekrar açıp
-**Kaldır (veriler korunur)** seçin. Uygulama durdurulur; yalnız sahipliği doğrulanan
-program dosyaları, kısayollar/başlangıç kısayolu ve PanoKöprü firewall izinleri
-temizlenir. Firewall temizliği UAC ister; iptalde program silinmez.
-Windows ağ profili ve Tailscale değiştirilmez. Kullanıcı verileri ve Windows CA
-kimliği silinmez. iPhone'da Genel → VPN ve Aygıt Yönetimi'nden yalnız bu kurulumun
-PanoKöprü sertifika profilini ayrıca kaldırın.
+Program files and personal data are separate:
+`%LOCALAPPDATA%/Programs/PanoKopru` and `%LOCALAPPDATA%/PanoKopru`.
+Keep the extracted setup for removal later.
 
-Korunan veriler bulunduğundan ilk-kurulum kurucusu aynı kullanıcıya yeniden
-kurulumu reddeder; bu sürüm veri benimseme/göç yapmaz. Yeniden temiz kabul için
-ayrı temiz Windows hesabı/VM kullanın. Kaldırma yarım kalırsa bakım kilidini veya
-dosyaları rastgele silmeyin. Setup'ı saklayın; Ayarlar uygulamasında ayrı kaldırma
-kaydı bu test paketinde yoktur.
+## 2. Choose your trusted network
 
-## Bilinen sınırlar
+Connect Windows and iPhone to the **same home network or personal hotspot you
+control**. Guest-network client isolation, blocked mDNS or managed-network
+policies can prevent a connection.
 
-Otomatik iPhone pano eşitlemesi ve otomatik yerel/Tailscale yol seçimi yoktur.
-Kestirmeler kullanıcı tarafından tetiklenir. Fotoğraf/dosya alma kaydeder; metni
-kullanıcı yapıştırır. Windows → iPhone iki GET arasında panoyu değiştirmeyin.
-iPhone → Windows dosya/video yükleme 512 MiB; metin/görsel işleme 64 MiB.
-Windows → iPhone yolunda aynı genel üst sınır yoktur. Geçmiş kotası toplam disk
-kotası değildir. İlk sürümde güncelleme, üretim rollback'i ve kişisel veri göçü
-yoktur. Kaynakta deneysel motor bulunması desteklendiği anlamına gelmez.
+![English documentation preview of the network-selection step](images/first-time-setup.png)
 
-## English — quick start and acceptance
+1. Open **First-time setup without Tailscale** (`Tailscale’siz ilk kurulum`).
+2. Select the connected network.
+3. Choose **Approve network and begin setup** (`Ağı onayla ve kurulumu başlat`).
+4. Approve the Windows UAC prompt.
 
-Private test package, **not yet approved for public redistribution**. Real device
-acceptance and sharp/libvips distribution review are pending. Unsigned setup:
-compare the delivered SHA-256; do not disable security protections.
+This changes the selected Windows network to **Private**. Other apps' existing
+Private-profile firewall rules may also become applicable. Do not trust a
+public, school or university network just to make the test pass.
 
-Use a separate clean Windows x64 PC (Windows 11 or Windows 10 build 19045+), with
-no existing PanoKopru program/data and a normal non-redirected user profile.
-ARM64/32-bit are unsupported. Extract the **whole** ZIP and run the root
-`PanoKopruSetup.exe` as a normal user, not administrator. Keep `payload` beside it.
-If needed use its official Microsoft WebView2 link to install the x64 Evergreen
-Runtime, then retry. Node is included; Tailscale is optional. Existing program or
-data is never overwritten. Choose shortcuts/startup (startup defaults off).
-Launch PanoKopru from Start after installation.
+If you cancel, retry the wizard or use the separate permission-cleanup action.
+Closing the dialog does not cancel a Windows approval already in progress.
 
-Connect PC and iPhone to the same trusted home LAN. In onboarding select the
-network and approve UAC. This changes its Windows category to Private, affecting
-other existing Private-profile rules too. Do not trust a public/university network
-just to pass a test. Download the public CA using the temporary onboarding QR;
-compare its fingerprint with the computer. Install its profile on iPhone under
-Settings → General → VPN & Device Management, then explicitly enable full trust
-under General → About → Certificate Trust Settings. This root trust is not scoped
-only to PanoKopru. Never bypass TLS errors. Confirm onboarding and follow
-`payload/source/docs/SHORTCUTS.md` for separate local send/receive shortcuts with
-your own endpoint and Bearer key. Never share secret QR images.
+## 3. Verify the certificate on iPhone
 
-Test clean installation/first launch; UAC cancel/retry; partial setup permission
-cleanup/retry; pairing with Tailscale off; bidirectional Unicode text, JPEG/PNG,
-and PDF; full exit/relaunch; removal. Report OS/architecture, package hash, each
-pass/failure and sanitized error code. Tests here are not completed device evidence.
+1. Open the wizard's **temporary certificate QR link** on iPhone.
+   This HTTP link carries only the **public CA certificate**, not clipboard
+   contents, pairing keys or private keys.
+2. Compare the certificate's **SHA-256 fingerprint** shown on the phone with
+   the value displayed on Windows. If they differ, stop.
+3. Install the downloaded profile under **Settings → General → VPN & Device
+   Management**.
+4. Under **Settings → General → About → Certificate Trust Settings**, explicitly
+   enable full trust for this installation's PanoKopru root certificate.
+5. Confirm the fingerprint and trust step in the Windows wizard. Continue to
+   the local **HTTPS pairing** screen.
 
-To remove, reopen the **same extracted setup** and choose the data-preserving
-removal button. It stops the app, cleans owned shortcuts/startup/firewall rules,
-and removes validated program files. UAC cancellation retains the program. User
-data and CA identity stay; Windows network category and Tailscale are unchanged.
-Remove the matching iPhone certificate profile manually. Retained data deliberately
-blocks another clean install: use another clean account/VM for repeat acceptance.
-Keep the extracted setup; this test package has no separate Windows Settings
-uninstall entry. Do not manually erase a partial-removal maintenance lock.
+iOS labels can vary by version and language; this flow still needs real-device
+verification. Root trust is not limited to this app or network: it trusts
+certificates signed by that CA. Never bypass TLS errors.
 
-No automatic clipboard sync, route fallback, update, production rollback or legacy
-migration. Windows-to-iPhone's content/kind requests are not atomic. Inbound
-file/video uploads: 512 MiB; text/image processing: 64 MiB. The outbound path has
-no identical overall limit. History quota is not a total disk quota.
+Use **your own endpoint and access key** from pairing. Never post screenshots
+of the pairing QR or Authorization header. If the temporary session expires,
+restart it through the wizard.
+
+## 4. Create send and receive Shortcuts
+
+Follow the [Apple Shortcuts guide](SHORTCUTS.md). A signed/importable Shortcut
+package is not included; create the actions manually.
+
+```mermaid
+flowchart LR
+    A["iPhone: copy an item"] --> B["Run send Shortcut<br/>POST content"]
+    B --> C["Windows: Ctrl+V"]
+    D["Windows: Ctrl+C"] --> E["Run receive Shortcut<br/>GET content + GET kind"]
+    E --> F["iPhone: paste text<br/>or save image/file"]
+```
+
+| Shortcut | Requests | What to do with the result |
+| --- | --- | --- |
+| **iPhone → Windows** | POST to your clipboard endpoint, Form **File** field `content` | Ctrl+V on Windows; use Explorer/Desktop for photos and files |
+| **Windows → iPhone** | GET content, then GET `/kind`; your Authorization header on both | `text`: copy to clipboard; `image`: save to Photos; `file`: ask where to save |
+
+Do not change the Windows clipboard between the two receive requests; they are
+not an atomic snapshot. Do not save a type label or an error JSON as a file.
+
+Local Shortcuts do not start Tailscale. Remote Tailscale Shortcuts are separate
+and optional. **You select the route manually.** Back Tap is an optional shortcut
+trigger, not automatic clipboard synchronization.
+
+## Managing network access
+
+![English documentation preview of trusted networks and permission cleanup](images/trusted-networks.png)
+
+| Action | Effect |
+| --- | --- |
+| **Add / repair permission** | Requests administrator approval and validates the selected connected network |
+| **Remove** (`Listeden çıkar`) | Revokes app trust; does not revert the Windows profile or delete firewall rules |
+| **Clean up permissions** (`PanoKöprü Windows izinlerini temizle`) | Removes only owned PanoKopru firewall rules with UAC approval; leaves the network profile and Tailscale settings unchanged |
+
+“Ready” means the Windows listener is ready. It does not prove iPhone reachability.
+
+## Basic acceptance checklist
+
+Use synthetic content. Report the Windows version/architecture, package version
+and hash, passing/failing step and sanitized error code.
+
+- [ ] Clean installation and first launch.
+- [ ] Cancel the initial UAC prompt, then retry.
+- [ ] Clean up permissions during partial onboarding, then restart setup.
+- [ ] Complete local certificate trust and pairing with Tailscale off.
+- [ ] Transfer Unicode text in both directions.
+- [ ] Transfer a small JPEG/PNG and a synthetic PDF in both directions.
+- [ ] Paste an incoming file on the Windows desktop; save an incoming iPhone
+      photo to Photos and a PDF to a chosen Files location.
+- [ ] Fully stop the app through its tray menu, reopen it and transfer again.
+- [ ] Remove the program using the procedure below; verify data preservation.
+
+Also request full exit during a pending UAC prompt or transfer. Pending work
+must finish safely and must not reopen a service after shutdown. You may need
+to respond to the pending Windows prompt. Report a hang rather than killing
+unknown processes or deleting installation folders.
+
+Do not mark device acceptance passed until this checklist has actually been run.
+
+## Data-preserving removal
+
+Reopen the **same version's extracted** `PanoKopruSetup.exe` and choose
+**Remove (keep data)** (`Kaldır (veriler korunur)`).
+
+Setup stops the app and removes verified owned program files, shortcuts, startup
+shortcuts and firewall rules. Firewall cleanup requires UAC; cancelling it
+retains the program. Windows network profiles and Tailscale settings stay as-is.
+User data and the Windows CA identity are preserved.
+
+On iPhone, manually remove only this installation's PanoKopru certificate profile
+under **General → VPN & Device Management**.
+
+Retained data prevents another clean install under the same account. Use a
+separate clean account or VM for repeat acceptance. Keep setup: this test package
+has no separate uninstall entry in Windows Settings. Do not randomly delete a
+maintenance lock after interrupted removal.
+
+## Known limits
+
+- No automatic clipboard synchronization, local/Tailscale switching or fallback.
+- No automatic update, production rollback or legacy migration in this version.
+- Inbound files/video: **512 MiB**. Inbound text/image processing: **64 MiB**.
+  The outbound path has no identical overall limit.
+- The history cache budget is not a total disk quota.
+- English documentation previews do not imply English app localization.
