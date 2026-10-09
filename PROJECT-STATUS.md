@@ -1,9 +1,10 @@
 # PanoKopru — proje durumu
 
-## Kaynak GitHub yayını hazırlığı — 2026-10-09
+## Kaynak GitHub yayını — 2026-10-09
 
 - Kullanıcı yayın sohbetine kaynak deposunu herkese açık GitHub'a yayımlama
-  yetkisi verdi. Hedef: `LionKing53/PanoKopru`; EXE/ZIP release eki yok.
+  yetkisi verdi. Depo: https://github.com/LionKing53/PanoKopru (public).
+  İlk kaynak yayını `b0c3305`; EXE/ZIP release eki yok.
 - İnceleme başlangıcı `bfe6a2d`, çalışma ağacı temiz. Kaynak kontrolü bu
   çalışmada yeniden geçti: 152 izinli metin dosyası / 121 kilit girdisi.
 - TR/EN README temiz Windows/iPhone kabulünün ve libvips yeniden derleme/
@@ -11,7 +12,16 @@
 - 143/143 test ve Edge UI önceki geliştirme kanıtıdır; bu belge değişikliğinde
   yeniden çalıştırılmadı. Paket kaynağı `a8ea3dc`, kişisel kurulum mevcut 1.0.0;
   kurulu kaynak commit'i bilinmiyor. Kurulum/veri değişikliği yok.
-- Son kaynak/geçmiş denetimi ve uzak depo doğrulaması yayın sırasında kaydedilecek.
+- İlk push öncesi `b0c3305` üzerinde kaynak kontrolü ve erişilebilir geçmiş
+  taraması geçti: 20 commit / 334 blob / 20 metadata, bulgu yok; yerel özel
+  terimler uygulandı. Ek token/URL/tailnet örüntü kontrolündeki 5 blob eşleşmesi
+  incelendi: yalnız sentetik test verileri. İzin listesi 152 Git dosyasıyla birebir
+  aynı; Git yazar/committer metadata'sı kişisel e-posta içermez.
+- Public depo oluşturuldu ve `main` Git geçmişi `origin` üzerine gönderildi.
+  Bu teslim kaydı ayrıca commit edilecek; kesin güncel kaynak kimliği `git log -1`
+  ve uzak `main` ile doğrulanır. Paket kaynağı hâlâ `a8ea3dc`.
+- Denetim sezgiseldir; binary dağıtım/lisans, libvips gerçek yeniden derleme ve
+  temiz Windows/iPhone kabulü tamamlanmış sayılmaz. Testler yeniden çalıştırılmadı.
 - Aşağıdaki "yayın yapılmadı/onay yok" ifadeleri önceki paket teslimlerinin
   tarihsel kaydıdır. Kaynak yayını izni, binary dağıtım onayı değildir.
 

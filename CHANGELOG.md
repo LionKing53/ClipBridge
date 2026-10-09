@@ -1,11 +1,14 @@
 # Değişiklik kaydı
 
-## Kaynak yayını hazırlığı — 2026-10-09
+## Kaynak GitHub yayını — 2026-10-09
 
 - TR/EN README kaynak yayını kapsamını ve yapılmamış temiz Windows/iPhone ile
   libvips yeniden derleme/uyumluluk kontrollerini açıklar.
 - Yayın sohbetinin kullanıcı onaylı kaynak yayını yetkisi AGENTS.md'ye kaydedildi.
   Uygulama sürümü/API/veri şeması değişmedi; EXE dağıtımı ve kişisel kurulum yok.
+- `b0c3305` kaynak/geçmiş incelemesi geçti (152 kaynak, 20 commit, 334 blob).
+  https://github.com/LionKing53/PanoKopru public deposu oluşturuldu; kaynak
+  geçmişi main dalına gönderildi. Kurucu/ZIP yayımlanmadı; cihaz/native kabulü açık.
 
 ## 1.1.0 kaynak dahil paket teslimi — 2026-10-09
 
