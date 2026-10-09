@@ -7,7 +7,7 @@ PanoKopru is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send 
 receive an item, then keep working on your other device. Use **local HTTPS on a
 trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remotely.
 
-> **Source release · version 1.1.0 in development**
+> **Source release · version 1.2.0**
 >
 > No downloadable EXE or installer is published yet. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
@@ -18,12 +18,11 @@ trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remote
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/images/history-dark.png">
-  <img src="docs/images/history-light.png" alt="English documentation preview of the desktop: transfer history, text, image and PDF cards, favorites, search and local HTTPS status" width="1440">
+  <img src="docs/images/history-light.png" alt="English desktop: transfer history, text, image and PDF cards, favorites, search and local HTTPS status" width="1440">
 </picture>
 
-*Screenshots render the real desktop UI with synthetic data and English labels
-applied for documentation. The current application UI is Turkish; these images
-are not evidence of a completed Windows/iPhone acceptance test.*
+*Screenshots show the real English app interface with synthetic demo data.
+They do not constitute a clean Windows/iPhone acceptance test.*
 [How the screenshots are made](docs/SCREENSHOTS.md)
 
 ## What you can do
@@ -34,6 +33,7 @@ are not evidence of a completed Windows/iPhone acceptance test.*
 | **Local HTTPS** | Connect on approved home, Ethernet or personal hotspot networks; no Tailscale required |
 | **Remote access** | Use separate, optional Tailscale send/receive Shortcuts |
 | **Desktop history** | Revisit transfers, add favorites and search filenames or text previews |
+| **English and Turkish** | Choose Settings → Language; your preference is saved across restarts |
 | **Light and dark themes** | Choose the desktop appearance |
 | **Trusted networks** | Add/remove networks, repair permissions and clean up owned Windows firewall rules |
 | **Storage controls** | Choose a retention threshold and explicitly clean up managed incoming files |
@@ -84,7 +84,7 @@ review and future testing; there is currently no public installer download.
 
 [Kurulum rehberi — Türkçe](docs/QUICKSTART.tr.md)
 
-![English documentation preview of the first-time setup dialog: choose a trusted network and approve Windows permissions](docs/images/first-time-setup.png)
+![English desktop interface of the first-time setup dialog: choose a trusted network and approve Windows permissions](docs/images/first-time-setup.png)
 
 The initial, short-lived HTTP link downloads **only the public CA certificate**.
 Clipboard data and pairing credentials use HTTPS. Full trust in an iPhone root
@@ -93,7 +93,7 @@ fingerprint independently and never bypass a certificate warning.
 
 ## You control network access
 
-![English documentation preview of trusted-network management with synthetic home network details](docs/images/trusted-networks.png)
+![English desktop interface of trusted-network management with synthetic home network details](docs/images/trusted-networks.png)
 
 **Remove a network** revokes PanoKopru's trust in that network. It does not revert
 the Windows network profile or delete firewall rules. **Clean up permissions** is
@@ -143,15 +143,16 @@ actions from a source checkout; **do not delete it to run the app**.
 `build:native` compiles only, `build:candidate` produces a guarded engineering
 payload, and `build:test-package` explicitly creates a private acceptance package.
 
-To regenerate the English documentation previews:
+To regenerate the English screenshots:
 `node scripts/capture-docs.js`. Review the images before updating their pinned
-hashes. This script does not localize the installed application.
+hashes. The script selects the real English language option in an isolated fixture.
 
 ## Documentation
 
 | Topic | Guide |
 | --- | --- |
 | Installation, pairing and removal | [English setup guide](docs/QUICKSTART.md) · [Türkçe](docs/QUICKSTART.tr.md) |
+| Language selection | [English / Turkish support](docs/LOCALIZATION.md) |
 | Apple Shortcut actions | [Send and receive guide · EN/TR](docs/SHORTCUTS.md) |
 | Architecture and data boundaries | [Architecture](docs/ARCHITECTURE.md) |
 | Network and certificate security | [Local-network model](LOCAL-NETWORK.md) |

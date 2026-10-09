@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09 yayın güncellemesi: 1.2.0 kaynakları ve gerçek English seçimiyle
+alınan dört sentetik ekran görüntüsü GitHub'a hazırlanır. README'de dil
+desteği açıklanır; eski yalnız Türkçe/etiket enjeksiyonu açıklaması kaldırılır.
+Kişisel kurulum değişmez; temiz Windows/iPhone ve libvips kapıları açık kalır.
+
 2026-10-09 ek karar: Gerçek TR/EN yerelleştirme 1.2.0 tamamlandı; kullanıcı
 onayıyla mevcut kişisel düzene yalnız dil yaması ve doğrulanmış özel yedek/
 kod geri alma yolu uygulandı. İlk kurulum/native form testleri sentetiktir;

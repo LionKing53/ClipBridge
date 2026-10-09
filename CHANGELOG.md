@@ -2,6 +2,13 @@
 
 ## 1.2.0 — Türkçe / English — 2026-10-09
 
+- GitHub belgeleri gerçek kalıcı English seçimine uyarlandı; yalnız Türkçe
+  arayüz açıklaması kaldırıldı. Dört ekran görüntüsü gerçek İngilizce UI ve
+  sentetik verilerle yenilendi; görsellerde belgeye özel çeviri uygulanmaz.
+- Geçmişteki onaylı görsel sürümleri ayrı hash listesiyle korunur; onaysız
+  görseller/metaveri hâlâ reddedilir. 9/9 hedefli test ve Edge UI kontrolü geçti.
+  Genel kurucu paketi yenilenmedi; temiz Windows/iPhone kabulü hâlâ bekliyor.
+
 - Teslim kodu `9aae4d2c225665477150eea76f113151ebfb080e`. Mevcut kişisel kurulumda
   1.2.0 dil yaması uygulandı; 1.2.0.0 launcher mevcut WebView2 SDK ile derlendi.
   Doğrulanmış özel yedek/kod geri alma yolu var; 65 korunan veri özeti, geçmiş ve

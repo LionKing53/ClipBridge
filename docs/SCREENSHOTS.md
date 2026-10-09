@@ -1,8 +1,10 @@
 # Documentation screenshots
 
-These are screenshots of the real HTML/CSS desktop interface rendered by
-Microsoft Edge in an isolated fixture. English text is applied only in the
-documentation capture script; **the current app UI is Turkish**.
+These screenshots show the real HTML/CSS desktop interface rendered by
+Microsoft Edge in an isolated fixture. The capture script selects **English**
+through the application's **Settings → Language** control and verifies the
+saved preference after reload. No documentation-only text replacements are used.
+The app supports both **English and Turkish** starting with version 1.2.0.
 
 The sample computer (`DEMO-PC`), network (`Demo Home`), addresses, text, image
 and PDF are synthetic. No personal clipboard, network settings, credentials,

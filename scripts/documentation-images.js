@@ -18,6 +18,18 @@ export function documentationImagePolicy(manifest) {
   }
   return result;
 }
+export function historicalDocumentationImagePolicy(manifest) {
+  const entries = manifest.historicalDocumentationImages || [];
+  if (!Array.isArray(entries)) throw new Error('Invalid historical image policy.');
+  const seen = new Set();
+  return entries.map(entry => {
+    documentationImagePolicy({ files: manifest.files, documentationImages: [entry] });
+    const key = `${entry.path}:${entry.sha256}`;
+    if (seen.has(key)) throw new Error('Duplicate historical image pin.');
+    seen.add(key);
+    return entry;
+  });
+}
 export function matchesDocumentationImage(buffer, entry) {
   if (!entry || buffer.length !== entry.bytes || !buffer.subarray(0, 8).equals(signature) ||
       createHash('sha256').update(buffer).digest('hex') !== entry.sha256 ||

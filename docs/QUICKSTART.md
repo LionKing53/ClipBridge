@@ -1,5 +1,5 @@
 # Setup and iPhone pairing
-**PanoKopru 1.1.0 · private acceptance package**
+**Source version 1.2.0 · existing private acceptance package 1.1.0**
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
@@ -9,9 +9,12 @@
 > unfinished. This guide describes the intended acceptance flow, not completed
 > device-test evidence.
 
-The screenshots below are synthetic English documentation previews of the real
-desktop interface. **The current application UI is Turkish.** English button
-names in this guide are followed by their Turkish equivalents where needed.
+Version **1.2.0** supports **English / Türkçe**. Choose **Settings → Language →
+English** (or **Ayarlar → Dil → English**). The choice survives reopening.
+The screenshots show the real English interface with synthetic data.
+The existing private **1.1.0** package predates this language update; a new
+1.2.0 installer package has not been published. English button names below
+include Turkish equivalents where useful.
 
 ## The setup path
 
@@ -69,11 +72,11 @@ Connect Windows and iPhone to the **same home network or personal hotspot you
 control**. Guest-network client isolation, blocked mDNS or managed-network
 policies can prevent a connection.
 
-![English documentation preview of the network-selection step](images/first-time-setup.png)
+![English desktop interface of the network-selection step](images/first-time-setup.png)
 
-1. Open **First-time setup without Tailscale** (`Tailscale’siz ilk kurulum`).
+1. Open **First setup without Tailscale** (`Tailscale’siz ilk kurulum`).
 2. Select the connected network.
-3. Choose **Approve network and begin setup** (`Ağı onayla ve kurulumu başlat`).
+3. Choose **Approve network and start setup** (`Ağı onayla ve kurulumu başlat`).
 4. Approve the Windows UAC prompt.
 
 This changes the selected Windows network to **Private**. Other apps' existing
@@ -132,7 +135,7 @@ trigger, not automatic clipboard synchronization.
 
 ## Managing network access
 
-![English documentation preview of trusted networks and permission cleanup](images/trusted-networks.png)
+![English desktop interface of trusted networks and permission cleanup](images/trusted-networks.png)
 
 | Action | Effect |
 | --- | --- |
@@ -190,4 +193,4 @@ maintenance lock after interrupted removal.
 - Inbound files/video: **512 MiB**. Inbound text/image processing: **64 MiB**.
   The outbound path has no identical overall limit.
 - The history cache budget is not a total disk quota.
-- English documentation previews do not imply English app localization.
+- English and Turkish are available in the 1.2.0 source; the older 1.1.0 acceptance package has not been rebuilt.

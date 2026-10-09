@@ -122,8 +122,8 @@ No GitHub operations. Existing publication/binary acceptance gates remain.
 
 The publication conversation may make README and setup documentation English-first,
 retain Turkish copies and publish synthetic English documentation screenshots.
-This is documentation preview text, not app localization. `capture-docs.js` may
-render the real desktop UI in headless Edge with temporary fixture data, complete
+Since 1.2.0, captures must use the real app language preference; do not inject
+translated labels. `capture-docs.js` may render the real desktop UI in headless Edge with temporary fixture data, complete
 synthetic OS adapters and blocked browser clipboard writes. No real installer,
 UAC, certificate store, pairing QR or personal state may be captured. Only PNGs
 individually reviewed and hash-pinned in source-manifest.json may enter Git;

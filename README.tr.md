@@ -2,7 +2,7 @@
 
 [English README](README.md) | [Kurulum](docs/QUICKSTART.tr.md)
 
-**Kaynak kod yayını — 1.1.0 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
+**Kaynak kod yayını — 1.2.0 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
 yayımlanır; indirilebilir EXE/kurulum paketi henüz yayımlanmamıştır.
 Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
 test edilmemiştir**. libvips kaynak paketinden yeniden derleme ve uyumluluk
@@ -85,3 +85,5 @@ Yazılım, uygulanabilir hukukun izin verdiği ölçüde garantisiz sağlanır.
 Logo için kullanıcı beyanı kaydedildi. Bağımlılık envanteri, lisans metni toplama ve kaynak
 kilidi SBOM raporu üretilebilir; nihai Windows paketinin lisans denetimi ayrıdır.
 Bu belge bir güvenlik sertifikası veya kurulabilir sürüm duyurusu değildir.
+
+Dil: **Ayarlar → Dil → Türkçe / English**. Tercih yeniden açılışta korunur.

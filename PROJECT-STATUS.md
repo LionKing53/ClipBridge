@@ -1,5 +1,27 @@
 # PanoKopru — proje durumu
 
+## 1.2.0 kaynak yayını ve gerçek İngilizce görseller — 2026-10-09
+
+- Yayın girdisi: ana kaynak `53d865a`; uygulama/dil teslim kodu `9aae4d2`.
+  Kişisel kurulum önceki sohbetin uyguladığı 1.2.0 dil yaması olarak kalır;
+  bu yayın çalışması kişisel kurulumu veya verileri değiştirmez.
+- README/kurulum belgelerindeki yalnız Türkçe arayüz açıklaması kaldırıldı;
+  kalıcı Türkçe/English seçimi ve kaynak sürümü 1.2.0 açıkça belirtilir.
+- Dört görsel gerçek Settings → Language → English seçimiyle, yalıtılmış
+  sentetik Edge ortamında yenilendi; yeniden açılışta tercih doğrulandı.
+  Enjekte edilen çeviri etiketleri kaldırıldı. Her PNG görsel/gizlilik açısından
+  incelendi; güncel ve geçmişteki onaylı sürümler ayrı hash'lerle sabitlendi.
+- Bu çalışmada 9/9 hedefli dil/geçmiş denetimi testi ve Edge UI kontrolü geçti.
+  Önceki tam test sonucu 151/151; bu yayında tam koşu tekrarlanmadı.
+- EXE/ZIP yayını veya paket yeniden üretimi yok. Eski genel test paketi 1.1.0;
+  temiz Windows/iPhone kabulü ve libvips yeniden derleme doğrulaması bekliyor.
+- Yayın hedefi: https://github.com/LionKing53/PanoKopru, `main`.
+  Bu belge/görsel commit'i aynı kaynak dalına eklenir; tam kimliği Git kaydından
+  izlenir. Kaynak kapısı 170 metin + 4 PNG / 121 kilit girdisi geçti.
+  Girdi geçmişi `53d865a`: 28 commit / 411 blob / 28 metadata, bulgu yok;
+  özel terimler uygulanmıştır. Son belge/görsel commit'i de push öncesinde
+  aynı denetimden geçirilir. Çalışma sonunda kilit bırakılır.
+
 ## Dil güncellemesi teslimi — 2026-10-09
 
 - Dil uygulama kaynak commit'i: `9aae4d2c225665477150eea76f113151ebfb080e`.

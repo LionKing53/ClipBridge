@@ -38,8 +38,8 @@ Synthetic tests cover catalog/reference and parameter parity, language defaults,
 preference restart persistence, native preference preservation, two-language
 setup form rendering, browser layouts, setup security wording and unchanged
 Unicode contents/protocols. Compilation is not clean-machine/iPhone acceptance.
-Existing documentation screenshots predate real localization; the publication
-conversation will refresh them and README descriptions before the next push.
+Documentation screenshots now use the real English language option in an
+isolated synthetic fixture and verify preference persistence after reload.
 
 Türkçe: Dil seçimi Ayarlar'da yapılır ve yeniden açılışta korunur. Telefon
 rehberleri uygulamanın dilini kullanır. Windows/iOS'un kendi pencerelerinin

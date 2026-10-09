@@ -5,7 +5,7 @@ import { promisify } from 'node:util';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { documentationImagePolicy, matchesDocumentationImage } from './documentation-images.js';
+import { documentationImagePolicy, historicalDocumentationImagePolicy, matchesDocumentationImage } from './documentation-images.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 
@@ -26,7 +26,7 @@ export function inspectHistoryPath(name, mode, allowed, documentationImages = ne
   return [];
 }
 
-export async function auditReachableHistory({ repository = root, allowed, privateTerms = [], documentationImages = new Map() }) {
+export async function auditReachableHistory({ repository = root, allowed, privateTerms = [], documentationImages = new Map(), historicalDocumentationImages = [] }) {
   if (!(allowed instanceof Set) || !Array.isArray(privateTerms) || privateTerms.some(term => typeof term !== 'string' || !term.length)) throw new TypeError('Explicit valid history policy required.');
   const git = async args => (await run('git', args, { cwd: repository, windowsHide: true, timeout: 10000, maxBuffer: 16 * 1024 ** 2 })).stdout;
   const refsBefore = await git(['show-ref', '--head']);
@@ -54,7 +54,7 @@ export async function auditReachableHistory({ repository = root, allowed, privat
     const size = Number((await git(['cat-file', '-s', object])).trim());
     if (!Number.isSafeInteger(size) || size > 4 * 1024 ** 2) { add(object, ['oversized_object_requires_review']); continue; }
     const { stdout } = await run('git', ['cat-file', type, object], { cwd: repository, windowsHide: true, timeout: 10000, encoding: 'buffer', maxBuffer: 4 * 1024 ** 2 + 1 });
-    if (type === 'blob' && [...documentationImages.values()].some(entry => matchesDocumentationImage(stdout, entry))) reviewedImages++;
+    if (type === 'blob' && [...documentationImages.values(), ...historicalDocumentationImages].some(entry => matchesDocumentationImage(stdout, entry))) reviewedImages++;
     else add(object, inspectHistoryContent(stdout, privateTerms));
     if (type === 'blob') blobs++; else metadata++;
   }
@@ -74,7 +74,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
   let privateTerms = [];
   try { privateTerms = JSON.parse(await readFile(path.join(root, '.local/privacy-terms.json'), 'utf8')); }
   catch (error) { if (error.code !== 'ENOENT') throw error; }
-  const report = await auditReachableHistory({ allowed, privateTerms, documentationImages: documentationImagePolicy(manifest) });
+  const report = await auditReachableHistory({ allowed, privateTerms, documentationImages: documentationImagePolicy(manifest), historicalDocumentationImages: historicalDocumentationImagePolicy(manifest) });
   console.log(JSON.stringify(report, null, 2)); // Object IDs + finding codes only, never names/content/secret terms.
   if (!report.passed) process.exitCode = 1;
 }

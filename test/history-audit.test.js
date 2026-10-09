@@ -7,7 +7,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createHash } from 'node:crypto';
 import sharp from 'sharp';
-import { documentationImagePolicy, matchesDocumentationImage } from '../scripts/documentation-images.js';
+import { documentationImagePolicy, historicalDocumentationImagePolicy, matchesDocumentationImage } from '../scripts/documentation-images.js';
 import { inspectHistoryContent, inspectHistoryPath, auditReachableHistory } from '../scripts/check-history.js';
 const run = promisify(execFile);
 
@@ -44,11 +44,15 @@ test('history audit admits reviewed PNG bytes but rejects an unreviewed earlier 
   await writeFile(path.join(root, imagePath), png); await git(['add', imagePath]); await commit('Reviewed synthetic image');
   const approved = await auditReachableHistory({ repository: root, allowed, documentationImages });
   assert.equal(approved.passed, true); assert.equal(approved.reviewedImages, 1);
-  const unreviewed = Buffer.from(png); unreviewed[unreviewed.length - 1] ^= 1;
+  const unreviewed = await sharp({ create: { width: 1, height: 1, channels: 3, background: '#000000' } }).png().toBuffer();
   await writeFile(path.join(root, imagePath), unreviewed); await git(['add', imagePath]); await commit('Unreviewed synthetic change');
   const changed = await auditReachableHistory({ repository: root, allowed, documentationImages });
   assert.equal(changed.passed, false);
   assert.ok(changed.findings.some(item => item.code === 'binary_or_invalid_utf8_requires_review'));
+  const previous = { ...entry, sha256: createHash('sha256').update(unreviewed).digest('hex'), bytes: unreviewed.length };
+  const historicalDocumentationImages = historicalDocumentationImagePolicy({ files: [imagePath], historicalDocumentationImages: [previous] });
+  assert.equal((await auditReachableHistory({ repository: root, allowed, documentationImages, historicalDocumentationImages })).passed, true);
+  assert.throws(() => historicalDocumentationImagePolicy({ files: [imagePath], historicalDocumentationImages: [{ ...previous, path: 'private.png' }] }));
 });
 
 test('history gate reports only categories for private text, binary and removed/unapproved paths', () => {

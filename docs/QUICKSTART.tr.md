@@ -2,6 +2,10 @@
 
 [English setup guide](QUICKSTART.md)
 
+Güncel kaynak sürümü **1.2.0**, Türkçe/English seçimini destekler:
+**Ayarlar → Dil**. Tercih yeniden açılışta korunur. Önceki özel 1.1.0 test
+paketi dil güncellemesini içermez; yeni genel kurucu paketi yayımlanmadı.
+
 Bu paket genel yayın değildir. Gerçek Windows/iPhone kabulü ve sharp/libvips
 dağıtım incelemesi henüz tamamlanmadı. Paketi testiniz için kullanın; henüz
 başkalarına dağıtmayın. Kaynak ve kurucu imzalı değildir. Beklenmedik güvenlik

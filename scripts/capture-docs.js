@@ -1,5 +1,4 @@
-// Documentation-only English labels on the real desktop UI with synthetic adapters.
-// This does not add English support to the installed app or access personal state.
+// Real application localization with isolated synthetic documentation adapters.
 import { chromium } from '@playwright/test';
 import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import os from 'node:os';
@@ -13,63 +12,6 @@ import { createTestSystem } from '../test/support/desktop-system.js';
 const root = await mkdtemp(path.join(os.tmpdir(), 'PanoKopru-doc-preview-'));
 let browser, server;
 const output = path.resolve('build/docs-preview');
-const labels = {
-  'CİHAZLARIN ARASINDA.': 'BETWEEN YOUR DEVICES.', 'ÇALIŞMA ALANI': 'WORKSPACE',
-  'Çalışma alanı': 'Workspace', 'Aktarım geçmişi': 'Transfer history', 'Favoriler': 'Favorites',
-  'Bağlantı': 'Connection', 'Ayarlar': 'Settings', 'Köprü hazır': 'Bridge ready',
-  'Sana özel bir köprü': 'Your personal bridge', 'Geçmişin bu bilgisayarda.': 'History stays on this PC.',
-  'Üçüncü taraf bulut depolaması yok.': 'No third-party cloud storage.',
-  'KOPYALA. GEÇİŞ YAP. DEVAM ET.': 'COPY. SWITCH. KEEP GOING.',
-  'Her şey, bir pano uzağında.': 'One clipboard. Two devices.',
-  'Metinlerin, fotoğrafların ve dosyaların için ortak bir alan.': 'A shared space for your text, photos and files.',
-  'Panoyu kaydet': 'Save clipboard', 'KİŞİSEL KÖPRÜN': 'YOUR PERSONAL BRIDGE',
-  'İki cihaz. Kesintisiz fikirler.': 'Two devices. Keep your ideas moving.',
-  'Bağlantıyı yönet': 'Manage connection', 'Bu bilgisayar': 'This PC',
-  'Kestirme ile aktar': 'Transfer with a Shortcut', 'Yerel HTTPS': 'Local HTTPS',
-  'Son aktarımlar': 'Recent transfers', 'Tümü': 'All', 'Metinler': 'Text',
-  'Görseller': 'Images', 'Dosyalar': 'Files', 'Tüm yönler': 'All directions',
-  'METİN': 'TEXT', 'GÖRSEL': 'IMAGE', 'DOSYA': 'FILE', 'Kopyala': 'Copy',
-  'Yalnızca aktarımlar ve elle kaydettiğin öğeler tutulur.': 'Only transfers and items you save are recorded.',
-  'AYNI AĞDA · BİRİNCİ YOL': 'SAME NETWORK · LOCAL ROUTE',
-  'Yakında, Tailscale’siz.': 'Nearby, without Tailscale.', 'HTTPS · HAZIR': 'HTTPS · READY',
-  'Güvenilen ağlar': 'Trusted networks', 'Bağlı ağları yenile': 'Refresh networks',
-  'Ağını seç, erişimi sen yönet. Wi-Fi, Ethernet ve USB bağlantıları.': 'Choose your network. Control access over Wi-Fi, Ethernet or USB.',
-  'Şu anda bağlı': 'Currently connected', 'Güvenilen liste': 'Trusted list',
-  'İzni onar': 'Repair permission', 'Listeden çıkar': 'Remove',
-  'PanoKöprü Windows izinlerini temizle': 'Clean up PanoKopru Windows permissions',
-  'Ağ adı tek başına kimlik doğrulaması değildir. Uygulama kayıtlı ağ/bağdaştırıcı eşleşmesini, HTTPS sertifikasını ve erişim anahtarını kullanır. Yalnızca kontrol ettiğin ev veya kişisel paylaşım ağlarını ekle; ortak/okul ağlarına güven verme.': 'Network names alone do not authenticate a connection. PanoKopru checks the saved network/adapter, HTTPS certificate and access key. Trust only networks you control.',
-  '“Aktif” Windows dinleyicisini gösterir; iPhone erişimini tek başına doğrulamaz. Listeden çıkarma PanoKöprü erişimini kapatır, Windows ağ profilini veya uygulamaya ait dar kapsamlı güvenlik duvarı kurallarını silmez.': 'Active means the Windows listener is ready; it does not verify iPhone access. Removing a network revokes app access; it does not revert its Windows profile or remove firewall rules.',
-  'Yerel adresler ve kestirme ayarları': 'Local endpoints and Shortcut settings',
-  'Tailscale’siz ilk kurulum': 'First-time setup without Tailscale',
-  'Yerel eşleştirme QR kodu': 'Local pairing QR code', 'Eski Tailscale sertifika rehberi': 'Legacy Tailscale certificate guide',
-  'Çalışan kurulumda sertifikayı yeniden yükleme. İlk kurulumda yalnız kendi ağını seç ve sertifika parmak izini telefonda karşılaştır. “Hazır” durumu iPhone testi değildir.': 'For first-time setup, select your own network and compare the certificate fingerprint on your phone. Ready does not mean the iPhone test has passed.',
-  'Yol seçimi manuel: izinli ağda “Aynı Ağ” kestirmesini, uzaktayken eski Tailscale kestirmesini çalıştır. Otomatik geçiş yok.': 'Choose the route manually: use the local Shortcut on a trusted network or a separate Tailscale Shortcut remotely. No automatic switching.',
-  'YEREL İLK KURULUM': 'FIRST-TIME LOCAL SETUP',
-  'Önce ağını, sonra sertifikayı doğrula.': 'Choose your network. Verify your certificate.',
-  'Bağlı ağ': 'Connected network',
-  'Yalnız kendi ev veya kişisel paylaşım ağını seç. Windows bu ağı Özel yapar; diğer uygulamaların mevcut Özel ağ kuralları da etkilenebilir. Okul ve ortak ağları ekleme.': 'Select only your home or personal hotspot network. Windows changes it to Private, which can also affect other apps with existing Private-profile rules. Do not trust public or school networks.',
-  'Ağı onayla ve kurulumu başlat': 'Approve network and begin setup',
-  'Kurulumu iptal et': 'Cancel setup',
-  'Pencereyi kapatmak devam eden Windows onayını iptal etmez. İptal, indirme oturumunu kapatır; verilmiş Windows izinlerini veya telefona yüklenen profili otomatik kaldırmaz.': 'Closing this dialog does not cancel a pending Windows approval. Cancel closes the download session; it does not automatically remove granted permissions or an installed iPhone profile.'
-};
-async function english(page, overrides = {}) {
-  await page.evaluate(({ labels, overrides }) => {
-    document.documentElement.lang = 'en';
-    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
-    for (let node; (node = walker.nextNode());) {
-      const original = node.textContent.trim();
-      if (labels[original]) node.textContent = node.textContent.replace(original, labels[original]);
-      node.textContent = node.textContent.replaceAll('PanoKöprü', 'PanoKopru');
-    }
-    for (const [selector, value] of Object.entries(overrides)) document.querySelector(selector).textContent = value;
-    document.querySelector('#search').placeholder = 'Search history…';
-    document.querySelectorAll('.card-meta span:first-child').forEach((el, i) => el.textContent = `Oct 9, 10:${String(30 - i * 4).padStart(2, '0')}`);
-    for (const el of document.querySelectorAll('.connected-network small')) el.textContent = 'Wi-Fi · 192.168.50.2 · Windows: Private';
-    for (const el of document.querySelectorAll('.trusted-network small')) el.textContent = el.closest('.active') ? '● Active' : 'Trusted · not in use';
-    document.querySelector('#toast').hidden = true;
-    document.querySelector('.version span').textContent = '1.1.0';
-  }, { labels, overrides });
-}
 try {
   const history = await createHistory(root);
   const note = await history.record({ type: 'text', content: 'Ideas worth keeping.\nCopy on one device. Continue on the other.', filename: 'Project notes' }, 'inbound');
@@ -97,23 +39,29 @@ try {
   await page.locator('.card').nth(3).waitFor();
   await page.locator('.card-preview img').waitFor();
   await mkdir(output, { recursive: true });
-  const base = { '#network-description': 'Demo Home · Local HTTPS. Run a Shortcut to transfer.', '#item-count': '4 items', '#retention': 'Last 100 items' };
-  await english(page, base);
+  // Use the application's real language preference, then verify it survives reload.
+  await page.locator('[data-view="settings"]').click();
+  await page.locator('#language-select').selectOption('en');
+  await page.waitForFunction(() => document.documentElement.lang === 'en');
+  assert.equal(JSON.parse(await readFile(path.join(root, 'ui-settings.json'), 'utf8')).language, 'en');
+  // The launcher supplies a fresh authenticated URL on each opening.
+  await page.goto(`http://127.0.0.1:${server.address().port}/#token=${token}`);
+  await page.reload();
+  await page.locator('.card').nth(3).waitFor();
+  await page.waitForFunction(() => document.documentElement.lang === 'en');
+  await page.locator('.card-preview img').waitFor();
   await page.screenshot({ path: path.join(output, 'history-dark.png'), animations: 'disabled', fullPage: true });
   await page.locator('#theme-toggle').click();
-  await english(page, base);
   await page.screenshot({ path: path.join(output, 'history-light.png'), animations: 'disabled', fullPage: true });
   await page.locator('[data-view="connection"]').click();
-  await english(page, { '#breadcrumb': 'Connection', '#connection-page > .eyebrow': 'TWO ROUTES. ONE CLIPBOARD.', '#connection-page > h1': 'Your connection, at a glance.', '#connection-page > p': 'Local HTTPS at home. Tailscale remotely. You choose the Shortcut.', '#local-status': 'Local HTTPS is ready on Demo Home. Use your local send and receive Shortcuts.' });
   // Capture the actual local-network panel; remote/pairing dialogs remain unopened.
   await page.locator('.local-panel').screenshot({ path: path.join(output, 'trusted-networks.png'), animations: 'disabled' });
   await page.locator('#setup-wizard').click();
   await page.locator('#setup-dialog[open]').waitFor();
-  await english(page, { '#setup-status': 'Choose a network you control. Windows will ask for permission.', '#setup-network option': 'Demo Home · Wi-Fi · Private' });
   await page.locator('#setup-dialog').screenshot({ path: path.join(output, 'first-time-setup.png'), animations: 'disabled' });
   assert.deepEqual(errors, []);
   assert.equal(await page.locator('#qr').getAttribute('src'), null);
-  console.log('Documentation capture PASS: four synthetic English previews; no OS/clipboard/network-permission actions or pairing QR.');
+  console.log('Documentation capture PASS: four real English UI captures with synthetic data; no OS/clipboard/network-permission actions or pairing QR.');
 } finally {
   await browser?.close();
   if (server?.listening) { server.closeAllConnections(); await new Promise(resolve => server.close(resolve)); }
