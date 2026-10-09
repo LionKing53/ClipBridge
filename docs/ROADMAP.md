@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-09: Kullanıcı kaynakların son gizlilik/geçmiş incelemesinden sonra herkese
+açık GitHub kaynak deposu yayınına izin verdi. Bu aşamada EXE/ZIP dağıtımı yok.
+Temiz Windows/iPhone kabulü ve native yeniden derleme/dağıtım incelemesi binary
+sürüm için beklemektedir; kaynak deposunun açılmasını engellemez.
+
 2026-10-08: Kullanıcı ayrı cihaz kabulünü erteledi. Paket üretimi devam eder;
 gerçek temiz kurulum/native/iPhone kabulü doğrulanmamış olarak kaydedilir.
 Bu karar native bağımlılıkların lisans/kaynak sağlama incelemesini kapatmaz.

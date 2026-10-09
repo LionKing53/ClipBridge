@@ -1,5 +1,20 @@
 # PanoKopru — proje durumu
 
+## Kaynak GitHub yayını hazırlığı — 2026-10-09
+
+- Kullanıcı yayın sohbetine kaynak deposunu herkese açık GitHub'a yayımlama
+  yetkisi verdi. Hedef: `LionKing53/PanoKopru`; EXE/ZIP release eki yok.
+- İnceleme başlangıcı `bfe6a2d`, çalışma ağacı temiz. Kaynak kontrolü bu
+  çalışmada yeniden geçti: 152 izinli metin dosyası / 121 kilit girdisi.
+- TR/EN README temiz Windows/iPhone kabulünün ve libvips yeniden derleme/
+  uyumluluk kontrolünün henüz yapılmadığını açıkça belirtir.
+- 143/143 test ve Edge UI önceki geliştirme kanıtıdır; bu belge değişikliğinde
+  yeniden çalıştırılmadı. Paket kaynağı `a8ea3dc`, kişisel kurulum mevcut 1.0.0;
+  kurulu kaynak commit'i bilinmiyor. Kurulum/veri değişikliği yok.
+- Son kaynak/geçmiş denetimi ve uzak depo doğrulaması yayın sırasında kaydedilecek.
+- Aşağıdaki "yayın yapılmadı/onay yok" ifadeleri önceki paket teslimlerinin
+  tarihsel kaydıdır. Kaynak yayını izni, binary dağıtım onayı değildir.
+
 ## Güncel paket teslimi — 2026-10-09
 
 - Paket kaynak commit'i: `a8ea3dc9b43064217aea1ccfc888bb7e3294dcdf`.

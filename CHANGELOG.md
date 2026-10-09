@@ -1,5 +1,12 @@
 # Değişiklik kaydı
 
+## Kaynak yayını hazırlığı — 2026-10-09
+
+- TR/EN README kaynak yayını kapsamını ve yapılmamış temiz Windows/iPhone ile
+  libvips yeniden derleme/uyumluluk kontrollerini açıklar.
+- Yayın sohbetinin kullanıcı onaylı kaynak yayını yetkisi AGENTS.md'ye kaydedildi.
+  Uygulama sürümü/API/veri şeması değişmedi; EXE dağıtımı ve kişisel kurulum yok.
+
 ## 1.1.0 kaynak dahil paket teslimi — 2026-10-09
 
 - `a8ea3dc` kaynağından 280.046.326 baytlık kurulum ZIP'i üretildi; native

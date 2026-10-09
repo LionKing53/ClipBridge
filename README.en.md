@@ -1,10 +1,14 @@
 # PanoKopru
 
-**1.1.0 private acceptance package:** see [Quick start](docs/QUICKSTART.md) for a
-separate clean Windows x64 computer. Device acceptance and public distribution
-approval are pending. Clean install only: update, production rollback and legacy
-data migration are deferred. `build:test-package` explicitly produces the test
-runtime without weakening the source guard; default candidate builds stay guarded.
+**Source publication — 1.1.0 development version.** This repository publishes
+source and documentation; no downloadable EXE/installer has been released.
+The new installer has **not been tested on clean Windows or with a real iPhone
+transfer**. Rebuilding libvips from the source companion and verifying compatibility
+also remain pending. Automated tests do not replace these checks.
+The first installer targets clean Windows x64 installs only; updates, production
+rollback and legacy data migration are deferred. See [Quick start](docs/QUICKSTART.md).
+`build:test-package` explicitly produces a private acceptance runtime without
+weakening the source guard; default candidate builds stay guarded.
 
 A Windows/iPhone clipboard bridge with Shortcut-triggered bidirectional text,
 image and file transfer, desktop history, favorites, preview search, themes and
@@ -41,9 +45,9 @@ and collected license evidence under ignored build/. It is not the Windows
 distribution SBOM or a license-compliance approval. Use npm.cmd in PowerShell if
 the npm.ps1 wrapper is blocked; do not weaken machine execution policy.
 
-Major release gates: production installer/bootstrapper/updater/uninstaller,
-WebView2 Runtime installation, real ACL migration, clean Windows
-and real-iPhone acceptance, final binary notices and privacy review. The isolated
+Binary release gates: clean Windows and real-iPhone acceptance, native rebuild
+and distribution review, and final binary notices/privacy review. Updates and
+legacy migration are deferred beyond the first clean-install release. The isolated
 update/rollback kernel does not update an installation. This project is licensed
 under the GNU General Public License version 3 or, at your option, any later
 version (**GPL-3.0-or-later**); see [LICENSE](LICENSE). Provided without warranty
@@ -56,9 +60,10 @@ and payload before setting its runtime context, reports missing WebView2 Runtime
 with an opt-in official download-page handoff, and implements confirmed dead-lock
 recovery. These changes are synthetic-tested/compiled, not installed acceptance.
 The SDK is not the Runtime. See [installed launch contract](docs/INSTALLED-LAUNCH.md).
-The standalone first-installer now implements staging, receipt writing and
-opt-in shortcuts/startup, but is only compiled against guarded candidates and
-has not passed real Windows acceptance. See [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
+The standalone first-installer implements staging, receipt writing and
+opt-in shortcuts/startup; a data-preserving removal path also exists in source.
+Installable private acceptance packages have been compiled but have not been
+installed or run. See [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
 
 See [architecture](docs/ARCHITECTURE.md), [lifecycle boundaries](docs/LIFECYCLE.md),
 [acceptance matrix](docs/ACCEPTANCE.md), [TR/EN Shortcuts](docs/SHORTCUTS.md),

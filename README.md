@@ -1,16 +1,20 @@
 # PanoKöprü
 
-**1.1.0 özel kabul paketi:** ayrı temiz Windows x64 bilgisayarda denemek için
-[Türkçe/İngilizce kısa kurulum rehberi](docs/QUICKSTART.md). Genel yayın onayı ve
-gerçek cihaz kabulü henüz yok. İlk sürüm yalnız temiz kurulumdur; otomatik
-güncelleme, üretim rollback'i ve eski verilerin göçü sonraki sürüme ertelendi.
+**Kaynak kod yayını — 1.1.0 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
+yayımlanır; indirilebilir EXE/kurulum paketi henüz yayımlanmamıştır.
+Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
+test edilmemiştir**. libvips kaynak paketinden yeniden derleme ve uyumluluk
+doğrulaması da beklemektedir. Otomatik test başarısı bu kontrollerin yerine geçmez.
+İlk kurucu yalnız temiz Windows x64 kurulumu hedefler; otomatik güncelleme,
+üretim rollback'i ve eski verilerin göçü sonraki sürüme ertelendi.
+Bkz. [Türkçe/İngilizce kurulum ve test rehberi](docs/QUICKSTART.md).
 
 iPhone ve Windows arasında Apple Kestirmeler ile tetiklenen iki yönlü metin,
 görsel ve dosya aktarımı. Windows arayüzünde geçmiş, favoriler, arama, açık/koyu
 tema ve güvenilen ağ yönetimi bulunur.
 
-**Bu depo geliştirme hazırlığıdır; henüz genel kullanıma hazır bir kurulum paketi
-değildir.** Mevcut kişisel kurulumdan yalnızca seçilmiş kaynaklar alınmıştır.
+Kaynaklar geliştirme ve inceleme için paylaşılır. Mevcut kişisel kurulumdan
+yalnızca seçilmiş kaynaklar alınmıştır.
 Kişisel veriler ve bağımlılık/çalışma zamanı kopyaları alınmamıştır.
 
 ## Gerçekte nasıl çalışır?
@@ -50,8 +54,10 @@ değildir. Sabit hash'li Node/WebView2 **SDK** edinimi, native derleme ve izin
 listeli aday paketleme doğrulandı. **Runtime**, SDK'dan farklıdır: başlatıcıda
 eksik Runtime için resmi indirme sayfasına onaylı yönlendirme var; otomatik
 Runtime kurulumu yok. Kurulum kaydı doğrulayan açılış ve onaylı kilit kurtarma
-kodu eklendi. Bağımsız ilk kurucu kaynakta var; yalnız korumalı aday için derlenir,
-çalıştırılmaz. Gerçek kurucu kabulü, updater/kaldırıcı ve cihaz kabulü bekliyor.
+kodu eklendi. Bağımsız ilk kurucu ve veri koruyan kaldırma kaynakta var;
+`build:test-package` açık seçimiyle özel kabul paketi üretilebilir. Kurucu ve
+uygulama derlenmiş, gerçek kurulumda çalıştırılmamıştır. Temiz Windows/iPhone
+kabulü ve native bağımlılıkların dağıtım incelemesi bekliyor.
 Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
 İlk kurucunun kapsamı ve sınırları: [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
 

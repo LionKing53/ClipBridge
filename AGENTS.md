@@ -21,7 +21,8 @@ the development conversation. No simultaneous conflicting edits.
    same owner at handoff. A crashed session requires explicit review.
 5. At completion, record tests actually run, failures, source/deployment
    compatibility and remaining blockers in PROJECT-STATUS.md and CHANGELOG.md.
-   Make small local commits after reviewing the staged diff. Never push here.
+   Make small local commits after reviewing the staged diff. Development sessions
+   must not push; the publication session may publish within explicit owner scope.
 
 ## Private installation and data
 
@@ -103,6 +104,14 @@ this compile-only exception does not authorize production installation, source
 guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
+
+### Source publication — owner decision 2026-10-09
+
+The owner authorized the publication conversation to review source/privacy and
+reachable Git history, update TR/EN README status and publish the public source
+repository. This authorization excludes binary releases, installer execution and
+personal deployment. Clean Windows/iPhone acceptance and native rebuild/distribution
+review remain pending. Future pushes still require an authorized publication task.
 
 ### Native source provisions — owner decision 2026-10-08
 
