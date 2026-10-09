@@ -13,7 +13,7 @@ export async function verifyLegacyLanguagePatch(patch) {
     for(const name of manifest.files.filter(name=> /^(src|desktop|locales|scripts)\//.test(name))) {
       await mkdir(path.dirname(path.join(root,name)),{recursive:true});await copyFile(path.join(source,name),path.join(root,name));
     }
-    for(const name of ['src/desktop-server.js','src/app.js'])await copyFile(path.join(patch,'app',name),path.join(root,name));
+    for(const name of ['src/desktop-server.js','src/app.js','src/uploads.js','src/transfer.js'])await copyFile(path.join(patch,'app',name),path.join(root,name));
     const data=path.join(root,'data');await mkdir(data);
     const history=await createHistory(data);
     const content='İstanbul — unchanged synthetic language test';

@@ -6,6 +6,8 @@ export const legacyInputs = {
   'src/server.js': 'b994fda4c6d446953f603527ba754902defcf1a23dde4e6ba1b2c5308f5a2f31',
   'src/app.js': '63a14376c60d78defc78b91cd4207f88cf37aabe3096178165c6a998315a86a3',
   'src/local-network.js': '7ef24e2c9f6ffce852ae44440f32f0636e16c8eed38d1f368d0c629353c55d17',
+  'src/transfer.js': '6dc78659ed6f50a9aff05a3116d66bcfcafabf869534de7185e9f89989a6b70c',
+  'src/uploads.js': '66496ae37c05ee6c60c4e9bcef7a7b8e2212bc889be4086e0a47ccb7850093b7',
   'launcher/PanoKopru.cs': 'd65c7b07faec52de24224fc2015fee124b7880cc14690335befc5eb895d24308',
   'launcher/DesktopWindow.cs': '7f202552dff93aab3a49adef8eb14c43eeb33b1491353475fbca8c8927d0699c'
 };
@@ -70,6 +72,11 @@ export function adaptLegacy(inputs, canonical, nativeCatalog) {
   const receiveItem =`);
   app = replaceOnce(app,'setupPage(response);','setupPage(response, getLanguage());');
   out['src/app.js'] = app;
+  // Static generated file labels only; existing file paths/content are untouched.
+  out['src/app.js'] = out['src/app.js'].replaceAll('"PanoKopru.png"','"ClipBridge.png"').replaceAll('"PanoKopru-dosya"','"ClipBridge-file"');
+  out['src/transfer.js'] = out['src/transfer.js'].replaceAll('PanoKopru-', 'ClipBridge-').replaceAll('PanoKopru.png','ClipBridge.png');
+  out['src/uploads.js'] = out['src/uploads.js'].replaceAll('"PanoKopru-upload-"','"ClipBridge-upload-"').replace('`PanoKopru.','`ClipBridge.');
+  out['src/uploads.js'] = replaceOnce(out['src/uploads.js'], 'request.headers["x-panokopru-filename"]', 'request.headers["x-clipbridge-filename"] || request.headers["x-panokopru-filename"]');
   let local = out['src/local-network.js'];
   local = "import { translate } from './i18n.js';\n" + local;
   local = replaceOnce(local, "? 'USB ağı' : entry.interfaceAlias", "? translate('network.usb', apiOptions.getLanguage?.() || 'tr') : entry.interfaceAlias");
