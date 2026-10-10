@@ -1,5 +1,13 @@
 # Değişiklik kaydı
 
+## 1.2.1 Rust std bildirimleri — 2026-10-10
+
+- Doğrulanmış sabit Rust nightly source arşivindeki güncel özgün telif/MIT/Apache
+  metinleri korundu; fresh candidate review dizinine genel bildirimleri de koyar.
+  Compiler arşivi kurulum ZIP'ine eklenmez. LGPL kaynak eşlikçisi envanteri aynı.
+- Uygulama özelliği ve kişisel kurulum değişmez. Native/ABI işi devam eder;
+  önceki aday yayıma onaylanmış sayılmaz, yeni paket üretimi ayrıca gerekir.
+
 ## 1.2.1 native hash ölçütü — 2026-10-10
 
 - Gerçek kaynak derlemesi aynı DLL baytlarını üretebileceği için Windows helper'ı

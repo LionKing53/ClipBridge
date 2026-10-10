@@ -87,6 +87,7 @@ for (const artifact of toolchain.artifacts) components.push({ type: artifact.id 
   externalReferences: [{ type: 'distribution', url: artifact.url }],
   properties: [{ name: 'clipbridge:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
 await mkdir(path.join(payload, 'review'));
+await copyFile(path.join(root, 'THIRD-PARTY-NOTICES.md'), path.join(payload, 'review/THIRD-PARTY-NOTICES.md'));
 if (nativeOverride) await writeFile(path.join(payload, 'review/native-modifications.json'), JSON.stringify(nativeOverride, null, 2));
 if (options['--native-source-directory']) {
   const directory = options['--native-source-directory']; await assertNoLinks(directory);

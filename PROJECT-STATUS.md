@@ -1,5 +1,20 @@
 # ClipBridge — proje durumu
 
+## Rust standard-library bildirim kontrolü — 2026-10-10
+
+- Sabit MXE Rust nightly 2026-09-24 kaynak arşivi dosya-only indirildi;
+  SHA-256 `f2c139528ba025f1141935df4f634e18db614b9b3b1cf2ea59e3675a6ade89f3`
+  / 263.102.648 bayt eşleşti. Hostta Rust/upstream kod çalıştırılmadı.
+- Özgün root COPYRIGHT, LICENSE-MIT ve LICENSE-APACHE okundu. Apache metni
+  eski toplamada aynıydı; güncel Contributors telif metni/MIT varyantı değildi.
+  Üç özgün metin THIRD-PARTY-NOTICES.md içinde korunur. İkili lisans seçeneği
+  olan Rust std bölümleri için Apache-2.0 yolu kaydedilir; diğer kod yeniden
+  lisanslanmaz. Full compiler arşivi review girdisidir, kurucuya eklenmez.
+- Fresh candidate genel bildirim dosyasını ayrıca review/ altına kopyalar;
+  source snapshot da korur. Kaynak eşlikçisinin 28+2/357/4 envanteri değişmez.
+  Yeni paket bu bildirim ve logo/runtime takibini içermelidir. Devam eden CI
+  önceki commit'ten çalışır; native/ABI sonucu ve binary onayı hâlâ bekler.
+
 ## Devam eden doğrulama ve hash ölçütü — 2026-10-10
 
 - İlk koşu `38052988643` iptal edildi; host LLVM aşamasındaydı ve başarı kanıtı

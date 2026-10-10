@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+Rust std için sabit nightly kaynak/telif kontrolü yapıldı; üç güncel root metin
+genel dağıtım bildirimlerine eklendi. Yeni paket review bildirimlerini içerir;
+compiler kaynak arşivi dağıtıma şişirme olarak eklenmez. Native/ABI sonucu bekler.
+
 Aktif koşu 38056080637: host-toolchain preflight geçti, native kaynak derlemesi
 sürüyor. İlk koşu iptal; başarı sayılmaz. Aynı hash mümkün olduğundan sonraki
 Windows helper'ı hash farklılığını zorunlu tutmaz; derleme ve işlev kanıtı gerekir.
