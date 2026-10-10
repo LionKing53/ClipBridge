@@ -1,5 +1,21 @@
 # ClipBridge — proje durumu
 
+## Yayın sohbeti ara kaydı — 2026-10-10
+
+- GitHub main `5857e75`: teslim kaynakları, logo ve ek runtime kaynak kapsamı
+  yayımlandı. Önceki logo kaydındaki "henüz gönderilmedi" ifadesi tarihsel kayıttır.
+  Son kaynak commit'inde erişilebilir geçmiş kontrolü **39 commit / 581 blob /
+  39 metadata / 13 onaylı görsel**; özel terim bulgusu yok.
+- Koşu: https://github.com/LionKing53/ClipBridge/actions/runs/38052988643
+  (`b0495cb` kaynağı). 13:23 UTC kontrolünde gerçek derleme sürüyor;
+  Windows ABI işi henüz başlamadı. Başarı, dağıtım onayı veya temiz cihaz kabulü
+  iddia edilmez. EXE/ZIP Release yayımlanmadı.
+- Sonraki CI kaynak toplama adımı büyük arşivleri tek geçişte okur. Dosya-only
+  kontrolünde LLVM'den beş, MinGW'den iki runtime metni okundu; Python syntax
+  geçti. Tam 157 test kaydı önceki kaynak kapsamı değişikliğine aittir.
+- Eski teslim paketi ve kişisel kurulum/veriler değiştirilmedi. Kişisel kurulum
+  1.2.1; kaynakta sonraki logo/paket kontrolü değişiklikleri bulunur.
+
 ## Ek runtime kaynak kapsamı — 2026-10-10
 
 - Sabit MXE tarifleri yalnız versions.json'daki 28 bileşeni değil, LLVM

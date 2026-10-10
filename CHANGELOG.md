@@ -1,5 +1,15 @@
 # Değişiklik kaydı
 
+## 1.2.1 yayın incelemesi ara kaydı — 2026-10-10
+
+- Kaynak/logo/runtime kapsamı GitHub'a gönderildi; binary Release yok.
+  Son kaynak geçmiş kontrolü 39 commit / 581 blob / 13 görsel, bulgu yok.
+- CI notice toplama büyük kaynak arşivlerini tek geçişte okur; yedi ek runtime
+  metni ve Python syntax kontrolü geçti. Çalışan native koşunun sonucu henüz
+  yok; bu değişiklik o eski koşunun girdilerini değiştirmez.
+- Eski teslim paketi ve kişisel kurulum korunur. Gerçek Windows/iPhone kabulü
+  ve binary yayın onayı açık kalır.
+
 ## 1.2.1 runtime kaynak kapsamı — 2026-10-10
 
 - Sabit MXE LLVM 23.1.2 ve MinGW 57b5950 runtime kaynakları/hak metinleri

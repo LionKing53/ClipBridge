@@ -91,11 +91,19 @@ def collect():
             name = 'archives/' + file.name
             archive.writestr(name, data)
             records.append({'name': name, 'sha256': item['sha256'], 'url': item['url']})
-            with tarfile.open(file) as tar:
-                for member in tar.getmembers():
+            runtime = item in LOCK.get('runtimeArtifacts', [])
+            # Stream once; seeking repeatedly through LLVM's compressed archive
+            # is costly. All original files remain in the corresponding archive.
+            with tarfile.open(file, mode='r|*') as tar:
+                for member in tar:
+                    parts = member.name.split('/')
+                    runtime_notice = not runtime or len(parts) == 2 or (
+                        len(parts) == 3 and parts[1] in (
+                            'compiler-rt', 'libcxx', 'libcxxabi', 'libunwind',
+                            'mingw-w64-crt', 'mingw-w64-headers'))
                     if member.isfile() and member.size < 8 * 1024**2 and re.match(
                             r'^(copying|copyright|licen[cs]e|notice|authors)([._-]|$)',
-                            Path(member.name).name, re.I):
+                            Path(member.name).name, re.I) and runtime_notice:
                         content = tar.extractfile(member).read().decode('utf-8', errors='replace')
                         notices.append('\n===== ' + item['name'] + '@' + item['version']
                                        + ': ' + member.name + ' =====\n' + content)

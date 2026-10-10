@@ -1,5 +1,20 @@
 # Third-party review status — not final distribution notices
 
+## Runtime source coverage follow-up — 2026-10-10
+
+The pinned MXE recipes also use LLVM 23.1.2 runtimes and MinGW-w64 57b5950;
+these are outside the 28-entry library-version table. The updated companion
+contains those two checksum-verified archives and seven additional original
+runtime license texts (749 collected texts in total). Full source archives retain
+all embedded notices, including files outside the separately collected subset.
+LLVM uses Apache-2.0 with LLVM exceptions; MinGW's original notices are preserved.
+This does not claim that every collected source or notice is linked.
+
+The original handed-off `c3a269f` binary ZIP is unchanged and lacks this follow-up.
+Any publication candidate must use the updated source companion. Actual source
+rebuild/Windows ABI verification is running separately in GitHub Actions; it is
+not yet recorded as passed and binary publication is not approved.
+
 ## ClipBridge 1.2.1 review — 2026-10-10
 
 Exact-version Windows native source coverage, preserved recipe patches and full

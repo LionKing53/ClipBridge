@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-10 ara kayıt: Kaynak `5857e75` GitHub'a gönderildi; son geçmiş kontrolü
+39 commit / 581 blob / 13 görselde bulgusuz. Native koşu 38052988643 derlemede;
+Windows ABI henüz başlamadı. Eski ZIP ek runtime kaynakları ve logo düzeltmesini
+içermez; yeni paket güncel kaynak/eşlikçi kullanır. Binary Release onayı yok.
+
 2026-10-10 ek kaynak incelemesi: LLVM/MinGW runtime arşiv/noticeleri tamamlandı;
 157/157 test geçti. Sonraki paket yeni eşlikçiyi kullanır. GitHub koşusu
 38052988643 gerçek native derlemede; başarı/ABI kanıtı ve yayın onayı beklenir.
