@@ -7,6 +7,15 @@ import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { assertNoLinks } from '../src/runtime-context.js';
 const root = fileURLToPath(new URL('../', import.meta.url));
+export function assertSourceCoverage(lock, inventory) {
+  if (!Array.isArray(inventory.artifacts)) throw new Error('Invalid native source inventory');
+  for (const item of [...lock.artifacts, ...(lock.runtimeArtifacts || [])]) {
+    if (!inventory.artifacts.some(a => a.sha256 === item.sha256 && a.url === item.url)) throw new Error('Missing native or compiler-runtime source');
+  }
+  for (const item of Object.values(lock.recipes)) {
+    if (!inventory.artifacts.some(a => a.commit === item.commit && a.repository === item.repository)) throw new Error('Missing build recipe');
+  }
+}
 export function sourceFilename(item) {
   if (!/^[a-zA-Z0-9_-]+$/.test(item.name) || !/^[a-zA-Z0-9.+-]+$/.test(item.version) || !/^[a-f0-9]{64}$/.test(item.sha256)) throw new Error('Invalid source identity');
   const url = new URL(item.url);
@@ -47,6 +56,7 @@ export async function fetchPinnedSource(item, directory, fetcher = fetch) {
 }
 async function main() {
   const lock = JSON.parse(await readFile(path.join(root, 'native-sources-lock.json'), 'utf8'));
+  if (!process.argv.includes('--crates')) lock.artifacts = [...lock.artifacts, ...(lock.runtimeArtifacts || [])];
   const directory = path.join(root, 'build/native-sources-cache'); await assertNoLinks(directory); await mkdir(directory, { recursive: true });
   if (process.argv.includes('--crates')) {
     const item = lock.artifacts.find(item => item.name === 'librsvg');

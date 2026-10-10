@@ -12,6 +12,11 @@ upstream build patches are preserved separately in their recipe snapshots.
 values in the exact libvips Windows/MXE recipes, not by guessed download hashes.
 Fontconfig uses MXE's mirror with the same upstream checksum. Mozjpeg uses the
 exact upstream commit tarball, not an archive with different generated paths.
+The additional `runtimeArtifacts` section covers LLVM 23.1.2 (compiler-rt,
+libc++, libc++abi, libunwind) and MinGW-w64 57b5950, as pinned by the same MXE
+recipes. These are additional toolchain/runtime sources, outside the 28-entry
+`versions.json` table. Preserve their original license texts and source archives;
+the reported library-version table alone is not a complete linked-code inventory.
 `scripts/fetch-native-sources.js` retrieves and verifies those files. With
 `--crates` it reads the verified librsvg Cargo.lock and retrieves all registry
 crate archives by their lock checksums (a superset including tests/platforms and

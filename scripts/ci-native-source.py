@@ -84,7 +84,7 @@ def collect():
     records, notices = [], []
     bundle = sources / 'ClipBridge-sharp-0.35.5-sources.zip'
     with zipfile.ZipFile(bundle, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
-        for item in LOCK['artifacts'] + rust['artifacts']:
+        for item in LOCK['artifacts'] + LOCK.get('runtimeArtifacts', []) + rust['artifacts']:
             file = cache / filename(item)
             data = file.read_bytes()
             assert sha(data) == item['sha256']
@@ -126,6 +126,7 @@ def collect():
     write_json(sources / 'evidence.json', {'format': 1, 'bundle': bundle.name,
         'sha256': sha(bundle.read_bytes()), 'nativeArchives': len(LOCK['artifacts']),
         'rustArchives': len(rust['artifacts']), 'recipeArchives': len(LOCK['recipes']),
+        'runtimeArchives': len(LOCK.get('runtimeArtifacts', [])),
         'noticeFiles': len(notices), 'compiledHere': True})
     write_json(transfer / 'build-evidence.json', {'format': 1,
         'sourceCommit': run('git', 'rev-parse', 'HEAD'), 'vips': version_data,

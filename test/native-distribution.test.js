@@ -4,11 +4,21 @@ import { mkdtemp, mkdir, writeFile, readFile, rm, symlink } from 'node:fs/promis
 import os from 'node:os';
 import path from 'node:path';
 import { createHash } from 'node:crypto';
-import { fetchPinnedSource, sourceFilename } from '../scripts/fetch-native-sources.js';
+import { fetchPinnedSource, sourceFilename, assertSourceCoverage } from '../scripts/fetch-native-sources.js';
 import { applyNativeOverride, assertX64Library } from '../src/native-override.js';
 import { sealCandidate } from '../src/package-files.js';
 import { verifyRelease } from '../src/release-store.js';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+test('source coverage rejects a missing or mismatched runtime even with native sources and recipes present', () => {
+  const native = { sha256: 'a'.repeat(64), url: 'https://example.invalid/native.tar.xz' };
+  const runtime = { sha256: 'b'.repeat(64), url: 'https://example.invalid/runtime.tar.xz' };
+  const recipe = { commit: 'c'.repeat(40), repository: 'https://example.invalid/recipe.git' };
+  const lock = { artifacts: [native], runtimeArtifacts: [runtime], recipes: { example: recipe } };
+  assert.throws(() => assertSourceCoverage(lock, { artifacts: [native, recipe] }), /compiler-runtime/);
+  assert.throws(() => assertSourceCoverage(lock, { artifacts: [native, recipe, { ...runtime, sha256: 'd'.repeat(64) }] }), /compiler-runtime/);
+  assert.doesNotThrow(() => assertSourceCoverage(lock, { artifacts: [native, recipe, runtime] }));
+  assert.throws(() => assertSourceCoverage(lock, { artifacts: [native, runtime] }), /build recipe/);
+});
 async function fixture(t) { const root = await mkdtemp(path.join(os.tmpdir(),'ClipBridge-native-source-')); t.after(() => rm(root,{recursive:true,force:true})); return root; }
 function pe(value) { const bytes = Buffer.alloc(256,value); bytes.write('MZ'); bytes.writeUInt32LE(64,60); bytes.writeUInt32LE(0x4550,64); bytes.writeUInt16LE(0x8664,68); bytes.writeUInt16LE(0x2000,86); return bytes; }
 test('source delivery uses pinned bytes and rejects bad cache, insecure origins and mismatch',async t => {

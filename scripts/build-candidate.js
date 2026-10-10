@@ -9,6 +9,7 @@ import { buildNative } from './build-native.js';
 import { copyApprovedFiles, packageFiles, sealCandidate, hashFile } from '../src/package-files.js';
 import { assertNoLinks } from '../src/runtime-context.js';
 import { applyNativeOverride } from '../src/native-override.js';
+import { assertSourceCoverage } from './fetch-native-sources.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const installable = process.argv.includes('--installable-test');
@@ -94,8 +95,8 @@ if (options['--native-source-directory']) {
   const lock = JSON.parse(await readFile(path.join(root, 'native-sources-lock.json'), 'utf8'));
   const bundleName = 'ClipBridge-sharp-0.35.5-sources.zip';
   if (inventory.sharp !== lock.sharp || evidence.nativeArchives !== lock.artifacts.length || evidence.recipeArchives !== Object.keys(lock.recipes).length || evidence.sha256 !== await hashFile(path.join(directory,bundleName))) throw new Error('Wrong native source companion');
-  for (const item of lock.artifacts) if (!inventory.artifacts.some(a => a.sha256 === item.sha256 && a.url === item.url)) throw new Error('Missing native source');
-  for (const item of Object.values(lock.recipes)) if (!inventory.artifacts.some(a => a.commit === item.commit && a.repository === item.repository)) throw new Error('Missing build recipe');
+  if ((evidence.runtimeArchives || 0) !== (lock.runtimeArtifacts || []).length) throw new Error('Missing compiler-runtime source coverage');
+  assertSourceCoverage(lock, inventory);
   await mkdir(path.join(payload,'sources'));
   await copyFile(path.join(directory,bundleName),path.join(payload,'sources',bundleName));
   await copyFile(path.join(directory,'NATIVE-NOTICES.txt'),path.join(payload,'review/NATIVE-NOTICES.txt'));

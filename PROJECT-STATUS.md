@@ -1,5 +1,26 @@
 # ClipBridge — proje durumu
 
+## Ek runtime kaynak kapsamı — 2026-10-10
+
+- Sabit MXE tarifleri yalnız versions.json'daki 28 bileşeni değil, LLVM
+  compiler-rt/libc++/libc++abi/libunwind ve MinGW CRT kaynaklarını da kullanır.
+  LLVM 23.1.2 ve MinGW 57b5950 arşivleri tarif checksum'larıyla indirildi;
+  özgün runtime lisans metinleri incelendi. Runtime kayıtları ayrı tutulur.
+- İndirme/eşlikçi üretimi bu iki arşivi kapsar; fresh candidate eski veya
+  yanlış runtime hash/URL envanterini reddeder. 15/15 hedefli ve **157/157 tam
+  test** geçti; atlanan yok. Kaynak kapısı 175 metin + 4 PNG / 121 kilit girdisi
+  geçti. Uygulama işlevi ve kişisel kurulum değişmez.
+- Yeni kaynak eşlikçisi: `build/native-sources-3250f811-5f3c-4a4e-a884-d80698ede198`;
+  422.304.771 bayt / 396 entry / 391 arşiv-tarif kaydı / 749 notice metni.
+  SHA-256 `cf7d38980b8c9efbfc62c3e74c8af878df68859477e1b536c20e4e02b0103317`.
+  ZIP/entry hash kontrolleri geçti. Bu dosya binary onayı değildir; eski
+  `c3a269f` teslim ZIP'i/özeti değiştirilmedi. Yeni paket yeni kaynak eşlikçisini
+  kullanmalıdır; eski 28-entry kaynak kapsamı eksiksiz linked-code kanıtı değildir.
+- GitHub Actions koşusu `38052988643`, kaynak `b0495cb`, ayrı Linux ortamında
+  gerçek derleme aşamasındadır. Bu koşu runtime ilavesinden önce başladı;
+  sonuçları ek kaynak incelemesiyle birlikte değerlendirilir. ABI/derleme
+  tamamlandı sayılmaz; temiz cihaz ve binary yayın kapıları açık kalır.
+
 ## Ayrı native doğrulama hazırlığı — 2026-10-10
 
 - Teslim paketi yeniden okundu: SHA256SUMS girdileri, ZIP'in 1.436 entry'si,

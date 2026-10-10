@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 runtime kaynak kapsamı — 2026-10-10
+
+- Sabit MXE LLVM 23.1.2 ve MinGW 57b5950 runtime kaynakları/hak metinleri
+  eşlikçiye eklendi. Bildirilen 28 libvips bileşeni aynı kalır; iki ek kaynak
+  ayrı kaydedilir. Eski/yanlış runtime envanterini fresh staging reddeder.
+- 15 hedefli ve 157/157 tam test geçti; kaynak eşlikçisinin 396 entry hash'i
+  yeniden doğrulandı. Önceki aday ve kişisel kurulum değiştirilmedi.
+  Gerçek native CI sonucu ve dağıtım onayı ayrı kaydedilir; binary yayın yok.
+
 ## 1.2.1 ayrı native doğrulama — 2026-10-10
 
 - Teslim ZIP/source/hash ve kişisel terim kontrolü yeniden geçti. Eski aday

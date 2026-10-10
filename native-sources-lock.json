@@ -188,5 +188,19 @@
       "sha256": "f9c65aa9c852eb8255b636fd9f07ce1c406f061ec19a2e7d508b318ca0c907d1",
       "url": "https://github.com/zlib-ng/zlib-ng/archive/2.3.3.tar.gz"
     }
+  ],
+  "runtimeArtifacts": [
+    {
+      "name": "llvm-project",
+      "version": "23.1.2",
+      "sha256": "c98bbef08a2b4c2613cd50e9aa9ae7b69b1fe6c16b2c40373bc0ab6116fdf78a",
+      "url": "https://github.com/llvm/llvm-project/releases/download/llvmorg-23.1.2/llvm-project-23.1.2.src.tar.xz"
+    },
+    {
+      "name": "mingw-w64",
+      "version": "57b5950",
+      "sha256": "7362a2dc2d289dde4617e21e5d7a006c87c19e80793c8928a794b654ed6e2bcd",
+      "url": "https://github.com/mingw-w64/mingw-w64/tarball/57b5950/mingw-w64-mingw-w64-57b5950.tar.gz"
+    }
   ]
 }

@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-10 ek kaynak incelemesi: LLVM/MinGW runtime arşiv/noticeleri tamamlandı;
+157/157 test geçti. Sonraki paket yeni eşlikçiyi kullanır. GitHub koşusu
+38052988643 gerçek native derlemede; başarı/ABI kanıtı ve yayın onayı beklenir.
+
 2026-10-10 yayın kontrolü: Teslim paketi yeniden doğrulandı; ayrı GitHub
 Linux/Windows ortamında gerçek native kaynak derlemesi ve ABI/decode işi
 hazırlandı. İş başarıyla bitmeden native kapı kapanmaz; binary release yok.

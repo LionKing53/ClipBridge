@@ -18,13 +18,15 @@ const rust = JSON.parse(await readFile(path.join(cache, 'rust-sources-lock.json'
 if (rust.provenance !== lock.artifacts.find(x => x.name === 'librsvg').sha256) throw new Error('Wrong Rust source provenance');
 const output = path.join(root, 'build', 'native-sources-' + randomUUID()); await assertNoLinks(output); await mkdir(output);
 const records = [], notices = []; const tar = path.join(process.env.SystemRoot, 'System32/tar.exe');
-for (const item of [...lock.artifacts, ...rust.artifacts]) {
+for (const item of [...lock.artifacts, ...(lock.runtimeArtifacts || []), ...rust.artifacts]) {
   const name = sourceFilename(item), file = path.join(cache, name);
   if (await hashFile(file) !== item.sha256) throw new Error('Missing or changed source: ' + item.name);
   records.push({ name: 'archives/' + name, file, sha256: item.sha256, url: item.url });
   const listing = (await run(tar, ['-tf', file], { windowsHide: true, maxBuffer: 32 * 1024 * 1024 })).stdout.split(/\r?\n/);
   // Read text to stdout only: never extract archive paths or run upstream code.
-  for (const member of listing.filter(name => !name.endsWith('/') && /^(copying|copyright|licen[cs]e|notice|authors)([._-]|$)/i.test(path.posix.basename(name)))) {
+  const runtime = (lock.runtimeArtifacts || []).some(entry => entry.name === item.name);
+  for (const member of listing.filter(name => !name.endsWith('/') && /^(copying|copyright|licen[cs]e|notice|authors)([._-]|$)/i.test(path.posix.basename(name)) &&
+      (!runtime || name.split('/').length === 2 || (name.split('/').length === 3 && ['compiler-rt','libcxx','libcxxabi','libunwind','mingw-w64-crt','mingw-w64-headers'].includes(name.split('/')[1]))))) {
     if (member.startsWith('-') || member.includes('\0') || member.includes('\n')) throw new Error('Unsafe member');
     const content = (await run(tar, ['-xOf', file, member], { windowsHide: true, maxBuffer: 8 * 1024 * 1024 })).stdout;
     if (!content.includes('\0')) notices.push(`\n===== ${item.name}@${item.version}: ${member} =====\n${content}\n`);
@@ -52,6 +54,6 @@ const stream = createWriteStream(bundle, { flags: 'wx' }), archive = new ZipArch
 const finished = once(stream, 'close'); archive.on('error', error => stream.destroy(error)); archive.pipe(stream);
 for (const record of records) archive.file(record.file, { name: record.name, date: new Date('2000-01-01T00:00:00Z') });
 await archive.finalize(); await finished;
-const evidence = { format: 1, bundle: path.relative(root, bundle), sha256: await hashFile(bundle), nativeArchives: lock.artifacts.length, rustArchives: rust.artifacts.length, recipeArchives: Object.keys(lock.recipes).length, noticeFiles: notices.length, compiledHere: false };
+const evidence = { format: 1, bundle: path.relative(root, bundle), sha256: await hashFile(bundle), nativeArchives: lock.artifacts.length, runtimeArchives: (lock.runtimeArtifacts || []).length, rustArchives: rust.artifacts.length, recipeArchives: Object.keys(lock.recipes).length, noticeFiles: notices.length, compiledHere: false };
 await writeFile(path.join(output, 'evidence.json'), JSON.stringify(evidence, null, 2));
 console.log(JSON.stringify(evidence));
