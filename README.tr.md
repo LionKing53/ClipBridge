@@ -65,7 +65,7 @@ Runtime kurulumu yok. Kurulum kaydı doğrulayan açılış ve onaylı kilit kur
 kodu eklendi. Bağımsız ilk kurucu ve veri koruyan kaldırma kaynakta var;
 `build:test-package` açık seçimiyle özel kabul paketi üretilebilir. Kurucu ve
 uygulama derlenmiş, gerçek kurulumda çalıştırılmamıştır. Temiz Windows/iPhone
-kabulü ve native bağımlılıkların dağıtım incelemesi bekliyor.
+kabulü ve binary yayın onayı bekliyor; native kaynak/DLL incelemesi geçti.
 Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
 İlk kurucunun kapsamı ve sınırları: [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
 

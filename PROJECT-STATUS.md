@@ -1,5 +1,42 @@
 # ClipBridge — proje durumu
 
+## Yayın incelemesi teslimi — 2026-10-10
+
+- Paket kaynağı **`9fe771411ad5db3aa8504db78544252f4e447c1c`**, 1.2.1.
+  Sonraki kayıt commit'i bu paketin kodunu/hash'lerini değiştirmez.
+- Güncel aday: `build/candidate-ef6025f7-af9b-42cb-ad66-842f97b7d9ee`.
+  ZIP `ClipBridge-1.2.1-win-x64-test.zip`, 475.785.100 bayt (~454 MiB), SHA-256
+  `168e5781cf3b157f0966686d0123ff3eb9e8832a6a37744111a5655092aae787`.
+  Setup SHA-256 `dd67310a309a9929c25f8839a5b02aea07d686d3428ac9c5a6da8fae412af202`.
+  Manifest SHA-256 `3a6439d2fe7e18d332fe90e58ad521263d6acf78f13451900558195df3b77395`.
+- Final ZIP **1.441 entry**, sealed **1.436 file / 89 production bağımlılığı**.
+  Her payload entry'nin hash/length'i, case-insensitive unique/safe path, Setup,
+  manifest ve READ-ME-FIRST eşitliği yeniden geçti. UTF-8/UTF-16 kişisel terim
+  taraması bulgusuz. Üç özgün Rust metninin final review kopyasında kalması ve
+  paket DLL hash'inin gerçekten yeniden üretilen hash ile eşitliği doğrulandı.
+- Eşlikçi 28 native + 2 runtime + 357 Cargo + 4 recipe / 749 original notice;
+  payload/sources içinde, SHA-256
+  `71ee330c3aee34fd6c0ad033551acabcc0b3c8f8adbc3c88792fa9a7645aa4ba`.
+  Native kaynak ve Windows ABI başarı kanıtları önceki bölümde ve
+  `build/native-ci-38056080637` altında saklanır. GitHub CI artifact'leri üç gün
+  sonra silinebilir; yerel kanıt kopyaları ignored build/ içinde korunur.
+- `delivery-review.json`, `archive-evidence.json`, `setup-build-evidence.json`,
+  `candidate-evidence.json`, `SHA256SUMS.txt` ve `PUBLICATION-HANDOFF.tr.md`
+  güncel aday klasöründedir. Eski c3a269f/ara adaylar final yerine kullanılmaz.
+- 157/157 full test (7e03f1d), boş PSModulePath extractor probe, ayrı Windows
+  fresh-stage native decode/setup compile ve source/diff kapıları geçti.
+  9fe7714 geçmiş taraması **45 commit / 616 blob / 45 metadata / 13 görsel**
+  bulgusuz. Son kayıt commit'i de yayın öncesi ayrıca taranır.
+- Native teknik/source/notice/recombination engeli ve güncel paket kontrolü kapandı.
+  **Owner experimental release review için hazır; binary yayın onayı verilmedi.**
+  Üretici private-acceptance/pending metadata'sı değiştirilmedi; bu dış teslim
+  incelemesi üretici kapılarının sonucunu ayrı kaydeder. Public prerelease etiketi
+  ve onay kayıtları yayın adımında netleştirilmelidir. Kararlı sürüm değildir.
+- Temiz Windows/iPhone kurulum/aktarım/kaldırma kabulü ertelenmiş ve doğrulanmamış
+  kalır. EXE/ZIP yayımlanmadı, uygulama/kurucu çalıştırılmadı. EXE tek başına
+  dağıtılmaz; ZIP çıkarıldığında Setup ile payload yan yana kalır. Kişisel kurulum
+  1.2.1 ve verilerine dokunulmadı. Çalışma sonunda temiz ağaç ve kilit bırakılır.
+
 ## Native kontrol sonucu — 2026-10-10
 
 - Linux job https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630

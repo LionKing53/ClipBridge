@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+Son paket 9fe7714: yeni aday ef6025f7-af9b-42cb-ad66-842f97b7d9ee bütünlük/gizlilik
+kontrolü geçti. Native engel kapalı; owner experimental release incelemesine hazır.
+Binary yayın onayı ve public prerelease metadata/etiketi ayrı yayın adımıdır.
+Temiz Windows/iPhone kabulü ertelenmiş; stable iddiası yok. Eski aday yayımlanmaz.
+
 Native teknik kapı tamamlandı: Linux source job 38056080637/114224790630 ve
 Windows ABI run 38058678968 geçti. Kaynak DLL özgün npm DLL ile byte-identical.
 Native source/notices/recombination engineering incelemesi kapandı. Güncel final

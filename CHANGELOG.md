@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 güncel paket teslimi — 2026-10-10
+
+- 9fe7714 kaynağından logo, runtime source, Rust bildirimleri ve PS module-path
+  düzeltmesi içeren güncel Setup/ZIP üretildi. 1.441 ZIP entry / 1.436 sealed file
+  hash/path/privacy kontrolü geçti; kişisel terim bulgusu yok.
+- Native source-build/Windows ABI geçti; güncel paket owner experimental-release
+  incelemesine hazır. Binary yayın onayı, app/installer çalıştırma veya gerçek
+  Windows/iPhone kabulü yapılmadı. Kurulum/veri değiştirilmedi; eski aday korunur.
+
 ## 1.2.1 native derleme/ABI tamamlandı — 2026-10-10
 
 - Sabit ortamda Windows libvips kaynak derlemesi ve ayrı Windows DLL/decode

@@ -1,5 +1,10 @@
 # Acceptance matrix — 2026-10-06
 
+2026-10-10 update: native source build and separate Windows DLL/decode verification
+passed, including fresh sealing and setup compilation. App/installer execution and
+clean Windows/iPhone acceptance remain unverified. Native evidence is recorded in
+PROJECT-STATUS.md; library verification does not complete the device matrix below.
+
 Automated tests use synthetic data and injected OS actions. A PASS there is not
 proof of real firewall behavior, iPhone trust, native packaging or deployment.
 Record Windows/iOS versions, package hash/commit, operator and result for each
@@ -21,7 +26,7 @@ in public test output. No manual row below has been executed in this source turn
 | Transfer | Unicode/RTF/RTFD, image/file envelopes, streaming 65 MiB, exact artificial limits | Both directions text/photo/PDF/video, actual 512 MiB boundary, interrupted phone transfer |
 | Storage | Owned upload/outbox cleanup, favorites/unmanaged preservation, stable ENOSPC mapping | Real disk exhaustion and forced interruption during upload/archive/history/config write |
 | Update/rollback | Isolated manifest/kernel, failed activation recovery, schema guard | Production bootstrapper, power loss, initial install interruption |
-| Removal | Design only; destructive legacy uninstaller excluded | Keep/delete data, owned artifacts, shared Tailscale unaffected |
+| Removal | Data-preserving source/core and receipt/ownership fixture tests; destructive legacy uninstaller excluded | Real uninstall, owned artifacts and shared Tailscale unaffected |
 | Clean distribution | Pinned Node/SDK acquisition, Node publisher, full native compile, guarded allowlist candidate + inventory/notices | Actual installer on clean x64 Windows without Node/Tailscale/WebView2; Runtime acquisition |
 | Privacy/license | Allowlist gate, synthetic UI, lock inventory; GPL-3.0-or-later selected and recorded | Complete Git history/archive/QR/image inspection, binary license compliance |
 
