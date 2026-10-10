@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+Native teknik kapı tamamlandı: Linux source job 38056080637/114224790630 ve
+Windows ABI run 38058678968 geçti. Kaynak DLL özgün npm DLL ile byte-identical.
+Native source/notices/recombination engineering incelemesi kapandı. Güncel final
+paket privacy/integrity ve yayın adımı ayrı; temiz Windows/iPhone kabulü bekler.
+Önceki "native bekliyor" paragrafları tarihsel kayıttır.
+
 38056080637 Linux native derleme/source teslimi geçti. Windows hazırlığında
 PowerShell module-path hatası düzeltildi; dosya-only extraction probe geçti.
 Başarılı source artifact ile Windows-only ABI/decode yeniden çalıştırılmalıdır.

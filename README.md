@@ -11,8 +11,11 @@ trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remote
 >
 > No downloadable EXE or installer is published yet. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
-> Rebuilding libvips from the source companion and verifying compatibility also
-> remain pending. Automated tests do not replace these checks.
+> The libvips source rebuild and Windows DLL compatibility checks have passed.
+> Automated/library tests do not replace clean-device installation and transfer tests.
+
+[Native source-build evidence](https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630)
+· [Windows DLL verification](https://github.com/LionKing53/ClipBridge/actions/runs/38058678968)
 
 The same **ClipBridge** name is used in both languages. Existing PanoKopru
 installations and iPhone identities are not silently renamed or migrated.

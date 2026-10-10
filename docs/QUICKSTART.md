@@ -5,16 +5,16 @@
 
 > **Testing is pending.** No public installer download is available yet.
 > The source-built setup has not been tested on clean Windows or with a real
-> iPhone transfer. The sharp/libvips rebuild and distribution review are also
-> unfinished. This guide describes the intended acceptance flow, not completed
-> device-test evidence.
+> iPhone transfer. The libvips source rebuild and Windows DLL checks have passed;
+> this guide describes the intended device acceptance flow, not completed
+> installation/phone-test evidence.
 
 Version **1.2.1** supports **English / Türkçe**. Choose **Settings → Language →
 English** (or **Ayarlar → Dil → English**). The choice survives reopening.
 The screenshots show the real English interface with synthetic data.
 The historical private **1.1.0** package predates this language update. The current
-1.2.1 candidate is prepared for review, not approved for binary publication while
-the native distribution review remains open. English button names below
+1.2.1 candidate is prepared for experimental release review; public binary
+publication remains a separate step. English button names below
 include Turkish equivalents where useful.
 
 ## The setup path

@@ -1,5 +1,34 @@
 # ClipBridge — proje durumu
 
+## Native kontrol sonucu — 2026-10-10
+
+- Linux job https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630
+  **başarılı**; native kaynak commit'i `bcce813191ee4e24943ab831406d128405cb2ccb`.
+  Aynı koşudaki eski Windows hazırlık hatası genel koşuyu kırmızı bırakır.
+- Ayrı Windows doğrulaması https://github.com/LionKing53/ClipBridge/actions/runs/38058678968
+  **başarılı**, helper kaynağı `0700c0921abd8fd93d986e2cd20e8d1747ed22a0`.
+  PNG/JPEG/WebP/TIFF/SVG→PNG, fresh candidate sealing ve Setup derlemesi geçti.
+- Rebuilt ve özgün npm DLL aynı SHA-256:
+  `06dab07cc386748513337a31672b1d5269fbc770a14ff403080575665bf0813f`.
+  Gerçek tekrar derlemenin aynı bayt üretmesi doğrulandı; C++ wrapper/addon özgün
+  kaldı. Whole build/host compiler reproducibility iddia edilmez.
+- Kanıtlar `build/native-ci-38056080637`: artifact SHA-256
+  `140eb8a94dff0d87221de0bbfe1d1f56d501cf5dbb2334b2d68fc9188c941ca6`,
+  430.767.110 bayt. DLL hash ve source ZIP'in 402 entry / 391 kayıt hash/path
+  kontrolü geçti. CI source bundle SHA-256
+  `5fbf5043a8bc562abd26d5bb881e92201f658627cb0f29ad550a9fad9baa1221`.
+  CI collector 740 metin, Windows collector 749 metin sayar; count eşitliği
+  kaynak kapsama kanıtı değildir. Her iki ZIP özgün aynı arşivleri korur.
+- Windows JSON artifact SHA-256
+  `262c2ec73e57c404a7d571f4bb2b24881298818e980728c30c1b76dd125faacc`;
+  içerik/scope/DLL hash kontrolü geçti. appLaunched/installerExecuted/realClipboardAccess
+  false; cleanDeviceAcceptance pending; binary yayın onayı false olarak korunur.
+- LGPL kaynak/noticeler, Cairo LGPL yolu, Rust güncel telif ve açık kaynak
+  recombination hükümleri deneysel dağıtım kapsamında incelendi; bu kapsamdaki
+  native engineering blocker kapandı. Nihai yeni ZIP kontrolü/yayın adımı ayrı;
+  temiz Windows/iPhone kabulü bekler. Önceki native-bekliyor kayıtları tarihseldir.
+  Kişisel kurulum/veriler değişmez. Yeni paket güncel kaynaktan üretilir.
+
 ## Gerçek native derleme ve Windows hazırlık düzeltmesi — 2026-10-10
 
 - Koşu `38056080637` Linux job'u **başarılı**: sabit host-toolchain preflight,

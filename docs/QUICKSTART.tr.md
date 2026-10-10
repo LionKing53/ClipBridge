@@ -5,10 +5,10 @@
 Güncel kaynak sürümü **1.2.1**, Türkçe/English seçimini destekler:
 **Ayarlar → Dil**. Tercih yeniden açılışta korunur. Önceki özel 1.1.0 test
 paketi dil güncellemesini içermez; güncel 1.2.1 aday paket inceleme içindir.
-Native dağıtım kontrolü kapanmadan binary yayın onayı yok; kararlı sürüm değildir.
+Native kaynak derleme ve Windows DLL kontrolü geçti; binary yayını ayrı adımdır.
 
-Bu paket genel yayın değildir. Gerçek Windows/iPhone kabulü ve sharp/libvips
-dağıtım incelemesi henüz tamamlanmadı. Paketi testiniz için kullanın; henüz
+Bu paket genel yayın değildir. Gerçek Windows/iPhone kurulumu ve aktarım kabulü
+henüz tamamlanmadı. Paketi testiniz için kullanın; henüz
 başkalarına dağıtmayın. Kaynak ve kurucu imzalı değildir. Beklenmedik güvenlik
 uyarısında korumaları kapatmayın; dosyanın SHA-256 özetini teslim kaydıyla
 karşılaştırın ve durumu bildirin.

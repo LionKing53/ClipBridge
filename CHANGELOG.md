@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 native derleme/ABI tamamlandı — 2026-10-10
+
+- Sabit ortamda Windows libvips kaynak derlemesi ve ayrı Windows DLL/decode
+  doğrulaması geçti. Yeniden derlenen DLL özgün npm DLL ile aynı hash'i üretir.
+  Özgün C++ wrapper/addon korundu; fresh sealing ve kurucu derlemesi geçti.
+- README/rehber native sonucu güncellendi. Kaynak/notice/recombination engineering
+  incelemesi kaydedildi; uygulama/kurucu çalıştırılmadı. Gerçek Windows/iPhone
+  kabulü, kararlı sürüm ve binary yayın onayı hâlâ iddia edilmez.
+
 ## 1.2.1 Windows build module-path uyumluluğu — 2026-10-10
 
 - Linux native kaynak derlemesi başarıyla tamamlandı. Windows hazırlığında

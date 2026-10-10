@@ -6,6 +6,14 @@ are absent. The owner assigned this validation to a separate environment on
 2026-10-08. Do not label that test passed. Upstream sources are unmodified;
 upstream build patches are preserved separately in their recipe snapshots.
 
+The separate verification completed on 2026-10-10: Linux job
+`38056080637/114224790630` built the Windows DLL from source and Windows run
+`38058678968` passed ABI/decode, fresh sealing and setup compilation. The rebuilt
+DLL matches the original npm DLL SHA-256 exactly. The original sharp C++ wrapper
+and addon were retained. Host compiler bootstrap, app/setup execution and clean
+Windows/iPhone acceptance are not claimed. Current Rust root copyright/license
+texts are also preserved in `THIRD-PARTY-NOTICES.md` and the package review folder.
+
 ## Source delivery
 
 `native-sources-lock.json` pins the 28 native source archives by the SHA-256

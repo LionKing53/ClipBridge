@@ -1,4 +1,23 @@
-# Third-party review status — not final distribution notices
+# Third-party notices and distribution review
+
+## Current engineering review — 2026-10-10
+
+The Windows x64 libvips 8.18.7 source rebuild completed in the pinned MXE
+environment. Its DLL SHA-256 matches the original npm DLL byte for byte:
+`06dab07cc386748513337a31672b1d5269fbc770a14ff403080575665bf0813f`.
+The separate Windows job tested this DLL with the original sharp 0.35.5 C++
+wrapper/addon, five image paths, fresh package sealing and setup compilation.
+This verifies this DLL rebuild, not every toolchain binary or device acceptance.
+
+The experimental distribution must include the matching native source companion,
+original notices, application source and the Rust root notice supplement below.
+Use cairo's LGPL-2.1 alternative; preserve original license texts and the recipient
+rebuild/recombination instructions. The current review found no remaining blocker
+in these native source/notices/replacement provisions. This is an engineering
+review with the stated scope, not a legal warranty or a stable-release claim.
+Final package privacy/integrity review and owner publication approval are separate.
+
+Earlier review records below retain the status they had at the time.
 
 ## Runtime source coverage follow-up — 2026-10-10
 

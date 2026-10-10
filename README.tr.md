@@ -9,8 +9,10 @@ ve verileri yalnız isim değişikliği için sıfırlanmaz veya taşınmaz.
 **Kaynak kod yayını — 1.2.1 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
 yayımlanır; indirilebilir EXE/kurulum paketi henüz yayımlanmamıştır.
 Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
-test edilmemiştir**. libvips kaynak paketinden yeniden derleme ve uyumluluk
-doğrulaması da beklemektedir. Otomatik test başarısı bu kontrollerin yerine geçmez.
+test edilmemiştir**. libvips kaynak derlemesi ve Windows DLL uyumluluk doğrulaması
+geçti. Otomatik/kütüphane testleri gerçek cihaz kabulünün yerine geçmez.
+[Native derleme](https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630)
+ve [Windows DLL kanıtı](https://github.com/LionKing53/ClipBridge/actions/runs/38058678968).
 İlk kurucu yalnız temiz Windows x64 kurulumu hedefler; otomatik güncelleme,
 üretim rollback'i ve eski verilerin göçü sonraki sürüme ertelendi.
 Bkz. [Türkçe/İngilizce kurulum ve test rehberi](docs/QUICKSTART.md).
