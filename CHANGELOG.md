@@ -1,5 +1,13 @@
 # Değişiklik kaydı
 
+## 1.2.1 ayrı native doğrulama — 2026-10-10
+
+- Teslim ZIP/source/hash ve kişisel terim kontrolü yeniden geçti. Eski aday
+  paket korunur; sonraki logo düzeltmesini içermediği açıkça kaydedildi.
+- Manuel Linux kaynak derlemesi + Windows fresh-stage ABI/decode kontrolü
+  için sabit action/recipe kullanan CI eklendi; kişisel hostta upstream kod
+  çalıştırılmaz. İş sonucu doğrulanmadan native kabulü veya binary onayı yok.
+
 ## 1.2.1 logo okunaklılığı — 2026-10-10
 
 - Masaüstü c/b monogramının negatif aralığı ve üst üste hizası düzeltildi;

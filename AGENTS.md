@@ -108,6 +108,16 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Separate native verification — owner decision 2026-10-10
+
+The owner asked the publication conversation to recheck the handoff and perform
+actual libvips source-build/ABI verification in a separate environment. Use only
+disposable standard GitHub-hosted Linux/Windows runners, manual workflow dispatch,
+read-only repository tokens and pinned actions/recipes. No WSL/Docker installation
+or upstream execution on the personal host. CI artifacts are verification inputs
+with corresponding sources/notices, never an approved binary release. Do not run
+the application/installer or access real clipboard, certificates or permissions.
+
 ### Logo readability — owner decision 2026-10-10
 
 The publication conversation may adjust the desktop c/b monogram spacing and

@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-10 yayın kontrolü: Teslim paketi yeniden doğrulandı; ayrı GitHub
+Linux/Windows ortamında gerçek native kaynak derlemesi ve ABI/decode işi
+hazırlandı. İş başarıyla bitmeden native kapı kapanmaz; binary release yok.
+
 2026-10-10 logo düzeltmesi: Masaüstü c/b aralığı ve açık/koyu belge görselleri
 yenilendi. Hazır `c3a269f` paketi bu sonraki düzeltmeyi içermez; paket yeniden
 üretimi yayın/dağıtım incelemesiyle ayrıca ele alınır. Kişisel kurulum değişmez.

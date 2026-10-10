@@ -177,7 +177,10 @@
     "docs/images/trusted-networks.png",
     "docs/images/first-time-setup.png",
     "test/branding.test.js",
-    "docs/BRANDING.md"
+    "docs/BRANDING.md",
+    ".github/workflows/native-rebuild.yml",
+    "scripts/ci-native-source.py",
+    "scripts/verify-native-rebuild.js"
   ],
   "historicalFiles": [
     "README.en.md",

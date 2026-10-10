@@ -51,6 +51,14 @@ to cover the user's modified libraries; supply their modified sources as well.
 
 ## Rebuild the upstream library on a separate Linux/OCI build machine
 
+The manual `Native source rebuild verification` GitHub Actions workflow performs
+this in disposable Linux/Windows runners. It pins actions and recipe commits,
+records Docker/compiler build logs and the two reviewed recipe adaptations,
+and retains corresponding sources/notices beside its verification DLL. The
+Windows job retains the original C++ wrapper/addon and tests the actually rebuilt
+libvips DLL in fresh staging. A successful job is an engineering result, not
+clean-device acceptance or unconditional distribution-license approval.
+
 Extract the recipe snapshots into separate directories. Read their README,
 Dockerfiles and scripts before running. `build.sh` requires Docker or Podman.
 Use the `vips-web` **x86_64-w64-mingw32.static** build (libvips itself remains a

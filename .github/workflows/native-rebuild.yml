@@ -1,0 +1,74 @@
+name: Native source rebuild verification
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: native-rebuild-verification
+  cancel-in-progress: false
+jobs:
+  rebuild:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24.15.0'
+      - name: Prepare pinned sources and reviewed build adaptation
+        run: |
+          node scripts/fetch-native-sources.js
+          node scripts/fetch-native-sources.js --crates
+          python3 scripts/ci-native-source.py prepare
+      - name: Cross-compile Windows x64 libraries from source
+        working-directory: build/ci-native/vips
+        run: |
+          set -euo pipefail
+          docker version > ../docker-version.txt
+          df -h > ../disk-before.txt
+          ./build.sh --without-prebuilt --target x86_64-w64-mingw32.static vips-web 2>&1 | tee ../build.log
+      - name: Collect corresponding sources and rebuilt DLL
+        run: python3 scripts/ci-native-source.py collect
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-verification-with-sources
+          path: build/ci-native/transfer/
+          retention-days: 3
+          if-no-files-found: error
+      - name: Preserve build diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: native-build-diagnostics
+          path: |
+            build/ci-native/build.log
+            build/ci-native/build-adaptation.json
+            build/ci-native/docker-version.txt
+            build/ci-native/disk-before.txt
+          retention-days: 3
+  windows-abi:
+    needs: rebuild
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24.15.0'
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: native-verification-with-sources
+          path: build/ci-native/transfer
+      - run: npm.cmd ci --ignore-scripts --no-audit --no-fund
+      - run: node scripts/acquire-toolchain.js
+      - name: Fresh-stage replacement and image decoding without app launch
+        run: node scripts/verify-native-rebuild.js
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-native-abi-evidence
+          path: build/ci-native/windows-abi.json
+          retention-days: 3

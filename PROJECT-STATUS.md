@@ -1,5 +1,23 @@
 # ClipBridge — proje durumu
 
+## Ayrı native doğrulama hazırlığı — 2026-10-10
+
+- Teslim paketi yeniden okundu: SHA256SUMS girdileri, ZIP'in 1.436 entry'si,
+  sealed 1.431 dosya ve kaynak eşlikçisinin 394 entry/389 arşiv-tarif hash'i
+  doğrulandı; özel terim bulgusu yok. Paket kaynağı hâlâ `c3a269f`; logo
+  düzeltmesi `88b1f0d` bu eski pakette yok. Eski paket/kişisel kurulum değişmez.
+- Gerçek libvips derlemesi için yalnız manuel GitHub Actions işi eklendi:
+  sabit vips/MXE tarifleri, prebuilt OCI kapalı, hareketli MXE dalı yerine
+  sabit commit ve TTY'siz paketleme. Derlenen DLL kaynak/noticeler ve tam
+  uyarlama girdileriyle birlikte kısa ömürlü doğrulama artifact'ine alınır.
+- Windows CI yalnız libvips-42.dll'i fresh candidate içinde değiştirir;
+  özgün sharp C++ wrapper/addon korunur. Farklı DLL hash'i, sürüm envanteri,
+  PNG/JPEG/WebP/TIFF/SVG decode, sealed manifest ve kurucu derlemesi kontrol
+  edilir. Uygulama/kurucu çalıştırılmaz; gerçek cihaz kabulü değildir.
+- Hazırlanan iş başarılı çalışmadan native/ABI kapısı tamamlandı sayılmaz.
+  Kaynak/syntax denetimleri yerelde geçmiştir; kaynak yayını öncesi geçmiş
+  yeniden taranır. Lisans/dağıtım onayı ve public binary release ayrıdır.
+
 ## Logo okunaklılığı — 2026-10-10
 
 - Kaynak tabanı `43f8dfc`. Masaüstü c/b monogramında -6px harf aralığı ve
