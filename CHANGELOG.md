@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 Windows build module-path uyumluluğu — 2026-10-10
+
+- Linux native kaynak derlemesi başarıyla tamamlandı. Windows hazırlığında
+  Get-FileHash bulunamaması görüldü; extractor engine'e ait trusted built-in
+  modülleri açıkça yükler. Boş inherited module path probe'u geçti.
+- Başarılı native artifact ile Windows-only yeniden doğrulama işi eklendi.
+  ABI sonucu henüz geçmedi; binary onayı yok. Güncel dosya-only ara aday/source
+  üretildi; 7e03f1d üzerinde tam 157 test geçti. Kişisel kurulum değişmez.
+
 ## 1.2.1 Rust std bildirimleri — 2026-10-10
 
 - Doğrulanmış sabit Rust nightly source arşivindeki güncel özgün telif/MIT/Apache

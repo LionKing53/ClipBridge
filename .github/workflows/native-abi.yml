@@ -1,0 +1,45 @@
+name: Reuse source rebuild for Windows ABI verification
+on:
+  workflow_dispatch:
+    inputs:
+      source-run:
+        description: Native source-build run ID in this repository
+        required: true
+        type: string
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: native-windows-abi-verification
+  cancel-in-progress: false
+jobs:
+  windows-abi:
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444
+        with:
+          node-version: '24.15.0'
+      - name: Validate source run selector
+        env:
+          SOURCE_BUILD_RUN: ${{ inputs.source-run }}
+        run: node -e "if (!/^[1-9][0-9]*$/.test(process.env.SOURCE_BUILD_RUN)) throw new Error('Numeric source run ID required')"
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: native-verification-with-sources
+          path: build/ci-native/transfer
+          run-id: ${{ inputs.source-run }}
+          repository: ${{ github.repository }}
+          github-token: ${{ github.token }}
+      - run: npm.cmd ci --ignore-scripts --no-audit --no-fund
+      - run: node scripts/acquire-toolchain.js
+      - name: Fresh-stage replacement and image decoding without app launch
+        run: node scripts/verify-native-rebuild.js
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-native-abi-evidence
+          path: build/ci-native/windows-abi.json
+          retention-days: 3

@@ -1,6 +1,11 @@
 param([Parameter(Mandatory=$true)][string]$OutputDirectory)
 # Build-only extraction of exact pinned entries. No installer or runtime launch.
 $ErrorActionPreference = 'Stop'
+# PowerShell 7 parents can pass a module path incompatible with Windows PS 5.1.
+# Load the trusted modules beside this engine, not inherited user/module paths.
+foreach ($buildModule in @('Microsoft.PowerShell.Management', 'Microsoft.PowerShell.Utility', 'Microsoft.PowerShell.Security')) {
+    Import-Module -Name ([IO.Path]::Combine($PSHOME, 'Modules', $buildModule, $buildModule + '.psd1')) -ErrorAction Stop
+}
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 $project = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $build = Join-Path $project 'build'

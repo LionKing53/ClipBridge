@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+38056080637 Linux native derleme/source teslimi geçti. Windows hazırlığında
+PowerShell module-path hatası düzeltildi; dosya-only extraction probe geçti.
+Başarılı source artifact ile Windows-only ABI/decode yeniden çalıştırılmalıdır.
+Ara yerel paket onaylı release değildir; final kaynak/paket kontrolü gerekir.
+
 Rust std için sabit nightly kaynak/telif kontrolü yapıldı; üç güncel root metin
 genel dağıtım bildirimlerine eklendi. Yeni paket review bildirimlerini içerir;
 compiler kaynak arşivi dağıtıma şişirme olarak eklenmez. Native/ABI sonucu bekler.

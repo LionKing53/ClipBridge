@@ -1,5 +1,26 @@
 # ClipBridge — proje durumu
 
+## Gerçek native derleme ve Windows hazırlık düzeltmesi — 2026-10-10
+
+- Koşu `38056080637` Linux job'u **başarılı**: sabit host-toolchain preflight,
+  Windows x64 native kaynak derlemesi, DLL/source toplama ve artifact teslimi geçti.
+  Windows job'u DLL yükleme öncesinde toolchain çıkarma sırasında başarısız:
+  inherited PowerShell module path ile Get-FileHash bulunamadı. ABI geçmedi sayılır.
+- Extractor Windows PS engine yanındaki Management/Utility/Security modüllerini
+  açıkça yükler. Boş inherited PSModulePath ile gerçek pinned archive extraction
+  ve OpenJS imza kontrolü dosya-only probe'da geçti; Node/app/kurucu çalıştırılmadı.
+- Başarılı Linux çıktısını yeniden kullanmak için manuel Windows-only ABI işi
+  eklendi; aynı repo/run artifact'ini read-only token ile indirir. Linux derlemesi
+  tekrarlanmaz. Yeni Windows sonucu ayrıca kaydedilir; binary onayı henüz yok.
+- `7e03f1d` kaynakta **157/157** test yeniden geçti. Yeni eşlikçi
+  `build/native-sources-6ae56508-aad1-4ed0-a939-00b827773923`, 28 native + 2 runtime
+  + 357 Rust + 4 recipe / 749 notices; SHA-256
+  `71ee330c3aee34fd6c0ad033551acabcc0b3c8f8adbc3c88792fa9a7645aa4ba`.
+- Dosya-only ara aday `build/candidate-94b953c4-4de2-4995-8d61-084c6d708df1`,
+  kaynak `7e03f1d`, sealed 1.435 file / 89 prod bağımlılığı; bütünlük geçti.
+  Bu aday sonraki extractor/Windows-only workflow değişikliğini içermez; final
+  paket olarak yayınlanmaz. Eski teslim ve kişisel kurulum/veriler değişmez.
+
 ## Rust standard-library bildirim kontrolü — 2026-10-10
 
 - Sabit MXE Rust nightly 2026-09-24 kaynak arşivi dosya-only indirildi;

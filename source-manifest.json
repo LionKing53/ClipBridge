@@ -180,7 +180,8 @@
     "docs/BRANDING.md",
     ".github/workflows/native-rebuild.yml",
     "scripts/ci-native-source.py",
-    "scripts/verify-native-rebuild.js"
+    "scripts/verify-native-rebuild.js",
+    ".github/workflows/native-abi.yml"
   ],
   "historicalFiles": [
     "README.en.md",
