@@ -1,5 +1,13 @@
 # Değişiklik kaydı
 
+## 1.2.1 native hash ölçütü — 2026-10-10
+
+- Gerçek kaynak derlemesi aynı DLL baytlarını üretebileceği için Windows helper'ı
+  hash farklılığını zorunlu tutmaz; iki hash'i karşılaştırarak kaydeder. Kaynak
+  derleme/boş target kanıtı ve işlev testi hâlâ gereklidir. Node syntax geçti.
+- İlk compiler-bootstrap koşusu iptal; yeni koşu 38056080637 kaynak derlemede.
+  Henüz derleme/ABI başarı kaydı veya binary yayın onayı yok.
+
 ## 1.2.1 native doğrulama ortamı — 2026-10-10
 
 - CI host-toolchain image digest'i sabitlendi; registry repo katmanı aynı MXE

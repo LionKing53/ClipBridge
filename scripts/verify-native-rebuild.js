@@ -25,7 +25,9 @@ const app = path.join(candidate, 'payload/app');
 const library = path.join(app, 'node_modules/@img/sharp-win32-x64/lib/libvips-42.dll');
 assert.equal(await hashFile(library), build.rebuiltLibrarySHA256);
 const original = path.join(root, 'node_modules/@img/sharp-win32-x64/lib/libvips-42.dll');
-assert.notEqual(await hashFile(original), build.rebuiltLibrarySHA256, 'A downloaded original DLL is not rebuild evidence.');
+// A genuine reproducible build can match the upstream bytes. Source-build logs
+// and empty-target preflight establish provenance; inequality alone cannot.
+const originalLibrarySHA256 = await hashFile(original);
 const sharp = createRequire(path.join(app, 'package.json'))('sharp');
 assert.equal(sharp.versions.vips, '8.18.7');
 assert.equal(sharp.versions.sharp, '0.35.5');
@@ -43,6 +45,7 @@ await verifyRelease(path.join(candidate, 'payload'), evidence.hash);
 await run(process.execPath, ['scripts/build-setup.js', candidate], { cwd: root, windowsHide: true, maxBuffer: 1024 ** 2, timeout: 120000 });
 await writeFile(path.join(root, 'build/ci-native/windows-abi.json'), JSON.stringify({ format: 1,
   sourceCommit: build.sourceCommit, rebuiltVipsDLL: true, rebuiltLibrarySHA256: build.rebuiltLibrarySHA256,
+  originalLibrarySHA256, matchesOriginalBytes: originalLibrarySHA256 === build.rebuiltLibrarySHA256,
   originalCppAndAddonRetained: true, freshStageVerified: true, setupCompiled: true,
   formats: [...formats, 'svg-to-png'], passed: true, appLaunched: false, installerExecuted: false,
   realClipboardAccess: false, cleanDeviceAcceptance: 'pending', approvedForPublication: false }, null, 2));

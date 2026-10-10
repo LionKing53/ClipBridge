@@ -1,5 +1,19 @@
 # ClipBridge — proje durumu
 
+## Devam eden doğrulama ve hash ölçütü — 2026-10-10
+
+- İlk koşu `38052988643` iptal edildi; host LLVM aşamasındaydı ve başarı kanıtı
+  değildir. İptal edilen job logu ignored `.local/` altında saklandı.
+- Yeni koşu https://github.com/LionKing53/ClipBridge/actions/runs/38056080637
+  kaynak `bcce813191ee4e24943ab831406d128405cb2ccb`. Aynı MXE/clang ve boş Windows
+  target preflight geçti; kaynak kütüphane derlemesi devam ediyor. ABI bekliyor.
+- Windows helper'ında farklı DLL hash'i zorunluluğu kaldırıldı: gerçek tekrarlanabilir
+  derleme aynı baytları üretebilir. Derleme kaydı/boş target/sabit kaynaklar kanıttır;
+  helper iki hash'i ve eşitlik sonucunu kaydeder. Node syntax geçti. Devam eden
+  koşu eski helper'ı içerir; olası yalnız eşitlik hatası sonuçta ayrıca ele alınır.
+- Kaynakta bu helper değişikliği uygulama işlevi veya kişisel kurulum değiştirmez.
+  Native/ABI/yayın onayı sonuç alınmadan verilmez.
+
 ## Native ortam optimizasyonu — 2026-10-10
 
 - İlk koşu `38052988643` host LLVM derleyicisini de sıfırdan kurmaktadır;

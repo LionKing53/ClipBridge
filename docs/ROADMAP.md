@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+Aktif koşu 38056080637: host-toolchain preflight geçti, native kaynak derlemesi
+sürüyor. İlk koşu iptal; başarı sayılmaz. Aynı hash mümkün olduğundan sonraki
+Windows helper'ı hash farklılığını zorunlu tutmaz; derleme ve işlev kanıtı gerekir.
+
 Native CI host derleyicisi için digest-pinned upstream image kullanır; aynı MXE
 commit/clang 23.1.2 ve boş Windows target alanı koşu içinde zorunlu doğrulanır.
 Windows native kaynak derleme ve DLL ABI sonucu hâlâ gereklidir. Önceki uzun
