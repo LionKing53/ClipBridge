@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## 1.2.1 paket incelemesi — 2026-10-10
+
+- Yeni ürün özelliği yok. 28 native bileşenin tam sürüm/kaynak ve özgün notice
+  karşılığı kontrol edildi; sabit kaynak/recipe/Cargo eşlikçisi ClipBridge adıyla
+  üretilir. Native derleme rehberi prebuilt indirme, Git metadata ve değiştirilmiş
+  kütüphaneyle yeniden paketleme sınırlarını açıklar.
+- 156/156 tam test, Edge UI ve kaynak kapısı geçti; production npm audit sıfır
+  bilinen açık bildirdi. Kişisel kurulum/veriler değişmedi, GitHub işlemi yok.
+- Gerçek temiz Windows/iPhone ve ayrı ortamda libvips derleme/uyumluluk kabulü
+  yapılmadı. EXE/ZIP teslimi, lisans/dağıtım onayının tamamlandığı anlamına gelmez.
+
 ## 1.2.1 — ClipBridge — 2026-10-09
 
 - GitHub deposu kullanıcı isteğiyle `LionKing53/ClipBridge` olarak yeniden

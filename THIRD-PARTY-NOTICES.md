@@ -1,5 +1,25 @@
 # Third-party review status — not final distribution notices
 
+## ClipBridge 1.2.1 review — 2026-10-10
+
+Exact-version Windows native source coverage, preserved recipe patches and full
+source-companion notices are reviewed again for the current package. The original
+28-component Windows versions list maps to the 28 pinned native source archives;
+357 Cargo archives and four pinned recipe/source snapshots accompany them.
+License evidence includes the BSD-licensed libimagequant 2.4.1 fork, LGPL components,
+cairo's upstream MPL alternative, MIT/BSD/font/image/patent notices and the actual
+Node/WebView2 SDK notices. Generic package metadata alone is not the conclusion.
+The companion's 742 collected original texts intentionally include a source
+superset; they are not a claim of 742 linked libraries.
+
+The engineering review of recipient recombination is documented in
+`docs/NATIVE-REBUILD.md`, including the upstream Git-metadata assumption and the
+sharp-libvips script's prebuilt-download behavior. Fresh-staging replacement and
+manifest re-sealing have synthetic tests; a real rebuilt-library run has not
+occurred. **Binary distribution review remains open**, including actual rebuild/
+compatibility and linked-component/source completeness validation. Experimental
+release labeling does not resolve it. No personal installation is a build input.
+
 ## Native source delivery implemented — 2026-10-08
 
 The earlier missing-source and missing-recombination provisions now have concrete

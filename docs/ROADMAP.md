@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-10: Yeni özellik yok; ClipBridge 1.2.1 EXE/ZIP, native kaynak eşlikçisi,
+lisans/bütünlük/gizlilik kontrolleri yayın sohbetine teslim için hazırlanır.
+Kişisel kurulum değişmez. Temiz Windows/iPhone kabulü bekler; hedef kararlı sürüm
+değil deneysel ön sürümdür. Native yeniden derleme ayrı ortamda doğrulanmadan
+dağıtım kapısı kapanmaz; ön sürüm etiketi lisans yükümlülüklerini kaldırmaz.
+
 2026-10-09 son kullanıcı kararı: Mevcut GitHub deposunun adı ClipBridge olur;
 güncel URL https://github.com/LionKing53/ClipBridge. Önceki adresi koruma kararı
 bu istekle güncellendi. Ana kaynak klasörü ve kişisel kurulum yerinde kalır.

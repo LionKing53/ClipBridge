@@ -1,5 +1,5 @@
 # Setup and iPhone pairing
-**Source version 1.2.1 · existing private acceptance package 1.1.0**
+**Source/package target 1.2.1 · experimental acceptance, not stable**
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
@@ -12,8 +12,9 @@
 Version **1.2.1** supports **English / Türkçe**. Choose **Settings → Language →
 English** (or **Ayarlar → Dil → English**). The choice survives reopening.
 The screenshots show the real English interface with synthetic data.
-The existing private **1.1.0** package predates this language update; a new
-1.2.1 installer package has not been published. English button names below
+The historical private **1.1.0** package predates this language update. The current
+1.2.1 candidate is prepared for review, not approved for binary publication while
+the native distribution review remains open. English button names below
 include Turkish equivalents where useful.
 
 ## The setup path

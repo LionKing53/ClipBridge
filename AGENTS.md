@@ -108,6 +108,18 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Experimental package handoff — owner decision 2026-10-10
+
+Prepare current ClipBridge EXE/ZIP and source companions for the publication
+conversation, without adding product features or touching the personal install.
+Real clean Windows/iPhone acceptance is pending, not a stable-release gate to
+silently mark passed. Experimental labeling does not waive distribution licenses.
+Review source coverage, notices, package hashes and privacy; keep an unresolved
+native rebuild/compatibility check explicit. The previous separate-environment
+native-build decision remains: no WSL/Docker installation or upstream build-script
+execution on this host. Do not publish here or approve binaries while that
+distribution review remains incomplete.
+
 ### GitHub repository rename — owner decision 2026-10-09
 
 The owner authorized the publication conversation to rename the existing public

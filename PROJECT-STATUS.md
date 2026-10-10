@@ -1,5 +1,24 @@
 # ClipBridge — proje durumu
 
+## 1.2.1 deneysel paket hazırlığı — 2026-10-10
+
+- Kullanıcı temiz Windows/iPhone kabulünü erteledi; kişisel kurulum bu çalışmada
+  değiştirilmez. Yeni özellik, GitHub işlemi veya sistem ortamı kurulumu yok.
+- Tam test takımı 156/156, atlanan yok; Edge masaüstü UI kontrolü geçti.
+  Kaynak kapısı 172 metin + 4 onaylı PNG / 121 kilit girdisi geçti.
+  `npm audit --omit=dev` sıfır bilinen npm açığı bildirdi; native güvenlik taraması
+  veya kapsamlı güvenlik denetimi yerine geçmez.
+- Windows sharp 0.35.5 / libvips 8.18.7 envanterindeki 28 sürümün tamamı kaynak
+  kilidiyle eşleşti; her native arşiv için özgün lisans/telif metni mevcut.
+  357 Cargo kaynağı, dört sabit recipe snapshot ve 742 özgün metin korunur.
+- Native rebuild rehberi gerçek derleme ile prebuilt indirmeyi ayıracak şekilde
+  netleştirildi; upstream `win.sh` derleme kanıtı değildir. WSL kurulu değil,
+  Docker/Podman yok. Önceki kullanıcı kararına göre ortam burada kurulmaz;
+  gerçek libvips derlemesi ve yeniden derlenen kütüphaneyle ABI kabulü bekler.
+- Güncel EXE/ZIP dosya bazlı üretilecek; teslim kaydı commit/hash ve son arşiv
+  kontrollerini ayrıca ekleyecek. Hedef deneysel ön sürüm olsa da **binary yayın
+  onayı yok**: native dağıtım incelemesi tamamlanmış sayılmadı.
+
 ## GitHub depo adı — 2026-10-09
 
 - Mevcut public depo kullanıcı isteğiyle **LionKing53/ClipBridge** olarak

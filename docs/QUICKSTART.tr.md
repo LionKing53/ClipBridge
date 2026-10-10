@@ -4,7 +4,8 @@
 
 Güncel kaynak sürümü **1.2.1**, Türkçe/English seçimini destekler:
 **Ayarlar → Dil**. Tercih yeniden açılışta korunur. Önceki özel 1.1.0 test
-paketi dil güncellemesini içermez; yeni genel kurucu paketi yayımlanmadı.
+paketi dil güncellemesini içermez; güncel 1.2.1 aday paket inceleme içindir.
+Native dağıtım kontrolü kapanmadan binary yayın onayı yok; kararlı sürüm değildir.
 
 Bu paket genel yayın değildir. Gerçek Windows/iPhone kabulü ve sharp/libvips
 dağıtım incelemesi henüz tamamlanmadı. Paketi testiniz için kullanın; henüz

@@ -113,6 +113,40 @@ Do not present a modified build as the original project's verified artifact.
 
 ## Validation boundary
 
+### 2026-10-10 review for ClipBridge 1.2.1
+
+The locked Windows package's `versions.json` identifies 28 native components.
+The source lock covers these exact versions (archive/exif/ffi/heif/imagequant/
+png/rsvg/uhdr/webp/xml2 map to the corresponding source-package names).
+`libnsgif`, mentioned in the generic npm README, is included in the libvips
+source tree rather than being a separate entry in this Windows versions list.
+The `vips-web.mk` recipe generates that list; `vips.mk` explicitly builds libvips
+as a DLL even for the static-dependencies target. This is source/version coverage,
+not proof of an actual relink or complete linked binary provenance.
+
+The reviewed license route is corresponding-source delivery and recipient
+recombination, not a claim that installed integrity checks permit arbitrary DLL
+replacement. See [LGPLv3 section 4](https://www.gnu.org/licences/lgpl.html).
+Application sources, build utilities and pinned lockfiles are supplied in
+`payload/source`; the native companion supplies source archives and upstream
+patch/recipe snapshots. Original copyrights/license texts are retained in
+`review/NATIVE-NOTICES.txt` and the companion. Node and WebView2 SDK notices are
+included separately. WebView2 Evergreen Runtime is not bundled.
+
+Before binary publication, an external build reviewer must produce the pinned
+Windows x64 vips-web libraries, record compiler/container versions and recipe
+adaptations, then exercise fresh-stage replacement, rebuild Setup and verify
+image decoding with those rebuilt libraries. `SOURCE_DATE_EPOCH` depends on Git
+metadata omitted by `git archive`; use pinned checkouts or explicitly record
+the snapshot adaptation. Do not run `sharp-libvips/build/win.sh` unchanged as
+evidence of rebuilding: it downloads prebuilt binaries and a moving `main`
+notice file. Package the locally rebuilt libraries and pinned notices instead.
+
+No OCI runtime or installed WSL environment is available on this host. Actual
+native cross-compilation and rebuilt-library ABI checks remain unperformed.
+Synthetic replacement tests and working original npm binaries cannot close that
+review. No legal warranty or unconditional binary-publication approval is given.
+
 Automated tests cover checksum enforcement, fresh-stage-only replacement, x64
 library shape, manifest re-sealing and rejection of unlisted/tampered paths.
 These are not successful native cross-compilation or clean-device acceptance.
