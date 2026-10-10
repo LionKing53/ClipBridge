@@ -58,11 +58,21 @@ to cover the user's modified libraries; supply their modified sources as well.
 
 The manual `Native source rebuild verification` GitHub Actions workflow performs
 this in disposable Linux/Windows runners. It pins actions and recipe commits,
-records Docker/compiler build logs and the two reviewed recipe adaptations,
+records Docker/compiler build logs and the reviewed recipe adaptations,
 and retains corresponding sources/notices beside its verification DLL. The
 Windows job retains the original C++ wrapper/addon and tests the actually rebuilt
 libvips DLL in fresh staging. A successful job is an engineering result, not
 clean-device acceptance or unconditional distribution-license approval.
+
+CI uses the upstream host-toolchain image at
+`sha256:306f986a3e9daea18a03f30694a9843524e2ccdf90a0b5833cb51120186375bd`.
+Its MXE checkout must match the pinned commit above, clang must report 23.1.2,
+and the Windows static/shared target directories must be absent before building.
+This supplies a prebuilt **host compiler**, not prebuilt Windows libvips libraries.
+The Windows native libraries and runtimes are built from source afterwards.
+The earlier compiler-from-source attempt is not a passed library rebuild.
+For independently bootstrapping the host compiler too, use `--without-prebuilt`
+as shown below; the CI check does not claim compiler bootstrap or bitwise identity.
 
 Extract the recipe snapshots into separate directories. Read their README,
 Dockerfiles and scripts before running. `build.sh` requires Docker or Podman.

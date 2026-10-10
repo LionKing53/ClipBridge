@@ -1,5 +1,10 @@
 # Geliştirme ve yayın kapıları
 
+Native CI host derleyicisi için digest-pinned upstream image kullanır; aynı MXE
+commit/clang 23.1.2 ve boş Windows target alanı koşu içinde zorunlu doğrulanır.
+Windows native kaynak derleme ve DLL ABI sonucu hâlâ gereklidir. Önceki uzun
+compiler bootstrap koşusu başarı olarak sayılmaz; sonuç ayrıca kaydedilir.
+
 2026-10-10 ara kayıt: Kaynak `5857e75` GitHub'a gönderildi; son geçmiş kontrolü
 39 commit / 581 blob / 13 görselde bulgusuz. Native koşu 38052988643 derlemede;
 Windows ABI henüz başlamadı. Eski ZIP ek runtime kaynakları ve logo düzeltmesini

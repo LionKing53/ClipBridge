@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 native doğrulama ortamı — 2026-10-10
+
+- CI host-toolchain image digest'i sabitlendi; registry repo katmanı aynı MXE
+  commit'iyle doğrulandı. CI compiler sürümü ve boş Windows target alanını
+  kontrol eder; Windows native kütüphaneler yine kaynaklardan üretilir.
+- Host compiler'ı yeniden derlemek bu kontrolün hedefi değildir. İlk uzun koşu
+  başarı sayılmaz; yeni derleme/ABI sonucu beklenir. Binary yayın veya kişisel
+  kurulum değişikliği yok. Syntax/kaynak/diff kontrolleri geçti.
+
 ## 1.2.1 yayın incelemesi ara kaydı — 2026-10-10
 
 - Kaynak/logo/runtime kapsamı GitHub'a gönderildi; binary Release yok.

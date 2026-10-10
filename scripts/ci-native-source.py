@@ -13,6 +13,8 @@ import zipfile
 ROOT = Path(__file__).resolve().parent.parent
 WORK = ROOT / 'build/ci-native'
 LOCK = json.loads((ROOT / 'native-sources-lock.json').read_text())
+TOOLCHAIN_IMAGE = ('ghcr.io/libvips/build-win64-mxe@sha256:'
+                   '306f986a3e9daea18a03f30694a9843524e2ccdf90a0b5833cb51120186375bd')
 
 
 def run(*args, cwd=ROOT):
@@ -46,13 +48,32 @@ def prepare():
     script = WORK / 'vips/build.sh'
     before = script.read_text()
     assert 'run --rm -t' in before
-    script.write_text(before.replace('run --rm -t', 'run --rm', 1))
+    adapted = before.replace('run --rm -t', 'run --rm', 1)
+    assert 'image="ghcr.io/libvips/build-win64-mxe:latest"' in adapted
+    adapted = adapted.replace('image="ghcr.io/libvips/build-win64-mxe:latest"',
+                              'image="' + TOOLCHAIN_IMAGE + '"', 1)
+    script.write_text(adapted)
+    # The image supplies host compilers/tools only. Reject any prebuilt Windows
+    # target area before the upstream source build starts. Do not run it locally.
+    compiler_check = (
+        'set -eu; cd /usr/local/mxe; '
+        'test "$(git rev-parse HEAD)" = ' + LOCK['recipes']['mxe']['commit'] + '; '
+        'test ! -e usr/x86_64-w64-mingw32.static; '
+        'test ! -e usr/x86_64-w64-mingw32.shared; '
+        'usr/x86_64-pc-linux-gnu/bin/clang --version')
+    compiler = run('docker', 'run', '--rm', '--entrypoint', '/bin/sh',
+                   TOOLCHAIN_IMAGE, '-c', compiler_check)
+    assert re.search(r'clang version 23\.1\.2\b', compiler)
+    (WORK / 'compiler-version.txt').write_text(compiler + '\n')
     # Preserve original recipes plus exact adapted inputs, not a reproducibility claim.
     adaptation = {'format': 1, 'recipes': LOCK['recipes'], 'changes': [
         'Pin MXE checkout to the supplied commit instead of a moving branch.',
-        'Remove packaging TTY allocation for noninteractive CI.'],
-        'baseImage': 'docker.io/library/buildpack-deps:trixie',
+        'Remove packaging TTY allocation for noninteractive CI.',
+        'Pin the matching host-toolchain image; reject existing Windows target libraries.'],
+        'baseImage': TOOLCHAIN_IMAGE,
         'systemPackagesPinned': False, 'prebuiltLibraryUsed': False,
+        'hostCompilerRebuilt': False, 'compilerVersion': compiler,
+        'emptyWindowsTargetVerified': True,
         'sourceCommit': run('git', 'rev-parse', 'HEAD')}
     write_json(WORK / 'build-adaptation.json', adaptation)
 
@@ -128,6 +149,7 @@ def collect():
         for name, file in {'build-adaptation.json': WORK / 'build-adaptation.json',
                            'base.Dockerfile': WORK / 'vips/container/base.Dockerfile',
                            'build.sh': WORK / 'vips/build.sh',
+                           'compiler-version.txt': WORK / 'compiler-version.txt',
                            'workflow.yml': ROOT / '.github/workflows/native-rebuild.yml',
                            'ci-native-source.py': Path(__file__)}.items():
             archive.write(file, 'adaptation/' + name)

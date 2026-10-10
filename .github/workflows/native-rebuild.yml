@@ -28,7 +28,9 @@ jobs:
           set -euo pipefail
           docker version > ../docker-version.txt
           df -h > ../disk-before.txt
-          ./build.sh --without-prebuilt --target x86_64-w64-mingw32.static vips-web 2>&1 | tee ../build.log
+          # prepare verifies the digest-pinned host compiler and empty target area.
+          # Native Windows libraries are built from source in the following step.
+          ./build.sh --target x86_64-w64-mingw32.static vips-web 2>&1 | tee ../build.log
       - name: Collect corresponding sources and rebuilt DLL
         run: python3 scripts/ci-native-source.py collect
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -47,6 +49,7 @@ jobs:
             build/ci-native/build-adaptation.json
             build/ci-native/docker-version.txt
             build/ci-native/disk-before.txt
+            build/ci-native/compiler-version.txt
           retention-days: 3
   windows-abi:
     needs: rebuild

@@ -1,5 +1,22 @@
 # ClipBridge — proje durumu
 
+## Native ortam optimizasyonu — 2026-10-10
+
+- İlk koşu `38052988643` host LLVM derleyicisini de sıfırdan kurmaktadır;
+  bu koşu başarılı native derleme/ABI kanıtı değildir. Yerine sabit upstream
+  host-toolchain image ile aynı native kaynak kontrolü hazırlanmıştır.
+- Image digest `306f986a3e9daea18a03f30694a9843524e2ccdf90a0b5833cb51120186375bd`.
+  Registry manifest/config ve repo katmanının SHA-256 değeri dosya-only okundu;
+  içindeki MXE checkout `c36160b231e66e1cbe032ed54aef7617e8b259da` ile eşleşir.
+  Hostta image/container/upstream kod çalıştırılmadı.
+- CI image içindeki aynı MXE commit'ini, clang 23.1.2'yi ve Windows static/shared
+  target alanlarının yokluğunu çalışırken doğrulamak zorundadır. Ardından native
+  Windows kütüphane/runtime kaynakları derlenir; host compiler bootstrap'ı ve
+  bitwise reproducibility iddia edilmez. Kaynak eşlikçisi ek runtime girdilerini
+  de kapsar. Python syntax, source ve diff kapıları geçti.
+- Yeni koşu sonucu ayrıca kaydedilir; binary onayı, gerçek cihaz kabulü ve
+  kişisel kurulum değişikliği yok. Önceki koşu iptali başarı olarak sayılmaz.
+
 ## Yayın sohbeti ara kaydı — 2026-10-10
 
 - GitHub main `5857e75`: teslim kaynakları, logo ve ek runtime kaynak kapsamı
