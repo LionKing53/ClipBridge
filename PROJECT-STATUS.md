@@ -1,5 +1,44 @@
 # ClipBridge — proje durumu
 
+## 1.2.1 deneysel aday teslimi — 2026-10-10
+
+- Paket kaynak commit'i **`c3a269fe1455e0993947a8c59c1b4b6d71c4e05c`**;
+  bu teslim commit'i yalnız kayıt günceller. Kod/ürün sürümü 1.2.1.
+- Çıktı: `build/candidate-75f7e23a-a177-432f-821f-ea3da0bf9ceb`.
+  EXE tek başına çalışabilir kurulum dağıtımı değildir; ZIP'in tamamı çıkarılmalı,
+  `ClipBridgeSetup.exe` ile `payload` yan yana tutulmalıdır. Kurucu çalıştırılmadı.
+- ZIP 280.812.365 bayt; SHA-256
+  `b1ef8131e6562b086feac9b4d9ec844b0c3ad1b9ddd7361859b81dbe17b1cecb`.
+  Setup 108.544 bayt; SHA-256
+  `54cadd9708e0721c4c1bc141c0fc77b5c4d8737be1cca18c756088bf343f4c3c`.
+- Native kaynak ZIP 227.428.167 bayt, ayrıca binary ZIP içinde; SHA-256
+  `a6cf2e5eec1209d979c091d44dab5b65ec5536fa3a0faf4702146e3281f3016c`.
+  Manifest SHA-256
+  `9b71f73b69ee95f8fe82ad22238b63def1f4bd5bcb663495308119b456d0b200`.
+- Sealed payload 1.431 dosya / 89 production bağımlılığı. Son ZIP'in 1.436 ve
+  native kaynak ZIP'inin 394 girdisi yeniden okundu; tüm beklenen entry hash'leri,
+  benzersiz/güvenli yollar ve kişisel terim kontrolleri geçti. Native kaynak
+  arşivleri özgün sabit hash'leriyle korunur. Sonuçlar sezgiseldir, garanti değildir.
+- Paketlenen özgün npm kütüphanesiyle PNG/JPEG/WebP/TIFF/SVG→PNG bellek içi smoke
+  geçti; app/kurucu/pano/izin işlemi yok. Node 24.15.0 yayıncı doğrulaması geçti;
+  WebView2 SDK 1.0.4258.31, Runtime pakette yok. Production npm audit sıfır açık.
+- 156/156 + UI/kaynak kontrolü yukarıdaki hazırlıkta geçti. Paket kaynağı geçmiş
+  taraması 35 commit / 551 blob / 35 metadata / 11 onaylı görsel, bulgu yok;
+  teslim commit'i sonrasında yeniden taranır. İlk smoke çağrısındaki yanlış cwd
+  ve yerel inceleme betiğinin execution-policy engeli düzeltildi; bunlar uygulama
+  hatası değildir, makine policy'si değiştirilmedi. Son kontroller geçti.
+- Yan dosyalar: `SHA256SUMS.txt`, `PUBLICATION-HANDOFF.tr.md`,
+  `delivery-review.json`, `native-smoke-review.json` ve build/archive kanıtları.
+  Özel `build/` çıktıları Git'e girmez; yayın sohbeti dosyaları yeniden denetler.
+- **Tamamlanmayan dağıtım işi:** gerçek libvips derlemesi, rebuilt DLL ABI kabulü
+  ve nihai statik linked-component/lisans uygunluğu. Hostta OCI/kurulu WSL yok;
+  ayrı ortam kararı korunur. `cairo/COPYING` LGPL-2.1/MPL-1.1 alternatifleri için
+  GPL uyumlu dağıtım yolu da son reviewer tarafından değerlendirilmelidir.
+- **Gerçek temiz Windows/iPhone kabulü bekliyor.** Hedef deneysel ön sürüm;
+  mevcut aday `approvedForPublication=false` olarak kalır, native kapı kapanmadan
+  binary yayınlanmaz. Kararlı sürüm veya gerçek cihaz başarısı iddia edilmez.
+  Kişisel kurulum sürümü/verileri değişmedi; GitHub işlemi yapılmadı.
+
 ## 1.2.1 deneysel paket hazırlığı — 2026-10-10
 
 - Kullanıcı temiz Windows/iPhone kabulünü erteledi; kişisel kurulum bu çalışmada

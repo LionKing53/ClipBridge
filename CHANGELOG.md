@@ -2,6 +2,14 @@
 
 ## 1.2.1 paket incelemesi — 2026-10-10
 
+- `c3a269f` kaynağından güncel ClipBridgeSetup.exe ve 1.2.1 Windows x64 ZIP
+  üretildi; native kaynak ZIP ve notice/SBOM/source snapshot dahil. Setup hiç
+  çalıştırılmadı. SHA-256 ve kanıtlar PROJECT-STATUS ve aday teslim dosyalarında.
+- Son ZIP 1.436 / kaynak ZIP 394 entry hash/path kontrolü geçti; kişisel terim
+  bulgusu yok. Özgün paket DLL'leriyle beş formatın smoke testi geçti; yeniden
+  derlenmiş DLL uyumluluğu değildir. Binary dağıtım onayı açık kaldı; kararlı
+  sürüm değil. Temiz cihaz kabulü kullanıcı kararıyla bekleyen iş.
+
 - Yeni ürün özelliği yok. 28 native bileşenin tam sürüm/kaynak ve özgün notice
   karşılığı kontrol edildi; sabit kaynak/recipe/Cargo eşlikçisi ClipBridge adıyla
   üretilir. Native derleme rehberi prebuilt indirme, Git metadata ve değiştirilmiş
