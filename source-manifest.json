@@ -187,15 +187,15 @@
   "documentationImages": [
     {
       "path": "docs/images/history-light.png",
-      "sha256": "c026a1f5d1011a2f5471440c19c3354255ee9cabe3b6fe839c6bf8cb258186a1",
-      "bytes": 279441,
+      "sha256": "8b71d558c47d26ab1a1099891c59d6e51f9b58e535adcfd44d28223f72d9e779",
+      "bytes": 279623,
       "width": 1440,
       "height": 1169
     },
     {
       "path": "docs/images/history-dark.png",
-      "sha256": "a5e7e1814f6f91ae3a401b9b71ad0fe00620b1616bf4a7c68bec361742f97cb1",
-      "bytes": 255670,
+      "sha256": "4cf3cb7519dcf034c03c785b0e6bb282d733f884fae392241ee345a27546caf4",
+      "bytes": 255605,
       "width": 1440,
       "height": 1169
     },
@@ -270,6 +270,20 @@
       "bytes": 37768,
       "width": 560,
       "height": 476
+    },
+    {
+      "path": "docs/images/history-light.png",
+      "sha256": "c026a1f5d1011a2f5471440c19c3354255ee9cabe3b6fe839c6bf8cb258186a1",
+      "bytes": 279441,
+      "width": 1440,
+      "height": 1169
+    },
+    {
+      "path": "docs/images/history-dark.png",
+      "sha256": "a5e7e1814f6f91ae3a401b9b71ad0fe00620b1616bf4a7c68bec361742f97cb1",
+      "bytes": 255670,
+      "width": 1440,
+      "height": 1169
     }
   ]
 }

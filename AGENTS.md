@@ -108,6 +108,14 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Logo readability — owner decision 2026-10-10
+
+The publication conversation may adjust the desktop c/b monogram spacing and
+alignment, regenerate isolated English screenshots and record a separate source
+commit after the development lock is released. Do not alter or rebuild the handed
+off candidate or personal installation. Keep its recorded hashes/source revision;
+any future package must explicitly include this later source change.
+
 ### Experimental package handoff — owner decision 2026-10-10
 
 Prepare current ClipBridge EXE/ZIP and source companions for the publication

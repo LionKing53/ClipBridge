@@ -1,5 +1,13 @@
 # Değişiklik kaydı
 
+## 1.2.1 logo okunaklılığı — 2026-10-10
+
+- Masaüstü c/b monogramının negatif aralığı ve üst üste hizası düzeltildi;
+  iki harf ayrı okunur. Açık/koyu İngilizce ekran görüntüleri yenilendi ve
+  görsel/gizlilik açısından incelendi. Edge arayüz kontrolü geçti.
+- Yalnız kaynak/görseller değişir. Önceden hazırlanmış EXE/ZIP ve kişisel
+  kurulum değiştirilmedi; bu değişiklik henüz GitHub'a gönderilmedi.
+
 ## 1.2.1 paket incelemesi — 2026-10-10
 
 - `c3a269f` kaynağından güncel ClipBridgeSetup.exe ve 1.2.1 Windows x64 ZIP

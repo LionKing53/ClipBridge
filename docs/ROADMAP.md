@@ -1,5 +1,9 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-10 logo düzeltmesi: Masaüstü c/b aralığı ve açık/koyu belge görselleri
+yenilendi. Hazır `c3a269f` paketi bu sonraki düzeltmeyi içermez; paket yeniden
+üretimi yayın/dağıtım incelemesiyle ayrıca ele alınır. Kişisel kurulum değişmez.
+
 2026-10-10: Yeni özellik yok; ClipBridge 1.2.1 EXE/ZIP, native kaynak eşlikçisi,
 lisans/bütünlük/gizlilik kontrolleri yayın sohbetine teslim için hazırlanır.
 Kişisel kurulum değişmez. Temiz Windows/iPhone kabulü bekler; hedef kararlı sürüm

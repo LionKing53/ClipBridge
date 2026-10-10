@@ -1,5 +1,23 @@
 # ClipBridge — proje durumu
 
+## Logo okunaklılığı — 2026-10-10
+
+- Kaynak tabanı `43f8dfc`. Masaüstü c/b monogramında -6px harf aralığı ve
+  b harfinin yukarı kayması kaldırıldı. Harfler 3px boşlukla aynı satırda;
+  39px simgede 24px yazıyla daha rahat okunur. TR/EN ve tüm masaüstü
+  sayfaları aynı CSS kuralını kullanır. Cihaz çizimli SVG/ICO'da c/b harfi yoktur.
+- Gerçek English seçimiyle sentetik açık/koyu geçmiş görselleri yenilendi;
+  görsel/gizlilik kontrolü ve Edge UI geçti. Güncel ve geçmiş PNG hash'leri
+  manifestte korunur. Uygulama davranışı değişmedi; tam test takımı tekrarlanmaz.
+  Kaynak kapısı 172 metin + 4 onaylı PNG / 121 kilit girdisi ve diff kontrolü
+  geçti; GitHub yayını öncesi son commit dahil geçmiş taraması tekrar gerekir.
+- Bu değişiklik ayrı yerel commit olarak kaydedilir; GitHub'a henüz gönderilmez.
+  Diğer sohbetin paket teslimi incelendikten sonra kaynak yayını birlikte ele alınır.
+- `c3a269f` kaynaklı hazır EXE/ZIP bu sonraki logo düzeltmesini içermez;
+  aday paket/özetler değiştirilmedi veya yeniden üretilmedi. Kişisel kurulum
+  1.2.1 ad/dil yaması olarak kalır, bu CSS düzeltmesi kuruluma uygulanmadı.
+  Temiz cihaz/libvips/dağıtım kapıları açık. Çalışma sonunda kilit bırakılır.
+
 ## 1.2.1 deneysel aday teslimi — 2026-10-10
 
 - Paket kaynak commit'i **`c3a269fe1455e0993947a8c59c1b4b6d71c4e05c`**;
