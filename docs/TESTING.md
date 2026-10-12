@@ -1,5 +1,14 @@
 # Test kapsamı ve yan etkiler
 
+## Linux Cloud / yerel Windows ayrımı
+
+Çalışma ve devir kuralları: [CLOUD-WORKFLOW.md](CLOUD-WORKFLOW.md).
+Kullanıcının 2026-10-12 bildirdiği Cloud sonucu 129 başarılı / 17 Windows testi
+atlanmış şeklindedir; bu oturumda yeniden çalıştırılmadı, tested commit bilinmiyor.
+Atlanan testler başarılı sayılmaz. Sonraki koşularda commit, ortam ve her skip
+nedeni kaydedilsin; değişen Windows yolları birleştirme sonrasında Windows'ta
+ilgili yalıtılmış testlerle doğrulansın. Bu, gerçek Windows/iPhone kabulü değildir.
+
 ## Bu kaynakta çalıştırılabilir
 
 `npm test`: seçilmiş `test/*.test.js`; geçici mkdtemp kökleri ve 127.0.0.1 üzerinde

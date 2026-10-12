@@ -1,5 +1,23 @@
 # Değişiklik kaydı
 
+## Cloud belgeleri — kaynak yayın incelemesi — 2026-10-12
+
+- Yedi dosyalık yerel Cloud çalışma sözleşmesi, mevcut değişiklikler korunarak
+  GitHub kaynak aktarımı için incelendi. Kaynak ve diff kontrolleri Windows'ta
+  yeniden geçti; uygulama testleri çalıştırılmadı. Commit sonrası Git geçmişi
+  kontrolü yayın koşuludur. Ürün, paket ve kişisel kurulum değişmedi; binary
+  veya Release yayını kapsam dışıdır. Aşağıdaki yerel teslim kaydı tarihçedir.
+
+## Geliştirme belgeleri — Cloud çalışma düzeni — 2026-10-12
+
+- Yerel Windows / Linux Codex Cloud için dal/PR, sahiplik, yetkili senkronizasyon,
+  platforma göre test/skip ve devir kayıtları belgelendi. Yerel kilit Cloud'u
+  kilitlemez; Cloud değişiklikleri kurulu uygulamaya otomatik aktarılmaz.
+- Cloud kurulum/test sonuçları kullanıcı bildirimi olarak ayrıldı; gerçek cihaz
+  kabulü/yayın onayı sayılmaz. Ürün kodu, sürüm, paket ve kişisel kurulum değişmez.
+- Kaynak izin listesi ve diff kontrolleri geçti; uygulama testleri yeniden
+  çalıştırılmadı. Yalnız yerel belge değişiklikleri; commit veya GitHub aktarımı yok.
+
 ## 1.2.1 güncel paket teslimi — 2026-10-10
 
 - 9fe7714 kaynağından logo, runtime source, Rust bildirimleri ve PS module-path

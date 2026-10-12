@@ -1,5 +1,38 @@
 # ClipBridge — proje durumu
 
+## Cloud kuralları — kaynak yayın incelemesi — 2026-10-12
+
+- Yayın sohbeti mevcut yedi dosyanın değişikliklerini koruyarak inceledi; çalışma
+  sözleşmesi, platform sınırları ve kaynak izin listesi tutarlı bulundu.
+- Yerel ve uzak `main` inceleme başlangıcında `d45f6a8` idi. Windows üzerinde
+  `npm.cmd run check:source` yeniden geçti: 177 metin, 4 onaylı PNG, 121 kilit
+  girdisi. `git diff --check` geçti; belge değişikliği için uygulama testleri
+  yeniden çalıştırılmadı. Cloud ortamı veya kullanıcı bildirimleri doğrulanmadı.
+- Kullanıcı yalnız bu kaynak değişikliklerinin commit/GitHub aktarımını onayladı.
+  Commit sonrası erişilebilir Git geçmişi kontrolü geçmeden push yapılmaz.
+  Ürün sürümü ve mevcut paket kaynağı/hashi değişmez; EXE/Release yayınlama,
+  paket üretimi veya kişisel kurulum/veri değişikliği bu işin kapsamı değildir.
+- Aşağıdaki commit edilmemiş yerel teslim kaydı önceki geliştirme oturumuna aittir.
+  Bu yayın görevinin kesin commit kimliği Git kaydından alınmalıdır.
+
+## Cloud çalışma sözleşmesi — 2026-10-12
+
+- Kullanıcı repo bağlantısı, Linux Cloud ortamı, Installation Script/Start-Skill
+  ayarları ve iPhone erişiminin tamamlandığını bildirdi. 129 başarılı / 17 Windows
+  testi atlanmış sonucu kullanıcı bildirimidir; Cloud commit'i/ortam tanımı/logları
+  burada doğrulanmadı veya yeniden çalıştırılmadı.
+- AGENTS, CLOUD-WORKFLOW, TESTING ve roadmap: tek repo/ayrı çalışma kopyaları,
+  Cloud dal/PR, dosya sahipliği, yalnız yerelde geçerli kilit, yetkili Git aktarımı,
+  Linux skip/Windows test ayrımı ve commit'e bağlı devir kaydı eklendi.
+- Başlangıç yerel commit'i `d45f6a8`; ürün/paket/kişisel kurulum sürümü 1.2.1
+  değişmedi. Bu iş yalnız belge/kaynak izin listesi düzenlemesidir; hazır EXE/ZIP
+  yeniden üretilmez. Commit/fetch/pull/push, Cloud ortamı değişikliği veya kişisel
+  dağıtım yapılmadı. `npm.cmd run check:source` geçti: 177 metin + 4 onaylı PNG /
+  121 kilit girdisi. `git diff --check` geçti. Yalnız belge değiştiği için uygulama
+  testleri yeniden çalıştırılmadı; eski sonuçlar yeni koşu sayılmaz. Değişiklikler
+  yerelde commit edilmemiştir; Cloud/GitHub'a henüz ulaşmaz. Çalışma kilidi teslimde
+  bırakılır. Sonraki yayın/senkronizasyon işi bu yedi dosyayı korumalıdır.
+
 ## Yayın incelemesi teslimi — 2026-10-10
 
 - Paket kaynağı **`9fe771411ad5db3aa8504db78544252f4e447c1c`**, 1.2.1.

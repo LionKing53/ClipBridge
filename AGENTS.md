@@ -13,6 +13,7 @@ the development conversation. No simultaneous conflicting edits.
 ## Every work session
 
 1. Read this file, PROJECT-STATUS.md, CHANGELOG.md and docs/ROADMAP.md.
+   For local/Cloud coordination also read docs/CLOUD-WORKFLOW.md.
 2. Inspect `git status --short`, recent commits, and `.local/work-lock.json`.
 3. Preserve all existing changes. If another owner has an active lock, stop and
    coordinate. Acquire the advisory lock with `node scripts/work-lock.js acquire
@@ -23,6 +24,25 @@ the development conversation. No simultaneous conflicting edits.
    compatibility and remaining blockers in PROJECT-STATUS.md and CHANGELOG.md.
    Make small local commits after reviewing the staged diff. Development sessions
    must not push; the publication session may publish within explicit owner scope.
+
+## Local and Codex Cloud coordination — owner decision 2026-10-12
+
+Local Windows development continues alongside a Linux Codex Cloud checkout of
+the same GitHub repository. Cloud is not a second product/source fork, and its
+changes do not automatically synchronize into local files or the installation.
+Use a separate task branch and reviewed PR for Cloud changes. Record the exact
+base/result commit, changed paths, platform and passed/failed/skipped tests.
+Do not work on overlapping paths concurrently; agree ownership and dependencies
+before starting. The ignored .local/work-lock.json coordinates only this local
+checkout, not Cloud, other clones or GitHub. Check each environment separately.
+
+Do not fetch/pull/merge/rebase/push, create PRs or dispatch workflows merely to
+update these records: repository synchronization requires its own authorized
+task. Never reset/force-push or discard someone else's work to resolve divergence.
+Linux skips are not Windows passes; Windows-specific changes need scoped Windows
+validation before personal deployment or binary release. Preserve SOURCE-CHECKOUT
+and complete isolated adapters on both platforms. See docs/CLOUD-WORKFLOW.md for
+the handoff/checklist and the user-reported, not locally reproduced, Cloud setup.
 
 ## Private installation and data
 

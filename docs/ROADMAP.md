@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-12: Yerel Windows ve Linux Codex Cloud aynı Git deposunun ayrı çalışma
+kopyalarıdır. Cloud işlerinde ayrı dal/PR, açık dosya sahipliği, commit'e bağlı
+test/skip raporu ve yetkili senkronizasyon kullanılır; otomatik yerel aktarım yok.
+Kurallar CLOUD-WORKFLOW.md ve AGENTS.md'de. Cloud kurulumu/testi kullanıcı
+bildirimidir, bu belge işi sırasında doğrulanmadı; gerçek cihaz kabulü değişmez.
+
 Son paket 9fe7714: yeni aday ef6025f7-af9b-42cb-ad66-842f97b7d9ee bütünlük/gizlilik
 kontrolü geçti. Native engel kapalı; owner experimental release incelemesine hazır.
 Binary yayın onayı ve public prerelease metadata/etiketi ayrı yayın adımıdır.

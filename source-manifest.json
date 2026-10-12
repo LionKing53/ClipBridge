@@ -2,6 +2,7 @@
   "version": 1,
   "purpose": "Reviewed source inputs and individually reviewed hash-pinned synthetic documentation images; not a deployable distribution manifest",
   "files": [
+    "docs/CLOUD-WORKFLOW.md",
     "scripts/verify-legacy-language-patch.js",
     "docs/LOCALIZATION.md",
     "test/support/SetupLanguageProbe.cs",
