@@ -2,6 +2,10 @@
   "version": 1,
   "purpose": "Reviewed source inputs and individually reviewed hash-pinned synthetic documentation images; not a deployable distribution manifest",
   "files": [
+    "scripts/verify-setup.ps1",
+    "launcher/EmbeddedPayload.cs",
+    "test/embedded-payload.test.js",
+    "test/support/EmbeddedPayloadProbe.cs",
     "scripts/distribution-layout.js",
     "test/distribution-layout.test.js",
     "docs/DISTRIBUTION-SOURCES.md",

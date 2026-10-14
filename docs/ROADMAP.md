@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-14 yeni dar görev: 1.2.2 tek EXE payload/resource doğrulaması ve güvenli
+geçici çıkarma; EN/TR rehber/source eşlikçisi korunur. Eski "EXE tek başına
+dağıtılmaz" kuralı yalnız eski external-payload kurucusuna aittir. Yeni sürüm
+yerel test/derleme/commit teslimidir; GitHub push/Release ve kişisel deployment
+yok. Gerçek temiz Windows/iPhone kabulü bekler. Önceki paketler değiştirilmez.
+
 2026-10-14: v1.2.1-experimental.1 GitHub prerelease yayımlandı; tag 0e36f1d.
 İngilizce isimli kullanıcı/source ZIP'leri ve SHA256SUMS aynı release'te sunulur;
 server hash/size ve anonim erişim doğrulandı. Kaynak/notice/integrity kapıları

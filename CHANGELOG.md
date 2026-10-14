@@ -1,5 +1,18 @@
 # Değişiklik kaydı
 
+## 1.2.2 — Tek dosyalı kurucu — 2026-10-14
+
+- Setup EXE sealed payload'ı gömer; ayrı payload klasörü gerekmez. Private geçici
+  çıkarma, archive/manifest/file hash doğrulaması, iptal/hata temizliği ve güvenli
+  inactive kesinti kalıntısı temizliği. Bilinmeyen/linkli dosyalar korunur.
+- FreshInstall, kaldırma ve kişisel veri politikası korunur. Metadata-only EXE
+  resource incelemesi, yalıtılmış çıkarma/recovery/data-preservation testleri ve
+  EN/TR rehberler eklendi. Kaynak/native ZIP, lisans ve relink talimatları korunur.
+- Yeni sürüm ve yeni artifact'ler; eski release değişmez. Gerçek temiz cihaz kabulü,
+  EXE/app çalıştırma veya bu sohbetten GitHub yayını yapılmış sayılmaz.
+- Windows otomatik takım 168/168, atlama yok; Edge UI ve source/diff kapıları geçti.
+  İlk C#5 await/finally derleme hatası düzeltildi ve hedefli koşu yeniden geçti.
+
 ## 1.2.1-experimental.1 yayımlandı — 2026-10-14
 
 - 0e36f1d kaynak tag'iyle GitHub prerelease yayımlandı; kullanıcı ZIP'i (~50 MiB),

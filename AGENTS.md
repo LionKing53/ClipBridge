@@ -128,6 +128,26 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Single-file installer — owner decision 2026-10-14
+
+The owner authorizes embedding the complete sealed payload in a new Setup EXE,
+file-only builds, isolated extraction/cancellation/cleanup tests and local reviewed
+commits. Use private exclusive temporary directories, reject links/unsafe paths,
+verify embedded archive plus manifest/file hashes and retain the existing fresh
+install/removal/data protections. Only owned inactive interrupted extraction
+directories may be cleaned. Synthetic harnesses may run EmbeddedPayload with
+temporary fixtures and injected directory/ownership operations, never Setup/Main
+or real installation/permissions. Existing form-render tests remain allowed.
+The file-only verify-setup.ps1 may read generated Setup metadata/resources using
+ReflectionOnlyLoadFrom and check hashes/ZIP entries; never invoke its entry point
+or methods, extract into production paths, or execute the generated EXE.
+Do not execute the generated installer here, modify the personal install, alter
+published artifacts, push or publish. Source/native archives, notices, patches
+and recombination instructions remain paired with the exact new EXE source/hash.
+The older "never distribute standalone EXE" rule applies to the old external-
+payload installer only; the newly embedded installer is a standalone download.
+Clean Windows/iPhone acceptance remains pending; this is not a stable release.
+
 ### Experimental publication — owner decision 2026-10-14
 
 After reviewing the simplified delivery, the owner authorized the publication

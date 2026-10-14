@@ -1,5 +1,26 @@
 # ClipBridge — proje durumu
 
+## 1.2.2 tek EXE kurucu — geliştirme — 2026-10-14
+
+- Başlangıç commit'i `4278b51`. Gömülü sealed payload, arşiv SHA-256 ve özgün
+  manifest/file doğrulaması eklendi; yanında payload fallback yok. FreshInstall ve
+  veri koruyan kaldırma motoru değiştirilmez. Native/app sürümü 1.2.2; kişisel
+  kurulum 1.2.1'de kalır. Eski yayımlanmış dosyalar/hash'ler değiştirilmez.
+- Geçici çıkarma exclusive private ACL klasöründedir; normal/iptal/hata çıkışında
+  yalnız envanterli dosyalar temizlenir. 24 saatten eski kalıntı için sahiplik,
+  marker, manifest, inactive lease ve link/foreign-file kontrolü gerekir. Güvenli
+  olmayan kalıntı silinmez. Başarısız program staging dizini eski politikaya göre
+  ayrı tutulur; bu değişiklik yalnız geçici çıkarma yaşam döngüsüdür.
+- Hedefli çıkarma ve EN/TR form/dil koşusu 11/11 geçti. İlk form derlemesinde
+  C#5'in await/finally sınırı görüldü; temizleme await'i finally dışına alındı,
+  tekrar geçti. Son tam takım **168/168**, atlama yok; Edge UI ve kaynak/diff
+  kontrolleri geçti (186 metin + 4 onaylı PNG / 121 kilit girdisi). Güncel
+  EXE/source paket doğrulaması teslimde ayrıca kaydedilir.
+- EN/TR rehberler, kaynak/notice sağlama ve AGENTS yetki sınırı güncellendi.
+  Yeni opsiyonel kullanıcı ZIP'i EXE + iki rehberdir; kaynak ZIP'i EXE ile birlikte
+  aynı erişimle sunulur. Source guard korunur. Kurucu/app çalıştırılmadı, gerçek
+  Windows/iPhone/ACL/COM kabulü hâlâ bekler. Push/Release/personal deployment yok.
+
 ## GitHub deneysel ön sürüm yayımlandı — 2026-10-14
 
 - Kullanıcı onayıyla kaynaklar ve eşleşen iki ZIP GitHub'a aktarıldı:

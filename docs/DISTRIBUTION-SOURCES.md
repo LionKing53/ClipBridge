@@ -2,12 +2,14 @@
 
 ClipBridge uses GPL-3.0-or-later and includes LGPL-covered native libraries.
 Original third-party licenses and copyrights remain in `payload/licenses`
-and the installed npm packages. These notices must accompany the user ZIP.
+and the installed npm packages. In 1.2.2 the entire payload, including these
+notices, is embedded in the standalone Setup EXE and installed unchanged.
 
 ## Matching source download
 
-The binary ZIP is paired with `ClipBridge-<version>-sources.zip`. Find its exact
-SHA-256 and application commit in `payload/licenses/SOURCE-PACKAGE.json`.
+The standalone `ClipBridgeSetup.exe` (and optional convenience ZIP) is paired
+with `ClipBridge-<version>-sources.zip`. Find its exact SHA-256 and application
+commit in the embedded/installed `licenses/SOURCE-PACKAGE.json`.
 The source ZIP contains:
 
 - `application/`: the complete allowlisted source snapshot of that commit,
@@ -27,9 +29,10 @@ corresponding sources when distributing a modified build.
 
 ## Distribution conditions
 
-The two ZIPs must be offered together at the same download location, with
+The EXE and source ZIP must be offered together at the same download location, with
 equivalent access and no additional charge. Identify both filenames, hashes and
-the exact source commit. Do not substitute a moving branch, upstream links,
+the exact source commit. The optional binary ZIP does not replace either of
+these deliverables. Do not substitute a moving branch, upstream links,
 expired CI artifacts or a different-version archive. A binary-only publication
 is not authorized by this layout. Local review outputs are not source delivery.
 

@@ -54,7 +54,7 @@ export async function createSourceCompanion({ work, snapshot, version, commit, n
   const descriptor = path.join(work, 'source-delivery.json');
   const record = { format: 1, version, commit, application: files, native: { file: 'native/' + nativeName, sha256: nativeSHA256 },
     rebuildGuide: 'application/docs/NATIVE-REBUILD.md', patches: 'Native archive recipe snapshots; application snapshot is the exact reviewed commit.',
-    delivery: 'Publish the binary and this source companion together at the same download location, without additional charge. Upstream links are not a substitute.' };
+    delivery: 'Publish the standalone Setup EXE (and any convenience binary ZIP) and this source companion together at the same download location, without additional charge. Upstream links are not a substitute.' };
   await writeFile(descriptor, JSON.stringify(record, null, 2) + '\n', { flag: 'wx' });
   const nativeDelivery = path.join(work, 'native-companion-input.json');
   await writeFile(nativeDelivery, JSON.stringify({ ...nativeEvidence, bundle: nativeName }, null, 2) + '\n', { flag: 'wx' });

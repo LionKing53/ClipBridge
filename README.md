@@ -7,9 +7,11 @@ ClipBridge is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send
 receive an item, then keep working on your other device. Use **local HTTPS on a
 trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remotely.
 
-> **Version 1.2.1 · Experimental pre-release**
+> **Source 1.2.2 · Single-file experimental installer candidate, not published here**
 >
-> Use the [experimental downloads](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1).
+> The [previous 1.2.1 experimental downloads](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1)
+> retain their original ZIP + external-payload layout. New 1.2.2 artifacts need
+> separate publication review; do not substitute one version's files for another.
 > This is **not a stable release**. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
 > The libvips source rebuild and Windows DLL compatibility checks have passed.
@@ -72,14 +74,16 @@ the Windows listener is ready; it does not verify phone connectivity.
 
 ## Setup, in four steps
 
-Download `ClipBridge-1.2.1-win-x64-experimental.zip` from the
-[experimental release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1).
-Verify it against `SHA256SUMS.txt`. The matching `ClipBridge-1.2.1-sources.zip`
-is available at the same location for rebuilding; you do not need to open it
-to install. The installer is unsigned and real-device acceptance is pending.
+For the new 1.2.2 delivery, download `ClipBridgeSetup.exe` and verify it against
+its paired `SHA256SUMS.txt`. The matching `ClipBridge-1.2.2-sources.zip` must be
+available at the same location for rebuilding; you do not need to open it to
+install. The installer is unsigned and real-device acceptance is pending.
+The new delivery is not yet published by this development task.
 
-1. **Install on a clean Windows x64 computer.** Extract the whole package and
-   keep `ClipBridgeSetup.exe` beside `payload`. Run setup as a normal user.
+1. **Install on a clean Windows x64 computer.** The new 1.2.2 candidate is a
+   standalone `ClipBridgeSetup.exe`; no ZIP extraction or adjacent payload is
+   needed. Run it as a normal user. The published 1.2.1 ZIP still requires its
+   original external payload and is not silently replaced by this source change.
 2. **Choose a network you control.** Approve the narrow Windows permission
    request. Setting the network to **Private** can also affect other apps'
    existing Private-profile rules.
@@ -153,9 +157,10 @@ See [architecture](docs/ARCHITECTURE.md), [native build](docs/NATIVE-BUILD.md),
 [source delivery](docs/DISTRIBUTION-SOURCES.md) and [screenshots](docs/SCREENSHOTS.md).
 The source guard intentionally blocks production startup; do not remove it.
 
-User downloads contain setup, its required payload, short EN/TR guides and
-licenses. The matching source ZIP is a separate download for rebuilding, not
-an installation step. Both ZIPs must be delivered together with their hashes
+Version 1.2.2 embeds the verified payload and licenses in one Setup EXE. Optional
+convenience ZIPs contain that EXE and EN/TR guides, not an external payload.
+The matching source ZIP is a separate download for rebuilding, not
+an installation step. The EXE and source ZIP must be delivered together with their hashes
 and exact source commit. Review reports and CI evidence are separate outputs.
 [Native build evidence](https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630)
 · [Windows DLL checks](https://github.com/LionKing53/ClipBridge/actions/runs/38058678968).

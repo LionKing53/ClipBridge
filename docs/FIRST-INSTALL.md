@@ -1,5 +1,19 @@
 # İlk kurucu / First installer — engineering status
 
+## 1.2.2 — single-file setup
+
+Setup now embeds the sealed payload ZIP as `SetupPayload` with an independent
+archive SHA-256 in `SetupPolicy`. It extracts only manifest-listed regular files
+into an exclusively created private-ACL temporary directory, then uses the
+unchanged FreshInstall transaction. No adjacent payload fallback exists.
+Cancellation/failure/success clean owned files only. After interruption, inactive
+owned directories older than 24 hours can be recovered on a later install attempt;
+unknown, linked or active remnants are preserved. Failed program staging remains
+governed by the existing FreshInstall review policy, separate from extraction.
+The source ZIP/native notices/recombination route is unchanged. Production Setup
+has not been run here; clean Windows/iPhone and real ACL/COM acceptance is pending.
+Older external-payload/guarded-candidate paragraphs below are historical.
+
 **Bu belge henüz son kullanıcıya “indir ve kur” rehberi değildir.**
 Kurucu kaynak kodu, gerçek Windows adaptörü ve bağımsız Forms penceresi var.
 Yalıtılmış işlem testleri çalışır. Derleme aracı yalnız korumalı mühendislik

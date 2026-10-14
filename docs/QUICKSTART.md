@@ -1,22 +1,23 @@
 # Setup and iPhone pairing
-**Source/package target 1.2.1 · experimental acceptance, not stable**
+**Source/package target 1.2.2 · standalone experimental candidate, not stable**
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
-> **Testing is pending.** Use the [experimental release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1), not a stable release.
+> **Testing is pending.** New 1.2.2 artifacts require separate publication review.
+> The [previous 1.2.1 release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1) remains unchanged.
 > The source-built setup has not been tested on clean Windows or with a real
 > iPhone transfer. The libvips source rebuild and Windows DLL checks have passed;
 > this guide describes the intended device acceptance flow, not completed
 > installation/phone-test evidence.
 
-Version **1.2.1** supports **English / Türkçe**. Choose **Settings → Language →
+Version **1.2.2** supports **English / Türkçe**. Choose **Settings → Language →
 English** (or **Ayarlar → Dil → English**). The choice survives reopening.
 The screenshots show the real English interface with synthetic data.
 ## The setup path
 
 ```mermaid
 flowchart LR
-    A["1. Extract and install<br/>Clean Windows x64"]
+    A["1. Run Setup EXE<br/>Clean Windows x64"]
     B["2. Select your network<br/>Approve Windows permission"]
     C["3. Verify the certificate<br/>Enable trust on iPhone"]
     D["4. Create two Shortcuts<br/>Test send and receive"]
@@ -38,17 +39,9 @@ Use a separate computer with **no existing ClipBridge or PanoKopru program/data*
 
 1. Verify the package's SHA-256 against its delivery record. Setup is unsigned.
    Do not disable security protections to get past an unexpected warning.
-2. Extract the **whole ZIP** into a local folder. Do not launch setup from inside
-   the ZIP. Keep this layout intact:
-
-   ```text
-   ClipBridge-1.2.1-win-x64-experimental/
-   |-- ClipBridgeSetup.exe
-   |-- payload/
-       |-- release.json
-       |-- app/
-       |-- licenses/
-   ```
+2. Download **ClipBridgeSetup.exe** and verify its SHA-256. Version 1.2.2 embeds
+   the complete verified payload; run the EXE directly without any adjacent
+   files or ZIP extraction. The old 1.2.1 download remains ZIP + external payload.
 
 3. Open `ClipBridgeSetup.exe` as a **normal user**, not with “Run as administrator.”
    If WebView2 is missing, use setup's Microsoft download-page button to install
@@ -60,11 +53,12 @@ Use a separate computer with **no existing ClipBridge or PanoKopru program/data*
 
 Program files and personal data are separate:
 `%LOCALAPPDATA%/Programs/ClipBridge` and `%LOCALAPPDATA%/ClipBridge`.
-Keep the extracted setup for removal later.
+Keep the same version's setup EXE for data-preserving removal later.
 
-The user ZIP includes short English/Turkish guides. Application and native
+Optional user ZIPs contain only the standalone EXE and short English/Turkish
+guides. Application and native
 sources are supplied in the matching `ClipBridge-<version>-sources.zip`, with
-the identity/hash in `payload/licenses/SOURCE-PACKAGE.json`. Sources are not
+the identity/hash in the installed `licenses/SOURCE-PACKAGE.json`. Sources are not
 an installation step; keep both downloads available to recipients.
 
 ## 2. Choose your trusted network

@@ -1,15 +1,17 @@
-# ClipBridge 1.2.1 — kurulum / özel kabul rehberi
+# ClipBridge 1.2.2 — tek EXE kurulum / özel kabul rehberi
 
 [English setup guide](QUICKSTART.md)
 
-**1.2.1 deneysel ön sürüm; kararlı sürüm değildir.**
+**1.2.2 deneysel adayı henüz yayımlanmadı; kararlı sürüm değildir.**
 [İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1)
-kullanıcı ZIP'ini, eşleşen kaynak ZIP'ini ve SHA256SUMS.txt dosyasını sunar.
+önceki 1.2.1 kullanıcı ZIP'ini, kaynak ZIP'ini ve SHA256SUMS.txt dosyasını sunar.
+Yeni tek EXE kendi 1.2.2 kaynak ZIP'i ve checksum'u ile ayrı yayın incelemesi gerektirir.
 Türkçe/English: **Ayarlar → Dil**; tercih yeniden açılışta korunur.
 Gerçek temiz Windows/iPhone kurulum/aktarım/kaldırma kabulü yapılmadı.
 Native kaynak derleme ve Windows DLL kontrolü geçti; cihaz kabulünün yerine geçmez.
 Kurucu imzasızdır. Beklenmedik güvenlik uyarısında korumaları kapatmayın;
-ZIP'in hash'ini SHA256SUMS.txt ile karşılaştırın. EXE tek başına kullanılmaz.
+Yeni 1.2.2 kurucuda EXE'nin hash'ini SHA256SUMS.txt ile karşılaştırın; tek başına
+çalıştırılır. Eski 1.2.1 yayımlanmış ZIP hâlâ yanında payload gerektirir.
 
 ## Türkçe — hazırlık ve kurulum
 
@@ -18,8 +20,8 @@ ZIP'in hash'ini SHA256SUMS.txt ile karşılaştırın. EXE tek başına kullanı
    ARM64/32-bit desteklenmez. Bu, bütün Windows sürümlerinin güvenlik desteğinin
    sürdüğü anlamına gelmez; işletim sisteminizi güncel ve destekli tutun.
    Yönlendirilmiş kullanıcı profilleri ilk pakette desteklenmez.
-2. ZIP'in **tamamını** yerel bir klasöre çıkarın. ZIP içinden çalıştırmayın;
-   `ClipBridgeSetup.exe` ile `payload` klasörü yan yana kalmalı.
+2. Yeni tek dosyalı **ClipBridgeSetup.exe** kurucusunu indirin ve hash'ini doğrulayın.
+   1.2.2 sürümü payload'ı içerir; yanında klasör tutmak veya ZIP çıkarmak gerekmez.
 3. `ClipBridgeSetup.exe` dosyasını normal kullanıcı olarak açın; **Yönetici olarak
    çalıştır** kullanmayın. Gerekirse kurucunun WebView2 düğmesiyle Microsoft'un
    resmi sayfasından x64 Evergreen Runtime kurup kurucuyu yeniden açın. Node

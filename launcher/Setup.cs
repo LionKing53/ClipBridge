@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Web.Script.Serialization;
 
-[assembly: AssemblyVersion("1.2.1.0")]
-[assembly: AssemblyFileVersion("1.2.1.0")]
-[assembly: AssemblyInformationalVersion("1.2.1")]
+[assembly: AssemblyVersion("1.2.2.0")]
+[assembly: AssemblyFileVersion("1.2.2.0")]
+[assembly: AssemblyInformationalVersion("1.2.2")]
 
-// Standalone first-install UI, built beside a pinned payload. Never executes a
+// Single-file first-install UI, embedding a pinned payload. Never executes a
 // downloaded Node or modifies a current installation. Source/candidate guards
 // remain binding; generating this executable is not an approval to distribute.
 internal static class SetupProgram
@@ -90,7 +90,7 @@ internal sealed class SetupWindow : Form
     void Progress(string step)
     {
         string text = new Dictionary<string, string> { { "verify", Language.Text("m_b70647f03481") }, { "prerequisites", Language.Text("m_0c7bdf369713") },
-            { "copy", Language.Text("m_1738f7e414a4") }, { "activate", Language.Text("m_181cdfc55d31") }, { "shortcuts", Language.Text("m_cf6af91e8578") } }[step];
+            { "unpack", Language.Text("setup_unpack") }, { "copy", Language.Text("m_1738f7e414a4") }, { "activate", Language.Text("m_181cdfc55d31") }, { "shortcuts", Language.Text("m_cf6af91e8578") } }[step];
         BeginInvoke(new Action(() => status.Text = text));
     }
     async Task Install()
@@ -99,15 +99,22 @@ internal sealed class SetupWindow : Form
         if (!consent.Checked) { status.Text = Language.Text("m_f0837538fbdf"); return; }
         busy = true; language.Enabled = false; install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = false;
         cancellation = new CancellationTokenSource(); cancel.Enabled = true;
+        EmbeddedPayload extracted = null;
         try
         {
             Dictionary<string, string> policy;
             using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("SetupPolicy"))
             using (var reader = new StreamReader(stream)) policy = new JavaScriptSerializer().Deserialize<Dictionary<string, string>>(reader.ReadToEnd());
-            string payload = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "payload");
             bool wantDesktop = desktop.Checked, wantStartup = startup.Checked;
-            var result = await Task.Run(() => FreshInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]),
-                payload, policy["manifestHash"], wantDesktop, wantStartup, Progress, cancellation.Token));
+            var result = await Task.Run(() => {
+                string temporary = Path.GetTempPath(); Progress("unpack");
+                EmbeddedPayload.CleanAbandoned(temporary, EmbeddedPayload.IsCurrentOwner, cancellation.Token);
+                using (var resource = Assembly.GetExecutingAssembly().GetManifestResourceStream("SetupPayload"))
+                    extracted = EmbeddedPayload.Prepare(resource, policy["payloadArchiveHash"], policy["manifestHash"], temporary,
+                        EmbeddedPayload.CreatePrivateDirectory, cancellation.Token);
+                return FreshInstall.Run(new WindowsFreshInstall(policy["nodeVersion"], policy["minimumWebView2Version"]),
+                    extracted.Payload, policy["manifestHash"], wantDesktop, wantStartup, Progress, cancellation.Token);
+            });
             completed = true;
             Language.SavePreference(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "ClipBridge"));
             status.Text = result.Warnings.Length == 0 ? Language.Text("m_891f8765553d") :
@@ -117,6 +124,7 @@ internal sealed class SetupWindow : Form
         {
             // Show only reviewed codes, never native messages or private paths.
             var messages = new Dictionary<string, string> {
+                { "ERR_INSTALL_EMBEDDED_PAYLOAD", Language.Text("setup_invalid_payload") },
                 { "ERR_INSTALL_EXISTING_TARGET", Language.Text("m_baa4c9cf5bc6") },
                 { "ERR_INSTALL_RUN_AS_NORMAL_USER", Language.Text("m_a3ecc4863158") },
                 { "ERR_INSTALL_PLATFORM", Language.Text("m_3798f765b24b") },
@@ -128,9 +136,23 @@ internal sealed class SetupWindow : Form
                 { "ERR_INSTALL_PORT_IN_USE", Language.Text("m_fac0edcb4eb4") },
                 { "ERR_INSTALL_EXCLUSIVE_DIRECTORY", Language.Text("m_4d74cec2df54") } };
             string message;
+            if (error is IOException && ((error.HResult & 0xffff) == 112 || (error.HResult & 0xffff) == 39))
+                message = messages["ERR_INSTALL_DISK_SPACE"];
+            else message = messages.ContainsKey(error.Message) ? messages[error.Message] : Language.Text("m_a279e812ae0a");
             status.Text = error is OperationCanceledException ? Language.Text("m_f42037ea4e6e") :
-                messages.TryGetValue(error.Message, out message) ? message : Language.Text("m_a279e812ae0a");
+                message;
+            if (error.Data.Contains("setupCleanupIncomplete")) status.Text += " " + Language.Text("setup_cleanup_warning");
         }
-        finally { busy = false; language.Enabled = true; cancel.Enabled = false; cancellation.Dispose(); cancellation = null; if (!completed) install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = true; }
+        try {
+            if (extracted != null) {
+                // Keep the UI responsive and closing blocked until cleanup ends.
+                await Task.Run(() => extracted.Dispose());
+                if (!extracted.CleanupSucceeded) status.Text += " " + Language.Text("setup_cleanup_warning");
+            }
+        }
+        finally {
+            busy = false; language.Enabled = true; cancel.Enabled = false; cancellation.Dispose(); cancellation = null;
+            if (!completed) install.Enabled = desktop.Enabled = startup.Enabled = consent.Enabled = true;
+        }
     }
 }

@@ -1,4 +1,16 @@
 {
+  "setup_invalid_payload": {
+    "tr": "Gömülü kurulum dosyaları doğrulanamadı. Kurucunun SHA-256 değerini kontrol edin ve güvenilir indirmeyi yeniden alın.",
+    "en": "The embedded setup files could not be verified. Check the installer's SHA-256 and obtain the trusted download again."
+  },
+  "setup_unpack": {
+    "tr": "Gömülü kurulum dosyaları doğrulanıyor ve güvenli geçici alana çıkarılıyor…",
+    "en": "Verifying and extracting embedded files into private temporary storage…"
+  },
+  "setup_cleanup_warning": {
+    "tr": "Bazı geçici kurulum dosyaları temizlenemedi. Yalnız doğrulanmış, kullanımda olmayan kalıntılar sonraki çalıştırmada temizlenir.",
+    "en": "Some temporary setup files could not be removed. Only verified inactive remnants are cleaned on a later run."
+  },
   "m_3f448c896b0a": {
     "tr": "Masaüstüne kısayol ekle",
     "en": "Add a desktop shortcut"

@@ -1,5 +1,15 @@
 # Test kapsamı ve yan etkiler
 
+## Tek dosyalı kurucu
+
+`embedded-payload.test.js` ayrı bir C# harness'iyle EmbeddedPayload sınıfını
+çalıştırır; yalnız geçici sentetik dosyalar ve sahte klasör/sahiplik adaptörleri
+kullanılır. Arşiv/manifest/hash, güvenli yollar, iptal, kesintiden kalan aktif/
+sahipliksiz/linkli/bilinmeyen kalıntılar ve veri koruyan sentetik kurulum/kaldırma
+sınanır. Setup/Main, WindowsFreshInstall, gerçek ACL/COM/izin/pano çalıştırılmaz.
+Bu testler gerçek kurulum kabulü değildir. Üretilmiş EXE kaynakları yalnız
+metadata/resource olarak incelenebilir; giriş noktası veya yöntemleri çağrılmaz.
+
 ## Linux Cloud / yerel Windows ayrımı
 
 Çalışma ve devir kuralları: [CLOUD-WORKFLOW.md](CLOUD-WORKFLOW.md).

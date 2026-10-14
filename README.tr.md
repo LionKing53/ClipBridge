@@ -6,10 +6,12 @@ ve verileri yalnız isim değişikliği için sıfırlanmaz veya taşınmaz.
 
 [English README](README.md) | [Kurulum](docs/QUICKSTART.tr.md)
 
-**1.2.1 deneysel ön sürüm; kararlı sürüm değildir.**
+**Güncel kaynak 1.2.2 tek dosyalı deneysel kurucu adayıdır; henüz yayımlanmadı.**
 [İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1):
 `ClipBridge-1.2.1-win-x64-experimental.zip`, eşleşen kaynak ZIP'i ve
-`SHA256SUMS.txt` aynı sayfadadır. Kurucu imzasızdır; EXE tek başına kullanılmaz.
+`SHA256SUMS.txt` aynı sayfadadır. Bu önceki 1.2.1 pakette EXE tek başına kullanılmaz.
+Yeni 1.2.2 EXE payload'ı içerir; kendi kaynak ZIP'i ve checksum'u ile ayrı inceleme
+ve yayın gerektirir. Kurucu imzasızdır; kararlı sürüm değildir.
 Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
 test edilmemiştir**. libvips kaynak derlemesi ve Windows DLL uyumluluk doğrulaması
 geçti. Otomatik/kütüphane testleri gerçek cihaz kabulünün yerine geçmez.
@@ -39,8 +41,10 @@ Kişisel veriler ve bağımlılık/çalışma zamanı kopyaları alınmamıştı
 
 ## Kurulum
 
-ZIP'in tamamını çıkarın; `ClipBridgeSetup.exe` ve `payload` yan yana
-kalmalıdır. EXE tek başına kullanılamaz. Kurucu mevcut program/verinin
+Yeni 1.2.2 adayı tek dosyalı `ClipBridgeSetup.exe` kurucusudur; ZIP çıkarmak veya
+yanında payload klasörü tutmak gerekmez. Yayımlanmış eski 1.2.1 ZIP'i hâlâ özgün
+payload'ını gerektirir; eski paket bu kaynak değişikliğiyle değiştirilmez.
+Kurucu mevcut program/verinin
 üzerine yazmaz. Kestirmeleri kendi adresiniz ve anahtarınızla oluşturun;
 sertifika parmak izini doğrulayın. [Kısa rehber](docs/INSTALL.tr.md) ve
 [ayrıntılı rehber](docs/QUICKSTART.tr.md) kurulum/kaldırma akışını açıklar.
@@ -50,8 +54,9 @@ sertifika parmak izini doğrulayın. [Kısa rehber](docs/INSTALL.tr.md) ve
 Kod, testler ve geliştirme kuralları kaynak depoda korunur:
 [AGENTS](AGENTS.md), [durum](PROJECT-STATUS.md), [testler](docs/TESTING.md),
 [Cloud düzeni](docs/CLOUD-WORKFLOW.md) ve [yol haritası](docs/ROADMAP.md).
-Kaynak guard'ını kaldırmayın. Kullanıcı ZIP'i kurucu, gerekli payload,
-kısa EN/TR rehber ve lisansları içerir; inceleme raporları ayrıdır.
+Kaynak guard'ını kaldırmayın. Yeni kurucu payload ve lisansları içine gömer;
+isteğe bağlı kullanıcı ZIP'i yalnız EXE ve kısa EN/TR rehberleri içerir.
+İnceleme raporları ayrıdır.
 Uygulama/native kaynakları eşleşen commit/hash ile ayrı ZIP'te korunur;
 binary ile aynı indirme yerinde eşit erişimle sunulmalıdır.
 [Kaynak sağlama](docs/DISTRIBUTION-SOURCES.md),

@@ -134,7 +134,7 @@ await writeFile(path.join(reviewDirectory, 'candidate.cdx.json'), JSON.stringify
     properties: [{ name: 'clipbridge:sourceCommit', value: commit }, { name: 'clipbridge:status', value: experimental ? 'experimental-prerelease' : installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
 await writeFile(path.join(noticeDirectory, 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
 await writeFile(path.join(payload, experimental ? 'EXPERIMENTAL.txt' : installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), experimental
-  ? 'Experimental pre-release, not a stable version.\nClean Windows/iPhone installation, transfer and removal acceptance is unverified.\nSetup is unsigned. Extract the entire ZIP; the EXE cannot be used alone.\nSee READ-ME-FIRST.md and READ-ME-FIRST.tr.md.\nMatching sources and licenses: licenses/SOURCE-PACKAGE.json and licenses/.\n'
+  ? 'Experimental pre-release, not a stable version.\nClean Windows/iPhone installation, transfer and removal acceptance is unverified.\nSetup is unsigned. ClipBridgeSetup.exe embeds the verified payload; no adjacent payload or ZIP extraction is needed.\nSee READ-ME-FIRST.md and READ-ME-FIRST.tr.md or the matching source guides.\nMatching sources and licenses: licenses/SOURCE-PACKAGE.json and licenses/.\n'
   : limitations.join('\n') + '\n');
 // Source must not change underneath the build. A clean git tree alone would not
 // detect an editor changing and committing inputs while this process runs.

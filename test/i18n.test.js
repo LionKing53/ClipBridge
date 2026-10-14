@@ -41,7 +41,8 @@ test('native setup TR/EN form renders without horizontal overflow and without in
     const source=fileURLToPath(new URL('../',import.meta.url)), exe=path.join(root,'SetupLanguageProbe.exe');
     await run(path.join(process.env.WINDIR,'Microsoft.NET/Framework64/v4.0.30319/csc.exe'),['/nologo','/target:exe','/main:SetupLanguageProbe','/reference:System.Drawing.dll','/reference:System.Web.Extensions.dll','/reference:System.Windows.Forms.dll','/out:'+exe,
       ...['messages','native','errors'].map((name,i)=>'/resource:'+path.join(source,'locales',name+'.json')+','+['Messages','NativeMessages','ErrorMessages'][i]),
-      ...['launcher/Setup.cs','launcher/Language.cs','launcher/FreshInstall.cs','launcher/RemoveInstall.cs','launcher/WindowsFreshInstall.cs','launcher/InstalledLaunch.cs','scripts/InstallProbe.cs','test/support/SetupLanguageProbe.cs'].map(name=>path.join(source,name))],{windowsHide:true});
+      '/reference:System.IO.Compression.dll',
+      ...['launcher/Setup.cs','launcher/EmbeddedPayload.cs','launcher/Language.cs','launcher/FreshInstall.cs','launcher/RemoveInstall.cs','launcher/WindowsFreshInstall.cs','launcher/InstalledLaunch.cs','scripts/InstallProbe.cs','test/support/SetupLanguageProbe.cs'].map(name=>path.join(source,name))],{windowsHide:true});
     assert.equal((await run(exe,[root],{windowsHide:true,timeout:15000})).stdout.trim(),'setup-language-layout PASS');
     // Retain only synthetic form images in ignored build for visual review.
     const {mkdir,copyFile}=await import('node:fs/promises');await mkdir(path.join(source,'build'),{recursive:true});
