@@ -14,7 +14,7 @@ acceptance have not been completed. Setup is unsigned; this is not a stable rele
    ClipBridgeSetup.exe
    payload/
    READ-ME-FIRST.md
-   ILK-OKU.md
+   READ-ME-FIRST.tr.md
    ```
 
    **The EXE cannot be used alone.** Do not launch it from inside the ZIP or

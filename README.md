@@ -7,9 +7,10 @@ ClipBridge is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send
 receive an item, then keep working on your other device. Use **local HTTPS on a
 trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remotely.
 
-> **Source version 1.2.1 · ClipBridge rebrand**
+> **Version 1.2.1 · Experimental pre-release**
 >
-> No downloadable EXE or installer is published yet. The source-built installer
+> Use the [experimental downloads](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1).
+> This is **not a stable release**. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
 > The libvips source rebuild and Windows DLL compatibility checks have passed.
 > Automated/library tests do not replace clean-device installation and transfer tests.
@@ -71,8 +72,11 @@ the Windows listener is ready; it does not verify phone connectivity.
 
 ## Setup, in four steps
 
-These steps describe the **private acceptance package**. They are provided for
-review and future testing; there is currently no public installer download.
+Download `ClipBridge-1.2.1-win-x64-experimental.zip` from the
+[experimental release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1).
+Verify it against `SHA256SUMS.txt`. The matching `ClipBridge-1.2.1-sources.zip`
+is available at the same location for rebuilding; you do not need to open it
+to install. The installer is unsigned and real-device acceptance is pending.
 
 1. **Install on a clean Windows x64 computer.** Extract the whole package and
    keep `ClipBridgeSetup.exe` beside `payload`. Run setup as a normal user.
@@ -116,7 +120,7 @@ not supported. Keep the operating system supported and updated.
 - **iPhone:** Apple Shortcuts; local use requires the same trusted network.
 - **WebView2:** Evergreen Runtime is required. Setup can open Microsoft's
   official download page; it does not automatically install the Runtime.
-- **Node.js:** bundled in the private package; developers install Node separately.
+- **Node.js:** bundled in the download; developers install Node separately.
 - **Tailscale:** optional for remote use.
 - **Inbound files/video:** 512 MiB. **Inbound text/image processing:** 64 MiB.
 - The outbound path has no equivalent overall limit. The 256 MiB history cache

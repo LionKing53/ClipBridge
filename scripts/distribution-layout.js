@@ -1,12 +1,28 @@
 // File-only distribution primitives; never execute runtime or OS adapters.
 import path from 'node:path';
-import { createWriteStream } from 'node:fs';
+import { createReadStream, createWriteStream } from 'node:fs';
 import { readFile, writeFile } from 'node:fs/promises';
 import { once } from 'node:events';
 import { ZipArchive } from 'archiver';
 import { hashFile, packageFiles } from '../src/package-files.js';
 import { validateReleaseManifest } from '../src/release-store.js';
 import { assertNoLinks } from '../src/runtime-context.js';
+
+export async function scanPrivateFile(file, terms) {
+  await assertNoLinks(file);
+  const needles = terms.map(term => term.toLowerCase());
+  const overlap = Math.max(1024, ...needles.map(term => Buffer.byteLength(term, 'utf8') * 4 + 2));
+  let tail = Buffer.alloc(0), offset = 0;
+  for await (const block of createReadStream(file, { highWaterMark: 1024 * 1024 })) {
+    const window = Buffer.concat([tail, block]);
+    const start = offset - tail.length;
+    const text = window.toString('utf8').toLowerCase();
+    const wide = window.subarray(start % 2).toString('utf16le').toLowerCase();
+    if (needles.some(term => text.includes(term) || wide.includes(term))) throw new Error('Private-term match in package; no archive produced.');
+    offset += block.length;
+    tail = window.subarray(Math.max(0, window.length - overlap));
+  }
+}
 
 export async function archiveFiles(target, entries) {
   // Apply the same Windows-safe, case-insensitive path policy as the installer.

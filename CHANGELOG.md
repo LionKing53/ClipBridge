@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.1 deneysel yayın hazırlığı — 2026-10-14
+
+- Kullanıcı onayıyla İngilizce dosya isimleri ve ayrı experimental üretim modu
+  eklendi. Rehberler READ-ME-FIRST.md / READ-ME-FIRST.tr.md; kaynaklar/lisanslar
+  korunur, yalnız ön sürüm hedeflenir. Eski paketlere dokunulmaz.
+- Streaming private-term scan aynı UTF-8/UTF-16 taramasını sınırlı bellekle yapar;
+  chunk sınırı testleri dahil 162/162 test geçti. Kurucu/uygulama çalıştırılmadı;
+  kişisel kurulum değişmedi. Son paket/hash ve yayın sonucu ayrıca kaydedilir.
+
 ## 1.2.1 sade dağıtım doğrulandı — 2026-10-14
 
 - 7550da4 kaynağından yeni Setup, ~50 MiB kullanıcı ZIP'i ve ~404 MiB kaynak

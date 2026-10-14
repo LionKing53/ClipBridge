@@ -13,10 +13,13 @@ import { assertSourceCoverage } from './fetch-native-sources.js';
 import { createSourceCompanion } from './distribution-layout.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
-const installable = process.argv.includes('--installable-test');
+const experimental = process.argv.includes('--experimental-release');
+if (experimental && process.argv.includes('--installable-test')) throw new Error('Choose only one explicit installable build mode.');
+const installable = experimental || process.argv.includes('--installable-test');
+const purpose = experimental ? 'installable-experimental-release' : installable ? 'installable-private-acceptance' : 'guarded-engineering-candidate';
 const options = {};
 for (let i = 2; i < process.argv.length; i++) {
-  const arg = process.argv[i]; if (arg === '--installable-test') continue;
+  const arg = process.argv[i]; if (['--installable-test', '--experimental-release'].includes(arg)) continue;
   if (!['--native-library-directory','--native-source-directory'].includes(arg) || options[arg] || !process.argv[i+1] || process.argv[i+1].startsWith('--')) throw new Error('Unknown, duplicate or incomplete build option');
   options[arg] = path.resolve(process.argv[++i]);
 }
@@ -121,16 +124,18 @@ if (options['--native-source-directory']) {
   await copyFile(path.join(directory,'NATIVE-NOTICES.txt'),path.join(noticeDirectory,'NATIVE-NOTICES.txt'));
   await writeFile(path.join(reviewDirectory,'native-source-delivery.json'),JSON.stringify({ ...evidence, bundle: sourceCompanion?.file || 'sources/' + bundleName, nativeRebuildVerification: 'See separately recorded source-build/ABI evidence; not rerun by packaging.', modifiedLibrarySourcesIncluded: !nativeOverride },null,2));
 }
-const limitations = [installable ? 'Installable PRIVATE acceptance package, not approved for public redistribution.' : 'Engineering candidate, not installable or approved for redistribution.',
+const limitations = [experimental ? 'Experimental pre-release. Clean Windows/iPhone installation, transfer and removal acceptance is unverified.' : installable ? 'Installable PRIVATE acceptance package, not approved for public redistribution.' : 'Engineering candidate, not installable or approved for redistribution.',
   installable ? 'Runtime guard omitted by explicit build; source snapshot guard retained. No app or installer executed.' : 'SOURCE-CHECKOUT guard retained. No app or installer executed.',
   'WebView2 Runtime not bundled; SDK libraries are not the Runtime.', 'Dependency/component inventory is not a vulnerability audit or license approval.',
   'sharp/libvips corresponding-source and replacement requirements still need distribution review.', 'Real Windows/iPhone acceptance pending. Clean install only; updater, rollback and legacy migration out of scope.'];
 await writeFile(path.join(reviewDirectory, 'inventory.json'), JSON.stringify({ format: 1, commit, target: 'win-x64', limitations, packages: inventory }, null, 2));
 await writeFile(path.join(reviewDirectory, 'candidate.cdx.json'), JSON.stringify({ bomFormat: 'CycloneDX', specVersion: '1.6', version: 1,
   metadata: { component: { type: 'application', name: 'ClipBridge', version },
-    properties: [{ name: 'clipbridge:sourceCommit', value: commit }, { name: 'clipbridge:status', value: installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
+    properties: [{ name: 'clipbridge:sourceCommit', value: commit }, { name: 'clipbridge:status', value: experimental ? 'experimental-prerelease' : installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
 await writeFile(path.join(noticeDirectory, 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
-await writeFile(path.join(payload, installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), limitations.join('\n') + '\n');
+await writeFile(path.join(payload, experimental ? 'EXPERIMENTAL.txt' : installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), experimental
+  ? 'Experimental pre-release, not a stable version.\nClean Windows/iPhone installation, transfer and removal acceptance is unverified.\nSetup is unsigned. Extract the entire ZIP; the EXE cannot be used alone.\nSee READ-ME-FIRST.md and READ-ME-FIRST.tr.md.\nMatching sources and licenses: licenses/SOURCE-PACKAGE.json and licenses/.\n'
+  : limitations.join('\n') + '\n');
 // Source must not change underneath the build. A clean git tree alone would not
 // detect an editor changing and committing inputs while this process runs.
 for (const name of source.files) {
@@ -138,8 +143,8 @@ for (const name of source.files) {
 }
 if (await git('rev-parse', 'HEAD') !== commit || await git('status', '--porcelain')) throw new Error('Source provenance changed during packaging.');
 const result = await sealCandidate(payload, { version, commit });
-await writeFile(path.join(work, 'candidate-evidence.json'), JSON.stringify({ format: 1, purpose: installable ? 'installable-private-acceptance' : 'guarded-engineering-candidate', version, commit,
+await writeFile(path.join(work, 'candidate-evidence.json'), JSON.stringify({ format: 1, purpose, version, commit,
   ...result, dependencies: inventory.length, installed: false, launched: false, approvedForPublication: false }, null, 2));
 console.log(`Candidate integrity PASS: ${result.files} files, ${inventory.length} production dependencies.`);
 console.log('Output: ' + path.relative(root, work));
-console.log(installable ? 'Installable private acceptance only, not publication approved. Personal installation unchanged.' : 'Guarded candidate, not installable.');
+console.log(experimental ? 'Experimental build; publication still requires separate review and owner authorization.' : installable ? 'Installable private acceptance only, not publication approved. Personal installation unchanged.' : 'Guarded candidate, not installable.');

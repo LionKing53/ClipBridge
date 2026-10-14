@@ -128,6 +128,16 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Experimental publication — owner decision 2026-10-14
+
+After reviewing the simplified delivery, the owner authorized the publication
+conversation to transfer the source and paired downloads to GitHub, using English
+filenames. Prepare an explicit experimental build, review its new hashes and
+history, and publish only as a prerelease with clean Windows/iPhone acceptance
+clearly unverified. Upload matching binary/source ZIPs together with checksums;
+never distribute the standalone EXE. This supersedes the previous task's no-push
+limit for this publication only. No personal deployment or installer/app execution.
+
 ### Simplified distribution — owner decision 2026-10-14
 
 The owner authorized end-user README/packaging simplification and fresh file-only

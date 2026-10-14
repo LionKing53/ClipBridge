@@ -3,7 +3,7 @@
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
-> **Testing is pending.** No public installer download is available yet.
+> **Testing is pending.** Use the [experimental release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1), not a stable release.
 > The source-built setup has not been tested on clean Windows or with a real
 > iPhone transfer. The libvips source rebuild and Windows DLL checks have passed;
 > this guide describes the intended device acceptance flow, not completed
@@ -12,11 +12,6 @@
 Version **1.2.1** supports **English / Türkçe**. Choose **Settings → Language →
 English** (or **Ayarlar → Dil → English**). The choice survives reopening.
 The screenshots show the real English interface with synthetic data.
-The historical private **1.1.0** package predates this language update. The current
-1.2.1 candidate is prepared for experimental release review; public binary
-publication remains a separate step. English button names below
-include Turkish equivalents where useful.
-
 ## The setup path
 
 ```mermaid
@@ -47,7 +42,7 @@ Use a separate computer with **no existing ClipBridge or PanoKopru program/data*
    the ZIP. Keep this layout intact:
 
    ```text
-   ClipBridge-1.2.1-win-x64-test/
+   ClipBridge-1.2.1-win-x64-experimental/
    |-- ClipBridgeSetup.exe
    |-- payload/
        |-- release.json
@@ -71,10 +66,6 @@ The user ZIP includes short English/Turkish guides. Application and native
 sources are supplied in the matching `ClipBridge-<version>-sources.zip`, with
 the identity/hash in `payload/licenses/SOURCE-PACKAGE.json`. Sources are not
 an installation step; keep both downloads available to recipients.
-
-These are the new 1.2.1 build names, not a public download. The previously
-recorded private 1.1.0 artifact still uses `PanoKopruSetup.exe` and old paths;
-it has not been renamed or rebuilt. See [compatibility](BRANDING.md).
 
 ## 2. Choose your trusted network
 
@@ -203,4 +194,4 @@ maintenance lock after interrupted removal.
 - Inbound files/video: **512 MiB**. Inbound text/image processing: **64 MiB**.
   The outbound path has no identical overall limit.
 - The history cache budget is not a total disk quota.
-- English and Turkish are available in the 1.2.1 source; the older 1.1.0 acceptance package has not been rebuilt.
+- English and Turkish are available; select your preferred language in Settings.

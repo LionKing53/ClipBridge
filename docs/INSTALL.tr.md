@@ -9,7 +9,7 @@ tamamlanmadı. Kurucu imzasızdır; kararlı sürüm değildir.**
    indirme sayfasını açabilir. Node paket içindedir.
 2. ZIP'in SHA-256 değerini teslim kaydıyla karşılaştırın. **ZIP'in tamamını**
    yerel bir klasöre çıkarın: `ClipBridgeSetup.exe`, `payload/`, `READ-ME-FIRST.md`
-   ve `ILK-OKU.md`. **EXE tek başına kullanılamaz.** ZIP içinden çalıştırmayın,
+   ve `READ-ME-FIRST.tr.md`. **EXE tek başına kullanılamaz.** ZIP içinden çalıştırmayın,
    payload dosyalarını silmeyin/değiştirmeyin. Kurucuyu normal kullanıcı olarak
    açın; oturum açılışında başlatma isteğe bağlıdır ve başlangıçta kapalıdır.
    Beklenmedik uyarıları aşmak için güvenlik korumalarını kapatmayın.

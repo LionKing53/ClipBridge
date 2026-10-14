@@ -1,5 +1,22 @@
 # ClipBridge — proje durumu
 
+## Deneysel GitHub aktarımı hazırlığı — 2026-10-14
+
+- Kullanıcı sade dağıtımı inceledikten sonra gerekli kaynak/paket aktarımını ve
+  İngilizce dosya adlarını onayladı. Hedef tag `v1.2.1-experimental.1`, prerelease;
+  kararlı sürüm veya gerçek temiz Windows/iPhone kabulü iddia edilmez.
+- `--experimental-release` açık üretim modu private acceptance'tan ayrılır;
+  varsayılan source guard ve özel test kapıları korunur. Kaynak ZIP hash binding
+  değişmez; kurucu/ZIP yalnız yeni temiz commit'ten üretilir, eski çıktılar korunur.
+- Rehber adları READ-ME-FIRST.md / READ-ME-FIRST.tr.md. Kullanıcı ZIP adı
+  ClipBridge-1.2.1-win-x64-experimental.zip; kaynak ZIP ve SHA256SUMS.txt aynı
+  indirme yerinde eşit erişimle sunulur. EXE ayrı asset olarak yüklenmez.
+- 162/162 Windows otomatik test geçti; atlama yok. Yeni streaming privacy scan
+  UTF-8/UTF-16 chunk sınırı testi ve eksik/conflicting build mode testleri geçti.
+  Kaynak/diff kontrolü geçti. Paket/privacy/history incelemesi yayın öncesi
+  yenilenir; önce kaynaklar, sonra iki ZIP'in tamamını taşıyan draft release
+  doğrulanarak görünür yapılır. Kişisel kurulum/veriler değişmez.
+
 ## Sade dağıtım teslimi — 2026-10-14
 
 - Paket kaynak commit'i `7550da440f21a50e327e3226549a0fa6f50084e6`, sürüm 1.2.1.

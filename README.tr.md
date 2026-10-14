@@ -6,8 +6,10 @@ ve verileri yalnız isim değişikliği için sıfırlanmaz veya taşınmaz.
 
 [English README](README.md) | [Kurulum](docs/QUICKSTART.tr.md)
 
-**Kaynak kod yayını — 1.2.1 geliştirme sürümü.** Bu depoda kaynaklar ve belgeler
-yayımlanır; indirilebilir EXE/kurulum paketi henüz yayımlanmamıştır.
+**1.2.1 deneysel ön sürüm; kararlı sürüm değildir.**
+[İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1):
+`ClipBridge-1.2.1-win-x64-experimental.zip`, eşleşen kaynak ZIP'i ve
+`SHA256SUMS.txt` aynı sayfadadır. Kurucu imzasızdır; EXE tek başına kullanılmaz.
 Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
 test edilmemiştir**. libvips kaynak derlemesi ve Windows DLL uyumluluk doğrulaması
 geçti. Otomatik/kütüphane testleri gerçek cihaz kabulünün yerine geçmez.

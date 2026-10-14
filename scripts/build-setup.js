@@ -15,7 +15,7 @@ await assertNoLinks(work);
 const evidence = JSON.parse(await readFile(path.join(work, 'candidate-evidence.json'), 'utf8'));
 const manifest = await verifyRelease(path.join(work, 'payload'), evidence.hash);
 const source = (await run('git', ['rev-parse', 'HEAD'], { cwd: root, windowsHide: true })).stdout.trim();
-if ((await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true })).stdout.trim() || manifest.commit !== source || evidence.commit !== source || !['guarded-engineering-candidate', 'installable-private-acceptance'].includes(evidence.purpose)) throw new Error('Matching clean committed candidate required.');
+if ((await run('git', ['status', '--porcelain'], { cwd: root, windowsHide: true })).stdout.trim() || manifest.commit !== source || evidence.commit !== source || !['guarded-engineering-candidate', 'installable-private-acceptance', 'installable-experimental-release'].includes(evidence.purpose)) throw new Error('Matching clean committed candidate required.');
 const guard = await lstat(path.join(work, 'payload', 'app', 'SOURCE-CHECKOUT')).catch(error => { if (error.code === 'ENOENT') return null; throw error; });
 if (!!guard !== (evidence.purpose === 'guarded-engineering-candidate')) throw new Error('Payload guard differs from explicit build policy.');
 const toolchain = JSON.parse(await readFile(path.join(root, 'toolchain-lock.json'), 'utf8'));

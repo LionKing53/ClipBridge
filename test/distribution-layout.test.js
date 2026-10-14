@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { mkdtemp, mkdir, readFile, writeFile, rm } from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
-import { createSourceCompanion, verifySourceCompanion, archiveFiles } from '../scripts/distribution-layout.js';
+import { createSourceCompanion, verifySourceCompanion, archiveFiles, scanPrivateFile } from '../scripts/distribution-layout.js';
+import { execFile } from 'node:child_process';
+import { promisify } from 'node:util';
 import { hashFile, sealCandidate } from '../src/package-files.js';
 import { verifyRelease } from '../src/release-store.js';
 
@@ -58,4 +60,25 @@ test('archive writer rejects unsafe or Windows-duplicate names and preserves exi
   const before = await readFile(target);
   await assert.rejects(archiveFiles(target, [{ name: 'LICENSE', file }]));
   assert.deepEqual(await readFile(target), before);
+});
+
+test('streaming privacy scan detects UTF-8 and UTF-16 values across chunk boundaries', async t => {
+  const f = await fixture(t), file = path.join(f.work, 'scan.bin'), term = 'synthetic-sensitive-value';
+  for (const [encoding, padding] of [['utf8', 1024 * 1024 - 3], ['utf16le', 1024 * 1024 - 4]]) {
+    await writeFile(file, Buffer.concat([Buffer.alloc(padding, 32), Buffer.from(term.toUpperCase(), encoding)]));
+    await assert.rejects(scanPrivateFile(file, [term]), /Private-term match/);
+  }
+  await writeFile(file, 'synthetic public fixture'); await scanPrivateFile(file, [term]);
+});
+
+test('experimental CLI refuses conflicting modes and missing sources before building', async () => {
+  const run = promisify(execFile);
+  for (const [args, message] of [
+    [['--experimental-release', '--installable-test'], /Choose only one/],
+    [['--experimental-release'], /requires corresponding native sources/]
+  ]) {
+    await assert.rejects(run(process.execPath, ['scripts/build-candidate.js', ...args], { windowsHide: true }), error => {
+      assert.match(error.stderr, message); assert.equal(error.stdout, ''); return true;
+    });
+  }
 });
