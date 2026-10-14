@@ -32,8 +32,8 @@
     "en": "Request cancellation"
   },
   "m_1c84efd831cc": {
-    "tr": "ClipBridge 1.2.1 - Kurulum / Test",
-    "en": "ClipBridge 1.2.1 - Setup / Test"
+    "tr": "ClipBridge 1.2.2 - Kurulum / Test",
+    "en": "ClipBridge 1.2.2 - Setup / Test"
   },
   "m_64576cfe72e2": {
     "tr": "Yalnız temiz Windows x64 kullanıcı kurulumu.\nVar olan uygulama veya veri klasörünün üzerine yazılmaz.\nProgram: %LOCALAPPDATA%\\Programs\\ClipBridge\nVeri: %LOCALAPPDATA%\\ClipBridge (ilk açılışta oluşturulur).\nBu adım iPhone sertifikası veya ağ izni eklemez.",

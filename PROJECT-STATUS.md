@@ -21,6 +21,11 @@
   tüm traversal/duplicate/Windows-path sınırlarını koruyacak şekilde düzeltildi.
   Hedefli 12/12 geçti; bu ara aday final değildir. Trusted PowerShell modülleri
   kaynak inceleme betiğinde de engine yanından yüklenir.
+- `c0d5e2a` ara adayının tek EXE derlemesi ve ReflectionOnly resource doğrulaması
+  geçti; kurucu çağrılmadı. Son takım 169/169 geçti. Görsel incelemede kurucu
+  başlığındaki eski katalog sürümü de 1.2.2'ye düzeltildi ve testle bağlandı;
+  bu yüzden teslim için yeni aday üretilecek. SHA256SUMS yalnız indirilebilir
+  dosyaları listeler; gömülü manifest hash'i review kanıtlarında kalır.
 - EN/TR rehberler, kaynak/notice sağlama ve AGENTS yetki sınırı güncellendi.
   Yeni opsiyonel kullanıcı ZIP'i EXE + iki rehberdir; kaynak ZIP'i EXE ile birlikte
   aynı erişimle sunulur. Source guard korunur. Kurucu/app çalıştırılmadı, gerçek

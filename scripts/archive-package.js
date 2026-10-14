@@ -39,6 +39,6 @@ const name = `ClipBridge-${manifest.version}-win-x64-${experimental ? 'experimen
 await assertNoLinks(target);
 const { sha256 } = await archiveFiles(target, entries);
 await writeFile(path.join(work, name + '.sha256'), sha256 + '  ' + name + '\n', { flag: 'wx' });
-await writeFile(path.join(work, 'SHA256SUMS.txt'), [sha256 + '  ' + name, companion.sha256 + '  ' + companion.file, setup.executableSHA256 + '  ClipBridgeSetup.exe', candidate.hash + '  payload/release.json'].join('\n') + '\n', { flag: 'wx' });
+await writeFile(path.join(work, 'SHA256SUMS.txt'), [setup.executableSHA256 + '  ClipBridgeSetup.exe', companion.sha256 + '  ' + companion.file, sha256 + '  ' + name].join('\n') + '\n', { flag: 'wx' });
 await writeFile(path.join(work, 'archive-evidence.json'), JSON.stringify({ commit: candidate.commit, version: manifest.version, file: name, sha256, entries: entries.length, standalone: true, executableSHA256: setup.executableSHA256, sourceCompanion: companion, privateTermsApplied: terms.length > 0, approvedForPublication: false, acceptance: 'pending' }, null, 2), { flag: 'wx' });
 console.log(JSON.stringify({ file: path.relative(root, target), sha256, version: manifest.version, commit: candidate.commit, experimental, privateAcceptanceOnly: !experimental }));

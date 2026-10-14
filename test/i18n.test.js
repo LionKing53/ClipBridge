@@ -15,6 +15,8 @@ import { fileURLToPath } from 'node:url';
 
 test('catalogs cover owned browser/native references with matching interpolation fields', async () => {
   const native = JSON.parse(await readFile(new URL('../locales/native.json',import.meta.url),'utf8'));
+  const version = JSON.parse(await readFile(new URL('../package.json',import.meta.url),'utf8')).version;
+  for (const language of ['tr','en']) assert.ok(native.m_1c84efd831cc[language].includes(version),'Setup title must match package version');
   for (const [key,value] of Object.entries({...messages,...errorMessages,...native})) {
     assert.equal(typeof value.tr,'string',key); assert.ok(value.tr.trim(),key);
     assert.equal(typeof value.en,'string',key); assert.ok(value.en.trim(),key);
