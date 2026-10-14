@@ -1,5 +1,49 @@
 # ClipBridge — proje durumu
 
+## 1.2.2 tek EXE teslimi — 2026-10-14
+
+- Paket kaynak commit'i **`8b2c0dcd1a448e41aea4217087ba930324805fd2`**; uygulama ve
+  native metadata 1.2.2 / 1.2.2.0. Uygulama özellikleri eklenmedi. Önceki kod
+  commit'leri `10ab6c4`, `c0d5e2a`; bu son teslim kaydı paket hash'ini değiştirmez.
+- Son aday: `build/candidate-3228fdab-b3da-4ca6-b900-37a82f043b9d`.
+  **ClipBridgeSetup.exe artık tek başına indirilebilir**; ayrı payload veya ZIP
+  çıkarma gerekmez. Eski 1.2.1 external-payload paketlerinin şartları değişmez.
+- EXE 52.521.984 bayt, SHA-256
+  `6814c6afb2fabfcaf9e14b0266c9fa4b7ea1136d34b671f084e799dc33f4ec20`.
+  Eşleşen `ClipBridge-1.2.2-sources.zip` 423.632.414 bayt, SHA-256
+  `3a5134110b7081c0909a46f71a5c861866498aea09cc57310a7c371bca79c411`.
+  Opsiyonel `ClipBridge-1.2.2-win-x64-experimental.zip` 52.058.053 bayt, SHA-256
+  `efd26297c9f6739822b51b718bdce5290e3bac050d34bc21043df48c42eac991`.
+- Gömülü archive SHA-256
+  `b972b387b16e106ad6bfb988d8914879480c968ece008d68cf500dcd9346add4`;
+  sealed manifest SHA-256
+  `6592015f47568f1996a538f79fdb8ef8e78051e4a1c1810f1e26276355d0ea3c`.
+- ReflectionOnly resource incelemesinde **1.254 gömülü girdi** hash/boyut/path
+  doğrulandı; Setup giriş noktası veya yöntemleri çağrılmadı. Sealed dosyalar
+  1.253 / 89 production bağımlılığı. Opsiyonel kullanıcı ZIP'i **3 girdi** (EXE +
+  EN/TR rehber); kaynak ZIP **195**, native kaynak ZIP **396** girdi. Tüm entry
+  hash/path/duplicate ve kaynak binding/noticeler doğrulandı. Private-term taraması
+  uygulandı, bulgu yok; sezgisel kontrol, eksiksiz güvenlik/hukuk garantisi değil.
+- Final kaynakta **169/169 Windows otomatik test**, atlama yok; Edge UI ve EN/TR
+  native form layout/görsel incelemesi geçti. Sentetik çıkarma/iptal/I/O hatası/
+  kesinti/foreign-owner/link/unknown-file ve veri koruyan kurulum/kaldırma testleri
+  geçti. Gerçek ACL/COM/kurulum adaptörleri çağrılmadı. Özgün paket kütüphaneleriyle
+  beş biçim image smoke ve production npm audit (sıfır bilinen açık) geçti.
+- Eski yayımlanmış 1.2.1 EXE, kullanıcı ZIP'i ve source ZIP'i yeniden hash'lendi;
+  üçü de yayımlanmış kayıtla aynı. Kişisel program/veri/kimlik/izinler değiştirilmedi;
+  mevcut kurulum 1.2.1. Geçersiz veya erken kesintide sahiplik kaydı tamamlanmamış
+  temp kalıntıları güvenlik için otomatik silinmez; program staging politikası ayrı.
+- `SHA256SUMS.txt`, `PUBLICATION-HANDOFF.md`, `embedded-resource-review.json`,
+  `delivery-review.json`, `native-smoke-review.json` ve build/archive kanıtları
+  aday yanında. Exact kaynak/native/patch/recombination/notice ZIP'i EXE ile
+  aynı erişimle sunulmalı. Önceki native source-build/ABI kanıtı değişmeyen
+  kütüphaneler için korunur; bu görevde yeniden native derleme yapılmadı.
+- Kaynak/diff kapısı geçti (186 metin + 4 onaylı PNG / 121 lock girdisi).
+  Son teslim commit'i dahil geçmiş taraması teslimden önce tekrar yapılır.
+  Kurucu/app çalıştırılmadı; **gerçek temiz Windows/iPhone kabulü bekliyor**.
+  Deneysel adaydır; GitHub push/Release veya binary yayın onayı bu görevde yok.
+  Son kontrol/yayın ayrı sohbettedir. Çalışma sonunda temiz Git/kilit bırakılır.
+
 ## 1.2.2 tek EXE kurucu — geliştirme — 2026-10-14
 
 - Başlangıç commit'i `4278b51`. Gömülü sealed payload, arşiv SHA-256 ve özgün

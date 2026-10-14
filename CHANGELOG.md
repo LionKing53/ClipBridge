@@ -2,6 +2,16 @@
 
 ## 1.2.2 — Tek dosyalı kurucu — 2026-10-14
 
+- Final paket kaynağı `8b2c0dc`: 52.521.984 baytlık bağımsız EXE, eşleşen source
+  ZIP ve isteğe bağlı üç girdili EXE/rehber ZIP'i üretildi. SHA-256/manifest ve
+  1.254 gömülü dosya, 195 source ve 396 native source entry doğrulandı.
+- Final 169/169 otomatik test, Edge UI, EN/TR native form ve beş format image
+  smoke geçti. Production npm audit bilinen açık bildirmedi. Eski 1.2.1 release
+  artifact'lerinin üç hash'i aynı. PUBLICATION-HANDOFF.md ve checksum'lar hazır.
+- Yalnız yerel derleme/inceleme/commit; gerçek cihaz kabulü, kurucu çalıştırma,
+  kişisel kurulum değişikliği veya GitHub yayını yok. Kaynak paketinin ayrı/eşit
+  erişimle sunulması şartı korunur; kararlı sürüm değildir.
+
 - Setup EXE sealed payload'ı gömer; ayrı payload klasörü gerekmez. Private geçici
   çıkarma, archive/manifest/file hash doğrulaması, iptal/hata temizliği ve güvenli
   inactive kesinti kalıntısı temizliği. Bilinmeyen/linkli dosyalar korunur.

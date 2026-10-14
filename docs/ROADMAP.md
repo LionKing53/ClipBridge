@@ -1,5 +1,12 @@
 # Geliştirme ve yayın kapıları
 
+1.2.2 tek EXE adayı teslim edildi: 8b2c0dc kaynak, 169/169 test, metadata-only
+1.254 embedded entry ve eşleşen kaynak/notice/ZIP kontrolleri geçti. Kullanıcı
+EXE'yi tek başına çalıştırır; kaynak ZIP'i aynı erişimle yanında yayımlanmalıdır.
+Opsiyonel binary ZIP yalnız EXE + EN/TR rehberdir. Eski 1.2.1 release değişmedi.
+Yayın bu sohbette yapılmadı; kurucu/kişisel deployment ve gerçek temiz cihaz
+kabulü yapılmadı. Paket hash/teslim ayrıntıları PROJECT-STATUS.md'dedir.
+
 2026-10-14 yeni dar görev: 1.2.2 tek EXE payload/resource doğrulaması ve güvenli
 geçici çıkarma; EN/TR rehber/source eşlikçisi korunur. Eski "EXE tek başına
 dağıtılmaz" kuralı yalnız eski external-payload kurucusuna aittir. Yeni sürüm
