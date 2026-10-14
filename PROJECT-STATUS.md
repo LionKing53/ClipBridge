@@ -1,5 +1,43 @@
 # ClipBridge — proje durumu
 
+## Sade dağıtım teslimi — 2026-10-14
+
+- Paket kaynak commit'i `7550da440f21a50e327e3226549a0fa6f50084e6`, sürüm 1.2.1.
+  Bu sonraki teslim kaydı paket kaynağını veya hash'lerini değiştirmez.
+- Yeni klasör: `build/candidate-5b0a609c-b873-43cf-890d-112338edba8a`.
+  Kullanıcı ZIP'i `ClipBridge-1.2.1-win-x64-test.zip`, 52.470.270 bayt (~50 MiB),
+  SHA-256 `c97e46e2c6633bbd4cf4cd84db267ca7dcfbad1b00ad1aa15ac92c2bdbeb2c57`.
+  Kaynak ZIP'i `ClipBridge-1.2.1-sources.zip`, 423.612.077 bayt (~404 MiB),
+  SHA-256 `fae4b77e97566a49fef1b785d8ff9732782baca78f1af57e3770347f7cd369c6`.
+- Kurucu SHA-256 `2c00f28edc551766fc0c60caa9ff3620451366565a1caff3fe11360a5bf2863e`;
+  manifest SHA-256 `3ab75b4731b5d47fb0328b90ed25d0e03af0bead84abcba3d6b6798e4f18874e`.
+  EXE tek başına dağıtılmaz; kurucu ve payload aynı çıkarılmış klasörde kalır.
+- Yeni manifest 1.253 dosya / 89 production bağımlılığı; kullanıcı ZIP'i 1.257,
+  kaynak ZIP'i 191 entry. Kaynak eşlikçisi 186 allowlisted uygulama dosyasını ve
+  özgün native ZIP'i içerir; native ZIP 396 entry / 391 arşiv-recipe hash'iyle
+  yeniden doğrulandı. Kaynak guard, testler, Cloud/development kuralları korunur.
+- Son arşivden her manifest dosyasının boyut/hash'i, safe/unique path, Setup,
+  source binding, EN/TR rehber eşitliği ve özgün lisans/notice kopyaları geçti.
+  Kullanıcı/yeni kaynak dosyaları kişisel terim taraması bulgusuz. Değişmeyen
+  native kaynaklar önceki doğrulanmış eşlikçi ve her pinned arşivin hash'iyle
+  kontrol edildi; sıkıştırılmış native arşivler tekrar metin gibi taranmadı.
+  Kaynak/paket denetimleri sezgiseldir, kapsamlı gizlilik garantisi değildir.
+- Paketlenmiş özgün npm kütüphaneleriyle PNG/JPEG/WebP/TIFF/SVG→PNG bellek testleri
+  geçti. DLL hash'i önceki gerçek source-build/ABI sonucuyla aynı; native derleme
+  yeniden koşulmadı. Kurucu/native app yalnız derlendi, çalıştırılmadı. Sentetik
+  kurulum/kaldırma testleri yeni lisans/binding dosyalarını sahiplikli envanterde
+  doğrular; gerçek cihaz kurulum/aktarım/kaldırma kabulü değildir.
+- 7550da4 geçmiş kontrolü: 48 commit / 646 blob / 48 metadata / 13 tarihsel görsel,
+  bulgu yok. `SHA256SUMS.txt`, `delivery-review.json`, `native-smoke-review.json`,
+  `source-history-review.json`, dış review/SBOM ve teslim notu aynı klasördedir;
+  raporlar kullanıcı arşivine girmez. Önceki 475.785.100 baytlık ZIP'in kayıtlı
+  SHA-256 değeri yeniden doğrulandı; eski paket değiştirilmedi.
+- İnceleme için iki ZIP hazır; GitHub kaynak push/EXE/Release yayını yapılmadı.
+  Yayın aşamasında iki ZIP ve hash kaydı aynı erişilebilir indirme yerinde birlikte
+  sunulmalı; public prerelease etiketi/metadata ve kullanıcı onayı ayrıca gerekir.
+  Temiz Windows/iPhone kabulü bekler, kararlı sürüm iddiası yok. Kişisel kurulum
+  ve veriler değişmedi; Git kayıtları yereldir, kilit teslimde bırakılır.
+
 ## Kullanıcı dağıtımı sadeleştirme — 2026-10-14
 
 - Başlangıç kaynak commit'i `c06a3e6`; kişisel kurulum/veriler değişmez.

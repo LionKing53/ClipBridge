@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## 1.2.1 sade dağıtım doğrulandı — 2026-10-14
+
+- 7550da4 kaynağından yeni Setup, ~50 MiB kullanıcı ZIP'i ve ~404 MiB kaynak
+  eşlikçisi üretildi. 1.257 kullanıcı / 191 kaynak entry, 1.253 sealed file,
+  391 native kaynak/recipe hash'i ve source binding doğrulandı; lisanslar korundu.
+- Özgün npm ile beş image/decode smoke testi ve son integrity/privacy incelemesi
+  geçti. Kaynak geçmişinde 48 commit / 646 blob taraması bulgusuz. Önceki paket
+  ve hash'leri korundu; yeni SHA256SUMS/durum/teslim kanıtları ayrı çıktıdadır.
+- Kurucu/uygulama çalıştırılmadı, gerçek Windows/iPhone kabulü hâlâ yok. Kişisel
+  kurulum/veri değişmedi; GitHub'a kaynak/binary aktarımı veya Release yayını yok.
+
 ## 1.2.1 dağıtım düzeni — 2026-10-14
 
 - Kullanıcı README'leri ile geliştirme/Cloud belgeleri ayrıldı; kısa EN/TR
