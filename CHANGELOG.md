@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## 1.2.1-experimental.1 yayımlandı — 2026-10-14
+
+- 0e36f1d kaynak tag'iyle GitHub prerelease yayımlandı; kullanıcı ZIP'i (~50 MiB),
+  eşleşen kaynak ZIP'i (~404 MiB) ve SHA256SUMS aynı yerde/eşit erişimle sunulur.
+  İngilizce dosya adları kullanıldı; Türkçe rehber READ-ME-FIRST.tr.md. EXE yalnız
+  tam ZIP içinde dağıtılır. Kaynaklar, lisanslar ve development/Cloud kuralları korundu.
+- 162/162 otomatik test, image smoke, manifest/source/license/ZIP ve geçmiş
+  kontrolleri geçti. GitHub server hash/size ve anonim indirme erişimi doğrulandı.
+- Gerçek temiz Windows/iPhone kabulü yapılmadı, stable iddiası yok. Uygulama/kurucu
+  çalıştırılmadı; kişisel kurulum/veriler ve önceki paketler değişmedi.
+
 ## 1.2.1 deneysel yayın hazırlığı — 2026-10-14
 
 - Kullanıcı onayıyla İngilizce dosya isimleri ve ayrı experimental üretim modu

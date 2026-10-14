@@ -1,5 +1,41 @@
 # ClipBridge — proje durumu
 
+## GitHub deneysel ön sürüm yayımlandı — 2026-10-14
+
+- Kullanıcı onayıyla kaynaklar ve eşleşen iki ZIP GitHub'a aktarıldı:
+  https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1
+  Release prerelease=true, stable/latest değildir. Tag/paket kaynak commit'i
+  `0e36f1d4b87afee60df5665f26de8db1fde7f4f3`; sonraki kayıtlar bu hash'leri değiştirmez.
+- İngilizce asset adları: `ClipBridge-1.2.1-win-x64-experimental.zip`,
+  `ClipBridge-1.2.1-sources.zip`, `SHA256SUMS.txt`. EXE ayrı asset olarak sunulmaz.
+  ZIP içinde EN/TR rehberleri READ-ME-FIRST.md ve READ-ME-FIRST.tr.md adındadır.
+- Kullanıcı ZIP'i 52.470.168 bayt, SHA-256
+  `4349d91226eb86e91a24e8f07cb2000b224030f3e5ed84321585fdad213512e7`.
+  Kaynak ZIP'i 423.615.159 bayt, SHA-256
+  `9cdb87730a8c306cbb3f61eef4690d5011deb140b4cd62bef39bb24008d677e1`.
+  Setup SHA-256 `048a0f068819579c00b847623a5f0e8660d547d8371a7e40e190d1f2d3102b07`;
+  manifest SHA-256 `ea04cc12c88cbb443fb03a82a17320ccf94b703c4c332c87e56b1fc03c20a3c4`.
+- Yeni çıktı `build/candidate-63511f36-5a00-48d1-9b8a-47fbc44d04fa`; 1.253 sealed
+  file / 89 production dependency, 1.257 kullanıcı ve 191 kaynak ZIP entry.
+  Tüm manifest boyut/hash/path, native eşlikçi ve 391 source/recipe hash'i,
+  lisans/notice, kaynak binding ve iki rehber eşitliği kontrolü geçti.
+- 162/162 Windows otomatik test, atlama yok; paketlenmiş özgün npm ile beş biçim
+  image smoke geçti. Gerçek native yeniden derleme önceki CI kanıtıdır; DLL aynı
+  hash'i taşıyor. Kurucu/app yalnız derlendi, çalıştırılmadı. Temiz Windows/iPhone
+  kurulum/aktarım/kaldırma kabulü hâlâ yapılmadı; kararlı sürüm iddiası yok.
+- Kaynak yayın öncesi geçmiş kontrolü 50 commit / 663 blob / 50 metadata /
+  13 tarihsel görselde bulgusuz. Yeni dosya gizlilik taraması ve source gate geçti;
+  bu kontroller sezgiseldir, eksiksiz gizlilik veya hukuk garantisi değildir.
+- Önce draft'a üç asset yüklenip GitHub SHA-256/size ile doğrulandı; sonra
+  prerelease açıldı. İki ZIP ve checksum'a anonim HTTP erişimi doğrulandı.
+  GitHub otomatik source archive'ı sağlanan native source eşlikçisinin yerine geçmez.
+- `publication-evidence.json`, `download-access-review.json`, `uploaded-assets.json`,
+  `delivery-review.json`, `native-smoke-review.json`, `final-history-review.json`
+  ve SHA256SUMS aynı ignored build klasöründedir; kullanıcı ZIP'ine girmez.
+  Üretici review-needed kayıtları tarihçedir; yayın kararı bu doğrulamalar ve
+  kullanıcının açık aktarım onayıyla ayrıca verildi. Eski paketler/hash'leri
+  korundu. Kişisel kurulum/veriler değişmedi; kilit tamamlanınca bırakılır.
+
 ## Deneysel GitHub aktarımı hazırlığı — 2026-10-14
 
 - Kullanıcı sade dağıtımı inceledikten sonra gerekli kaynak/paket aktarımını ve

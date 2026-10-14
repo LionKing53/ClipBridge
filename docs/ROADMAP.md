@@ -1,5 +1,12 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-14: v1.2.1-experimental.1 GitHub prerelease yayımlandı; tag 0e36f1d.
+İngilizce isimli kullanıcı/source ZIP'leri ve SHA256SUMS aynı release'te sunulur;
+server hash/size ve anonim erişim doğrulandı. Kaynak/notice/integrity kapıları
+geçti. Temiz Windows/iPhone kurulum/aktarım/kaldırma kabulü bekler; stable iddiası,
+kişisel deployment veya gerçek installer/app çalıştırma yapılmadı. Önceki
+"yayın onayı yok" satırları tarihsel kayıttır; bu ön sürüm kullanıcı onayıyla açıldı.
+
 2026-10-14 son teslim: 7550da4 kaynaklı sade paket üretildi; ~50 MiB kullanıcı
 ZIP'i ve ~404 MiB kaynak eşlikçisi. Manifest/source/notice/ZIP kontrolü ve özgün
 npm beş-format smoke testi geçti. Önceki paket değişmedi. İki ZIP birlikte/eşit
