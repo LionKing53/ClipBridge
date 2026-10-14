@@ -71,6 +71,16 @@ test('streaming privacy scan detects UTF-8 and UTF-16 values across chunk bounda
   await writeFile(file, 'synthetic public fixture'); await scanPrivateFile(file, [term]);
 });
 
+test('only explicit embedded archive mode permits a root manifest while preserving duplicate and path guards', async t => {
+  const f=await fixture(t), file=path.join(f.snapshot,'LICENSE'), target=path.join(f.work,'embedded.zip');
+  await assert.rejects(archiveFiles(target,[{name:'release.json',file}]));
+  await assert.rejects(archiveFiles(target,[{name:'app/a',file}],{embeddedPayload:true}),/pinned manifest/);
+  for(const extra of ['../escape','/absolute','C:/drive','release.JSON','CON.txt'])
+    await assert.rejects(archiveFiles(target,[{name:'release.json',file},{name:extra,file}],{embeddedPayload:true}));
+  await archiveFiles(target,[{name:'release.json',file},{name:'app/file',file}],{embeddedPayload:true});
+  assert.ok((await readFile(target)).length>0);
+});
+
 test('experimental CLI refuses conflicting modes and missing sources before building', async () => {
   const run = promisify(execFile);
   for (const [args, message] of [

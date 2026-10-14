@@ -72,8 +72,9 @@ internal sealed class EmbeddedPayload : IDisposable
     {
         if (resource == null || !resource.CanSeek || resource.Length > MaxTotal || !Regex.IsMatch(archiveHash ?? "", "^[a-f0-9]{64}$") ||
             !Regex.IsMatch(manifestHash ?? "", "^[a-f0-9]{64}$") || createExclusive == null) throw Invalid();
+        if (String.IsNullOrEmpty(temporary) || !Path.IsPathRooted(temporary)) throw Invalid();
         temporary = InstalledLaunch.Full(temporary);
-        if (!Path.IsPathRooted(temporary) || temporary.StartsWith("\\\\") || !Directory.Exists(temporary)) throw Invalid();
+        if (!Regex.IsMatch(temporary, "^[a-zA-Z]:\\\\") || !Directory.Exists(temporary)) throw Invalid();
         InstalledLaunch.NoLinks(temporary); cancellation.ThrowIfCancellationRequested();
         resource.Position = 0; if (Hash(resource, cancellation) != archiveHash) throw Invalid(); resource.Position = 0;
         using (var archive = new ZipArchive(resource, ZipArchiveMode.Read, true)) {

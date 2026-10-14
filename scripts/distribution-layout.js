@@ -24,10 +24,13 @@ export async function scanPrivateFile(file, terms) {
   }
 }
 
-export async function archiveFiles(target, entries) {
+export async function archiveFiles(target, entries, { embeddedPayload = false } = {}) {
+  if (embeddedPayload && !entries.some(entry => entry.name === 'release.json')) throw new Error('Embedded payload requires its pinned manifest.');
   // Apply the same Windows-safe, case-insensitive path policy as the installer.
+  // A sealed manifest may not list itself; an embedded ZIP necessarily contains
+  // that manifest. Validate under a common namespace only for this explicit mode.
   validateReleaseManifest({ format: 1, version: '0.0.0', commit: '0'.repeat(40), schemaMin: 1, schemaMax: 1,
-    files: entries.map(({ name }) => ({ path: name, bytes: 0, sha256: '0'.repeat(64) })) });
+    files: entries.map(({ name }) => ({ path: embeddedPayload ? 'payload/' + name : name, bytes: 0, sha256: '0'.repeat(64) })) });
   await assertNoLinks(target);
   for (const entry of entries) { await assertNoLinks(entry.file); await hashFile(entry.file); }
   const archive = new ZipArchive({ zlib: { level: 9 } });

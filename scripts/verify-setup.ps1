@@ -1,6 +1,9 @@
 param([Parameter(Mandatory=$true)][string]$Candidate)
 # Read resources as metadata only. No Setup methods, Main or OS adapters invoked.
 $ErrorActionPreference = 'Stop'
+foreach ($buildModule in @('Microsoft.PowerShell.Management','Microsoft.PowerShell.Utility','Microsoft.PowerShell.Security')) {
+    Import-Module -Name ([IO.Path]::Combine($PSHOME,'Modules',$buildModule,$buildModule+'.psd1')) -ErrorAction Stop
+}
 Add-Type -AssemblyName System.IO.Compression
 $project = [IO.Path]::GetFullPath((Join-Path $PSScriptRoot '..'))
 $work = [IO.Path]::GetFullPath((Join-Path $project $Candidate))

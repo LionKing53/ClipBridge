@@ -16,6 +16,11 @@
   tekrar geçti. Son tam takım **168/168**, atlama yok; Edge UI ve kaynak/diff
   kontrolleri geçti (186 metin + 4 onaylı PNG / 121 kilit girdisi). Güncel
   EXE/source paket doğrulaması teslimde ayrıca kaydedilir.
+- İlk gömme denemesinde genel arşiv path validator'ının root `release.json`
+  yasağına takıldı; yalnız açık embedded archive modu manifesti dahil ederken
+  tüm traversal/duplicate/Windows-path sınırlarını koruyacak şekilde düzeltildi.
+  Hedefli 12/12 geçti; bu ara aday final değildir. Trusted PowerShell modülleri
+  kaynak inceleme betiğinde de engine yanından yüklenir.
 - EN/TR rehberler, kaynak/notice sağlama ve AGENTS yetki sınırı güncellendi.
   Yeni opsiyonel kullanıcı ZIP'i EXE + iki rehberdir; kaynak ZIP'i EXE ile birlikte
   aynı erişimle sunulur. Source guard korunur. Kurucu/app çalıştırılmadı, gerçek

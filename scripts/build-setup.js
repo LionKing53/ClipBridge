@@ -23,7 +23,7 @@ if (!!guard !== (evidence.purpose === 'guarded-engineering-candidate')) throw ne
 const toolchain = JSON.parse(await readFile(path.join(root, 'toolchain-lock.json'), 'utf8'));
 const policy = path.join(work, 'setup-policy.json'), exe = path.join(work, 'ClipBridgeSetup.exe');
 const embedded = path.join(work, 'embedded-payload.zip');
-const archive = await archiveFiles(embedded, (await packageFiles(path.join(work, 'payload'))).map(name => ({ name, file: path.join(work, 'payload', name) })));
+const archive = await archiveFiles(embedded, (await packageFiles(path.join(work, 'payload'))).map(name => ({ name, file: path.join(work, 'payload', name) })), { embeddedPayload: true });
 await verifyRelease(path.join(work, 'payload'), evidence.hash);
 await writeFile(policy, JSON.stringify({ manifestHash: evidence.hash, nodeVersion: toolchain.artifacts.find(item => item.id === 'node').version,
   minimumWebView2Version: '120.0.0.0', payloadArchiveHash: archive.sha256 }), { flag: 'wx' });

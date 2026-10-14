@@ -50,6 +50,21 @@ the separate sharp/libvips corresponding-source and replacement review.
 
 ## Verification
 
+### 1.2.2 embedded Setup
+
+On a reviewed clean commit, use `node scripts/build-candidate.js
+--experimental-release --native-source-directory build/native-sources-<id>`
+with the verified current native source companion. Then run
+`npm.cmd run build:setup -- build/candidate-<id>` and
+`npm.cmd run package:test -- build/candidate-<id>`.
+Setup compilation embeds `embedded-payload.zip` and its pinned archive/manifest
+hashes. The builder invokes `verify-setup.ps1` to read compiled resources without
+calling Setup methods/Main and rehash every embedded entry. The standalone EXE
+needs no adjacent files; an optional convenience ZIP contains only EXE + EN/TR
+guides. Always provide the exact matching source ZIP alongside the EXE. Existing
+published 1.2.1 ZIPs are unchanged and still need their original external payload.
+These are file-only builds, not permission to install or personal-device acceptance.
+
 `test/artifact-download.test.js` uses synthetic responses (no network) for cache,
 origin, checksum, interruption, size, linked-path and concurrent download cases.
 `npm.cmd run build:native` validates the full C# compilation against the pinned SDK.
