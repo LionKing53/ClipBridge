@@ -1,5 +1,11 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-14: Kullanıcı ZIP'i ile kaynak/review çıktıları ayrılıyor. Kaynak ZIP'i
+uygulama/native kaynaklarını, yamaları, lisansları ve yeniden birleştirme yolunu
+korur; hash/commit bağlantısı payload manifestine dahildir. Binary yayınında iki
+ZIP aynı erişimle birlikte sunulmalıdır. 160/160 test geçti; yeni paket bütünlük
+incelemesi ayrıca kaydedilecek. Kişisel dağıtım ve GitHub yayın onayı yok.
+
 2026-10-12: Yerel Windows ve Linux Codex Cloud aynı Git deposunun ayrı çalışma
 kopyalarıdır. Cloud işlerinde ayrı dal/PR, açık dosya sahipliği, commit'e bağlı
 test/skip raporu ve yetkili senkronizasyon kullanılır; otomatik yerel aktarım yok.

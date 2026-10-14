@@ -52,7 +52,7 @@ Use a separate computer with **no existing ClipBridge or PanoKopru program/data*
    |-- payload/
        |-- release.json
        |-- app/
-       |-- source/
+       |-- licenses/
    ```
 
 3. Open `ClipBridgeSetup.exe` as a **normal user**, not with “Run as administrator.”
@@ -66,6 +66,11 @@ Use a separate computer with **no existing ClipBridge or PanoKopru program/data*
 Program files and personal data are separate:
 `%LOCALAPPDATA%/Programs/ClipBridge` and `%LOCALAPPDATA%/ClipBridge`.
 Keep the extracted setup for removal later.
+
+The user ZIP includes short English/Turkish guides. Application and native
+sources are supplied in the matching `ClipBridge-<version>-sources.zip`, with
+the identity/hash in `payload/licenses/SOURCE-PACKAGE.json`. Sources are not
+an installation step; keep both downloads available to recipients.
 
 These are the new 1.2.1 build names, not a public download. The previously
 recorded private 1.1.0 artifact still uses `PanoKopruSetup.exe` and old paths;

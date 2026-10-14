@@ -128,6 +128,18 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Simplified distribution — owner decision 2026-10-14
+
+The owner authorized end-user README/packaging simplification and fresh file-only
+EXE/ZIP production for review. Preserve source rules, corresponding sources,
+patches, recombination instructions and original licenses. Installable delivery
+uses a separate exact-commit source ZIP with a hash binding in the sealed payload;
+future binary publication must offer both ZIPs together with equivalent access.
+Keep engineering reports outside user downloads. Never edit an existing ZIP or
+replace its recorded hashes. No new features, personal deployment, installer/app
+execution, GitHub push or release publication is authorized by this task. Real
+clean Windows/iPhone acceptance remains pending; no stable-release claim.
+
 ### Separate native verification — owner decision 2026-10-10
 
 The owner asked the publication conversation to recheck the handoff and perform

@@ -35,39 +35,25 @@ Kişisel veriler ve bağımlılık/çalışma zamanı kopyaları alınmamıştı
 - Arayüzde “hazır” yazması iPhone'dan uçtan uca erişimin doğrulandığı anlamına gelmez.
 - Arama dosya adı ve metin önizlemesindedir; tam içerik araması değildir.
 
-## Geliştirme
+## Kurulum
 
-Önce [AGENTS.md](AGENTS.md) ve [güncel durumu](PROJECT-STATUS.md) okuyun.
-Windows ve Node.js 24.15.0 ile mevcut test tabanı doğrulanmaktadır.
+ZIP'in tamamını çıkarın; `ClipBridgeSetup.exe` ve `payload` yan yana
+kalmalıdır. EXE tek başına kullanılamaz. Kurucu mevcut program/verinin
+üzerine yazmaz. Kestirmeleri kendi adresiniz ve anahtarınızla oluşturun;
+sertifika parmak izini doğrulayın. [Kısa rehber](docs/INSTALL.tr.md) ve
+[ayrıntılı rehber](docs/QUICKSTART.tr.md) kurulum/kaldırma akışını açıklar.
 
-```powershell
-npm.cmd ci --ignore-scripts --no-audit --no-fund
-npm.cmd test
-npm.cmd run test:ui
-npm.cmd run check:source
-npm.cmd run check:history
-npm.cmd run report:dependencies
-npm.cmd audit
-```
+## Geliştiriciler ve dağıtıcılar
 
-Arayüz testi için Microsoft Edge gerekir. Testler geçici veri ve sahte pano/ağ
-işlemleri kullanır. Üretim başlatma, eşleştirme ve eski `build` komutu bu
-aşamada kasıtlı olarak kapalıdır. `build:native` yalnız derler, `build:candidate`
-korumalı mühendislik adayı üretir; ikisi de uygulamayı kurmaz veya çalıştırmaz.
-Ortak veri kökü/port/süreç kimliği, çevrimdışı
-göç motoru, Tailscale’siz kurulum ekranı, izin temizliği ve depolama yönetimi kaynakta
-eklendi; gerçek Windows/iPhone kabulü tamamlanmadan kurulu sürüme uygulanmayacaktır.
-Güncelleme/geri alma çekirdeği yalnız yalıtılmış testlerde çalışır; üretim updater'ı
-değildir. Sabit hash'li Node/WebView2 **SDK** edinimi, native derleme ve izin
-listeli aday paketleme doğrulandı. **Runtime**, SDK'dan farklıdır: başlatıcıda
-eksik Runtime için resmi indirme sayfasına onaylı yönlendirme var; otomatik
-Runtime kurulumu yok. Kurulum kaydı doğrulayan açılış ve onaylı kilit kurtarma
-kodu eklendi. Bağımsız ilk kurucu ve veri koruyan kaldırma kaynakta var;
-`build:test-package` açık seçimiyle özel kabul paketi üretilebilir. Kurucu ve
-uygulama derlenmiş, gerçek kurulumda çalıştırılmamıştır. Temiz Windows/iPhone
-kabulü ve binary yayın onayı bekliyor; native kaynak/DLL incelemesi geçti.
-Bkz. [başlatıcı sözleşmesi](docs/INSTALLED-LAUNCH.md).
-İlk kurucunun kapsamı ve sınırları: [FIRST-INSTALL.md](docs/FIRST-INSTALL.md).
+Kod, testler ve geliştirme kuralları kaynak depoda korunur:
+[AGENTS](AGENTS.md), [durum](PROJECT-STATUS.md), [testler](docs/TESTING.md),
+[Cloud düzeni](docs/CLOUD-WORKFLOW.md) ve [yol haritası](docs/ROADMAP.md).
+Kaynak guard'ını kaldırmayın. Kullanıcı ZIP'i kurucu, gerekli payload,
+kısa EN/TR rehber ve lisansları içerir; inceleme raporları ayrıdır.
+Uygulama/native kaynakları eşleşen commit/hash ile ayrı ZIP'te korunur;
+binary ile aynı indirme yerinde eşit erişimle sunulmalıdır.
+[Kaynak sağlama](docs/DISTRIBUTION-SOURCES.md),
+[native yeniden derleme](docs/NATIVE-REBUILD.md).
 
 ## Belgeler
 

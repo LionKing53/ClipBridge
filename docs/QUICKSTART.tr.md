@@ -54,7 +54,7 @@ karşılaştırın ve durumu bildirin.
    **kendi adresinizi ve anahtarınızı** gösterdiğini kontrol edin. Sır içeren QR
    veya başlık ekranlarını paylaşmayın.
 6. [Kestirme rehberindeki](SHORTCUTS.md) iki yerel kestirmeyi oluşturun. Paketin
-   kökündeki bu kopyayı okuyorsanız rehber `payload/source/docs/SHORTCUTS.md`
+   eşleşen kaynak ZIP'ini okuyorsanız rehber `application/docs/SHORTCUTS.md`
    konumundadır. iPhone → Windows **POST**, Windows → iPhone iki **GET** kullanır.
    Her istekte kendi Authorization başlığınız gerekir. Hazır/imzalı kestirme
    paketi yoktur; rehberle elle kurulur. Tailscale kestirmeleri ayrı ve isteğe bağlıdır.

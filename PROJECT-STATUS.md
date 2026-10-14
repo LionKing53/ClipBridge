@@ -1,5 +1,25 @@
 # ClipBridge — proje durumu
 
+## Kullanıcı dağıtımı sadeleştirme — 2026-10-14
+
+- Başlangıç kaynak commit'i `c06a3e6`; kişisel kurulum/veriler değişmez.
+  Kullanıcı README'leri sadeleştirildi; geliştirme/Cloud kuralları depoda kalır.
+- Installable üretiminde uygulama/native kaynakları ayrı, exact-commit kaynak
+  ZIP'inde korunur. Sealed `licenses/SOURCE-PACKAGE.json` kaynak ZIP hash'ini
+  bağlar; eşleşmeyen/eksik kaynakla kullanıcı arşivi üretilemez. İki ZIP yayın
+  aşamasında aynı indirme yerinde eşit erişimle birlikte sunulmalıdır.
+- Kullanıcı ZIP'i yalnız kurucu, payload ve kısa EN/TR rehber içerir. Lisanslar
+  payload/licenses ve özgün npm dosyalarında korunur; source/test/Cloud belgeleri
+  kaynak eşlikçisindedir. Envanter/SBOM/derleme kanıtları dış review klasöründedir.
+- Windows tam test koşusu 160/160 geçti; atlama yok. Son kaynak-eşlikçi giriş
+  düzenlemesinden sonra ilgili üç dağıtım testi tekrar geçti. Manifest bazlı
+  sentetik C# kurulum/kaldırma testi lisans ve source binding dosyalarıyla geçti;
+  uygulama/kurucu veya gerçek OS adapter'ı çalıştırılmadı. Kaynak kontrolü 182
+  metin + 4 onaylı PNG / 121 kilit girdisi ve diff kontrolü geçti.
+- Yeni paketler temiz yerel commit'ten üretilecek; önceki paketler ve hash'leri
+  tarihsel olarak korunur. Paket sonucu ayrı takip kaydına yazılır. Bu görev
+  GitHub push/binary release onayı değildir; temiz Windows/iPhone kabulü bekler.
+
 ## Cloud kuralları — kaynak yayın incelemesi — 2026-10-12
 
 - Yayın sohbeti mevcut yedi dosyanın değişikliklerini koruyarak inceledi; çalışma

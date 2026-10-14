@@ -18,7 +18,9 @@ test('compiled fresh-install transaction uses only synthetic files and injected 
   async function fixture() {
     const dir = path.join(root, String(++counter)), local = path.join(dir, 'Local'), payload = path.join(dir, 'payload');
     await mkdir(local, { recursive: true });
-    const names = ['ClipBridge.exe', 'runtime/node.exe', 'app/src/server.js', 'Microsoft.Web.WebView2.Core.dll', 'Microsoft.Web.WebView2.WinForms.dll', 'WebView2Loader.dll'];
+    // Simplified payload: licenses/source binding remain owned manifest files;
+    // developer snapshots/reports are not installed. All bytes are non-executable.
+    const names = ['ClipBridge.exe', 'runtime/node.exe', 'app/src/server.js', 'Microsoft.Web.WebView2.Core.dll', 'Microsoft.Web.WebView2.WinForms.dll', 'WebView2Loader.dll', 'licenses/LICENSE', 'licenses/SOURCE-PACKAGE.json'];
     const bytes = Buffer.from('synthetic-non-executable');
     for (const name of names) { const file = path.join(payload, name); await mkdir(path.dirname(file), { recursive: true }); await writeFile(file, bytes); }
     const raw = JSON.stringify({ format: 1, version: '1.0.0-test.1', commit: 'a'.repeat(40), schemaMin: 1, schemaMax: 1, files: names.map(name => ({ path: name, sha256: hash(bytes), bytes: bytes.length })) });
@@ -36,6 +38,8 @@ test('compiled fresh-install transaction uses only synthetic files and injected 
     const receipt = JSON.parse(await readFile(path.join(f.target, 'install-receipt.json'), 'utf8'));
     assert.equal(receipt.state, 'ready'); assert.equal(receipt.ownerSid, 'S-1-5-21-1000-1000-1000-1000');
     assert.equal(receipt.requestedStartAtLogin, true); assert.equal(await stat(f.data).catch(() => null), null);
+    assert.equal(await readFile(path.join(f.target, 'licenses/SOURCE-PACKAGE.json'), 'utf8'), 'synthetic-non-executable');
+    assert.equal(await stat(path.join(f.target, 'source')).catch(() => null), null);
     assert.deepEqual(await readdir(path.join(f.local, 'Programs')), ['ClipBridge']);
   });
   await t.test('existing program and even empty existing data are never adopted or overwritten', async () => {

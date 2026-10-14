@@ -10,6 +10,7 @@ import { copyApprovedFiles, packageFiles, sealCandidate, hashFile } from '../src
 import { assertNoLinks } from '../src/runtime-context.js';
 import { applyNativeOverride } from '../src/native-override.js';
 import { assertSourceCoverage } from './fetch-native-sources.js';
+import { createSourceCompanion } from './distribution-layout.js';
 const run = promisify(execFile);
 const root = fileURLToPath(new URL('../', import.meta.url));
 const installable = process.argv.includes('--installable-test');
@@ -20,6 +21,7 @@ for (let i = 2; i < process.argv.length; i++) {
   options[arg] = path.resolve(process.argv[++i]);
 }
 const overrideDirectory = options['--native-library-directory'];
+if (installable && !options['--native-source-directory']) throw new Error('Installable delivery requires corresponding native sources.');
 const version = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).version;
 const git = async (...args) => (await run('git', args, { cwd: root, windowsHide: true })).stdout.trim();
 if (process.platform !== 'win32' || process.arch !== 'x64') throw new Error('Candidate target is Windows x64.');
@@ -36,10 +38,17 @@ const evidence = JSON.parse(await readFile(path.join(native, 'build-evidence.jso
 if (evidence.baseCommit !== commit || evidence.dirtySource) throw new Error('Native build has different source provenance.');
 const work = path.join(root, 'build', 'candidate-' + randomUUID());
 const payload = path.join(work, 'payload'), app = path.join(payload, 'app');
+const snapshotDirectory = installable ? path.join(work, 'source-snapshot') : path.join(payload, 'source');
+const reviewDirectory = installable ? path.join(work, 'review') : path.join(payload, 'review');
 await assertNoLinks(work); await mkdir(work);
 await copyApprovedFiles(root, app, inputs.app.filter(name => !installable || name !== 'SOURCE-CHECKOUT'));
-await copyApprovedFiles(root, path.join(payload, 'source'), source.files);
-await copyApprovedFiles(native, payload, inputs.native);
+await copyApprovedFiles(root, snapshotDirectory, source.files);
+await copyApprovedFiles(native, payload, inputs.native.filter(name => !installable || !['build-evidence.json', 'toolchain-evidence.json'].includes(name)));
+if (installable) {
+  await mkdir(reviewDirectory);
+  await copyApprovedFiles(native, reviewDirectory, ['build-evidence.json', 'toolchain-evidence.json']);
+  await copyFile(path.join(root, 'LICENSE'), path.join(payload, 'licenses/LICENSE'));
+}
 // Fresh install; never copy source node_modules or the user's runtime/vendor.
 // Separate blank npm configs/cache prevent user registry credentials/config from
 // becoming build inputs. No dependency lifecycle scripts or candidate exe runs.
@@ -86,9 +95,10 @@ for (const artifact of toolchain.artifacts) components.push({ type: artifact.id 
   hashes: [{ alg: artifact.algorithm === 'sha256' ? 'SHA-256' : 'SHA-512', content: artifact.encoding === 'hex' ? artifact.integrity : Buffer.from(artifact.integrity, 'base64').toString('hex') }],
   externalReferences: [{ type: 'distribution', url: artifact.url }],
   properties: [{ name: 'clipbridge:hashScope', value: 'upstream archive; extracted file hashes in toolchain-evidence.json' }] });
-await mkdir(path.join(payload, 'review'));
-await copyFile(path.join(root, 'THIRD-PARTY-NOTICES.md'), path.join(payload, 'review/THIRD-PARTY-NOTICES.md'));
-if (nativeOverride) await writeFile(path.join(payload, 'review/native-modifications.json'), JSON.stringify(nativeOverride, null, 2));
+if (!installable) await mkdir(reviewDirectory);
+const noticeDirectory = installable ? path.join(payload, 'licenses') : reviewDirectory;
+await copyFile(path.join(root, 'THIRD-PARTY-NOTICES.md'), path.join(noticeDirectory, 'THIRD-PARTY-NOTICES.md'));
+if (nativeOverride) await writeFile(path.join(reviewDirectory, 'native-modifications.json'), JSON.stringify(nativeOverride, null, 2));
 if (options['--native-source-directory']) {
   const directory = options['--native-source-directory']; await assertNoLinks(directory);
   const evidence = JSON.parse(await readFile(path.join(directory, 'evidence.json'), 'utf8'));
@@ -98,25 +108,33 @@ if (options['--native-source-directory']) {
   if (inventory.sharp !== lock.sharp || evidence.nativeArchives !== lock.artifacts.length || evidence.recipeArchives !== Object.keys(lock.recipes).length || evidence.sha256 !== await hashFile(path.join(directory,bundleName))) throw new Error('Wrong native source companion');
   if ((evidence.runtimeArchives || 0) !== (lock.runtimeArtifacts || []).length) throw new Error('Missing compiler-runtime source coverage');
   assertSourceCoverage(lock, inventory);
-  await mkdir(path.join(payload,'sources'));
-  await copyFile(path.join(directory,bundleName),path.join(payload,'sources',bundleName));
-  await copyFile(path.join(directory,'NATIVE-NOTICES.txt'),path.join(payload,'review/NATIVE-NOTICES.txt'));
-  await writeFile(path.join(payload,'review/native-source-delivery.json'),JSON.stringify({ ...evidence, bundle: 'sources/' + bundleName, nativeRebuildVerification: 'deferred-to-separate-environment', modifiedLibrarySourcesIncluded: !nativeOverride },null,2));
+  let sourceCompanion;
+  if (installable) {
+    sourceCompanion = await createSourceCompanion({ work, snapshot: snapshotDirectory, version, commit, nativeDirectory: directory, nativeName: bundleName, nativeEvidence: evidence });
+    await writeFile(path.join(work, 'source-companion-evidence.json'), JSON.stringify(sourceCompanion, null, 2));
+    await writeFile(path.join(payload, 'licenses/SOURCE-PACKAGE.json'), JSON.stringify(sourceCompanion, null, 2));
+    await copyFile(path.join(root, 'docs/DISTRIBUTION-SOURCES.md'), path.join(payload, 'licenses/SOURCES.md'));
+  } else {
+    await mkdir(path.join(payload,'sources'));
+    await copyFile(path.join(directory,bundleName),path.join(payload,'sources',bundleName));
+  }
+  await copyFile(path.join(directory,'NATIVE-NOTICES.txt'),path.join(noticeDirectory,'NATIVE-NOTICES.txt'));
+  await writeFile(path.join(reviewDirectory,'native-source-delivery.json'),JSON.stringify({ ...evidence, bundle: sourceCompanion?.file || 'sources/' + bundleName, nativeRebuildVerification: 'See separately recorded source-build/ABI evidence; not rerun by packaging.', modifiedLibrarySourcesIncluded: !nativeOverride },null,2));
 }
 const limitations = [installable ? 'Installable PRIVATE acceptance package, not approved for public redistribution.' : 'Engineering candidate, not installable or approved for redistribution.',
   installable ? 'Runtime guard omitted by explicit build; source snapshot guard retained. No app or installer executed.' : 'SOURCE-CHECKOUT guard retained. No app or installer executed.',
   'WebView2 Runtime not bundled; SDK libraries are not the Runtime.', 'Dependency/component inventory is not a vulnerability audit or license approval.',
   'sharp/libvips corresponding-source and replacement requirements still need distribution review.', 'Real Windows/iPhone acceptance pending. Clean install only; updater, rollback and legacy migration out of scope.'];
-await writeFile(path.join(payload, 'review', 'inventory.json'), JSON.stringify({ format: 1, commit, target: 'win-x64', limitations, packages: inventory }, null, 2));
-await writeFile(path.join(payload, 'review', 'candidate.cdx.json'), JSON.stringify({ bomFormat: 'CycloneDX', specVersion: '1.6', version: 1,
+await writeFile(path.join(reviewDirectory, 'inventory.json'), JSON.stringify({ format: 1, commit, target: 'win-x64', limitations, packages: inventory }, null, 2));
+await writeFile(path.join(reviewDirectory, 'candidate.cdx.json'), JSON.stringify({ bomFormat: 'CycloneDX', specVersion: '1.6', version: 1,
   metadata: { component: { type: 'application', name: 'ClipBridge', version },
     properties: [{ name: 'clipbridge:sourceCommit', value: commit }, { name: 'clipbridge:status', value: installable ? 'private-acceptance-only' : 'not-installable-not-release-approved' }] }, components }, null, 2));
-await writeFile(path.join(payload, 'review', 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
+await writeFile(path.join(noticeDirectory, 'DEPENDENCY-NOTICES.txt'), 'Collected from the exact freshly installed package versions. Distribution review remains required.\n' + licenses.join(''));
 await writeFile(path.join(payload, installable ? 'TEST-PACKAGE.txt' : 'NOT-INSTALLABLE.txt'), limitations.join('\n') + '\n');
 // Source must not change underneath the build. A clean git tree alone would not
 // detect an editor changing and committing inputs while this process runs.
 for (const name of source.files) {
-  if (await hashFile(path.join(root, name)) !== snapshot[name] || await hashFile(path.join(payload, 'source', name)) !== snapshot[name]) throw new Error('Source changed during packaging.');
+  if (await hashFile(path.join(root, name)) !== snapshot[name] || await hashFile(path.join(snapshotDirectory, name)) !== snapshot[name]) throw new Error('Source changed during packaging.');
 }
 if (await git('rev-parse', 'HEAD') !== commit || await git('status', '--porcelain')) throw new Error('Source provenance changed during packaging.');
 const result = await sealCandidate(payload, { version, commit });

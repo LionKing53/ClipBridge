@@ -1,5 +1,17 @@
 # Değişiklik kaydı
 
+## 1.2.1 dağıtım düzeni — 2026-10-14
+
+- Kullanıcı README'leri ile geliştirme/Cloud belgeleri ayrıldı; kısa EN/TR
+  kurulum rehberleri eklendi. Kaynak kuralları, testler ve lisanslar korunur.
+- Yeni installable paket üretimi ayrı, hash/commit ile bağlı uygulama/native
+  kaynak ZIP'i oluşturur; lisanslar payload'da kalır, review raporları kurulmaz.
+  Kaynak eksik/değişmişse kullanıcı ZIP'i reddedilir. Binary ve kaynak eşlikçisi
+  aynı erişilebilirlikle birlikte sağlanmalıdır; upstream linkleri yeterli değildir.
+- 160/160 Windows test, sonraki üç dağıtım testi ve source/diff kontrolleri geçti.
+  Kişisel kurulum/veri değişmedi; uygulama/kurucu çalıştırılmadı. Yeni özellik,
+  kararlı sürüm iddiası veya GitHub yayını yok; yeni paket sonucu ayrıca kaydedilir.
+
 ## Cloud belgeleri — kaynak yayın incelemesi — 2026-10-12
 
 - Yedi dosyalık yerel Cloud çalışma sözleşmesi, mevcut değişiklikler korunarak

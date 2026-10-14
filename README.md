@@ -14,9 +14,6 @@ trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remote
 > The libvips source rebuild and Windows DLL compatibility checks have passed.
 > Automated/library tests do not replace clean-device installation and transfer tests.
 
-[Native source-build evidence](https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630)
-· [Windows DLL verification](https://github.com/LionKing53/ClipBridge/actions/runs/38058678968)
-
 The same **ClipBridge** name is used in both languages. Existing PanoKopru
 installations and iPhone identities are not silently renamed or migrated.
 [Naming and compatibility](docs/BRANDING.md)
@@ -130,48 +127,40 @@ or data folders. Automatic updates, production rollback and legacy data migratio
 are deferred. Removal preserves user data; retained data prevents another clean
 install under the same account. See the setup guide for the removal procedure.
 
-## Development
-
-Read [AGENTS.md](AGENTS.md), [PROJECT-STATUS.md](PROJECT-STATUS.md) and
-[the roadmap](docs/ROADMAP.md) first. The current test baseline uses Windows and
-Node.js 24.15.0. In PowerShell:
-
-```powershell
-npm.cmd ci --ignore-scripts --no-audit --no-fund
-npm.cmd test
-npm.cmd run test:ui
-npm.cmd run check:source
-npm.cmd run check:history
-```
-
-The UI test uses Microsoft Edge, temporary data and synthetic OS adapters.
-The `SOURCE-CHECKOUT` guard deliberately blocks production startup and real OS
-actions from a source checkout; **do not delete it to run the app**.
-`build:native` compiles only, `build:candidate` produces a guarded engineering
-payload, and `build:test-package` explicitly creates a private acceptance package.
-
-To regenerate the English screenshots:
-`node scripts/capture-docs.js`. Review the images before updating their pinned
-hashes. The script selects the real English language option in an isolated fixture.
-
-## Documentation
+## Help and guides
 
 | Topic | Guide |
 | --- | --- |
 | Installation, pairing and removal | [English setup guide](docs/QUICKSTART.md) · [Türkçe](docs/QUICKSTART.tr.md) |
 | Language selection | [English / Turkish support](docs/LOCALIZATION.md) |
 | Apple Shortcut actions | [Send and receive guide · EN/TR](docs/SHORTCUTS.md) |
-| Architecture and data boundaries | [Architecture](docs/ARCHITECTURE.md) |
 | Network and certificate security | [Local-network model](LOCAL-NETWORK.md) |
 | Troubleshooting | [Troubleshooting](docs/TROUBLESHOOTING.md) |
-| Test and release status | [Project status](PROJECT-STATUS.md) · [Acceptance matrix](docs/ACCEPTANCE.md) |
-| Native sources and rebuild | [Native rebuild](docs/NATIVE-REBUILD.md) |
-| Third-party distribution review | [Third-party notices](THIRD-PARTY-NOTICES.md) |
 | Changes | [Changelog](CHANGELOG.md) |
+
+## For developers and distributors
+
+The source repository retains code, tests and development rules. Start with
+[AGENTS.md](AGENTS.md), [project status](PROJECT-STATUS.md),
+[roadmap](docs/ROADMAP.md), [testing](docs/TESTING.md) and
+[local/Cloud coordination](docs/CLOUD-WORKFLOW.md).
+See [architecture](docs/ARCHITECTURE.md), [native build](docs/NATIVE-BUILD.md),
+[native rebuild/recombination](docs/NATIVE-REBUILD.md),
+[source delivery](docs/DISTRIBUTION-SOURCES.md) and [screenshots](docs/SCREENSHOTS.md).
+The source guard intentionally blocks production startup; do not remove it.
+
+User downloads contain setup, its required payload, short EN/TR guides and
+licenses. The matching source ZIP is a separate download for rebuilding, not
+an installation step. Both ZIPs must be delivered together with their hashes
+and exact source commit. Review reports and CI evidence are separate outputs.
+[Native build evidence](https://github.com/LionKing53/ClipBridge/actions/runs/38056080637/job/114224790630)
+· [Windows DLL checks](https://github.com/LionKing53/ClipBridge/actions/runs/38058678968).
 
 ## License
 
 ClipBridge is licensed under **GPL-3.0-or-later**. See [LICENSE](LICENSE).
-Third-party components retain their own licenses; their binary distribution
-review is still pending. The source repository contains no personal clipboard
+Third-party components retain their own licenses and
+[notices](THIRD-PARTY-NOTICES.md). Source and native rebuild provisions have been
+reviewed; final paired-download review and binary publication approval remain
+separate. The source repository contains no personal clipboard
 history, access keys, certificates or installed user profiles.

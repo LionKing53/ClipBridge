@@ -2,6 +2,11 @@
   "version": 1,
   "purpose": "Reviewed source inputs and individually reviewed hash-pinned synthetic documentation images; not a deployable distribution manifest",
   "files": [
+    "scripts/distribution-layout.js",
+    "test/distribution-layout.test.js",
+    "docs/DISTRIBUTION-SOURCES.md",
+    "docs/INSTALL.md",
+    "docs/INSTALL.tr.md",
     "docs/CLOUD-WORKFLOW.md",
     "scripts/verify-legacy-language-patch.js",
     "docs/LOCALIZATION.md",

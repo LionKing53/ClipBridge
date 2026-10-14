@@ -42,7 +42,10 @@ checksums and collected original license/copyright texts (including a superset
 of test/optional components, not a statement all of them are linked). Publish
 the verified companion **alongside** the matching binary, with equal access,
 not merely a link to the upstream project. Do not substitute old 8.18.6 sources.
-The application source snapshot is separately included in the binary payload.
+For simplified installable packages, the application snapshot and this native
+bundle are preserved together in `ClipBridge-<version>-sources.zip` beside the
+binary download. `payload/licenses/SOURCE-PACKAGE.json` binds its hash/commit.
+Guarded engineering packages retain their historical embedded source layout.
 
 To recreate the companion, clone the four public repositories above into
 `build/native-source-review-8.18.7`, `build/native-mxe-review-20260924`,
@@ -128,10 +131,22 @@ Then run:
 
 ```powershell
 npm.cmd ci --ignore-scripts --no-audit --no-fund
-npm.cmd run build:test-package -- --native-library-directory C:\RebuiltLibraries
+npm.cmd run build:test-package -- --native-library-directory C:\RebuiltLibraries --native-source-directory C:\MatchingSources\native
 npm.cmd run build:setup -- build/candidate-<reported-id>
 npm.cmd run package:test -- build/candidate-<reported-id>
 ```
+
+For a downloaded source snapshot, extract `application/` as your working project;
+it contains no `.git` directory. Initialize your own local Git repository and
+commit the reviewed inputs before building, as required by the clean-source gate.
+Acquire the pinned Node/WebView2 SDK inputs using the file-only instructions in
+`docs/NATIVE-BUILD.md`. The outer source ZIP's `native/` directory already
+contains the verified nested companion ZIP, `inventory.json`, `evidence.json`
+and `NATIVE-NOTICES.txt`; pass that directory as `--native-source-directory`.
+Extract the nested ZIP separately when you need its actual sources and recipes.
+For modified libraries,
+also supply their modified corresponding sources and adapted build recipes.
+An unchanged upstream companion alone does not fulfill that requirement.
 
 The explicit option replaces only these files **in the fresh staging payload**,
 records original/replacement hashes and marks compatibility untested. The package
@@ -159,9 +174,11 @@ The reviewed license route is corresponding-source delivery and recipient
 recombination, not a claim that installed integrity checks permit arbitrary DLL
 replacement. See [LGPLv3 section 4](https://www.gnu.org/licences/lgpl.html).
 Application sources, build utilities and pinned lockfiles are supplied in
-`payload/source`; the native companion supplies source archives and upstream
+`application/` in the matching source ZIP (historically `payload/source`);
+the nested native companion supplies source archives and upstream
 patch/recipe snapshots. Original copyrights/license texts are retained in
-`review/NATIVE-NOTICES.txt` and the companion. Node and WebView2 SDK notices are
+`payload/licenses/NATIVE-NOTICES.txt` and the companion (historically
+`review/NATIVE-NOTICES.txt`). Node and WebView2 SDK notices are
 included separately. WebView2 Evergreen Runtime is not bundled.
 
 Before binary publication, an external build reviewer must produce the pinned
