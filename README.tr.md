@@ -6,12 +6,12 @@ ve verileri yalnız isim değişikliği için sıfırlanmaz veya taşınmaz.
 
 [English README](README.md) | [Kurulum](docs/QUICKSTART.tr.md)
 
-**Güncel kaynak 1.2.2 tek dosyalı deneysel kurucu adayıdır; henüz yayımlanmadı.**
-[İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1):
-`ClipBridge-1.2.1-win-x64-experimental.zip`, eşleşen kaynak ZIP'i ve
-`SHA256SUMS.txt` aynı sayfadadır. Bu önceki 1.2.1 pakette EXE tek başına kullanılmaz.
-Yeni 1.2.2 EXE payload'ı içerir; kendi kaynak ZIP'i ve checksum'u ile ayrı inceleme
-ve yayın gerektirir. Kurucu imzasızdır; kararlı sürüm değildir.
+**1.2.2 tek EXE deneysel ön sürüm; kararlı sürüm değildir.**
+[ClipBridgeSetup.exe indir](https://github.com/LionKing53/ClipBridge/releases/download/v1.2.2-experimental.1/ClipBridgeSetup.exe).
+Payload EXE içindedir; ZIP çıkarma veya yanında klasör tutma gerekmez.
+[Kaynak ZIP'i, isteğe bağlı kullanıcı ZIP'i ve SHA256SUMS.txt](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1)
+aynı sayfadadır. Kurucu imzasızdır; hash'ini doğrulayın.
+Eski 1.2.1 yayını kendi ZIP + payload düzenini korur.
 Yeni kurucunun **temiz Windows kurulumu ve gerçek iPhone ile aktarımı henüz
 test edilmemiştir**. libvips kaynak derlemesi ve Windows DLL uyumluluk doğrulaması
 geçti. Otomatik/kütüphane testleri gerçek cihaz kabulünün yerine geçmez.

@@ -128,6 +128,18 @@ guard removal, unguarded packaging or personal-machine acceptance.
 
 ## Deployment/release gates
 
+### Standalone experimental publication — owner decision 2026-10-15
+
+The owner explicitly authorizes the publication conversation to review and
+publish the handed-off 1.2.2 standalone installer as a NEW experimental prerelease.
+Use package source 8b2c0dcd1a448e41aea4217087ba930324805fd2 and preserve the
+handed-off artifact hashes. Publish ClipBridgeSetup.exe, matching source ZIP and
+SHA256SUMS together; the convenience ZIP is optional. Verify uploaded hashes and
+anonymous accessibility. Do not alter the existing 1.2.1 release or assets. This
+supersedes the previous local-only/push restriction for this publication task.
+Do not run the installer/app or touch the personal installation. Remain explicit
+about unsigned setup and unverified clean Windows/iPhone acceptance; not stable.
+
 ### Single-file installer — owner decision 2026-10-14
 
 The owner authorizes embedding the complete sealed payload in a new Setup EXE,

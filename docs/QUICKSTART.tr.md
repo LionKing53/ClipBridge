@@ -2,10 +2,10 @@
 
 [English setup guide](QUICKSTART.md)
 
-**1.2.2 deneysel adayı henüz yayımlanmadı; kararlı sürüm değildir.**
-[İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1)
-önceki 1.2.1 kullanıcı ZIP'ini, kaynak ZIP'ini ve SHA256SUMS.txt dosyasını sunar.
-Yeni tek EXE kendi 1.2.2 kaynak ZIP'i ve checksum'u ile ayrı yayın incelemesi gerektirir.
+**1.2.2 tek EXE deneysel ön sürüm; kararlı sürüm değildir.**
+[İndirmeler](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1):
+ClipBridgeSetup.exe, eşleşen kaynak ZIP'i, SHA256SUMS.txt ve isteğe bağlı
+EXE/rehber ZIP'i. EXE yanında payload gerektirmez; tek başına kullanılır.
 Türkçe/English: **Ayarlar → Dil**; tercih yeniden açılışta korunur.
 Gerçek temiz Windows/iPhone kurulum/aktarım/kaldırma kabulü yapılmadı.
 Native kaynak derleme ve Windows DLL kontrolü geçti; cihaz kabulünün yerine geçmez.

@@ -1,9 +1,9 @@
 # Setup and iPhone pairing
-**Source/package target 1.2.2 · standalone experimental candidate, not stable**
+**Version 1.2.2 · standalone experimental pre-release, not stable**
 
 [Back to README](../README.md) · [Türkçe kurulum rehberi](QUICKSTART.tr.md)
 
-> **Testing is pending.** New 1.2.2 artifacts require separate publication review.
+> **Testing is pending.** Download the [1.2.2 standalone experimental installer](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1).
 > The [previous 1.2.1 release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1) remains unchanged.
 > The source-built setup has not been tested on clean Windows or with a real
 > iPhone transfer. The libvips source rebuild and Windows DLL checks have passed;

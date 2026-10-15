@@ -1,5 +1,31 @@
 # ClipBridge — proje durumu
 
+## 1.2.2 yayın incelemesi — 2026-10-15
+
+- Kullanıcı tek EXE'nin yeni experimental/prerelease olarak yayımlanmasını açıkça
+  onayladı. Başlangıç HEAD d76c7c9, ağaç temiz; uzak main 4278b51, dört yerel
+  geliştirme/teslim commit'i mevcut. Kilit yoktu; yayın incelemesi kilidi alındı.
+- Teslim klasörü ve 8b2c0dc paket kaynağı korundu; EXE/native app çalıştırılmadı
+  veya yeniden derlenmedi. 169/169 otomatik Windows testi yeniden geçti, atlama
+  yok. Kaynak/diff kapıları geçti: 186 metin + 4 onaylı PNG / 121 kilit girdisi.
+- ReflectionOnly EXE kaynağı bağımsız yeniden okundu: 1.254 gömülü entry,
+  archive/manifest/file hash'leri doğru, hiçbir giriş noktası/yöntem çağrılmadı.
+  Özgün resource kanıtı korunarak publication-embedded-resource-review.json yazıldı.
+- İki ZIP, EXE ve SHA256SUMS yeniden hash'lendi; optional ZIP yalnız EXE + iki
+  rehber, kaynak ZIP'i 195 girdidir. 190 uygulama dosyası exact 8b2c0dc Git
+  içeriğiyle (Git'in CRLF normalizasyonu dikkate alınarak) karşılaştırıldı.
+  Native eşlikçi aynı hash'te, 396 entry / 391 kaynak-recipe hash'i doğru;
+  source binding ve özgün lisans/noticeler korunur. Yeni dosya gizlilik taraması
+  bulgusuz; denetimler sezgiseldir, kapsamlı gizlilik/hukuk garantisi değildir.
+- Eski yayımlanmış 1.2.1 yerel dosyaları aynı hash'te. Eski release metadata ve
+  asset id/name/digest/size/timestamp bilgileri salt okunur snapshot ile kaydedildi;
+  yeni yayın sonunda tekrar karşılaştırılacak. Eski release'e mutation yapılmaz.
+- Yeni hedef v1.2.2-experimental.1; tag 8b2c0dcd1a448e41aea4217087ba930324805fd2.
+  ClipBridgeSetup.exe, ClipBridge-1.2.2-sources.zip, SHA256SUMS.txt ve isteğe bağlı
+  üç girdili kullanıcı ZIP'i aynı yerde/eşit erişimle sunulacak. Yüklenen server
+  SHA-256/size ve anonim indirme kontrolünden sonra yayın sonucu kaydedilecek.
+  Kurucu imzasız, temiz Windows/iPhone kabulü yapılmadı; kişisel kurulum/veri aynı.
+
 ## 1.2.2 tek EXE teslimi — 2026-10-14
 
 - Paket kaynak commit'i **`8b2c0dcd1a448e41aea4217087ba930324805fd2`**; uygulama ve

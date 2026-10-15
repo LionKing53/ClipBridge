@@ -1,5 +1,14 @@
 # Değişiklik kaydı
 
+## 1.2.2 yayın incelemesi — 2026-10-15
+
+- Kullanıcı onayıyla tek EXE experimental yayın hazırlığı: mevcut artifact'ler
+  yeniden üretilmeden incelendi. 169/169 test ve bağımsız metadata-only gömülü
+  payload/source/license/ZIP incelemesi geçti. Önceki 1.2.1 dosyaları korunur.
+- README/kurulum rehberleri yeni tek EXE indirmesine yönlendirildi. Kaynak ZIP'i
+  EXE ile aynı erişimde kalır; SHA256SUMS ve opsiyonel rehber ZIP'i de sunulur.
+  Kurucu/uygulama çalıştırılmadı, kişisel kurulum değişmedi; gerçek cihaz kabulü yok.
+
 ## 1.2.2 — Tek dosyalı kurucu — 2026-10-14
 
 - Final paket kaynağı `8b2c0dc`: 52.521.984 baytlık bağımsız EXE, eşleşen source

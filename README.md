@@ -7,11 +7,12 @@ ClipBridge is a Windows–iPhone clipboard bridge. Run an Apple Shortcut to send
 receive an item, then keep working on your other device. Use **local HTTPS on a
 trusted network**, without Tailscale, or separate **Tailscale Shortcuts** remotely.
 
-> **Source 1.2.2 · Single-file experimental installer candidate, not published here**
+> **Version 1.2.2 · Single-file experimental pre-release**
 >
-> The [previous 1.2.1 experimental downloads](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.1-experimental.1)
-> retain their original ZIP + external-payload layout. New 1.2.2 artifacts need
-> separate publication review; do not substitute one version's files for another.
+> [Download ClipBridgeSetup.exe](https://github.com/LionKing53/ClipBridge/releases/download/v1.2.2-experimental.1/ClipBridgeSetup.exe)
+> and verify it against [SHA256SUMS.txt](https://github.com/LionKing53/ClipBridge/releases/download/v1.2.2-experimental.1/SHA256SUMS.txt).
+> The installer contains its payload: **no ZIP extraction or adjacent folder needed**.
+> [Source download and optional ZIP](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1).
 > This is **not a stable release**. The source-built installer
 > has **not been tested on clean Windows or with a real iPhone transfer**.
 > The libvips source rebuild and Windows DLL compatibility checks have passed.
@@ -78,9 +79,9 @@ For the new 1.2.2 delivery, download `ClipBridgeSetup.exe` and verify it against
 its paired `SHA256SUMS.txt`. The matching `ClipBridge-1.2.2-sources.zip` must be
 available at the same location for rebuilding; you do not need to open it to
 install. The installer is unsigned and real-device acceptance is pending.
-The new delivery is not yet published by this development task.
+Use the [1.2.2 experimental release](https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1).
 
-1. **Install on a clean Windows x64 computer.** The new 1.2.2 candidate is a
+1. **Install on a clean Windows x64 computer.** The 1.2.2 download is a
    standalone `ClipBridgeSetup.exe`; no ZIP extraction or adjacent payload is
    needed. Run it as a normal user. The published 1.2.1 ZIP still requires its
    original external payload and is not silently replaced by this source change.
