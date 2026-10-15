@@ -1,5 +1,12 @@
 # Geliştirme ve yayın kapıları
 
+2026-10-15: v1.2.2-experimental.1 (tag 8b2c0dc) yayımlandı. Tek EXE, eşleşen
+kaynak ZIP'i, checksum ve opsiyonel rehber ZIP'i birlikte/eşit erişimle sunulur;
+server hash/size ve anonim indirme geçti. 169/169 test ve Edge UI tekrar geçti.
+Eski 1.2.1 release/asset metadata ve hash'leri değişmedi. Kurucu/app veya kişisel
+deployment yapılmadı; kurucu imzasız ve gerçek temiz Windows/iPhone kabulü bekler.
+Önceki "yerel aday/yayın yok" satırları tarihsel kayıttır; kararlı sürüm değildir.
+
 1.2.2 tek EXE adayı teslim edildi: 8b2c0dc kaynak, 169/169 test, metadata-only
 1.254 embedded entry ve eşleşen kaynak/notice/ZIP kontrolleri geçti. Kullanıcı
 EXE'yi tek başına çalıştırır; kaynak ZIP'i aynı erişimle yanında yayımlanmalıdır.

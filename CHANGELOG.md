@@ -1,5 +1,16 @@
 # Değişiklik kaydı
 
+## 1.2.2-experimental.1 yayımlandı — 2026-10-15
+
+- 8b2c0dc tag kaynağıyla tek dosyalı ClipBridgeSetup.exe, eşleşen native/uygulama
+  kaynak ZIP'i, checksum ve isteğe bağlı EXE/EN/TR rehber ZIP'i birlikte yayımlandı.
+  GitHub hash/size ve anonim erişim doğrulandı. EXE artık payload'ı kendi içerir.
+- 169/169 test, Edge UI, metadata-only gömülü payload, source/license/ZIP ve
+  gizlilik/geçmiş kontrolleri tekrar geçti. README yeni tek EXE'ye yönlendirildi.
+- Eski 1.2.1 release/asset metadata ve hash'lerinin aynı kaldığı API snapshot ile
+  doğrulandı. Kurucu çalıştırılmadı, kişisel kurulum değişmedi; imzasız deneysel
+  ön sürümdür, gerçek temiz Windows/iPhone kabulü hâlâ bekler.
+
 ## 1.2.2 yayın incelemesi — 2026-10-15
 
 - Kullanıcı onayıyla tek EXE experimental yayın hazırlığı: mevcut artifact'ler

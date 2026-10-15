@@ -1,5 +1,44 @@
 # ClipBridge — proje durumu
 
+## 1.2.2 tek EXE ön sürümü yayımlandı — 2026-10-15
+
+- Kullanıcı onayıyla yeni experimental/prerelease açıldı:
+  https://github.com/LionKing53/ClipBridge/releases/tag/v1.2.2-experimental.1
+  Tag exact paket kaynağı `8b2c0dcd1a448e41aea4217087ba930324805fd2` gösterir.
+  Geliştirme/teslim commit'leri ve yayın belgeleri GitHub'a aktarıldı; sonraki
+  kayıt commit'leri verilen EXE/source ZIP hash'lerini değiştirmez.
+- Dört asset aynı release'te/eşit erişimde: ClipBridgeSetup.exe,
+  ClipBridge-1.2.2-sources.zip, SHA256SUMS.txt ve isteğe bağlı
+  ClipBridge-1.2.2-win-x64-experimental.zip. EXE 52.521.984 bayt (~50 MiB);
+  yanında payload veya ZIP çıkarma gerekmez. Kaynak ZIP'i kurulum önkoşulu değildir.
+- EXE SHA-256 `6814c6afb2fabfcaf9e14b0266c9fa4b7ea1136d34b671f084e799dc33f4ec20`;
+  kaynak ZIP SHA-256 `3a5134110b7081c0909a46f71a5c861866498aea09cc57310a7c371bca79c411`;
+  optional ZIP SHA-256 `efd26297c9f6739822b51b718bdce5290e3bac050d34bc21043df48c42eac991`;
+  SHA256SUMS dosya SHA-256 `d44567879ee6776515b756525ec1182b2f4d7319f4417ac2017ae18fdb080b43`.
+  GitHub server digest/size tüm asset'lerde doğrulandı; ardından hepsine anonim
+  HTTP 200 indirme erişimi ve doğru boyut doğrulandı. Prerelease=true, stable değil.
+- Eski 1.2.1 tag'i 0e36f1d'de kaldı. Önce/sonra salt okunur API karşılaştırması
+  eski release id/title/body/target/date ve asset id/name/size/digest/timestamp
+  alanlarının değişmediğini doğruladı; yalnız volatile download_count dışlandı.
+  Eski yerel dosya hash'leri de aynı. Eski release veya asset mutation yapılmadı.
+- Yenilenen kontroller: 169/169 test, atlama yok; Edge UI, kaynak/diff ve
+  EXE/source private-term taraması geçti. ReflectionOnly 1.254 embedded entry,
+  195 source entry, üç optional ZIP entry, 396 native source entry ve 391
+  source/recipe hash'i yeniden doğrulandı. Kaynak dosyaları exact 8b2c0dc ile,
+  özgün notices ve source binding de gömülü payload ile eşleşti. Gerçek native
+  derleme tekrarlanmadı; değişmeyen native DLL önceki source-build hash'inde.
+- Kaynak aktarımından önce 50358e5 dahil geçmiş taraması 56 commit / 715 blob /
+  56 metadata / 13 görselde bulgusuzdu. Kontroller sezgiseldir; eksiksiz hukuk,
+  gizlilik veya güvenlik garantisi değildir. Bu son kayıt da push öncesi taranır.
+- publication-evidence.json, download-access-review.json, old-release-before.json,
+  old-release-unchanged.json, publication-delivery-review.json,
+  publication-embedded-resource-review.json, publication-private-scan.json ve
+  publication-source-history.json aday klasöründeki dış kanıtlardır; asset değildir.
+- Kurucu imzasız; gerçek temiz Windows/iPhone kurulum/eşleştirme/iki yönlü aktarım/
+  kaldırma ve gerçek temp ACL/COM/UAC/kesinti kabulü yapılmadı. Kurucu/uygulama
+  çalıştırılmadı, kişisel kurulum/veriler değişmedi. Kararlı sürüm iddiası yok.
+  SOURCE-CHECKOUT/development kuralları ve eşlikçi lisans/kaynak yükümlülükleri korunur.
+
 ## 1.2.2 yayın incelemesi — 2026-10-15
 
 - Kullanıcı tek EXE'nin yeni experimental/prerelease olarak yayımlanmasını açıkça
